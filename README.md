@@ -1,2 +1,2 @@
 # Command-Lab-Official-ot
-Discordサーバーの「コマ研Bot」のレポジトリ
+Discordサーバーの「コマ研Bot」のリポジトリ
