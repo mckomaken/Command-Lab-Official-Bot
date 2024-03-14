@@ -110,9 +110,12 @@ async def on_message(message):
         # メッセージの内容をチェック
     if "https://discord.com/channels/" in message.content:
         # メッセージリンクが含まれている場合
-        link = message.content.split("https://discord.com/channels/")[1]
-        guild_id, channel_id, message_id = map(int, link.split("/"))
-
+        try:
+            link = message.content.split("https://discord.com/channels/")[1]
+            guild_id, channel_id, message_id = map(int, link.split("/"))
+        except Exception:
+            return
+            
         # メッセージリンクが現在のサーバーに属しているかどうかをチェック
         if message.guild.id != guild_id:
             # 現在のサーバー以外のリンクには反応しない
