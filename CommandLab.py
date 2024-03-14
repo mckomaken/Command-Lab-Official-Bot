@@ -225,14 +225,10 @@ with open("CMTK.txt") as file:
     client.run(file.read())
 
 #画面上：表示⇒ターミナル、押すと実行するための画面出てくる
-#実行コマンド1：cd Desktop\DiscordBot_Command_Lab_Official_Bot\Command-Lab-Official-Bot 86222854+Syunngiku0402@users.noreply.github.com
+#実行コマンド1：cd Desktop\DiscordBot_Command_Lab_Official_Bot\Command-Lab-Official-Bot
 #実行コマンド2：py .\CommandLab.py
 #Botを止めるときは「Ctrl+C」を押す
 
-
-#test
-#test
-#test
 
 
 
