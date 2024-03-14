@@ -115,12 +115,12 @@ async def on_message(message):
             guild_id, channel_id, message_id = map(int, link.split("/"))
         except Exception:
             return
-            
+
         # メッセージリンクが現在のサーバーに属しているかどうかをチェック
         if message.guild.id != guild_id:
             # 現在のサーバー以外のリンクには反応しない
             return
-
+        
         try:
             # リンク先のメッセージオブジェクトを取得
             target_channel = client.get_guild(guild_id).get_channel(channel_id)
@@ -215,14 +215,10 @@ async def bnoticetime(interaction: discord.Interaction, addminutes: int):
             await interaction.response.send_message("JE1.16以降\n/title @s times 20 200 20 \n/title @s title {\"text\":\"実行できませんでした\",\"bold\":true,\"color\":\"red\"} \n/title @s subtitle {\"text\":\"あなたはこのコマンドを実行する権限を持っていません\",\"underlined\":true,\"color\":\"green\"}" , ephemeral=True)
 
 
-    
 @client.tree.error
 async def on_error(ctx, error):
     if isinstance(error, app_commands.MissingRole):
         await ctx.response.send_message("権限あらへんで(関西弁)", ephemeral=True)
-
-
-
 
 
 with open("CMTK.txt") as file:
@@ -234,6 +230,7 @@ with open("CMTK.txt") as file:
 #Botを止めるときは「Ctrl+C」を押す
 
 
+#test
 
 
 
