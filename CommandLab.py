@@ -34,7 +34,7 @@ async def on_ready():
     print("BOTが起動しました")
     await client.tree.sync()
     await client.change_presence(activity=status)
-    await start_notice_channel.send(embed=start_embed)
+    #await start_notice_channel.send(embed=start_embed)
 
 @client.event
 async def on_message(message):
@@ -239,7 +239,7 @@ async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, su
                 name=subdaimei,
                 value=subsetumei,
                 )
-            await interaction.response.send_message(Embed=mennte_embed)
+            await interaction.response.send_message(embed = mennte_embed)
         else: #<-上記のロールを持っていなかったら
             await interaction.response.send_message("JE1.16以降\n/title @s times 20 200 20 \n/title @s title {\"text\":\"実行できませんでした\",\"bold\":true,\"color\":\"red\"} \n/title @s subtitle {\"text\":\"あなたはこのコマンドを実行する権限を持っていません\",\"underlined\":true,\"color\":\"green\"}" , ephemeral=True)
 
