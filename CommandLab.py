@@ -86,7 +86,7 @@ async def on_message(message):
                     title="BUMPの時間だよ(^O^)／", 
                     description="BUMPの時間になったよ♪ \n </bump:947088344167366698> って打ってね \n \n なお他のサーバーで30分以内にBumpしてる場合はBump出来ない可能性があります。 \n ", 
                     color=0x00ffff,
-                    timestamp=JST_time
+                    timestamp=master
                     )
                 bump_embed.add_field(
                     name="It's BUMP time (^O^)/", 
@@ -200,7 +200,7 @@ async def bnoticetime(interaction: discord.Interaction, addminutes: int):
                 title="BUMPの時間だよ(^O^)／", 
                 description="BUMPの時間になったよ♪ \n </bump:947088344167366698> って打ってね \n \n なお他のサーバーで30分以内にBumpしてる場合はBump出来ない可能性があります。 \n ", 
                 color=0x00ffff,
-                timestamp=bnJST_time
+                timestamp=ScheduledTime
                 )
             bump_embed.add_field(
                 name="It's BUMP time (^O^)/", 
@@ -208,18 +208,49 @@ async def bnoticetime(interaction: discord.Interaction, addminutes: int):
                 )
             bump_embed.set_image(url="attachment://bump.png")
 
-            await interaction.response.send_message(f"{addminutes}分後({fScheduledTime}頃)に通知されます", ephemeral=True)
+            await interaction.response.send_message(f"{addminutes}分後({fScheduledTime}頃)に通知されます")
             await asyncio.sleep(addminutes*60)
             await notice_channel.send("BUMP TIME !!", file=bump_file, embed = bump_embed)
         else: #<-上記のロールを持っていなかったら
             await interaction.response.send_message("JE1.16以降\n/title @s times 20 200 20 \n/title @s title {\"text\":\"実行できませんでした\",\"bold\":true,\"color\":\"red\"} \n/title @s subtitle {\"text\":\"あなたはこのコマンドを実行する権限を持っていません\",\"underlined\":true,\"color\":\"green\"}" , ephemeral=True)
 
+#----------------------------------------------------------------
+
+@client.tree.command(name="mennte", description="【運営】各種お知らせ用")
+@discord.app_commands.describe(
+    daimei="タイトル",
+    setumei="説明",
+    subdaimei="サブタイトル",
+    subsetumei="サブ説明"
+)
+async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, sabdaimei: str, sabsetumei: str):
+        role = interaction.guild.get_role(1215981050292080640) #<-コマ研運営のロールID貼ること
+        if role in interaction.user.roles: #<-上記のロールを持っていたら
+
+            mntJST_time = datetime.now()
+
+            mennte_embed = discord.Embed(
+                title=daimei, 
+                description=setumei, 
+                color=0xff580f,
+                timestamp=mntJST_time
+                )
+            mennte_embed.add_field(
+                name=sabdaimei,
+                value=sabsetumei,
+                )
+            await interaction.response.send_message(Embed=mennte_embed)
+        else: #<-上記のロールを持っていなかったら
+            await interaction.response.send_message("JE1.16以降\n/title @s times 20 200 20 \n/title @s title {\"text\":\"実行できませんでした\",\"bold\":true,\"color\":\"red\"} \n/title @s subtitle {\"text\":\"あなたはこのコマンドを実行する権限を持っていません\",\"underlined\":true,\"color\":\"green\"}" , ephemeral=True)
+
+#----------------------------------------------------------------
 
 @client.tree.error
 async def on_error(ctx, error):
     if isinstance(error, app_commands.MissingRole):
         await ctx.response.send_message("権限あらへんで(関西弁)", ephemeral=True)
 
+#----------------------------------------------------------------
 
 with open("CMTK.txt") as file:
     client.run(file.read())
