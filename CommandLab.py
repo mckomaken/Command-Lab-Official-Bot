@@ -223,7 +223,7 @@ async def bnoticetime(interaction: discord.Interaction, addminutes: int):
     subdaimei="サブタイトル",
     subsetumei="サブ説明"
 )
-async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, sabdaimei: str, sabsetumei: str):
+async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, subdaimei: str, subsetumei: str):
         role = interaction.guild.get_role(1215981050292080640) #<-コマ研運営のロールID貼ること
         if role in interaction.user.roles: #<-上記のロールを持っていたら
 
@@ -236,8 +236,8 @@ async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, sa
                 timestamp=mntJST_time
                 )
             mennte_embed.add_field(
-                name=sabdaimei,
-                value=sabsetumei,
+                name=subdaimei,
+                value=subsetumei,
                 )
             await interaction.response.send_message(Embed=mennte_embed)
         else: #<-上記のロールを持っていなかったら
