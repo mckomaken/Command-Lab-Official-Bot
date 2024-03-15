@@ -224,7 +224,7 @@ async def bnoticetime(interaction: discord.Interaction, addminutes: int):
     subsetumei="サブ説明"
 )
 async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, subdaimei: str, subsetumei: str):
-        role = interaction.guild.get_role(1215981050292080640) #<-コマ研運営のロールID貼ること
+        role = interaction.guild.get_role(735130783760777270) #<-コマ研運営のロールID貼ること
         if role in interaction.user.roles: #<-上記のロールを持っていたら
 
             mntJST_time = datetime.now()
