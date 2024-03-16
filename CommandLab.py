@@ -211,6 +211,7 @@ async def bnoticetime(interaction: discord.Interaction, addminutes: int):
             await interaction.response.send_message(f"{addminutes}分後({fScheduledTime}頃)に通知されます")
             await asyncio.sleep(addminutes*60)
             await notice_channel.send("BUMP TIME !!", file=bump_file, embed = bump_embed)
+
         else: #<-上記のロールを持っていなかったら
             await interaction.response.send_message("JE1.16以降\n/title @s times 20 200 20 \n/title @s title {\"text\":\"実行できませんでした\",\"bold\":true,\"color\":\"red\"} \n/title @s subtitle {\"text\":\"あなたはこのコマンドを実行する権限を持っていません\",\"underlined\":true,\"color\":\"green\"}" , ephemeral=True)
 
@@ -223,7 +224,7 @@ async def bnoticetime(interaction: discord.Interaction, addminutes: int):
     subdaimei="サブタイトル",
     subsetumei="サブ説明"
 )
-async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, subdaimei: str = None, subsetumei: str = None):
+async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, subdaimei: str = "", subsetumei: str = ""):
         role = interaction.guild.get_role(735130783760777270) #<-コマ研運営のロールID貼ること
         if role in interaction.user.roles: #<-上記のロールを持っていたら
 
@@ -239,7 +240,9 @@ async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, su
                 name=subdaimei,
                 value=subsetumei,
                 )
+            
             await interaction.response.send_message(embed = mennte_embed)
+
         else: #<-上記のロールを持っていなかったら
             await interaction.response.send_message("JE1.16以降\n/title @s times 20 200 20 \n/title @s title {\"text\":\"実行できませんでした\",\"bold\":true,\"color\":\"red\"} \n/title @s subtitle {\"text\":\"あなたはこのコマンドを実行する権限を持っていません\",\"underlined\":true,\"color\":\"green\"}" , ephemeral=True)
 
