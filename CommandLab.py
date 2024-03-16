@@ -248,6 +248,38 @@ async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, su
 
 #----------------------------------------------------------------
 
+@client.tree.command(name="ping", description="pingを計測します")
+async def ping(interaction: discord.Interaction):
+
+    piJST_time = datetime.now()
+    text = f'{round(client.bot.latency*1000)}ms'
+
+    ping_embed = discord.Embed(
+        title="現在のping", 
+        description=text,
+        timestamp=piJST_time
+        )
+    
+    await interaction.response.send_message(embed=ping_embed)
+
+#----------------------------------------------------------------
+            
+@client.tree.command(name="chelp", description="このBotができること一覧")
+async def chelp(interaction: discord.Interaction):
+    
+    chJST_time = datetime.now()
+
+    chelp_embed = discord.Embed(
+        title="コマンド一覧",
+        description="/chelp : この説明文が出てきます\n/ping : サーバーとBotとのping値を測定できます", 
+        color=0x2b9900,
+        timestamp=chJST_time
+    )
+
+    await interaction.response.send_message(embed = chelp_embed)
+
+#----------------------------------------------------------------
+
 @client.tree.error
 async def on_error(ctx, error):
     if isinstance(error, app_commands.MissingRole):
