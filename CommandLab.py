@@ -248,11 +248,11 @@ async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, su
 
 #----------------------------------------------------------------
 
-@client.tree.command(name="ping", description="pingを計測します")
-async def ping(interaction: discord.Interaction):
+@client.tree.command(name="cping", description="pingを計測します")
+async def cping(interaction: discord.Interaction):
 
     piJST_time = datetime.now()
-    text = f'{round(client.bot.latency*1000)}ms'
+    text = f'{round(client.latency*1000)}ms'
 
     ping_embed = discord.Embed(
         title="現在のping", 
