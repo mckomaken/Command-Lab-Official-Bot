@@ -179,7 +179,7 @@ async def on_message(message):
     elif message.content.startswith("!d bump"):
         await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
     elif message.content.startswith("/bump"):
-        await message.channel.send(discord.Embed(title="BUMPを実行出来てないよ!!",color=0x00bfff,timestamp=datetime.now()))
+        await message.channel.send(embed = discord.Embed(title="BUMPを実行出来てないよ!!",color=0x00bfff,timestamp=datetime.now()))
 
 #----------------------------------------------------------------
 
