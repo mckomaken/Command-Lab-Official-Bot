@@ -105,7 +105,7 @@ async def on_message(message):
                     await asyncio.sleep(7200) # 7200に変更すること
                     await notice_channel.send("BUMP TIME !!", file=bump_file, embed = bump_embed)
 
-        #----------------------------------------------------------------
+    #----------------------------------------------------------------
 
         # メッセージの内容をチェック
     if "https://discord.com/channels/" in message.content:
@@ -167,6 +167,19 @@ async def on_message(message):
 
         except Exception as e:
             print(f"エラーらしい: {e}")
+    #----------------------------------------------------------------
+
+        # メッセージの内容をチェック
+    if message.author.bot:
+        pass
+    elif message.content.startswith("ぬるぽ"):
+        await message.channel.send("ｶﾞﾌﾞｯ")
+    elif client.user in message.mentions:
+        await message.channel.send(f"{message.author.mention}呼んだ？呼んだよね？？呼んだ？？？")
+    elif message.content.startswith("!d bump"):
+        await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
+    elif message.content.startswith("/bump"):
+        await message.channel.send(discord.Embed(title="BUMPを実行出来てないよ!!",color=0x00bfff,timestamp=datetime.now()))
 
 #----------------------------------------------------------------
 
@@ -182,12 +195,12 @@ async def on_message(message):
 
 #----------------------------------------------------------------
 
-@client.tree.command(name="bnoticetime", description="【運営】再起動後の通知時間設定用")
+@client.tree.command(name="cbnoticetime", description="【運営】再起動後の通知時間設定用")
 #@discord.app_commands.checks.has_role("運営")
 @discord.app_commands.describe(
     addminutes="入力分後に通知されます"
 )
-async def bnoticetime(interaction: discord.Interaction, addminutes: int):
+async def cbnoticetime(interaction: discord.Interaction, addminutes: int):
         role = interaction.guild.get_role(735130783760777270) #735130783760777270<-コマ研運営のロールID貼ること
         if role in interaction.user.roles: #<-上記のロールを持っていたら
             bnJST_time = datetime.now()
@@ -217,14 +230,14 @@ async def bnoticetime(interaction: discord.Interaction, addminutes: int):
 
 #----------------------------------------------------------------
 
-@client.tree.command(name="mennte", description="【運営】各種お知らせ用")
+@client.tree.command(name="cmennte", description="【運営】各種お知らせ用")
 @discord.app_commands.describe(
     daimei="タイトル",
     setumei="説明",
     subdaimei="サブタイトル",
     subsetumei="サブ説明"
 )
-async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, subdaimei: str = "", subsetumei: str = ""):
+async def cmennte(interaction: discord.Interaction, daimei: str, setumei: str, subdaimei: str = "", subsetumei: str = ""):
         role = interaction.guild.get_role(735130783760777270) #<-コマ研運営のロールID貼ること
         if role in interaction.user.roles: #<-上記のロールを持っていたら
 
@@ -245,6 +258,28 @@ async def mennte(interaction: discord.Interaction, daimei: str, setumei: str, su
 
         else: #<-上記のロールを持っていなかったら
             await interaction.response.send_message("JE1.16以降\n/title @s times 20 200 20 \n/title @s title {\"text\":\"実行できませんでした\",\"bold\":true,\"color\":\"red\"} \n/title @s subtitle {\"text\":\"あなたはこのコマンドを実行する権限を持っていません\",\"underlined\":true,\"color\":\"green\"}" , ephemeral=True)
+
+#----------------------------------------------------------------
+
+@client.tree.command(name="cl", description="【運営】運営専用雑コマンド")
+@discord.app_commands.describe(
+    choice="選択肢",
+)
+@discord.app_commands.choices(
+    choice = [
+        discord.app_commands.Choice(name="おめでとう",value="cl1"),
+        #discord.app_commands.Choice(name="test1",value="test1"),
+        #discord.app_commands.Choice(name="test1",value="test1"),
+    ]
+)
+
+async def cl(interaction: discord.Interaction, choice: discord.app_commands.Choice[str]):
+        role = interaction.guild.get_role(735130783760777270) #<-コマ研運営のロールID貼ること
+        if role in interaction.user.roles: #<-上記のロールを持っていたら
+            if choice.value == "cl1":
+                await interaction.response.send_message(embed = discord.Embed(title="高校合格おめでとうございます!!",color=0x2b9788))
+            #elif choice.value == "test2":
+            #    print ("Test2")
 
 #----------------------------------------------------------------
 
