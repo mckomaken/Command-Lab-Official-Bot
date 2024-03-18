@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import asyncio
 from discord.ui import View , Button
 from discord import Client, Intents, Interaction, app_commands
+import uuid
 
 client = commands.Bot(intents=discord.Intents.all(), command_prefix="cm!")
 txt = discord.Embed
@@ -282,7 +283,43 @@ async def cl(interaction: discord.Interaction, choice: discord.app_commands.Choi
             #    print ("Test2")
 
 #----------------------------------------------------------------
+                
+@client.tree.command(name="cuuid", description="マイクラで使えるUUIDを生成します")
+async def cuuid(interaction: discord.Interaction):
 
+    uuJST_time = datetime.now()
+    Uuuid4 = uuid.uuid4()
+    fUuuid4 = str(Uuuid4).split("-")
+    cUuuid4 = fUuuid4[0]+fUuuid4[1]+fUuuid4[2]+fUuuid4[3]+fUuuid4[4]
+    UUuuid4 = uuid.uuid4()
+    fUUuuid4 = str(UUuuid4).split("-")
+    cUUuuid4 = fUUuuid4[0]+fUUuuid4[1]+fUUuuid4[2]+fUUuuid4[3]+fUUuuid4[4]
+
+    uuid_embed = discord.Embed(
+            title="UUID Generator", 
+            description="-----------------------------------------------------\n2個のUUIDを自動生成しました\n-----------------------------------------------------", 
+            color=0x58619a,
+            timestamp=uuJST_time
+            )
+    uuid_embed.add_field(
+            name="１個目", 
+            value=f"ハイフンあり\n```{Uuuid4}```\nハイフンなし\n```{cUuuid4}```\n ",
+            inline=False            
+            )
+    uuid_embed.add_field(
+            name="-----------------------------------------------------",
+            value=" ",
+            inline=False
+            )
+    uuid_embed.add_field(
+            name="2個目", 
+            value=f"ハイフンあり\n```{UUuuid4}```\nハイフンなし\n```{cUUuuid4}```\n ",
+            inline=False
+            )
+    
+    await interaction.response.send_message(embed=uuid_embed)
+
+#----------------------------------------------------------------
 @client.tree.command(name="cping", description="pingを計測します")
 async def cping(interaction: discord.Interaction):
 
@@ -306,7 +343,7 @@ async def chelp(interaction: discord.Interaction):
 
     chelp_embed = discord.Embed(
         title="コマンド一覧",
-        description="/chelp : この説明文が出てきます\n/ping : サーバーとBotとのping値を測定できます", 
+        description="/chelp : この説明文が出てきます\n/cping : サーバーとBotとのping値を測定できます\n/cuuid : 2個のUUIDを自動生成してくれます", 
         color=0x2b9900,
         timestamp=chJST_time
     )
