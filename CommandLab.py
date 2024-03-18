@@ -268,8 +268,8 @@ async def cmennte(interaction: discord.Interaction, daimei: str, setumei: str, s
 )
 @discord.app_commands.choices(
     choice = [
-        discord.app_commands.Choice(name="おめでとう",value="cl1"),
-        #discord.app_commands.Choice(name="test1",value="test1"),
+        discord.app_commands.Choice(name="高校おめ",value="cl1"),
+        discord.app_commands.Choice(name="大学おめ",value="cl2"),
         #discord.app_commands.Choice(name="test1",value="test1"),
     ]
 )
@@ -279,8 +279,8 @@ async def cl(interaction: discord.Interaction, choice: discord.app_commands.Choi
         if role in interaction.user.roles: #<-上記のロールを持っていたら
             if choice.value == "cl1":
                 await interaction.response.send_message(embed = discord.Embed(title="高校合格おめでとうございます!!",color=0x2b9788))
-            #elif choice.value == "test2":
-            #    print ("Test2")
+            elif choice.value == "cl2":
+                await interaction.response.send_message(embed = discord.Embed(title="大学合格おめでとうございます!!",color=0x2b9788))
 
 #----------------------------------------------------------------
                 
@@ -297,7 +297,7 @@ async def cuuid(interaction: discord.Interaction):
 
     uuid_embed = discord.Embed(
             title="UUID Generator", 
-            description="-----------------------------------------------------\n2個のUUIDを自動生成しました\n-----------------------------------------------------", 
+            description="-----------------------------------------------------\n2個のUUIDを自動生成しました\nBEのAdd-on制作にお役立てください\n-----------------------------------------------------", 
             color=0x58619a,
             timestamp=uuJST_time
             )
