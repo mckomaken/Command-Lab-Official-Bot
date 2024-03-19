@@ -320,6 +320,50 @@ async def cuuid(interaction: discord.Interaction):
     await interaction.response.send_message(embed=uuid_embed)
 
 #----------------------------------------------------------------
+
+@client.tree.command(name="cpack-mcmeta", description="pack.mcmetaで使われるpack_formatの番号一覧です")
+@discord.app_commands.choices(
+    choice = [
+        discord.app_commands.Choice(name="ResourcePack",value="reso"),
+        discord.app_commands.Choice(name="DataPack",value="data")
+    ]
+)
+async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_commands.Choice[str]):
+
+    pmJST_time = datetime.now()
+    rpacknumber = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29"
+    rallversion = "13w24a-1.8.9\n15w31a-1.10.2\n16w32a-18w47a\n18w48a-19w46b\n1.15-pre1-1.16.2-pre3\n1.16.2-rc1-1.16.5\n20w45a-21w38a\n21w39a-1.18.2\n22w11a-1.19.2\n---\n22w42a-22w44a\n22w45a-23w07a\n1.19.4-pre1-23w13a\n23w14a-23w16a\n23w17a-1.20.1\n23w31a\n23w32a-1.20.2-pre1\n1.20.2-pre2-23w41a\n23w42a\n23w43a-23w44a\n23w45a-23w46a\n1.20.3-pre1-23w51b\n---\n24w03a-24w04a\n24w05a-24w05b\n24w06a-24w07a\n---\n24w09a-24w10a\n24w11a"
+    rreleaseversion = "1.6.1-1.8.9\n1.9-1.10.2\n1.11-1.12.2\n1.13-1.14.4\n1.15-1.16.1\n1.16.2-1.16.5\n1.17-1.17.1\n1.18-1.18.2\n1.19-1.19.2\n---\n---\n1.19.3\n1.19.4\n---\n	1.20-1.20.1\n---\n---\n1.20.2\n---\n---\n---\n1.20.3-1.20.4\n---\n---\n---\n---\n---\n---\n---"
+    rpack_embed = discord.Embed(
+        title="【Resorce Pack】\npack_format一覧",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    rpack_embed.add_field(name="pack\nnumber",value=rpacknumber, inline=True)
+    rpack_embed.add_field(name="ALL\nversion",value=rallversion, inline=True)
+    rpack_embed.add_field(name="release\nversion",value=rreleaseversion, inline=True)
+    rpack_embed.set_footer(text="出典 : https://minecraft.wiki/w/Pack_format")
+
+    dpacknumber = "4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35"
+    dallversion = "17w48a-19w46b\n1.15-pre1-1.16.2-pre3\n1.16.2-rc1-1.16.5\n20w46a-1.17.1\n21w37a-22w07a\n1.18.2-pre1-1.18.2\n22w11a-1.19.3\n23w03a-23w05a\n23w06a-1.19.4\n23w12a-23w14a\n23w16a-23w17a\n23w18a-1.20.1\n23w31a\n23w32a-23w35a\n1.20.2-pre1-1.20.2\n23w40a\n23w41a\n23w42a\n23w43a-23w43b\n23w44a\n23w45a\n23w46a\n1.20.3-pre1-1.20.4\n23w51a-23w51b\n24w03a\n24w04a\n24w05a-24w05b\n24w06a\n24w07a\n24w09a\n24w10a\n24w11a"
+    dreleaseversion = "1.13-1.14.4\n1.15-1.16.1\n1.16.2-1.16.5\n1.17-1.17.1\n1.18-1.18.1\n1.18.2\n1.19-1.19.3\n---\n1.19.4\n---\n---\n1.20-1.20.1\n---\n---\n1.20.2\n---\n---\n---\n---\n---\n---\n---\n1.20.3-1.20.4\n---\n---\n---\n---\n---\n---\n---\n---\n---"
+    dpack_embed = discord.Embed(
+        title="【Data Pack】\npack_format一覧",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    dpack_embed.add_field(name="pack\nnumber",value=dpacknumber, inline=True)
+    dpack_embed.add_field(name="ALL\nversion",value=dallversion, inline=True)
+    dpack_embed.add_field(name="release\nversion",value=dreleaseversion, inline=True)
+    dpack_embed.set_footer(text="出典 : https://minecraft.wiki/w/Pack_format")
+
+    if choice.value == "reso":
+        await interaction.response.send_message(embed=rpack_embed)
+    elif choice.value == "data":
+        await interaction.response.send_message(embed=dpack_embed)
+
+#----------------------------------------------------------------
+
 @client.tree.command(name="cping", description="pingを計測します")
 async def cping(interaction: discord.Interaction):
 
