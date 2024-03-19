@@ -284,7 +284,7 @@ async def cl(interaction: discord.Interaction, choice: discord.app_commands.Choi
 
 #----------------------------------------------------------------
                 
-@client.tree.command(name="cuuid", description="マイクラで使えるUUIDを生成します")
+@client.tree.command(name="cuuid", description="マイクラで使えるUUIDを2個生成します")
 async def cuuid(interaction: discord.Interaction):
 
     uuJST_time = datetime.now()
@@ -322,13 +322,21 @@ async def cuuid(interaction: discord.Interaction):
 #----------------------------------------------------------------
 
 @client.tree.command(name="cpack-mcmeta", description="pack.mcmetaで使われるpack_formatの番号一覧です")
+@discord.app_commands.describe(
+    choice="選択してください",
+)
 @discord.app_commands.choices(
     choice = [
-        discord.app_commands.Choice(name="ResourcePack",value="reso"),
-        discord.app_commands.Choice(name="DataPack",value="data")
+        discord.app_commands.Choice(name="ALL-ResourcePack",value="areso"),
+        discord.app_commands.Choice(name="ALL-DataPack",value="adata"),
+        discord.app_commands.Choice(name="Search-pack_format",value="spf")
     ]
 )
-async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_commands.Choice[str]):
+@discord.app_commands.describe(
+    version="調べたいバージョンを半角英数字で記入してください(スナップショット非対応)",
+)
+
+async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_commands.Choice[str], version: str = ""):
 
     pmJST_time = datetime.now()
     rpacknumber = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29"
@@ -357,11 +365,184 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     dpack_embed.add_field(name="release\nversion",value=dreleaseversion, inline=True)
     dpack_embed.set_footer(text="出典 : https://minecraft.wiki/w/Pack_format")
 
-    if choice.value == "reso":
-        await interaction.response.send_message(embed=rpack_embed)
-    elif choice.value == "data":
-        await interaction.response.send_message(embed=dpack_embed)
+    # pfリソパ数字_デタパ数字 = Embed...... (n = none)
+    pf1_n_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf1_n_embed.add_field(name="Resource\nPack",value="1", inline=True)
+    pf1_n_embed.add_field(name="Data\nPack",value="---", inline=True)
+    
+    pf2_n_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf2_n_embed.add_field(name="Resource\nPack",value="2", inline=True)
+    pf2_n_embed.add_field(name="Data\nPack",value="---", inline=True)
 
+    pf3_n_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf3_n_embed.add_field(name="Resource\nPack",value="3", inline=True)
+    pf3_n_embed.add_field(name="Data\nPack",value="---", inline=True)
+
+    pf4_4_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf4_4_embed.add_field(name="Resource\nPack",value="4", inline=True)
+    pf4_4_embed.add_field(name="Data\nPack",value="4", inline=True)
+
+    pf5_5_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf5_5_embed.add_field(name="Resource\nPack",value="5", inline=True)
+    pf5_5_embed.add_field(name="Data\nPack",value="5", inline=True)
+
+    pf6_6_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf6_6_embed.add_field(name="Resource\nPack",value="6", inline=True)
+    pf6_6_embed.add_field(name="Data\nPack",value="6", inline=True)
+
+    pf7_7_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf7_7_embed.add_field(name="Resource\nPack",value="7", inline=True)
+    pf7_7_embed.add_field(name="Data\nPack",value="7", inline=True)
+
+    pf8_8_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf8_8_embed.add_field(name="Resource\nPack",value="8", inline=True)
+    pf8_8_embed.add_field(name="Data\nPack",value="8", inline=True)
+
+    pf8_9_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf8_9_embed.add_field(name="Resource\nPack",value="8", inline=True)
+    pf8_9_embed.add_field(name="Data\nPack",value="9", inline=True)
+
+    pf9_10_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf9_10_embed.add_field(name="Resource\nPack",value="9", inline=True)
+    pf9_10_embed.add_field(name="Data\nPack",value="10", inline=True)
+
+    pf12_10_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf12_10_embed.add_field(name="Resource\nPack",value="12", inline=True)
+    pf12_10_embed.add_field(name="Data\nPack",value="10", inline=True)
+
+    pf13_12_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf13_12_embed.add_field(name="Resource\nPack",value="13", inline=True)
+    pf13_12_embed.add_field(name="Data\nPack",value="12", inline=True)
+
+    pf15_15_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf15_15_embed.add_field(name="Resource\nPack",value="15", inline=True)
+    pf15_15_embed.add_field(name="Data\nPack",value="15", inline=True)
+
+    pf18_18_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf18_18_embed.add_field(name="Resource\nPack",value="18", inline=True)
+    pf18_18_embed.add_field(name="Data\nPack",value="18", inline=True)
+
+    pf22_26_embed = discord.Embed(
+        title=f"【{version}】Search pack_format",
+        color=discord.Color.yellow(),
+        timestamp=pmJST_time
+    )
+    pf22_26_embed.add_field(name="Resource\nPack",value="22", inline=True)
+    pf22_26_embed.add_field(name="Data\nPack",value="26", inline=True)
+
+    # versionsリソパ数字_デタパ数字 = [対応バージョンたち] (n = none)
+    versions1_n = ["1.6.1", "1.6.2", "1.6.3", "1.6.4", "1.7.0", "1.7.1", "1.7.2", "1.7.3", "1.7.4", "1.7.5", "1.7.6", "1.7.7", "1.7.8", "1.7.9", "1.7.10", "1.8.0", "1.8.1", "1.8.2", "1.8.3", "1.8.4", "1.8.5", "1.8.6", "1.8.7", "1.8.8", "1.8.9"]
+    versions2_n = ["1.9.0", "1.9.1", "1.9.2", "1.9.3", "1.9.4", "1.10.0", "1.10.1", "1.10.2"]
+    versions3_n = ["1.11.0", "1.11.1", "1.11.2","1.12.0", "1.12.1", "1.12.2"]
+    versions4_4 = ["1.13.0", "1.13.1", "1.13.2","1.14.0", "1.14.1", "1.14.2", "1.14.3", "1.14.4"]
+    versions5_5 = ["1.15.0", "1.15.1", "1.15.2", "1.16.0", "1.16.1"]
+    versions6_6 = ["1.16.2", "1.16.3", "1.16.4", "1.16.5"]
+    versions7_7 = ["1.17.0", "1.17.1"]
+    versions8_8 = ["1.18.0", "1.18.1"]
+    versions8_9 = ["1.18.2"]
+    versions9_10 = ["1.19.0", "1.19.1", "1.19.2"]
+    versions12_10 = ["1.19.3"]
+    versions13_12 = ["1.19.4"]
+    versions15_15 = ["1.20.0", "1.20.1"]
+    versions18_18 = ["1.20.2"]
+    versions22_26 = ["1.20.3", "1.20.4"]
+
+    
+
+    if choice.value == "areso":
+        await interaction.response.send_message(embed=rpack_embed)
+    elif choice.value == "adata":
+        await interaction.response.send_message(embed=dpack_embed)
+    elif choice.value == "spf":
+        if version in versions1_n:
+            await interaction.response.send_message(embed=pf1_n_embed)
+        elif version in versions2_n:
+            await interaction.response.send_message(embed=pf2_n_embed)
+        elif version in versions3_n:
+            await interaction.response.send_message(embed=pf3_n_embed)
+        elif version in versions4_4:
+            await interaction.response.send_message(embed=pf4_4_embed)
+        elif version in versions5_5:
+            await interaction.response.send_message(embed=pf5_5_embed)
+        elif version in versions6_6:
+            await interaction.response.send_message(embed=pf6_6_embed)
+        elif version in versions7_7:
+            await interaction.response.send_message(embed=pf7_7_embed)
+        elif version in versions8_8:
+            await interaction.response.send_message(embed=pf8_8_embed)
+        elif version in versions8_9:
+            await interaction.response.send_message(embed=pf8_9_embed)
+        elif version in versions9_10:
+            await interaction.response.send_message(embed=pf9_10_embed)
+        elif version in versions12_10:
+            await interaction.response.send_message(embed=pf12_10_embed)
+        elif version in versions13_12:
+            await interaction.response.send_message(embed=pf13_12_embed)
+        elif version in versions15_15:
+            await interaction.response.send_message(embed=pf15_15_embed)
+        elif version in versions18_18:
+            await interaction.response.send_message(embed=pf18_18_embed)
+        elif version in versions22_26:
+            await interaction.response.send_message(embed=pf22_26_embed)
+        else:
+            await interaction.response.send_message("表記が違う、または、リリースバージョンではありません\nもう一度書き直して実行してください\n(スナップショットには対応していません)" , ephemeral=True)
+      
 #----------------------------------------------------------------
 
 @client.tree.command(name="cping", description="pingを計測します")
