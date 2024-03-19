@@ -387,7 +387,7 @@ async def chelp(interaction: discord.Interaction):
 
     chelp_embed = discord.Embed(
         title="コマンド一覧",
-        description="/chelp : この説明文が出てきます\n/cping : サーバーとBotとのping値を測定できます\n/cuuid : 2個のUUIDを自動生成してくれます", 
+        description="/chelp : この説明文が出てきます\n/cping : サーバーとBotとのping値を測定できます\n/cuuid : 2個のUUIDを自動生成してくれます\n/cpack-mcmeta : ResourcePackとDataPackのpack_formatの番号一覧を表示します", 
         color=0x2b9900,
         timestamp=chJST_time
     )
