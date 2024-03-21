@@ -171,16 +171,29 @@ async def on_message(message):
     #----------------------------------------------------------------
 
         # メッセージの内容をチェック
-    if message.author.bot:
-        pass
-    elif message.content.startswith("ぬるぽ"):
-        await message.channel.send("ｶﾞﾌﾞｯ")
-    elif client.user in message.mentions:
-        await message.channel.send(f"{message.author.mention}呼んだ？呼んだよね？？呼んだ？？？")
-    elif message.content.startswith("!d bump"):
-        await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
-    elif message.content.startswith("/bump"):
-        await message.channel.send(embed = discord.Embed(title="BUMPを実行出来てないよ!!",color=0x00bfff,timestamp=datetime.now()))
+    if message.channel.id == 965095619838488576:
+        if message.author.bot:
+            pass
+        elif message.content.startswith("ぬるぽ"):
+            await message.channel.send("ｶﾞﾌﾞｯ")
+        elif client.user in message.mentions:
+            await message.channel.send(f"{message.author.mention}呼んだ？\nわからないことがあったら【/chelp】を実行してね")
+        elif message.content.startswith("!d bump"):
+            await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
+        elif message.content.startswith("/bump"):
+            await message.channel.send(embed = discord.Embed(title="BUMPを実行出来てないよ!!",color=0x00bfff,timestamp=datetime.now()))
+        elif message.content.startswith("oruvanoruvan"):
+            await message.channel.send("ஒருவன் ஒருவன் முதலாளி\nஉலகில் மற்றவன் தொழிலாளி\nவிதியை நினைப்பவன் ஏமாளி\nஅதை வென்று முடிப்பவன் அறிவாளி\n \nபூமியை வெல்ல ஆயுதம் எதற்கு\nபூப்பறிக்க கோடரி எதற்கு\nபொன்னோ பொருளோ போர்க்களம் எதற்கு\nஆசை துறந்தால் அகிலம் உனக்கு")
+    elif message.channel.id == 965098244193542154:
+        if message.content.startswith("!d bump"):
+            await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
+        elif message.content.startswith("/bump"):
+            await message.channel.send(embed = discord.Embed(title="BUMPを実行出来てないよ!!",color=0x00bfff,timestamp=datetime.now()))
+        elif client.user in message.mentions:
+            await message.channel.send(f"{message.author.mention}呼んだ？\nわからないことがあったら【/chelp】を実行してね")
+    else:
+        if client.user in message.mentions:
+            await message.channel.send(f"{message.author.mention}呼んだ？\nわからないことがあったら【/chelp】を実行してね")
 
 #----------------------------------------------------------------
 
@@ -211,7 +224,7 @@ async def cbnoticetime(interaction: discord.Interaction, addminutes: int):
             bump_file = discord.File("bump.png", filename="bump.png")
 
             bump_embed = discord.Embed(
-                title="BUMPの時間だよ(^O^)／", 
+                title="BUMPの時間だよ(^O^)/", 
                 description="BUMPの時間になったよ♪ \n </bump:947088344167366698> って打ってね \n \n なお他のサーバーで30分以内にBumpしてる場合はBump出来ない可能性があります。 \n ", 
                 color=0x00ffff,
                 timestamp=ScheduledTime
@@ -339,9 +352,13 @@ async def cuuid(interaction: discord.Interaction):
 async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_commands.Choice[str], version: str = ""):
 
     pmJST_time = datetime.now()
-    rpacknumber = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29"
-    rallversion = "13w24a-1.8.9\n15w31a-1.10.2\n16w32a-18w47a\n18w48a-19w46b\n1.15-pre1-1.16.2-pre3\n1.16.2-rc1-1.16.5\n20w45a-21w38a\n21w39a-1.18.2\n22w11a-1.19.2\n---\n22w42a-22w44a\n22w45a-23w07a\n1.19.4-pre1-23w13a\n23w14a-23w16a\n23w17a-1.20.1\n23w31a\n23w32a-1.20.2-pre1\n1.20.2-pre2-23w41a\n23w42a\n23w43a-23w44a\n23w45a-23w46a\n1.20.3-pre1-23w51b\n---\n24w03a-24w04a\n24w05a-24w05b\n24w06a-24w07a\n---\n24w09a-24w10a\n24w11a"
-    rreleaseversion = "1.6.1-1.8.9\n1.9-1.10.2\n1.11-1.12.2\n1.13-1.14.4\n1.15-1.16.1\n1.16.2-1.16.5\n1.17-1.17.1\n1.18-1.18.2\n1.19-1.19.2\n---\n---\n1.19.3\n1.19.4\n---\n	1.20-1.20.1\n---\n---\n1.20.2\n---\n---\n---\n1.20.3-1.20.4\n---\n---\n---\n---\n---\n---\n---"
+    #更新日書くこと
+    lastupdate = "最終更新日 : 2024/03/21"
+
+    
+    rpacknumber = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40"
+    rallversion = "13w24a-1.8.9\n15w31a-1.10.2\n16w32a-18w47a\n18w48a-19w46b\n1.15-pre1-1.16.2-pre3\n1.16.2-rc1-1.16.5\n20w45a-21w38a\n21w39a-1.18.2\n22w11a-1.19.2\n---\n22w42a-22w44a\n22w45a-23w07a\n1.19.4-pre1-23w13a\n23w14a-23w16a\n23w17a-1.20.1\n23w31a\n23w32a-1.20.2-pre1\n1.20.2-pre2-23w41a\n23w42a\n23w43a-23w44a\n23w45a-23w46a\n1.20.3-pre1-23w51b\n---\n24w03a-24w04a\n24w05a-24w05b\n24w06a-24w07a\n---\n24w09a-24w10a\n24w11a\n24w12a"
+    rreleaseversion = "1.6.1-1.8.9\n1.9-1.10.2\n1.11-1.12.2\n1.13-1.14.4\n1.15-1.16.1\n1.16.2-1.16.5\n1.17-1.17.1\n1.18-1.18.2\n1.19-1.19.2\n---\n---\n1.19.3\n1.19.4\n---\n	1.20-1.20.1\n---\n---\n1.20.2\n---\n---\n---\n1.20.3-1.20.4\n---\n---\n---\n---\n---\n---\n---\n---"
     rpack_embed = discord.Embed(
         title="【Resorce Pack】\npack_format一覧",
         color=discord.Color.yellow(),
@@ -352,9 +369,9 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     rpack_embed.add_field(name="release\nversion",value=rreleaseversion, inline=True)
     rpack_embed.set_footer(text="出典 : https://minecraft.wiki/w/Pack_format")
 
-    dpacknumber = "4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35"
-    dallversion = "17w48a-19w46b\n1.15-pre1-1.16.2-pre3\n1.16.2-rc1-1.16.5\n20w46a-1.17.1\n21w37a-22w07a\n1.18.2-pre1-1.18.2\n22w11a-1.19.3\n23w03a-23w05a\n23w06a-1.19.4\n23w12a-23w14a\n23w16a-23w17a\n23w18a-1.20.1\n23w31a\n23w32a-23w35a\n1.20.2-pre1-1.20.2\n23w40a\n23w41a\n23w42a\n23w43a-23w43b\n23w44a\n23w45a\n23w46a\n1.20.3-pre1-1.20.4\n23w51a-23w51b\n24w03a\n24w04a\n24w05a-24w05b\n24w06a\n24w07a\n24w09a\n24w10a\n24w11a"
-    dreleaseversion = "1.13-1.14.4\n1.15-1.16.1\n1.16.2-1.16.5\n1.17-1.17.1\n1.18-1.18.1\n1.18.2\n1.19-1.19.3\n---\n1.19.4\n---\n---\n1.20-1.20.1\n---\n---\n1.20.2\n---\n---\n---\n---\n---\n---\n---\n1.20.3-1.20.4\n---\n---\n---\n---\n---\n---\n---\n---\n---"
+    dpacknumber = "4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40"
+    dallversion = "17w48a-19w46b\n1.15-pre1-1.16.2-pre3\n1.16.2-rc1-1.16.5\n20w46a-1.17.1\n21w37a-22w07a\n1.18.2-pre1-1.18.2\n22w11a-1.19.3\n23w03a-23w05a\n23w06a-1.19.4\n23w12a-23w14a\n23w16a-23w17a\n23w18a-1.20.1\n23w31a\n23w32a-23w35a\n1.20.2-pre1-1.20.2\n23w40a\n23w41a\n23w42a\n23w43a-23w43b\n23w44a\n23w45a\n23w46a\n1.20.3-pre1-1.20.4\n23w51a-23w51b\n24w03a\n24w04a\n24w05a-24w05b\n24w06a\n24w07a\n24w09a\n24w10a\n24w11a\n24w12a"
+    dreleaseversion = "1.13-1.14.4\n1.15-1.16.1\n1.16.2-1.16.5\n1.17-1.17.1\n1.18-1.18.1\n1.18.2\n1.19-1.19.3\n---\n1.19.4\n---\n---\n1.20-1.20.1\n---\n---\n1.20.2\n---\n---\n---\n---\n---\n---\n---\n1.20.3-1.20.4\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---"
     dpack_embed = discord.Embed(
         title="【Data Pack】\npack_format一覧",
         color=discord.Color.yellow(),
@@ -373,6 +390,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf1_n_embed.add_field(name="Resource\nPack",value="1", inline=True)
     pf1_n_embed.add_field(name="Data\nPack",value="---", inline=True)
+    pf1_n_embed.set_footer(text=lastupdate)
     
     pf2_n_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -381,6 +399,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf2_n_embed.add_field(name="Resource\nPack",value="2", inline=True)
     pf2_n_embed.add_field(name="Data\nPack",value="---", inline=True)
+    pf2_n_embed.set_footer(text=lastupdate)
 
     pf3_n_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -389,6 +408,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf3_n_embed.add_field(name="Resource\nPack",value="3", inline=True)
     pf3_n_embed.add_field(name="Data\nPack",value="---", inline=True)
+    pf3_n_embed.set_footer(text=lastupdate)
 
     pf4_4_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -397,6 +417,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf4_4_embed.add_field(name="Resource\nPack",value="4", inline=True)
     pf4_4_embed.add_field(name="Data\nPack",value="4", inline=True)
+    pf4_4_embed.set_footer(text=lastupdate)
 
     pf5_5_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -405,6 +426,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf5_5_embed.add_field(name="Resource\nPack",value="5", inline=True)
     pf5_5_embed.add_field(name="Data\nPack",value="5", inline=True)
+    pf5_5_embed.set_footer(text=lastupdate)
 
     pf6_6_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -413,6 +435,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf6_6_embed.add_field(name="Resource\nPack",value="6", inline=True)
     pf6_6_embed.add_field(name="Data\nPack",value="6", inline=True)
+    pf6_6_embed.set_footer(text=lastupdate)
 
     pf7_7_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -421,6 +444,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf7_7_embed.add_field(name="Resource\nPack",value="7", inline=True)
     pf7_7_embed.add_field(name="Data\nPack",value="7", inline=True)
+    pf7_7_embed.set_footer(text=lastupdate)
 
     pf8_8_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -429,6 +453,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf8_8_embed.add_field(name="Resource\nPack",value="8", inline=True)
     pf8_8_embed.add_field(name="Data\nPack",value="8", inline=True)
+    pf8_8_embed.set_footer(text=lastupdate)
 
     pf8_9_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -437,6 +462,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf8_9_embed.add_field(name="Resource\nPack",value="8", inline=True)
     pf8_9_embed.add_field(name="Data\nPack",value="9", inline=True)
+    pf8_9_embed.set_footer(text=lastupdate)
 
     pf9_10_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -445,6 +471,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf9_10_embed.add_field(name="Resource\nPack",value="9", inline=True)
     pf9_10_embed.add_field(name="Data\nPack",value="10", inline=True)
+    pf9_10_embed.set_footer(text=lastupdate)
 
     pf12_10_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -453,6 +480,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf12_10_embed.add_field(name="Resource\nPack",value="12", inline=True)
     pf12_10_embed.add_field(name="Data\nPack",value="10", inline=True)
+    pf12_10_embed.set_footer(text=lastupdate)
 
     pf13_12_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -461,6 +489,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf13_12_embed.add_field(name="Resource\nPack",value="13", inline=True)
     pf13_12_embed.add_field(name="Data\nPack",value="12", inline=True)
+    pf13_12_embed.set_footer(text=lastupdate)
 
     pf15_15_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -469,6 +498,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf15_15_embed.add_field(name="Resource\nPack",value="15", inline=True)
     pf15_15_embed.add_field(name="Data\nPack",value="15", inline=True)
+    pf15_15_embed.set_footer(text=lastupdate)
 
     pf18_18_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -477,6 +507,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf18_18_embed.add_field(name="Resource\nPack",value="18", inline=True)
     pf18_18_embed.add_field(name="Data\nPack",value="18", inline=True)
+    pf18_18_embed.set_footer(text=lastupdate)
 
     pf22_26_embed = discord.Embed(
         title=f"【{version}】Search pack_format",
@@ -485,6 +516,7 @@ async def cpackmcmeta(interaction: discord.Interaction, choice: discord.app_comm
     )
     pf22_26_embed.add_field(name="Resource\nPack",value="22", inline=True)
     pf22_26_embed.add_field(name="Data\nPack",value="26", inline=True)
+    pf22_26_embed.set_footer(text=lastupdate)
 
     # versionsリソパ数字_デタパ数字 = [対応バージョンたち] (n = none)
     versions1_n = ["1.6.1", "1.6.2", "1.6.3", "1.6.4", "1.7.0", "1.7.1", "1.7.2", "1.7.3", "1.7.4", "1.7.5", "1.7.6", "1.7.7", "1.7.8", "1.7.9", "1.7.10", "1.8.0", "1.8.1", "1.8.2", "1.8.3", "1.8.4", "1.8.5", "1.8.6", "1.8.7", "1.8.8", "1.8.9"]
