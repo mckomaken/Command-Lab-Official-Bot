@@ -51,3 +51,7 @@ class BumpNofiticationCog(commands.Cog):
     async def cog_unload(self):
         self.bump_check_task.cancel()
         open("./tmp/bump_data.json", mode="w").write(self.bump_data.model_dump_json())
+
+
+async def setup(bot: commands.Bot):
+    bot.add_cog(BumpNofiticationCog(bot))
