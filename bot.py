@@ -1,18 +1,15 @@
-import os
 import discord
-import uuid
-import logging
 
-from typing import Optional
 from discord.ext import commands
 from datetime import datetime, timedelta
 from discord import app_commands
 from config import config
-from util import create_codeblock
 
-client = commands.Bot(intents=discord.Intents.all(), command_prefix="cm!")
-logger = logging.getLogger("root")
-txt = discord.Embed
+
+client = commands.Bot(
+    intents=discord.Intents.all(),
+    command_prefix="cm!"
+)
 
 
 status = discord.Activity(
@@ -20,10 +17,16 @@ status = discord.Activity(
     name=config.status
 )
 
+ORUVANORUVAN = """ஒருவன் ஒருவன் முதலாளி
+உலகில் மற்றவன் தொழிலாளி
+விதியை நினைப்பவன் ஏமாளி
+அதை வென்று முடிப்பவன் அறிவாளி
 
-class SampleView(discord.ui.View):
-    def __init__(self, timeout=None):
-        super().__init__(timeout=timeout)
+பூமியை வெல்ல ஆயுதம் எதற்கு
+பூப்பறிக்க கோடரி எதற்கு
+பொன்னோ பொருளோ போர்க்களம் எதற்கு
+ஆசை துறந்தால் அகிலம் உனக்கு
+"""
 
 
 @client.event
@@ -36,11 +39,11 @@ async def on_ready():
         timestamp=SJST_time
     )
 
-    logger.info("BOTが起動しました")
+    print("BOTが起動しました")
 
     for f in config.enabled_features:
         await client.load_extension(f)
-    await client.load_extension("jishaku")
+        print("Successfully loaded extension: " + f)
 
     await client.tree.sync()
     await client.change_presence(activity=status)
@@ -52,6 +55,9 @@ async def on_ready():
 
 @client.event
 async def on_message(message: discord.Message):
+    if config.administrater_role_id in [r.id for r in message.author.roles]:
+        await client.process_commands(message)
+
     if message.author.id == config.bump.disboard_id:
         embeds = message.embeds
 
@@ -156,7 +162,7 @@ async def on_message(message: discord.Message):
                     embed.set_image(url=attachment.url)  # 画像をEmbedに設定
 
             # ボタンコンポーネントを使ったViewオブジェクトを作成
-            view = SampleView(timeout=None)
+            view = discord.ui.View(timeout=None)
             view.add_item(discord.ui.Button(
                 label="メッセージ先はこちら",
                 style=discord.ButtonStyle.link,
@@ -171,7 +177,7 @@ async def on_message(message: discord.Message):
                 await message.channel.send(embed=original_embed, view=view)
 
         except Exception as e:
-            logger.error(f"エラーらしい: {e}")
+            print(f"エラーらしい: {e}")
 
     # ----------------------------------------------------------------
 
@@ -196,7 +202,7 @@ async def on_message(message: discord.Message):
             )
 
         elif message.content.startswith("oruvanoruvan"):
-            await message.channel.send("ஒருவன் ஒருவன் முதலாளி\nஉலகில் மற்றவன் தொழிலாளி\nவிதியை நினைப்பவன் ஏமாளி\nஅதை வென்று முடிப்பவன் அறிவாளி\n \nபூமியை வெல்ல ஆயுதம் எதற்கு\nபூப்பறிக்க கோடரி எதற்கு\nபொன்னோ பொருளோ போர்க்களம் எதற்கு\nஆசை துறந்தால் அகிலம் உனக்கு")
+            await message.channel.send(ORUVANORUVAN)
 
     elif message.channel.id == config.bump.channel_id:
         if message.content.startswith("!d bump"):
@@ -217,140 +223,13 @@ async def on_message(message: discord.Message):
 # ----------------------------------------------------------------
 
 
-@client.tree.command(name="cmennte", description="【運営】各種お知らせ用")
-@app_commands.describe(
-    title="タイトル",
-    description="説明",
-    sub_title="サブタイトル",
-    sub_description="サブ説明"
-)
-@app_commands.checks.has_permissions(
-    manage_guild=True
-)
-async def cmennte(
-    interaction: discord.Interaction,
-    title: str,
-    description: str,
-    sub_title: str = "",
-    sub_description: str = ""
-):
-    mntJST_time = datetime.now()
-
-    mennte_embed = discord.Embed(
-        title=title,
-        description=description,
-        color=0xff580f,
-        timestamp=mntJST_time
-    )
-    mennte_embed.add_field(
-        name=sub_title,
-        value=sub_description,
-    )
-
-    await interaction.response.send_message(embed=mennte_embed)
-
-# ----------------------------------------------------------------
-
-
-@client.tree.command(name="cl", description="【運営】運営専用雑コマンド")
-@app_commands.describe(
-    choice="選択肢",
-)
-@app_commands.choices(
-    choice=[
-        app_commands.Choice(name="高校おめ", value="cl1"),
-        app_commands.Choice(name="大学おめ", value="cl2")
-    ]
-)
-async def cl(interaction: discord.Interaction, choice: app_commands.Choice[str]):
-    role = interaction.guild.get_role(config.administrater_role_id)
-    if role in interaction.user.roles:
-        if choice.value == "cl1":
-            await interaction.response.send_message(embed=discord.Embed(
-                title="高校合格おめでとうございます!!", color=0x2b9788
-            ))
-        elif choice.value == "cl2":
-            await interaction.response.send_message(embed=discord.Embed(
-                title="大学合格おめでとうございます!!", color=0x2b9788
-            ))
-
-# ----------------------------------------------------------------
-
-
-@client.tree.command(
-    name="cuuid", description="UUIDを生成します"
-)
-@app_commands.describe(
-    count="生成する量(デフォルト: 2)"
-)
-async def cuuid(interaction: discord.Interaction, count: Optional[app_commands.Range[int, 1, 25]] = 2):
-    uuJST_time = datetime.now()
-
-    uuid_embed = discord.Embed(
-        title="UUID Generator",
-        description=f"-----------------------------------------------------\n{count}個のUUIDを自動生成しました\nBEのAdd-on制作にお役立てください\n-----------------------------------------------------",
-        color=0x58619a,
-        timestamp=uuJST_time
-    )
-
-    for i in range(count):
-        uuid2 = str(uuid.uuid4())
-        uuid2_nosep = uuid2.replace("-", "")
-
-        uuid_embed.add_field(name=f"{i + 1}個目", value=f"{create_codeblock(uuid2)}\n{create_codeblock(uuid2_nosep)}")
-
-    await interaction.response.send_message(embed=uuid_embed)
-
-# ----------------------------------------------------------------
-
-
-@client.tree.command(name="cping", description="pingを計測します")
-async def cping(interaction: discord.Interaction):
-
-    piJST_time = datetime.now()
-    text = f'{round(client.latency*1000)}ms'
-
-    ping_embed = discord.Embed(
-        title="現在のping",
-        description=text,
-        timestamp=piJST_time
-    )
-
-    await interaction.response.send_message(embed=ping_embed)
-
-# ----------------------------------------------------------------
-
-
-@client.tree.command(name="chelp", description="このBotができること一覧")
-async def chelp(interaction: discord.Interaction):
-
-    chJST_time = datetime.now()
-
-    chelp_embed = discord.Embed(
-        title="コマンド一覧",
-        description="/chelp : この説明文が出てきます\n/cping : サーバーとBotとのping値を測定できます\n/cuuid : 2個のUUIDを自動生成してくれます\n/cpack-mcmeta : ResourcePackとDataPackのpack_formatの番号一覧を表示します",
-        color=0x2b9900,
-        timestamp=chJST_time
-    )
-
-    await interaction.response.send_message(embed=chelp_embed)
-
-# ----------------------------------------------------------------
-
-
 @client.tree.error
 async def on_error(ctx: discord.Interaction, error: app_commands.AppCommandError):
     if isinstance(error, app_commands.MissingRole) or isinstance(error, app_commands.MissingPermissions):
         await ctx.response.send_message("権限あらへんで(関西弁)", ephemeral=True)
-
-
-# ----------------------------------------------------------------
-
-
-if not os.path.exists("./tmp/bump_data.json"):
-    open("./tmp/bump_data.json").write(BumpData.model_dump_json())
+    else:
+        print(error)
 
 # ----------------------------------------------------------------
-
 
 client.run(config.token)

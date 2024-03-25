@@ -29,7 +29,7 @@ class PackVersions(BaseModel):
 
 
 config = Config.model_validate_json(
-    open("./config.json", mode="rb").read()
+    open("./config/config.json", mode="rb").read()
 )
 
 pack_versions = PackVersions.model_validate_json(

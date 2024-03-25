@@ -1,3 +1,4 @@
+import os
 import discord
 
 from datetime import datetime, timedelta
@@ -6,6 +7,20 @@ from pydantic import BaseModel
 from discord.ext import commands, tasks
 
 from config import config
+
+
+JA_BUMP_MESSAGE = """
+BUMPの時間になったよ♪
+</bump:947088344167366698> って打ってね
+
+なお他のサーバーで30分以内にBumpしてる場合はBump出来ない可能性があります。
+"""
+
+EN_BUMP_MESSAGE = """It's BUMP time♪
+Please send </bump:947088344167366698>
+
+If you bumped within 30 minutes on another server, you may not be able to bump.
+"""
 
 
 class BumpData(BaseModel):
@@ -19,24 +34,27 @@ class BumpNofiticationCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         super().__init__()
         self.bot = bot
+        self.bump_data = BumpData()
 
     @tasks.loop(seconds=1)
     async def bump_check_task(self):
+        if self.bump_data.last_timestamp is None:
+            return
         last = datetime.fromtimestamp(self.bump_data.last_timestamp) + timedelta(hours=2)
         now = datetime.now()
 
         if last < now and not self.bump_data.notified:
-            bump_file = discord.File("bump.png", filename="bump.png")
+            bump_file = discord.File("./assets/bump.png", filename="bump.png")
 
             bump_embed = discord.Embed(
                 title="BUMPの時間だよ(^O^)／",
-                description="BUMPの時間になったよ♪ \n </bump:947088344167366698> って打ってね \n \n なお他のサーバーで30分以内にBumpしてる場合はBump出来ない可能性があります。 \n ",
+                description=JA_BUMP_MESSAGE,
                 color=0x00ffff,
                 timestamp=now
             )
             bump_embed.add_field(
                 name="It's BUMP time (^O^)/",
-                value="It's BUMP time♪ \n Please send </bump:947088344167366698>\n\n If you bumped within 30 minutes on another server, you may not be able to bump."
+                value=EN_BUMP_MESSAGE
             )
             bump_embed.set_image(url="attachment://bump.png")
 
@@ -46,6 +64,9 @@ class BumpNofiticationCog(commands.Cog):
             self.bump_data.notified = True
 
     async def cog_load(self):
+        if not os.path.exists("./tmp/bump_data.json"):
+            open("./tmp/bump_data.json", mode="w").write(BumpData().model_dump_json())
+
         self.bump_check_task.start()
 
     async def cog_unload(self):
@@ -54,4 +75,4 @@ class BumpNofiticationCog(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    bot.add_cog(BumpNofiticationCog(bot))
+    await bot.add_cog(BumpNofiticationCog(bot))

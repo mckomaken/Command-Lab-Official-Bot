@@ -1,24 +1,35 @@
+import io
 import discord
 
+from typing import Optional
 from discord.ext import commands
 from discord import app_commands
+from pydantic import BaseModel
+from datetime import datetime
 
-from config import pack_versions
+from config import PackVersionEntry, pack_versions
 from table2ascii import table2ascii, Alignment, PresetStyle
+
+from util import create_codeblock
 
 VERSION_NOT_FOUND = discord.Embed(
     title="エラー", description="バージョンが見つかりません。", color=0xff0000
 )
 
 
-def escape(data: str):
-    return f"```\n{data}```"
+class PackMcmetaV(BaseModel):
+    pack_format: int
+    description: str
+
+
+class PackMcmeta(BaseModel):
+    pack: PackMcmetaV
 
 
 @app_commands.guild_only()
-class CPackMcMeta(commands.Group):
+class CPackMcMeta(app_commands.Group):
     def __init__(self, bot: commands.Bot):
-        super().__init__(name="cpackmcmeta")
+        super().__init__(name="cpack-mcmeta")
         self.bot = bot
 
     # ----------------------------------------------------------------
@@ -33,7 +44,7 @@ class CPackMcMeta(commands.Group):
     ):
         embed = discord.Embed(
             title="データパックバージョン一覧",
-            description=escape(
+            description=create_codeblock(
                 table2ascii(
                     header=["Version", "Format"],
                     body=[(k, v.dp) for k, v in pack_versions.versions.items() if v.dp != -1],
@@ -58,7 +69,7 @@ class CPackMcMeta(commands.Group):
 
         embed = discord.Embed(
             title="リソースパックバージョン一覧",
-            description=escape(
+            description=create_codeblock(
                 table2ascii(
                     header=["Version", "Format"],
                     body=[(k, v.rp) for k, v in pack_versions.versions.items()],
@@ -78,7 +89,7 @@ class CPackMcMeta(commands.Group):
     )
     @app_commands.guild_only()
     async def search(
-        interaction: discord.Interaction, version: str = ""
+        self, interaction: discord.Interaction, version: str
     ):
         ver = [int(n) for n in version.split(".")]
         if len(ver) == 2:
@@ -109,6 +120,69 @@ class CPackMcMeta(commands.Group):
 
         await interaction.response.send_message(embed=VERSION_NOT_FOUND)
 
+    def _search(self, version: str) -> Optional[PackVersionEntry]:
+        ver = [int(n) for n in version.split(".")]
+        if len(ver) == 2:
+            ver[2] = 0
+
+        if len(ver) != 3:
+            return None
+
+        for k, v in pack_versions.versions.items():
+            if "-" in k:
+                ver0 = [int(n) for n in k.split("-")[0].split(".")]
+                ver1 = [int(n) for n in k.split("-")[1].split(".")]
+
+                if ver0[1] <= ver[1] <= ver1[1] and ver0[2] <= ver[2] <= ver1[2]:
+                    return v
+            else:
+                if version == k:
+                    return v
+
+    @app_commands.command(name="generate-dp", description="データパックのpack.mcmetaを生成します")
+    @app_commands.guild_only()
+    async def generate_dp(self, interaction: discord.Interaction, description: str, version: str):
+        ver: PackVersionEntry = self._search(version)
+        if ver is None:
+            await interaction.response.send_message(embed=VERSION_NOT_FOUND)
+            return
+
+        embed = discord.Embed(
+            color=0x89C4FF,
+            title="pack.mcmeta Generator",
+            description="生成完了!",
+            timestamp=datetime.now()
+        )
+        embed.add_field(name="説明", value=create_codeblock(description))
+        embed.add_field(name="パックバージョン", value=create_codeblock(f"({version}) {ver.dp}"))
+
+        data: str = PackMcmeta(pack=PackMcmetaV(pack_format=ver.dp, description=description)).model_dump_json(indent=4)
+        file = discord.File(io.StringIO(data), filename="pack.mcmeta")
+
+        await interaction.response.send_message(embed=embed, file=file)
+
+    @app_commands.command(name="generate-rp", description="リソースパックのpack.mcmetaを生成します")
+    @app_commands.guild_only()
+    async def generate_rp(self, interaction: discord.Interaction, description: str, version: str):
+        ver: PackVersionEntry = self._search(version)
+        if ver is None:
+            await interaction.response.send_message(embed=VERSION_NOT_FOUND)
+            return
+
+        embed = discord.Embed(
+            color=0x89C4FF,
+            title="pack.mcmeta Generator",
+            description="生成完了!",
+            timestamp=datetime.now()
+        )
+        embed.add_field(name="説明", value=create_codeblock(description))
+        embed.add_field(name="パックバージョン", value=create_codeblock(f"({version}) {ver.rp}"))
+
+        data: str = PackMcmeta(pack=PackMcmetaV(pack_format=ver.rp, description=description)).model_dump_json(indent=4)
+        file = discord.File(io.StringIO(data), filename="pack.mcmeta")
+
+        await interaction.response.send_message(embed=embed, file=file)
+
 
 async def setup(bot: commands.Bot):
-    bot.add_cog(CPackMcMeta(bot))
+    bot.tree.add_command(CPackMcMeta(bot))
