@@ -4,10 +4,15 @@ from discord.ext import commands
 from discord import app_commands
 
 from config import pack_versions
+from table2ascii import table2ascii, Alignment, PresetStyle
 
 VERSION_NOT_FOUND = discord.Embed(
     title="エラー", description="バージョンが見つかりません。", color=0xff0000
 )
+
+
+def escape(data: str):
+    return f"```\n{data}```"
 
 
 @app_commands.guild_only()
@@ -15,6 +20,8 @@ class CPackMcMeta(commands.Group):
     def __init__(self, bot: commands.Bot):
         super().__init__(name="cpackmcmeta")
         self.bot = bot
+
+    # ----------------------------------------------------------------
 
     @app_commands.command(
         name="datapacks",
@@ -25,11 +32,16 @@ class CPackMcMeta(commands.Group):
         self, interaction: discord.Interaction
     ):
         embed = discord.Embed(
-            title="pack_formatバージョン検索"
+            title="データパックバージョン一覧",
+            description=escape(
+                table2ascii(
+                    header=["Version", "Format"],
+                    body=[(k, v.dp) for k, v in pack_versions.versions.items() if v.dp != -1],
+                    style=PresetStyle.thin_box,
+                    alignments=Alignment.LEFT
+                )
+            )
         )
-
-        for k, v in pack_versions.versions.items():
-            embed.add_field(name=k, value=str(v.dp), inline=False)
 
         await interaction.response.send_message(embed=embed)
 
@@ -43,12 +55,18 @@ class CPackMcMeta(commands.Group):
     async def resourcepacks(
         self, interaction: discord.Interaction
     ):
-        embed = discord.Embed(
-            title="pack_formatバージョン検索"
-        )
 
-        for k, v in pack_versions.versions.items():
-            embed.add_field(name=k, value=str(v.rp), inline=False)
+        embed = discord.Embed(
+            title="リソースパックバージョン一覧",
+            description=escape(
+                table2ascii(
+                    header=["Version", "Format"],
+                    body=[(k, v.rp) for k, v in pack_versions.versions.items()],
+                    style=PresetStyle.thin_box,
+                    alignments=Alignment.LEFT
+                )
+            )
+        )
 
         await interaction.response.send_message(embed=embed)
 

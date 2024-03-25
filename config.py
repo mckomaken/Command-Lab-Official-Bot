@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -12,6 +13,8 @@ class Config(BaseModel):
     administrater_role_id: int
     bump: BumpNofitication
     status: str
+    start_notice_channel: Optional[int] = None
+    enabled_features: list[str] = []
 
 # -----------------------------------------------------------
 
@@ -30,5 +33,5 @@ config = Config.model_validate_json(
 )
 
 pack_versions = PackVersions.model_validate_json(
-    open("./pack_versions.json").read()
+    open("./data/pack_versions.json").read()
 )
