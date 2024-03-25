@@ -37,8 +37,8 @@ class CAdminCog(commands.Cog):
         sub_title="サブタイトル",
         sub_description="サブ説明"
     )
-    @app_commands.checks.has_permissions(
-        manage_guild=True
+    @app_commands.checks.has_role(
+        config.administrater_role_id
     )
     async def cmaintenance(
         self,

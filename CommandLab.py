@@ -63,7 +63,7 @@ async def on_message(message: discord.Message):
         embeds = message.embeds
 
         if embeds is not None and len(embeds) != 0:
-            if "表示順をアップしたよ" in embeds[0].description:
+            if "表示順をアップしたよ" in (embeds[0].description or ""):
                 JST_time = datetime.now()
                 master = JST_time + timedelta(hours=2)
                 fmaster = master.strftime(" %Y/%m/%d %H:%M:%S ")
