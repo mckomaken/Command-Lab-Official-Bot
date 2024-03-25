@@ -86,6 +86,14 @@ DP_ALL_VERSIONS = [
     "24w12a"
 ]
 
+LATEST_RELEASE_VERSION = "1.20.4"
+LATEST_RELEASE_RP = "22"
+LATEST_RELEASE_DP = "26"
+
+LATEST_SS_VERISON = "24w12a"
+LATEST_SS_VERISON_RP = "30"
+LATEST_SS_VERISON_DP = "36"
+
 
 class PackMcmetaV(BaseModel):
     pack_format: int
@@ -101,6 +109,28 @@ class CPackMcMeta(app_commands.Group):
     def __init__(self, bot: commands.Bot):
         super().__init__(name="cpack-mcmeta")
         self.bot = bot
+
+    @app_commands.command(
+        name="latest",
+        description="最新バージョンのformatを出力します"
+    )
+    @app_commands.guild_only()
+    async def latest(self, interaction: discord.Interaction):
+        lv_embed = discord.Embed(
+            title="Latest Version pack_format",
+            color=discord.Color.yellow(),
+            timestamp=datetime.now()
+        )
+
+        lv_embed.add_field(name=f"【{LATEST_RELEASE_VERSION}】Latest Release Version", value="", inline=False)
+        lv_embed.add_field(name="Resource\nPack", value=f"{LATEST_RELEASE_RP}", inline=True)
+        lv_embed.add_field(name="Data\nPack", value=f"{LATEST_RELEASE_DP}", inline=True)
+
+        lv_embed.add_field(name=f"【{LATEST_SS_VERISON}】Latest Snapshot Version", value="", inline=False)
+        lv_embed.add_field(name="Resource\nPack", value=f"{LATEST_SS_VERISON_RP}", inline=True)
+        lv_embed.add_field(name="Data\nPack", value=f"{LATEST_SS_VERISON_DP}", inline=True)
+
+        interaction.response.send_message(embed=lv_embed)
 
     # ----------------------------------------------------------------
 
