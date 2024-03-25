@@ -64,16 +64,6 @@ class BumpNofiticationCog(commands.Cog):
 
             self.bump_data.notified = True
 
-    @app_commands.command(name="testbump", description="【運営】テスト用Bumpコマンド")
-    @app_commands.checks.has_role("運営")
-    async def testbump(self, interaction: discord.Interaction):
-        embeds = discord.Embed(
-            title="BumpTest",
-            color=0xff1948,
-            description="表示順をアップしたよ:thumbsup:"
-        )
-        await interaction.response.send_message(embed=embeds)
-
     async def cog_load(self):
         if not os.path.exists("./tmp/bump_data.json"):
             open("./tmp/bump_data.json", mode="w").write(BumpData().model_dump_json())
