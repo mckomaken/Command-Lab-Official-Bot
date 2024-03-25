@@ -159,7 +159,7 @@ class CPackMcMeta(app_commands.Group):
         data: str = PackMcmeta(pack=PackMcmetaV(pack_format=ver.dp, description=description)).model_dump_json(indent=4)
         file = discord.File(io.StringIO(data), filename="pack.mcmeta")
 
-        await interaction.response.send_message(embed=embed, file=file)
+        await interaction.response.send_message(embed=embed, file=file, ephemeral=True)
 
     @app_commands.command(name="generate-rp", description="リソースパックのpack.mcmetaを生成します")
     @app_commands.guild_only()
@@ -181,7 +181,7 @@ class CPackMcMeta(app_commands.Group):
         data: str = PackMcmeta(pack=PackMcmetaV(pack_format=ver.rp, description=description)).model_dump_json(indent=4)
         file = discord.File(io.StringIO(data), filename="pack.mcmeta")
 
-        await interaction.response.send_message(embed=embed, file=file)
+        await interaction.response.send_message(embed=embed, file=file, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
