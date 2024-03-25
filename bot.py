@@ -1,3 +1,4 @@
+import atexit
 import discord
 
 from discord.ext import commands
@@ -111,6 +112,13 @@ async def on_message(message: discord.Message):
                     await message.channel.send(
                         embed=caution_another_channel_bump_notice_embed
                     )
+                else:
+                    await message.channel.send(
+                        embed=bump_notice_embed
+                    )
+
+                client.cogs.get("BumpNofiticationCog").bump_data.last_timestamp = datetime.now().timestamp()
+                client.cogs.get("BumpNofiticationCog").bump_data.notified = False
 
     # ----------------------------------------------------------------
 
@@ -232,5 +240,12 @@ async def on_error(ctx: discord.Interaction, error: app_commands.AppCommandError
         print(error)
 
 # ----------------------------------------------------------------
+
+
+@client.event
+async def on_close():
+    for e in client.extensions.keys():
+        await client.unload_extension(e)
+
 
 client.run(config.token)
