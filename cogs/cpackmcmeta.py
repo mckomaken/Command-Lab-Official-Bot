@@ -208,7 +208,7 @@ class CPackMcMeta(app_commands.Group):
     ):
         ver = [int(n) for n in version.split(".")]
         if len(ver) == 2:
-            ver[2] = 0
+            ver.append(0)
 
         embed = discord.Embed(
             title="pack_formatバージョン検索", description=version
