@@ -55,8 +55,9 @@ async def on_ready():
 
 @client.event
 async def on_message(message: discord.Message):
-    if config.administrater_role_id in [r.id for r in message.author.roles]:
-        await client.process_commands(message)
+    if not message.author.bot:
+        if config.administrater_role_id in [r.id for r in message.author.roles]:
+            await client.process_commands(message)
 
     if message.author.id == config.bump.disboard_id:
         embeds = message.embeds
