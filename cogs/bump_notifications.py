@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from typing import Optional
 from pydantic import BaseModel
 from discord.ext import commands, tasks
-from discord import app_commands
 
 from config import config
 
