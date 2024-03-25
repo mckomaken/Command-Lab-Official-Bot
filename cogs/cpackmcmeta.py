@@ -17,6 +17,76 @@ VERSION_NOT_FOUND = discord.Embed(
 )
 
 
+RP_ALL_VERSIONS = [
+    "13w24a-1.8.9",
+    "15w31a-1.10.2",
+    "16w32a-18w47a",
+    "18w48a-19w46b",
+    "1.15-pre1-1.16.2-pre3",
+    "1.16.2-rc1-1.16.5",
+    "20w45a-21w38a",
+    "21w39a-1.18.2",
+    "22w11a-1.19.2",
+    "---",
+    "22w42a-22w44a",
+    "22w45a-23w07a",
+    "1.19.4-pre1-23w13a",
+    "23w14a-23w16a",
+    "23w17a-1.20.1",
+    "23w31a",
+    "23w32a-1.20.2-pre1",
+    "1.20.2-pre2-23w41a",
+    "23w42a",
+    "23w43a-23w44a",
+    "23w45a-23w46a",
+    "1.20.3-pre1-23w51b",
+    "---",
+    "24w03a-24w04a",
+    "24w05a-24w05b",
+    "24w06a-24w07a",
+    "---",
+    "24w09a-24w10a",
+    "24w11a",
+    "24w12a"
+]
+
+DP_ALL_VERSIONS = [
+    "17w48a-19w46b",
+    "1.15-pre1-1.16.2-pre3",
+    "1.16.2-rc1-1.16.5",
+    "20w46a-1.17.1",
+    "21w37a-22w07a",
+    "1.18.2-pre1-1.18.2",
+    "22w11a-1.19.3",
+    "23w03a-23w05a",
+    "23w06a-1.19.4",
+    "23w12a-23w14a",
+    "23w16a-23w17a",
+    "23w18a-1.20.1",
+    "23w31a",
+    "23w32a-23w35a",
+    "1.20.2-pre1-1.20.2",
+    "23w40a",
+    "23w41a",
+    "23w42a",
+    "23w43a-23w43b",
+    "23w44a",
+    "23w45a",
+    "23w46a",
+    "1.20.3-pre1-1.20.4",
+    "23w51a-23w51b",
+    "24w03a",
+    "24w04a",
+    "24w05a-24w05b",
+    "24w06a",
+    "24w07a",
+    "24w09a",
+    "24w10a",
+    "24w11a",
+    "24w12a"
+]
+
+
 class PackMcmetaV(BaseModel):
     pack_format: int
     description: str
@@ -42,12 +112,20 @@ class CPackMcMeta(app_commands.Group):
     async def datapacks(
         self, interaction: discord.Interaction
     ):
+
+        body = []
+        i = 0
+        for k, v in pack_versions.versions.items():
+            if v.dp != -1:
+                body.append((v.dp, DP_ALL_VERSIONS[i], k))
+                i += 1
+
         embed = discord.Embed(
             title="データパックバージョン一覧",
             description=create_codeblock(
                 table2ascii(
-                    header=["Version", "Format"],
-                    body=[(k, v.dp) for k, v in pack_versions.versions.items() if v.dp != -1],
+                    header=["Format Version", "All Version", "Release Version"],
+                    body=body,
                     style=PresetStyle.thin_box,
                     alignments=Alignment.LEFT
                 )
@@ -67,12 +145,19 @@ class CPackMcMeta(app_commands.Group):
         self, interaction: discord.Interaction
     ):
 
+        body = []
+        i = 0
+        for k, v in pack_versions.versions.items():
+            if v.rp != -1:
+                body.append((v.rp, RP_ALL_VERSIONS[i], k))
+                i += 1
+
         embed = discord.Embed(
             title="リソースパックバージョン一覧",
             description=create_codeblock(
                 table2ascii(
-                    header=["Version", "Format"],
-                    body=[(k, v.rp) for k, v in pack_versions.versions.items()],
+                    header=["Format Version", "All Version", "Release Version"],
+                    body=body,
                     style=PresetStyle.thin_box,
                     alignments=Alignment.LEFT
                 )

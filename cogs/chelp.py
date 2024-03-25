@@ -1,8 +1,10 @@
+
+from typing import Optional
 import discord
 
 from datetime import datetime
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 HELP_MESSAGE = """
 /chelp : この説明文が出てきます
@@ -33,18 +35,62 @@ class CHelpCog(commands.Cog):
 
     @app_commands.command(name="cping", description="pingを計測します")
     @app_commands.guild_only()
-    async def cping(self, interaction: discord.Interaction):
+    @app_commands.describe(
+        count="【初期値(未記入) : 1】実行回数を自然数で入力してください。",
+        t_or_f="【初期値(未記入) : True】True : 3分おきに実行 ・ False : 直ぐ(１秒おき)に実行",
+    )
+    async def cping(self, interaction: discord.Interaction, count: Optional[int] = 1, t_or_f: Optional[bool] = True):
 
-        piJST_time = datetime.now()
-        text = f'{round(self.bot.latency*1000)}ms'
+        pi1JST_time = datetime.now()
+        text1 = f'{round(self.bot.latency*1000)}ms'
 
-        ping_embed = discord.Embed(
+        ping1_embed = discord.Embed(
             title="現在のping",
-            description=text,
-            timestamp=piJST_time
+            description=text1,
+            color=0x400080,
+            timestamp=pi1JST_time
         )
 
-        await interaction.response.send_message(embed=ping_embed)
+        if count >= 1:
+            await interaction.response.send_message(embed=ping1_embed)
+
+            if count > 1:
+                if t_or_f:  # true
+                    @tasks.loop(minutes=3, count=count)  # ←あとで３分に変える
+                    async def interval_cb():
+
+                        pi2JST_time = datetime.now()
+                        text2 = f'{round(self.bot.latency*1000)}ms'
+
+                        ping2_embed = discord.Embed(
+                            title="現在のping",
+                            description=text2,
+                            color=0x400080,
+                            timestamp=pi2JST_time
+                        )
+
+                        await interaction.user.send(embed=ping2_embed)
+
+                    interval_cb.start()
+
+                elif t_or_f is False:  # false
+                    @tasks.loop(seconds=1, count=count)
+                    async def interval_cb():
+
+                        pi3JST_time = datetime.now()
+                        text3 = f'{round(self.bot.latency*1000)}ms'
+
+                        ping3_embed = discord.Embed(
+                            title="現在のping",
+                            description=text3,
+                            color=0x400080,
+                            timestamp=pi3JST_time
+                        )
+                        await interaction.user.send(embed=ping3_embed)
+
+                    interval_cb.start()
+        else:
+            await interaction.response.send_message("countには自然数を入れてね(^^♪\n自然数がわからない人はこのサーバーから追放するね(^^♪♪♪", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
