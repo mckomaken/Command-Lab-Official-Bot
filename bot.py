@@ -1,15 +1,14 @@
-from asyncio import tasks
 import os
-from typing import Optional
 import discord
 import uuid
 import logging
 
+from typing import Optional
 from discord.ext import commands
 from datetime import datetime, timedelta
 from discord import app_commands
 from config import config
-from .util import create_codeblock
+from util import create_codeblock
 
 client = commands.Bot(intents=discord.Intents.all(), command_prefix="cm!")
 logger = logging.getLogger("root")
@@ -41,6 +40,7 @@ async def on_ready():
 
     for f in config.enabled_features:
         await client.load_extension(f)
+    await client.load_extension("jishaku")
 
     await client.tree.sync()
     await client.change_presence(activity=status)
