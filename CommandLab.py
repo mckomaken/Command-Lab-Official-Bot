@@ -247,6 +247,6 @@ async def on_close():
         await client.unload_extension(e)
 
 if config.token == "FILE":
-    config.token = open("CMTK.txt", mode="r").read()
+    config.token = open("..\CMTK.txt", mode="r").read()
 
 client.run(config.token)
