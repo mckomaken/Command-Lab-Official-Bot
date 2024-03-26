@@ -8,7 +8,6 @@ from pydantic import BaseModel
 from datetime import datetime
 
 from config import PackVersionEntry, pack_versions
-from table2ascii import table2ascii, Alignment, PresetStyle
 
 from util import create_codeblock
 
@@ -150,19 +149,14 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.dp, DP_ALL_VERSIONS[i], k))
                 i += 1
 
-        embed = discord.Embed(
-            title="データパックバージョン一覧",
-            description=create_codeblock(
-                table2ascii(
-                    header=["Format Version", "All Version", "Release Version"],
-                    body=body,
-                    style=PresetStyle.thin_box,
-                    alignments=Alignment.LEFT
-                )
-            )
-        )
+        file = discord.File("./assets/dp.png", filename="dp.png")
 
-        await interaction.response.send_message(embed=embed)
+        embed = discord.Embed(
+            title="データパックバージョン一覧"
+        )
+        embed.set_image(url="attachment://dp.png")
+
+        await interaction.response.send_message(embed=embed, file=file)
 
     # ----------------------------------------------------------------
 
@@ -182,19 +176,14 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.rp, RP_ALL_VERSIONS[i], k))
                 i += 1
 
-        embed = discord.Embed(
-            title="リソースパックバージョン一覧",
-            description=create_codeblock(
-                table2ascii(
-                    header=["Format Version", "All Version", "Release Version"],
-                    body=body,
-                    style=PresetStyle.thin_box,
-                    alignments=Alignment.LEFT
-                )
-            )
-        )
+        file = discord.File("./assets/rp.png", filename="rp.png")
 
-        await interaction.response.send_message(embed=embed)
+        embed = discord.Embed(
+            title="リソースパックバージョン一覧"
+        )
+        embed.set_image(url="attachment://rp.png")
+
+        await interaction.response.send_message(embed=embed, file=file)
 
     # ----------------------------------------------------------------
 
