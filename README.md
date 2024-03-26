@@ -9,5 +9,5 @@ pip install -r requirements.txt
 
 ## 起動方法
 ```
-python bot.py
+python CommandLab.py
 ```

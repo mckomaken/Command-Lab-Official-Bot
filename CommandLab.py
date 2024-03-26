@@ -126,7 +126,7 @@ async def on_message(message: discord.Message):
     if "https://discord.com/channels/" in message.content:
         # メッセージリンクが含まれている場合
         try:
-            link = message.content.split("https://discord.com/channels/")[1]
+            link = message.content.split("https://discord.com/channels/")[1].split(" ")[0].split("\n")[0]
             guild_id, channel_id, message_id = map(int, link.split("/"))
         except Exception:
             return
