@@ -2,3 +2,4 @@ discord
 pydantic
 jishaku
 Pillow
+markdownify
