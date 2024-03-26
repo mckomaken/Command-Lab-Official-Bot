@@ -9,5 +9,5 @@ def create_embed(title: str, description: str):
     return discord.Embed(
         title=title,
         description=description,
-        color=discord.Color.green()
+        color=discord.Color.green() if title != "エラー" else discord.Color.red()
     )
