@@ -81,7 +81,8 @@ class CHelpCog(commands.Cog):
         )
         role = interaction.guild.get_role(735130783760777270)  # <-コマ研運営のロールID貼ること
         if role in interaction.user.roles:
-            await interaction.response.send_message(embed=chelp_u_embed)
+            await interaction.response.send_message(embed=chelp_embed)
+            await interaction.response.send_message(embed=chelp_u_embed, ephemeral=True)
         else:
             await interaction.response.send_message(embed=chelp_embed)
 
