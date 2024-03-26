@@ -50,24 +50,28 @@ class CNews(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="cnews")
+    @app_commands.command(name="cnews", description="更新情報の詳細を表示します")
     @app_commands.guild_only()
     async def cnews(self, interaction: discord.Interaction, version: str):
         await interaction.response.defer()
-        async with aiohttp.ClientSession() as client:
-            async with client.get("https://launchercontent.mojang.com/javaPatchNotes.json") as resp:
-                data = PatchNote.model_validate(await resp.json())
-                for entry in data.entries:
-                    if entry.version == version:
-                        embed = discord.Embed(
-                            title=entry.title,
-                            description=md(entry.body[:4000]) + ("..." if len(entry.body) > 4000 else "")
-                        )
-                        embed.set_thumbnail(url="https://launchercontent.mojang.com" + entry.image.url)
-                        await interaction.followup.send(embed=embed)
-                        return
+        try:
+            async with aiohttp.ClientSession() as client:
+                async with client.get("https://launchercontent.mojang.com/javaPatchNotes.json") as resp:
+                    data = PatchNote.model_validate(await resp.json())
+                    for entry in data.entries:
+                        if entry.version == version:
+                            embed = discord.Embed(
+                                title=entry.title,
+                                description=md(entry.body[:4000]) + ("..." if len(entry.body) > 4000 else "")
+                            )
+                            embed.set_thumbnail(url="https://launchercontent.mojang.com" + entry.image.url)
+                            await interaction.followup.send(embed=embed)
+                            return
+            await interaction.followup.send("バージョンが見つかりませんでした")
+        except Exception:
+            await interaction.followup.send("エラーが発生しました")
 
-    @app_commands.command(name="changelog")
+    @app_commands.command(name="creferece", description="更新情報を表示します")
     @app_commands.guild_only()
     async def changelog(self, interaction: discord.Interaction, version: Optional[str] = ""):
         await interaction.response.defer()
@@ -103,7 +107,7 @@ class CNews(commands.Cog):
                     latest_embed.add_field(name="【Japanese Wiki】", value="https://ja.minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
                     await interaction.followup.send(embed=latest_embed)
         except Exception:
-            await interaction.followup.delete(reason="エラー")
+            await interaction.followup.send("エラーが発生しました")
 
 
 async def setup(bot: commands.Bot):

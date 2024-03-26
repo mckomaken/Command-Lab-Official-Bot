@@ -3,6 +3,8 @@ from discord import app_commands
 import discord
 from discord.ext import commands
 
+from util import create_embed
+
 
 class CTick(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -29,7 +31,11 @@ class CTick(commands.Cog):
         tick += month * 31 * 24 * 60 * 60 * 20
         tick += year * 12 * 31 * 24 * 60 * 60 * 20
 
-        await interaction.response.send_message(content=str(tick) + "Tick")
+        datestr = f"{year}年{month}ヶ月{week * 7 + day}日{hour}時間{minute}分{second}秒"
+
+        await interaction.response.send_message(
+            embed=create_embed(title="TICK換算", description=f"**{datestr}** は **{tick}Tick** です")
+        )
 
 
 async def setup(bot: commands.Bot):
