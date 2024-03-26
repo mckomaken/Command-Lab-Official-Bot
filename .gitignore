@@ -2,6 +2,7 @@
 config.json
 tmp/
 CMTK.txt
+_StartBot
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
