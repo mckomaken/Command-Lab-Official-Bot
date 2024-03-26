@@ -7,52 +7,52 @@ from discord import app_commands
 from discord.ext import commands, tasks
 
 HELP_MESSAGE = """
-・/cbase64 decode : Base64のデコードを行います
-・/cbase64 encode : Base64のエンコードを行います
-・/color preview : 指定したカラーコードの色見本を表示します
-・/chelp : この説明文が出てきます
-・/cmanifest : BEのmanifestを生成します
-・/cnews : 選択バージョンの更新情報の詳細を表示します
-・/cpack-mcmeta datapacks : データパックのpack_format一覧を表示します
-・/cpack-mcmeta generate-dp : データパック版pack.mcmetaを生成します
-・/cpack-mcmeta generate-rp : リソースパック版pack.mcmetaを生成します
-・/cpack-mcmeta latest : 最新バージョンのpack_formatを表示します
-・/cpack-mcmeta resourcepacks : リソースパックのpack_format一覧を表示します
-・/cpack-mcmeta search : 選択バージョンのpack_formatを表示します
-・/cping : サーバーとBotとのping値を測定できます
-・/creference : 選択バージョンのレファレンス・Wiki(日本語&英語)を表示します
-・/ctellraw : tellrawコマンドを生成します
-・/ctick : 秒・分・時・日・週・月・年をtickに直して表示します
-・/ctitle : titleコマンドを生成します
-・/cunicode decode : Unicodeエスケープシーケンスのデコードを行います
-・/cunicode encode : Unicodeエスケープシーケンスのエンコードを行います
-・/cuuid : UUIDを自動生成してくれます(初期値:2個)
+・`/cbase64 decode` : Base64のデコードを行います
+・`/cbase64 encode` : Base64のエンコードを行います
+・`/color preview` : 指定したカラーコードの色見本を表示します
+・`/chelp` : この説明文が出てきます
+・`/cmanifest` : BEのmanifestを生成します
+・`/cnews` : 選択バージョンの更新情報の詳細を表示します
+・`/cpack-mcmeta datapack`s : データパックのpack_format一覧を表示します
+・`/cpack-mcmeta generate-dp` : データパック版pack.mcmetaを生成します
+・`/cpack-mcmeta generate-rp` : リソースパック版pack.mcmetaを生成します
+・`/cpack-mcmeta latest` : 最新バージョンのpack_formatを表示します
+・`/cpack-mcmeta resourcepacks` : リソースパックのpack_format一覧を表示します
+・`/cpack-mcmeta search` : 選択バージョンのpack_formatを表示します
+・`/cping` : サーバーとBotとのping値を測定できます
+・`/creference` : 選択バージョンのレファレンス・Wiki(日本語&英語)を表示します
+・`/ctellraw` : tellrawコマンドを生成します
+・`/ctick` : 秒・分・時・日・週・月・年をtickに直して表示します
+・`/ctitle` : titleコマンドを生成します
+・`/cunicode decode` : Unicodeエスケープシーケンスのデコードを行います
+・`/cunicode encode` : Unicodeエスケープシーケンスのエンコードを行います
+・`/cuuid` : UUIDを自動生成してくれます(初期値:2個)
 """
 
 HELP_U_MESSAGE = """
-・/cbase64 decode : Base64のデコードを行います
-・/cbase64 encode : Base64のエンコードを行います
-・/color preview : 指定したカラーコードの色見本を表示します
-・/chelp : この説明文が出てきます
-U /cmaintenance : メンテナンスコマンド
-・/cmanifest : BEのmanifestを生成します
-U /cmisc 運営用雑コマンド
-・/cnews : 選択バージョンの更新情報の詳細を表示します
-・/cpack-mcmeta datapacks : データパックのpack_format一覧を表示します
-・/cpack-mcmeta generate-dp : データパック版pack.mcmetaを生成します
-・/cpack-mcmeta generate-rp : リソースパック版pack.mcmetaを生成します
-・/cpack-mcmeta latest : 最新バージョンのpack_formatを表示します
-・/cpack-mcmeta resourcepacks : リソースパックのpack_format一覧を表示します
-・/cpack-mcmeta search : 選択バージョンのpack_formatを表示します
-・/cping : サーバーとBotとのping値を測定できます
-・/creference : 選択バージョンのレファレンス・Wiki(日本語&英語)を表示します
-U /creload リロードコマンド
-・/ctellraw : tellrawコマンドを生成します
-・/ctick : 秒・分・時・日・週・月・年をtickに直して表示します
-・/ctitle : titleコマンドを生成します
-・/cunicode decode : Unicodeエスケープシーケンスのデコードを行います
-・/cunicode encode : Unicodeエスケープシーケンスのエンコードを行います
-・/cuuid : UUIDを自動生成してくれます(初期値:2個)
+・`/cbase64 decode` : Base64のデコードを行います
+・`/cbase64 encode` : Base64のエンコードを行います
+・`/color preview` : 指定したカラーコードの色見本を表示します
+・`/chelp` : この説明文が出てきます
+U `/cmaintenance` : メンテナンスコマンド
+・`/cmanifest` : BEのmanifestを生成します
+U `/cmisc` 運営用雑コマンド
+・`/cnews` : 選択バージョンの更新情報の詳細を表示します
+・`/cpack-mcmeta datapack`s : データパックのpack_format一覧を表示します
+・`/cpack-mcmeta generate-dp` : データパック版pack.mcmetaを生成します
+・`/cpack-mcmeta generate-rp` : リソースパック版pack.mcmetaを生成します
+・`/cpack-mcmeta latest` : 最新バージョンのpack_formatを表示します
+・`/cpack-mcmeta resourcepacks` : リソースパックのpack_format一覧を表示します
+・`/cpack-mcmeta search` : 選択バージョンのpack_formatを表示します
+・`/cping` : サーバーとBotとのping値を測定できます
+・`/creference` : 選択バージョンのレファレンス・Wiki(日本語&英語)を表示します
+U `/creload` リロードコマンド
+・`/ctellraw` : tellrawコマンドを生成します
+・`/ctick` : 秒・分・時・日・週・月・年をtickに直して表示します
+・`/ctitle` : titleコマンドを生成します
+・`/cunicode decode` : Unicodeエスケープシーケンスのデコードを行います
+・`/cunicode encode` : Unicodeエスケープシーケンスのエンコードを行います
+・`/cuuid` : UUIDを自動生成してくれます(初期値:2個)
 """
 
 
