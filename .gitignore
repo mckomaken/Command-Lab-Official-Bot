@@ -1,6 +1,7 @@
 # config
 config.json
 tmp/
+CMTK.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,12 +1,18 @@
 import discord
 
+from discord.abc import User
 from discord.ext import commands
 from datetime import datetime, timedelta
 from discord import app_commands
 from config import config
 
 
-client = commands.Bot(
+class CustomBot(commands.Bot):
+    async def is_owner(self, user: User) -> bool:
+        return user.id in config.owner_ids
+
+
+client = CustomBot(
     intents=discord.Intents.all(),
     command_prefix=config.prefix,
     owner_ids=config.owner_ids
