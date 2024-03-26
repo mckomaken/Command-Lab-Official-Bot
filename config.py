@@ -15,6 +15,8 @@ class Config(BaseModel):
     status: str
     start_notice_channel: Optional[int] = None
     enabled_features: list[str] = []
+    owner_ids: list[int] = []
+    prefix: Optional[str] = "cm!"
 
 # -----------------------------------------------------------
 

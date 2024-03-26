@@ -8,7 +8,8 @@ from config import config
 
 client = commands.Bot(
     intents=discord.Intents.all(),
-    command_prefix="cm!"
+    command_prefix=config.prefix,
+    owner_ids=config.owner_ids
 )
 
 
@@ -247,6 +248,6 @@ async def on_close():
         await client.unload_extension(e)
 
 if config.token == "FILE":
-    config.token = open("..\CMTK.txt", mode="r").read()
+    config.token = open("..\\CMTK.txt", mode="r").read()
 
 client.run(config.token)
