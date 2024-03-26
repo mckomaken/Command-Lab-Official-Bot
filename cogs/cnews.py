@@ -1,3 +1,5 @@
+from datetime import datetime
+from typing import Optional
 from discord import app_commands
 import discord
 import aiohttp
@@ -24,6 +26,26 @@ class PatchNote(BaseModel):
     version: int
 
 
+class VersionManifestEntry(BaseModel):
+    id: str
+    type: str
+    url: str
+    time: datetime
+    releaseTime: datetime
+    sha1: str
+    complianceLevel: int
+
+
+class VersionManifestLatest(BaseModel):
+    release: str
+    snapshot: str
+
+
+class VersionManifest(BaseModel):
+    latest: VersionManifestLatest
+    versions: list[VersionManifestEntry]
+
+
 class CNews(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -44,6 +66,44 @@ class CNews(commands.Cog):
                         embed.set_thumbnail(url="https://launchercontent.mojang.com" + entry.image.url)
                         await interaction.followup.send(embed=embed)
                         return
+
+    @app_commands.command(name="changelog")
+    @app_commands.guild_only()
+    async def changelog(self, interaction: discord.Interaction, version: Optional[str] = ""):
+        await interaction.response.defer()
+        try:
+            async with aiohttp.ClientSession() as client:
+                async with client.get("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json") as resp:
+                    data = VersionManifest.model_validate(await resp.json())
+
+                    clsv: str = data.latest.snapshot
+                    clrv: str = version or data.latest.release
+                    cclrv: str = clrv.replace(".", "-")
+                    latest_embed = discord.Embed(
+                        title=f"【 {clsv} & {clrv} 】のchangelog",
+                        color=discord.Color.orange(),
+                        timestamp=datetime.now()
+                    )
+                    if version == "":
+                        latest_embed.add_field(
+                            name="--------------------------\nLatest Snapshot Version\n--------------------------", value="", inline=False
+                        )
+                        latest_embed.add_field(
+                            name="【English References】", value="https://www.minecraft.net/en-us/article/minecraft-snapshot-" + clsv, inline=False
+                        )
+                        latest_embed.add_field(name="【English Wiki】", value="https://minecraft.wiki/w/Java_Edition_" + clsv, inline=False)
+                        latest_embed.add_field(name="【Japanese Wiki】", value="https://ja.minecraft.wiki/w/Java_Edition_" + clsv, inline=False)
+                        latest_embed.add_field(
+                            name="------------------------\nLatest Release Version\n------------------------", value="", inline=False
+                        )
+                    latest_embed.add_field(
+                        name="【English References】", value="https://www.minecraft.net/en-us/article/minecraft-snapshot-" + cclrv, inline=False
+                    )
+                    latest_embed.add_field(name="【English Wiki】", value="https://minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
+                    latest_embed.add_field(name="【Japanese Wiki】", value="https://ja.minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
+                    await interaction.followup.send(embed=latest_embed)
+        except Exception:
+            await interaction.followup.delete(reason="エラー")
 
 
 async def setup(bot: commands.Bot):
