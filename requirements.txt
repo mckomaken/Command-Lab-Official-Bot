@@ -1,0 +1,4 @@
+discord
+pydantic
+table2ascii
+jishaku
