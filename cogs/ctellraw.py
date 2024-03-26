@@ -61,17 +61,17 @@ class SectionDataText(BaseModel):
     strikethrough: bool = False
 
 
-def to_command(data: list[SectionDataText]) -> str:
+def to_command(data: list[SectionDataText], cmd: str) -> str:
     result: list[str] = []
     for e in data:
         result.append(e.model_dump_json(exclude_defaults=True))
 
-    return f"/tellraw @a [{','.join(result)}]"
+    return cmd.format(f"[{','.join(result)}]")
 
 
-def create_tellraw_embed(datas: list[SectionDataText], section: tuple[int]) -> Embed:
+def create_tellraw_embed(datas: list[SectionDataText], section: tuple[int], cmd: str) -> Embed:
     data = datas[section[0]]
-    cmd = to_command(datas)
+    cmd = to_command(datas, cmd)
 
     title = data.text
     if data.bold:
@@ -92,7 +92,7 @@ def create_tellraw_embed(datas: list[SectionDataText], section: tuple[int]) -> E
 
 
 class TellrawModal(Modal):
-    def __init__(self, data: list[SectionDataText], section: int, view: View) -> None:
+    def __init__(self, data: list[SectionDataText], section: int, view: View, cmd: str) -> None:
         super().__init__(title="内容を設定", timeout=None)
         self.data = data
         self.section = section
@@ -104,6 +104,7 @@ class TellrawModal(Modal):
             required=False
         )
         self.view = view
+        self.cmd = cmd
 
         self.add_item(self.text)
 
@@ -112,17 +113,18 @@ class TellrawModal(Modal):
         await interaction.response.edit_message(
             embed=create_tellraw_embed(datas=self.data, section=(
                 self.section, len(self.data)
-            )),
+            ), cmd=self.cmd),
             view=self.view
         )
 
 
 class TellrawSection(View):
-    def __init__(self, index: int, length: int):
+    def __init__(self, index: int, length: int, cmd: str):
         super().__init__(timeout=None)
         self.section = index
         self.data: list[SectionDataText] = []
         self.length = 0
+        self.cmd = cmd
 
     @button(label="-", style=ButtonStyle.danger, disabled=True)
     async def remove_section(self, interaction: Interaction, item: Button):
@@ -134,7 +136,7 @@ class TellrawSection(View):
         await interaction.response.edit_message(
             embed=create_tellraw_embed(datas=self.data, section=(
                 self.section, len(self.data)
-            )),
+            ), cmd=self.cmd),
             view=self
         )
 
@@ -149,14 +151,14 @@ class TellrawSection(View):
         await interaction.response.edit_message(
             embed=create_tellraw_embed(datas=self.data, section=(
                 self.section, len(self.data)
-            )),
+            ), cmd=self.cmd),
             view=self
         )
 
     @button(label="Edit", style=ButtonStyle.primary, disabled=True)
     async def edit_section(self, interaction: Interaction, item: Button):
         await interaction.response.send_modal(TellrawModal(
-            self.data, self.section, self
+            self.data, self.section, self, self.cmd
         ))
 
     @button(label=">", style=ButtonStyle.secondary, disabled=True)
@@ -171,7 +173,7 @@ class TellrawSection(View):
         await interaction.response.edit_message(
             embed=create_tellraw_embed(datas=self.data, section=(
                 self.section, len(self.data)
-            )),
+            ), cmd=self.cmd),
             view=self
         )
 
@@ -185,8 +187,9 @@ class TellrawSection(View):
         if len(self.data) >= 2:
             self.remove_section.disabled = False
             self.prev_section.disabled = False
+
         await interaction.response.send_modal(TellrawModal(
-            self.data, self.section, self
+            self.data, self.section, self, self.cmd
         ))
 
     @select(
@@ -199,7 +202,7 @@ class TellrawSection(View):
         await interaction.response.edit_message(
             embed=create_tellraw_embed(datas=self.data, section=(
                 self.section, len(self.data)
-            )),
+            ), cmd=self.cmd),
             view=self
         )
 
@@ -232,7 +235,7 @@ class TellrawSection(View):
         await interaction.response.edit_message(
             embed=create_tellraw_embed(datas=self.data, section=(
                 self.section, len(self.data)
-            )),
+            ), cmd=self.cmd),
             view=self
         )
 
@@ -241,11 +244,19 @@ class CTellraw(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="ctellraw")
+    @app_commands.command(
+        name="ctellraw", description="tellrawコマンドを作成します"
+    )
     @app_commands.guild_only()
     async def tellraw(self, interaction: Interaction):
+        await interaction.response.send_message(view=TellrawSection(0, 1, "/tellraw @a {}"))
 
-        await interaction.response.send_message(view=TellrawSection(0, 1))
+    @app_commands.command(
+        name="ctitle", description="titleコマンドを作成します"
+    )
+    @app_commands.guild_only()
+    async def title(self, interaction: Interaction):
+        await interaction.response.send_message(view=TellrawSection(0, 1, "/title @a title {}"))
 
 
 async def setup(bot: commands.Bot):

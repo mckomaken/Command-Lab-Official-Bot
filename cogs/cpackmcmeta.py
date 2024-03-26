@@ -122,14 +122,14 @@ class CPackMcMeta(app_commands.Group):
         )
 
         lv_embed.add_field(name=f"【{LATEST_RELEASE_VERSION}】Latest Release Version", value="", inline=False)
-        lv_embed.add_field(name="Resource\nPack", value=f"{LATEST_RELEASE_RP}", inline=True)
-        lv_embed.add_field(name="Data\nPack", value=f"{LATEST_RELEASE_DP}", inline=True)
+        lv_embed.add_field(name="Resource\nPack", value=f"{create_codeblock(LATEST_RELEASE_RP)}", inline=True)
+        lv_embed.add_field(name="Data\nPack", value=f"{create_codeblock(LATEST_RELEASE_DP)}", inline=True)
 
         lv_embed.add_field(name=f"【{LATEST_SS_VERISON}】Latest Snapshot Version", value="", inline=False)
-        lv_embed.add_field(name="Resource\nPack", value=f"{LATEST_SS_VERISON_RP}", inline=True)
-        lv_embed.add_field(name="Data\nPack", value=f"{LATEST_SS_VERISON_DP}", inline=True)
+        lv_embed.add_field(name="Resource\nPack", value=f"{create_codeblock(LATEST_SS_VERISON_RP)}", inline=True)
+        lv_embed.add_field(name="Data\nPack", value=f"{create_codeblock(LATEST_SS_VERISON_DP)}", inline=True)
 
-        interaction.response.send_message(embed=lv_embed)
+        await interaction.response.send_message(embed=lv_embed)
 
     # ----------------------------------------------------------------
 

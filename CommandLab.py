@@ -38,12 +38,11 @@ ORUVANORUVAN = """ஒருவன் ஒருவன் முதலாளி
 
 @client.event
 async def on_ready():
-    SJST_time = datetime.now()
     start_embed = discord.Embed(
         title="BOTが起動しました！",
         description="BOT has been started!",
         color=0xffd700,
-        timestamp=SJST_time
+        timestamp=datetime.now()
     )
 
     print("BOTが起動しました")
