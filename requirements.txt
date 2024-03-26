@@ -3,3 +3,4 @@ pydantic
 jishaku
 Pillow
 markdownify
+aiohttp
