@@ -83,8 +83,10 @@ class CNews(commands.Cog):
                     clsv: str = data.latest.snapshot
                     clrv: str = version or data.latest.release
                     cclrv: str = clrv.replace(".", "-")
+
+                    clsv2 = f"{clsv} & {clrv}" if version == "" else clrv
                     latest_embed = discord.Embed(
-                        title=f"【 {clsv} & {clrv} 】のchangelog",
+                        title=f"【 {clsv2} 】のchangelog",
                         color=discord.Color.orange(),
                         timestamp=datetime.now()
                     )
@@ -100,11 +102,27 @@ class CNews(commands.Cog):
                         latest_embed.add_field(
                             name="------------------------\nLatest Release Version\n------------------------", value="", inline=False
                         )
-                    latest_embed.add_field(
-                        name="【English References】", value="https://www.minecraft.net/en-us/article/minecraft-snapshot-" + cclrv, inline=False
-                    )
-                    latest_embed.add_field(name="【English Wiki】", value="https://minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
-                    latest_embed.add_field(name="【Japanese Wiki】", value="https://ja.minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
+                        latest_embed.add_field(
+                            name="【English References】", value="https://www.minecraft.net/en-us/article/minecraft-java-edition-" + cclrv, inline=False
+                        )
+                        latest_embed.add_field(name="【English Wiki】", value="https://minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
+                        latest_embed.add_field(name="【Japanese Wiki】", value="https://ja.minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
+                    else:
+                        if clrv.count(".") >= 1:
+                            latest_embed.add_field(
+                                name="【English References】",
+                                value="https://www.minecraft.net/en-us/article/minecraft-java-edition-" + cclrv,
+                                inline=False
+                            )
+                        else:
+                            latest_embed.add_field(
+                                name="【English References】",
+                                value="https://www.minecraft.net/en-us/article/minecraft-snapshot-" + cclrv,
+                                inline=False
+                            )
+                        latest_embed.add_field(name="【English Wiki】", value="https://minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
+                        latest_embed.add_field(name="【Japanese Wiki】", value="https://ja.minecraft.wiki/w/Java_Edition_" + clrv, inline=False)
+
                     await interaction.followup.send(embed=latest_embed)
         except Exception:
             await interaction.followup.send("エラーが発生しました")
