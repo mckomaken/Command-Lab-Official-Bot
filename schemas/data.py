@@ -74,3 +74,16 @@ class Blocks(RootModel):
 
 class Items(RootModel):
     root: list[ItemEntry]
+
+
+class CommandEntryJEBE(BaseModel):
+    je: Optional[str] = None
+    be: Optional[str] = None
+
+
+class CommandEntry(BaseModel):
+    is_diff: bool
+    ver: CommandEntryJEBE
+    desc: str
+    exmp: CommandEntryJEBE
+    options: CommandEntryJEBE

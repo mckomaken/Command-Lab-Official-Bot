@@ -67,6 +67,7 @@ class SectionDataText(BaseModel):
 def to_command(data: list[SectionDataText], cmd: str) -> str:
     result: list[str] = []
     for e in data:
+        e.text = e.text.replace("\n", "\\n")
         result.append(e.model_dump_json(exclude_defaults=True))
 
     return cmd.format(f"[{','.join(result)}]")
@@ -98,15 +99,39 @@ def create_preview(datas: list[SectionDataText]):
     img = Image.new("RGBA", (512, 100), color=0x000000)
     d = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype("./assets/unifont-15.1.04.ttf", 11)
+    font = ImageFont.truetype("./assets/unifont-15.1.05.otf", 14)
 
-    cursor = 20
+    cursor = 10
+    cursor_y = 10
     for data in datas:
-        d.text((cursor, 0), data.text, fill=get_color(data.color), font=font)
-        cursor += d.textlength(data.text, font=font)
+        value = get_color(data.color)
+        R = value % 256
+        value = value // 256
+        G = value % 256
+        value = value // 256
+        B = value % 256
+
+        d.multiline_text((cursor, cursor_y), data.text, fill=(B, G, R, 255), font=font)
+        if data.bold:
+            d.text((cursor + 1, cursor_y), data.text, fill=(B, G, R, 255), font=font)
+            cursor += 1
+        if data.underline:
+            twidth = d.textlength(data.text, font=font)
+            lx, ly = cursor, 14 + cursor_y
+            d.line((lx, ly, lx + twidth, ly), fill=(B, G, R, 255), width=1)
+        if data.underline:
+            twidth = d.textlength(data.text, font=font)
+            lx, ly = cursor, 7 + cursor_y
+            d.line((lx, ly, lx + twidth, ly), fill=(B, G, R, 255), width=1)
+
+        if "\n" in "data.text":
+            cursor_y += 14
+            cursor = 10
+
+        cursor += d.textlength(data.text.split("\n")[0], font=font)
 
     stream = io.BytesIO()
-    img.resize((1024, 200)).save(stream, "WEBP")
+    img.resize((1024, 200), resample=Image.Resampling.NEAREST).save(stream, "WEBP")
     file = discord.File(io.BytesIO(stream.getvalue()), filename="preview.webp")
 
     return file
@@ -131,6 +156,7 @@ class TellrawModal(Modal):
 
     async def on_submit(self, interaction: Interaction):
         self.data[self.section].text = self.text.value or ""
+
         await interaction.response.edit_message(
             embed=create_tellraw_embed(datas=self.data, section=(
                 self.section, len(self.data)
@@ -262,10 +288,25 @@ class TellrawSection(View):
 
     @button(label="プレビュー")
     async def preview(self, interaction: Interaction, item: Button):
-        embed = Embed(title="プレビュー")
+        embed = Embed(title="プレビュー", description="※斜体と隠し文字は非対応です。\n※あくまでイメージです。実際は異なる場合があります。")
         embed.set_image(url="attachment://preview.webp")
 
-        await interaction.response.send_message(embed=embed, file=create_preview(self.data))
+        await interaction.response.send_message(embed=embed, file=create_preview(self.data), ephemeral=True)
+
+    @button(label="更新")
+    async def refresh(self, interaction: Interaction, item: Button):
+        if len(self.data) <= 0:
+            await interaction.response.edit_message(
+                view=self
+            )
+            return
+
+        await interaction.response.edit_message(
+            embed=create_tellraw_embed(datas=self.data, section=(
+                self.section, len(self.data)
+            ), cmd=self.cmd),
+            view=self
+        )
 
 
 class CTellraw(commands.Cog):

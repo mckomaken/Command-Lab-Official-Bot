@@ -1,0 +1,1860 @@
+{
+    "command_data": {
+        "?": {
+            "is_diff": false,
+            "ver": {
+                "je": "None",
+                "be": "-"
+            },
+            "desc": "コマンドのヘルプや一覧を表示する。",
+            "exmp": {
+                "je": "-",
+                "be": "-"
+            },
+            "options": {
+                "je": "-",
+                "be": "-"
+            }
+        },
+        "ability": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "プレイヤーに特定の能力を付与・解除する。",
+            "exmp": {
+                "je": null,
+                "be": "/ability @s mayfly true"
+            },
+            "options": {
+                "je": null,
+                "be": "ability <プレイヤー> <能力(文字列)> <ブール値>"
+            }
+        },
+        "advancement": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "プレイヤーへ進捗を付与、またはプレイヤーの進捗を取り消す。",
+            "exmp": {
+                "je": "/advancement grant @a everything",
+                "be": null
+            },
+            "options": {
+                "je": "advancement (grant|revoke) <対象> (everything|only|from|through|until) ...",
+                "be": null
+            }
+        },
+        "alwaysday": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "昼夜サイクルを固定または固定解除する。",
+            "exmp": {
+                "je": null,
+                "be": "/alwaysday true\n/daylock true"
+            },
+            "options": {
+                "je": null,
+                "be": "(daylock|alwaysday) [lock: Boolean]"
+            }
+        },
+        "attribute": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "属性の編集、および読み取りを行う。",
+            "exmp": {
+                "je": "/attribute @s minecraft:generic.max_health base set 40",
+                "be": null
+            },
+            "options": {
+                "je": "attribute <対象> <属性> (base|get|set|modifier) ...",
+                "be": null
+            }
+        },
+        "ban": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "以下のコマンドはサーバーのブラックリスト（BANリスト）を管理することができる。ブラックリストとは、サーバーへの接続を許可しないプレイヤーおよびIPアドレスの一覧である。BANされたプレイヤーはホワイトリストに登録されていてもサーバーに接続することができない。",
+            "exmp": {
+                "je": "/ban @a",
+                "be": null
+            },
+            "options": {
+                "je": "ban <対象> [理由]",
+                "be": null
+            }
+        },
+        "ban-ip": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "IPアドレスをブラックリストに追加する。",
+            "exmp": {
+                "je": "/ban-ip @a",
+                "be": null
+            },
+            "options": {
+                "je": "ban-ip <対象> [理由]",
+                "be": null
+            }
+        },
+        "banlist": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "サーバーのブラックリストを表示する。",
+            "exmp": {
+                "je": "/banlist",
+                "be": null
+            },
+            "options": {
+                "je": "banlist [ips|players]",
+                "be": null
+            }
+        },
+        "bossbar": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "ボスバーを作成、変更する。",
+            "exmp": {
+                "je": "/bossbar add Health",
+                "be": null
+            },
+            "options": {
+                "je": "bossbar (add|get|list|remove|set) ...",
+                "be": null
+            }
+        },
+        "camera": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "Not Found.",
+            "exmp": {
+                "je": "",
+                "be": ""
+            },
+            "options": {
+                "je": "Not Found.",
+                "be": "Not Found."
+            }
+        },
+        "camerashake": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "プレイヤーの視点を揺らす (対象のプレイヤーがアクセシビリティ設定でオフにしていればこのエフェクトは見えない)。",
+            "exmp": {
+                "je": null,
+                "be": "/camerashake add @s 0.25 5 positional"
+            },
+            "options": {
+                "je": null,
+                "be": "camerashake (add|stop) ..."
+            }
+        },
+        "changesetting": {
+            "is_diff": true,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "実行中のdedicated server (BDS)の設定を変更する。",
+            "exmp": {
+                "je": null,
+                "be": "/changesetting difficulty normal"
+            },
+            "options": {
+                "je": null,
+                "be": "changesetting (allow-cheats|difficulty)"
+            }
+        },
+        "clear": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーのインベントリからアイテムを消去する。カーソルで持っている状態でスロットには設置されていないアイテムにも作用する。",
+            "exmp": {
+                "je": "/clear @s minecraft:apple 3",
+                "be": "/clear @s minecraft:wool 0 3"
+            },
+            "options": {
+                "je": "clear [<対象>] [<アイテム>] [<最大個数>]",
+                "be": "clear [player: target] [itemName: Item] [data: int] [maxCount: int]"
+            }
+        },
+        "clearspawnpoint": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "ワールド内のスポーン地点を削除する。",
+            "exmp": {
+                "je": null,
+                "be": "/clearspawnpoint @a"
+            },
+            "options": {
+                "je": null,
+                "be": "clearspawnpoint [player: target]"
+            }
+        },
+        "clone": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "指定した領域のブロックを別の領域に複製する。",
+            "exmp": {
+                "je": "/fill ~ ~ ~ ~4 ~4 ~4 ~ ~20 ~",
+                "be": "/fill ~ ~ ~ ~4 ~4 ~4 ~ ~20 ~"
+            },
+            "options": {
+                "je": "clone [from <sourceDimension>] <begin> <end> (<destination>|to <targetDimension> <destination>) ([replace|masked] [force|move|normal]|filtered <filter> [force|move|normal])",
+                "be": "clone <begin: x y z> <end: x y z> <destination: x y z> ([maskMode: MaskMode] [cloneMode: CloneMode]|filtered <cloneMode: CloneMode> <tileName: Block> [blockStates: block states])"
+            }
+        },
+        "connect": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "\"WebSocket server\"を意味する。コマンドメッセージを使用してクライアントと通信するWebSocketサーバーに接続するために使用される。主にEducation Editionで使用される。Stands for \"WebSocket server\".",
+            "exmp": {
+                "je": "",
+                "be": "-"
+            },
+            "options": {
+                "je": null,
+                "be": "(connect|wsserver) <serverUri: text>"
+            }
+        },
+        "damage": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "指定したエンティティにダメージを与える。",
+            "exmp": {
+                "je": "/damage @s 4 generic by @e[type=!player,limit=1,sort=nearest]",
+                "be": "/damage @s 4 entity_attack entity @e[type=!player,c=1,sort=nearest]"
+            },
+            "options": {
+                "je": "damage <target> <amount> [<damageType>] ([at <location>]|[by <entity>] [from <cause>])",
+                "be": "damage <target: target> <amount: int> [cause: DamageCause] [entity <damager: target>]"
+            }
+        },
+        "data": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "ブロックエンティティ・エンティティ・NBTストレージのNBTデータの取得・統合・編集・削除を行うことができる。",
+            "exmp": {
+                "je": "/data get entity @s",
+                "be": null
+            },
+            "options": {
+                "je": "data (get|merge|modify|remove) ...",
+                "be": null
+            }
+        },
+        "datapack": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "データパックの読み込み・読み込み終了を操作する。",
+            "exmp": {
+                "je": "/datapack list",
+                "be": ""
+            },
+            "options": {
+                "je": "datapack (disable|enable|list) ...",
+                "be": null
+            }
+        },
+        "daylock": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "昼夜サイクルを固定または固定解除する。",
+            "exmp": {
+                "je": null,
+                "be": "/daylock true"
+            },
+            "options": {
+                "je": null,
+                "be": "(daylock|alwaysday) [lock: Boolean]"
+            }
+        },
+        "debug": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "デバッグセッションを開始/停止する。",
+            "exmp": {
+                "je": "/debug start",
+                "be": null
+            },
+            "options": {
+                "je": "debug <start|stop|function> ...",
+                "be": null
+            }
+        },
+        "defaultgamemode": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "マルチプレイサーバーにおける新規プレイヤーのデフォルトのゲームモード（クリエイティブ、サバイバル、など）を設定する。server.propertiesのforce-gamemodeがtureに設定されている状態、またはLANのワールドで実行した場合は、デフォルトのゲームモードが設定されるとともにオンラインのプレイヤー全員のゲームモードが設定したゲームモードに変更される。",
+            "exmp": {
+                "je": "/defaultgamemode creative",
+                "be": ""
+            },
+            "options": {
+                "je": "defaultgamemode <gamemode>",
+                "be": ""
+            }
+        },
+        "deop": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "対象のプレイヤーから、オペレーター権限を剥奪する。",
+            "exmp": {
+                "je": "/deop @a",
+                "be": "/deop @a"
+            },
+            "options": {
+                "je": "deop <targets>",
+                "be": "deop <player: target>"
+            }
+        },
+        "dialogue": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "プレイヤーにNPCのダイアログを表示したり、そのダイアログを変更したりする。",
+            "exmp": {
+                "je": null,
+                "be": "/dialogue open @e[type=npc, tag=Test] @s TestScene"
+            },
+            "options": {
+                "je": null,
+                "be": "dialogue (open|change) ..."
+            }
+        },
+        "difficulty": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "難易度の設定・取得を行う。",
+            "exmp": {
+                "je": "/difficulty hard",
+                "be": "/difficulty h"
+            },
+            "options": {
+                "je": "difficulty [peaceful|easy|normal|hard]",
+                "be": "difficulty <difficulty: Difficulty>"
+            }
+        },
+        "effect": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "対象のプレイヤーや他のエンティティの、ステータス効果を管理する。",
+            "exmp": {
+                "je": "/effect clear @s",
+                "be": "/effect @s clear"
+            },
+            "options": {
+                "je": "effect (clear|give) [<targets>] [<effect>] ...",
+                "be": "effect <player: target> (clear|<effect: Effect>) ..."
+            }
+        },
+        "enchant": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーが手に持っているアイテムにエンチャントを付与する。プレイヤー以外のエンティティが手に持っているアイテムにも同様の操作ができる。",
+            "exmp": {
+                "je": "/enchant @s minecraft:sharpness 5",
+                "be": "/enchant @s minecraft:sharpness 5"
+            },
+            "options": {
+                "je": "enchant <targets> <enchantment> [<level>]",
+                "be": "enchant <player: target> <enchantmentId: int> [level: int]"
+            }
+        },
+        "event": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "エンティティにイベントを実行させる。",
+            "exmp": {
+                "je": null,
+                "be": "/event entity @e[type=creeper] minecraft:start_exploding"
+            },
+            "options": {
+                "je": null,
+                "be": "event entity <target: target> <eventName: string>"
+            }
+        },
+        "execute": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "実行者、実行する位置や方角、前提条件、実行結果の格納先を指定して他のコマンドを実行する。",
+            "exmp": {
+                "je": "リンク先を参照",
+                "be": "リンク先を参照"
+            },
+            "options": {
+                "je": "リンク先を参照",
+                "be": "リンク先を参照"
+            }
+        },
+        "experience": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーの経験値を増減させたり、値を取得したりする。",
+            "exmp": {
+                "je": "/experience add @s 4 levels",
+                "be": "/xp 4L @s"
+            },
+            "options": {
+                "je": "(experience|xp) (add|set|query) <targets> ...",
+                "be": "xp <amount: int>[L] [player: target]"
+            }
+        },
+        "fill": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "領域の全部または一部を指定したブロックで満たす。",
+            "exmp": {
+                "je": "/fill ~ ~ ~ ~4 ~4 ~4 stone",
+                "be": "/fill ~ ~ ~ ~4 ~4 ~4 stone"
+            },
+            "options": {
+                "je": "fill <from> <to> <block> [destroy|hollow|keep|outline|replace] ...",
+                "be": "fill <from: x y z> <to: x y z> <tileName: Block> ..."
+            }
+        },
+        "fillbiome": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "指定した領域を指定したバイオームで上書きする。",
+            "exmp": {
+                "je": "/fillbiome ~ ~ ~ ~10 ~ ~10 plains",
+                "be": ""
+            },
+            "options": {
+                "je": "/fillbiome <from> <to> <biome> [replace <filter>]",
+                "be": null
+            }
+        },
+        "fog": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "プレイヤーへ表示する霧の管理を行う。",
+            "exmp": {
+                "je": null,
+                "be": "/fog @s push minecraft:fog_hell Test"
+            },
+            "options": {
+                "je": null,
+                "be": "fog <victim: target> ..."
+            }
+        },
+        "forceload": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "常時読み込みするチャンクの追加・解除、リストの表示を行う。",
+            "exmp": {
+                "je": "/forceload add ~ ~ ~ ~",
+                "be": null
+            },
+            "options": {
+                "je": "forceload (add|remove|query) ...",
+                "be": null
+            }
+        },
+        "function": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "このコマンドの実行文脈（実行者、実行地点、視方向など）をそのまま適用して関数を実行する。",
+            "exmp": {
+                "je": "-",
+                "be": "-"
+            },
+            "options": {
+                "je": "function <name> [<arguments>|with (block <sourcePos>|entity <source>|storage <source>) [<path>]]",
+                "be": "function <name: filepath>"
+            }
+        },
+        "gamemode": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーのゲームモードを変更する。",
+            "exmp": {
+                "je": "/gamemode creative @s",
+                "be": "/gamemode creative @s"
+            },
+            "options": {
+                "je": "gamemode <gamemode> [<target>]",
+                "be": "gamemode <gameMode: GameMode> [player: target]"
+            }
+        },
+        "gamerule": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "ゲームルールの値を変更もしくは照会する。",
+            "exmp": {
+                "je": "/gamerule mobGriefing false",
+                "be": "/gamerule mobGriefing false"
+            },
+            "options": {
+                "je": "gamerule <rule name> [<value>]",
+                "be": "gamerule <rule: BoolGameRule> [value: Boolean]"
+            }
+        },
+        "gametest": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "ストラクチャーコードのテストを自動で行うツール。",
+            "exmp": {
+                "je": null,
+                "be": "-"
+            },
+            "options": {
+                "je": null,
+                "be": "gamemode (runthis|run|runthese|runset|clearall|create|pos|stopall|runsetuntilfail) ..."
+            }
+        },
+        "give": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーにアイテムを与えます。",
+            "exmp": {
+                "je": "/give @s apple 4",
+                "be": "/give @s apple 4"
+            },
+            "options": {
+                "je": "give <target> <item> [<count>]",
+                "be": "give <player: target> <itemName: Item> [amount: int] [data: int] [components: json]"
+            }
+        },
+        "help": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "コマンドのヘルプや一覧を表示する。",
+            "exmp": {
+                "je": "/help",
+                "be": "/help"
+            },
+            "options": {
+                "je": "help",
+                "be": "help"
+            }
+        },
+        "immutableworld": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "ワールドの変更の可能・不可能を切り替える。",
+            "exmp": {
+                "je": "",
+                "be": "/immutableworld true"
+            },
+            "options": {
+                "je": null,
+                "be": "immutableworld [value: Boolean]"
+            }
+        },
+        "item": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "このコマンドでは、収納ブロック（チェストやかまどなど）やエンティティ（プレイヤーやMob）のインベントリ上のアイテムを編集・コピーすることができる。",
+            "exmp": {
+                "je": "リンク先を参照",
+                "be": null
+            },
+            "options": {
+                "je": "item (modify|replace) (block <座標>|entity <対象>) <スロット> ...",
+                "be": null
+            }
+        },
+        "jfr": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "Java FlightRecorderによるプロファイリング、およびカスタマイズされた追加のイベントを開始・停止する。",
+            "exmp": {
+                "je": "リンク先を参照",
+                "be": null
+            },
+            "options": {
+                "je": "jfr (start|stop)",
+                "be": null
+            }
+        },
+        "kick": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "対象のプレイヤーをサーバーから強制退出させるとともに、相手の画面に表示される退出理由を表示させる。",
+            "exmp": {
+                "je": "/kick @a",
+                "be": "/kick @a"
+            },
+            "options": {
+                "je": "kick <target> [<reason>]",
+                "be": "kick <name: target> [reason: message]"
+            }
+        },
+        "kill": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーやMob、アイテムなどのエンティティを死亡・消滅させる。",
+            "exmp": {
+                "je": "/kill @e",
+                "be": "/kill @e"
+            },
+            "options": {
+                "je": "kill [<targets>]",
+                "be": "kill [target: target]"
+            }
+        },
+        "list": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "サーバー上のプレイヤーの一覧を表示する。",
+            "exmp": {
+                "je": "/list",
+                "be": "/list"
+            },
+            "options": {
+                "je": "list [uuids]",
+                "be": "list"
+            }
+        },
+        "locate": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "コマンドを実行したプレイヤーから最も近い位置にある構造物やバイオームを検索し、その座標をチャット欄に表示する。",
+            "exmp": {
+                "je": "/locate structure mansion",
+                "be": "/locate structure mansion"
+            },
+            "options": {
+                "je": "locate (structure|biome|poi) ...",
+                "be": "locate (structure|biome) ..."
+            }
+        },
+        "loot": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "ルートテーブルを用いてアイテムを生成し、指定したインベントリのスロットに与えるかドロップアイテムとしてスポーンさせる。",
+            "exmp": {
+                "je": "/loot give @s kill @e[type=creeper,limit=1]",
+                "be": "/loot give @s kill @e[type=creeper,c=1]"
+            },
+            "options": {
+                "je": "loot (give <players>|insert <targetPos>|spawn <targetPos>|replace (block|entity) <targetPos> <slot> [<count>]) (fish|loot|kill|mine) ...",
+                "be": "loot (give <player: target>|insert <position: x y z>|spawn <position: x y z>|replace block <position: x y z> slot.container <slotId: int> [count: int]|replace entity <entity: target> <slotType: EntityEquipmentSlot> <slotId: int> [count: int]) (loot|kill) ..."
+            }
+        },
+        "me": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "自分自身に関するメッセージを配信する。",
+            "exmp": {
+                "je": "/me Hello",
+                "be": "/me Hello"
+            },
+            "options": {
+                "je": "me <action>",
+                "be": "me <message: message>"
+            }
+        },
+        "mobevent": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "Mobイベントの実行を許可するかどうかを制御、または許可されているかどうかを取得する。",
+            "exmp": {
+                "je": null,
+                "be": "/mobevent minecraft:ender_dragon_event false"
+            },
+            "options": {
+                "je": null,
+                "be": "/mobevent <イベント名> [true|false]"
+            }
+        },
+        "msg": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "1人以上のプレイヤーにプライベートメッセージを送信する。",
+            "exmp": {
+                "je": "/msg @a Hello",
+                "be": "/msg @a Hello"
+            },
+            "options": {
+                "je": "msg <player> <message>",
+                "be": "msg <target: target> <message: message>"
+            }
+        },
+        "music": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "音楽の再生操作を行う。",
+            "exmp": {
+                "je": null,
+                "be": ""
+            },
+            "options": {
+                "je": null,
+                "be": "music (play|queue|stop|volume)"
+            }
+        },
+        "op": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "対象プレイヤーにオペレーター権限を与える。",
+            "exmp": {
+                "je": "/op @a",
+                "be": "/op @a"
+            },
+            "options": {
+                "je": "op <targets>",
+                "be": "op <player: target>"
+            }
+        },
+        "ops": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "権限の一覧を表示または再読み込みする。",
+            "exmp": {
+                "je": null,
+                "be": ""
+            },
+            "options": {
+                "je": null,
+                "be": "(ops|permission) (list|reload)"
+            }
+        },
+        "pardon": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "BANリストからプロファイルを削除し、そのプロファイルに対応するUUIDのプレイヤーをサーバーに接続できるようにする。",
+            "exmp": {
+                "je": "/pardon @a",
+                "be": null
+            },
+            "options": {
+                "je": "pardon <targets>",
+                "be": null
+            }
+        },
+        "pardon-ip": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "BANリストからIPアドレスを削除する。",
+            "exmp": {
+                "je": "/pardon-ip 000.000.000.000",
+                "be": null
+            },
+            "options": {
+                "je": "pardon-ip <targets>",
+                "be": null
+            }
+        },
+        "particle": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "パーティクルを発生させる。",
+            "exmp": {
+                "je": "/particle explosion_emitter ^ ^ ^7",
+                "be": "/particle huge_explosion_emitter ^ ^ ^7"
+            },
+            "options": {
+                "je": "particle <name> ([pos]|<pos> <delta> <speed> <count> [force|normal] [<viewers>])",
+                "be": "particle <effect: string> [position: x y z]"
+            }
+        },
+        "perf": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "ゲームの実行状況に関する情報と測定値を10秒間収集する。",
+            "exmp": {
+                "je": "/perf start",
+                "be": null
+            },
+            "options": {
+                "je": "perf (start|stop)",
+                "be": null
+            }
+        },
+        "permission": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "権限の一覧を表示または再読み込みする。",
+            "exmp": {
+                "je": null,
+                "be": ""
+            },
+            "options": {
+                "je": null,
+                "be": "(ops|permission) (list|reload)"
+            }
+        },
+        "place": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "構成された生成物、構造物、構造物テンプレート、ジグソーを設置する。",
+            "exmp": {
+                "je": "/place feature bonus_chest",
+                "be": null
+            },
+            "options": {
+                "je": "place (feature|jigsaw|structure|template) ...",
+                "be": null
+            }
+        },
+        "playanimation": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "Not Found.",
+            "exmp": {
+                "je": null,
+                "be": "/playanimation @s sleeping"
+            },
+            "options": {
+                "je": null,
+                "be": "playanimation <entity: target> <animation: string> [next_state: string] [blend_out_time: float] [stop_expression: string] [controller: string]"
+            }
+        },
+        "playsound": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "指定のサウンドを指定の音量とピッチで、任意のプレイヤーまたは位置に対して再生する。",
+            "exmp": {
+                "je": "/playsound entity.creeper.primed hostile @s",
+                "be": "/playsound mob.creeper.say @s"
+            },
+            "options": {
+                "je": "playsound <sound> <source> <targets> [<pos>] [<volume>] [<pitch>] [<minVolume>]",
+                "be": "playsound <sound: string> [player: target] [position: x y z] [volume: float] [pitch: float] [minimumVolume: float]"
+            }
+        },
+        "publish": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "シングルプレイのワールドをローカルネットワークに公開する。",
+            "exmp": {
+                "je": "/publish",
+                "be": null
+            },
+            "options": {
+                "je": "publish [<allowCommands>] [<gamemode>] [<port>]",
+                "be": null
+            }
+        },
+        "random": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "乱数を抽出したり、乱数列を再設定することができる。",
+            "exmp": {
+                "je": "/random roll 1..6",
+                "be": ""
+            },
+            "options": {
+                "je": "random (value|reset|roll) ...",
+                "be": ""
+            }
+        },
+        "recipe": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーのレシピを解放・剥奪する。",
+            "exmp": {
+                "je": "/recipe give @s *",
+                "be": "/recipe give @s *"
+            },
+            "options": {
+                "je": "recipe (give|take) <targets> (*|<recipe>)",
+                "be": "recipe (give|take) <player: target> (*|<recipe: string>)"
+            }
+        },
+        "reload": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "Java Editionではデータパックを、Bedrock Editionではビヘイビアーパック内の関数を再読み込みする。",
+            "exmp": {
+                "je": "/reload",
+                "be": "/reload"
+            },
+            "options": {
+                "je": "reload",
+                "be": "reload"
+            }
+        },
+        "replaceitem": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "ブロック（チェストやかまどなど）やエンティティ（プレイヤーまたはMob）のインベントリにあるアイテムを、指定されたアイテムで置き換える。",
+            "exmp": {
+                "je": null,
+                "be": ""
+            },
+            "options": {
+                "je": "",
+                "be": "replaceitem (block|entity) ..."
+            }
+        },
+        "return": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "関数の中に組み込んで関数の実行を制御するためのコマンド。その関数の実行を終了させるとともにその関数を起動した/functionの戻り値を与えることができる。",
+            "exmp": {
+                "je": "return 42",
+                "be": null
+            },
+            "options": {
+                "je": "return (<value>|run <command>)",
+                "be": null
+            }
+        },
+        "ride": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "エンティティを別のエンティティに乗せたり降ろしたりする。",
+            "exmp": {
+                "je": "/ride @p mount @e[type=arrow,sort=nearest,limit=1]",
+                "be": "/ride @p start_riding @e[type=arrow,c=1]"
+            },
+            "options": {
+                "je": "ride <target> (mount|dismount) ...",
+                "be": "ride <riders: target> (start_riding|stop_riding|evict_riders|summon_rider|summon_ride) ..."
+            }
+        },
+        "save": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "バックアップの準備をしたり（hold）、その状態を取得したり（query）、再開したり（resume）する。",
+            "exmp": {
+                "je": null,
+                "be": "/save hold"
+            },
+            "options": {
+                "je": null,
+                "be": "save <hold|query|resume>"
+            }
+        },
+        "save-all": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "サーバーのデータを記憶装置に保存する。このコマンドを実行すると全てのチャンクとプレイヤーデータが「要保存」状態としてマークされ、経時的に記憶装置に保存されていく。",
+            "exmp": {
+                "je": "/save-all",
+                "be": null
+            },
+            "options": {
+                "je": "save-all [flush]",
+                "be": null
+            }
+        },
+        "save-off": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "サーバーによるワールドの自動セーブをオフにする。全ての変更は一時的に保存待機中のキューに格納される。",
+            "exmp": {
+                "je": "/save-off",
+                "be": null
+            },
+            "options": {
+                "je": "save-off",
+                "be": null
+            }
+        },
+        "save-on": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "サーバーによるワールドの自動セーブをオンにする。",
+            "exmp": {
+                "je": "save-on",
+                "be": null
+            },
+            "options": {
+                "je": "通常モード。経時的にデータを記憶装置に保存させる。",
+                "be": "save-on"
+            }
+        },
+        "say": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "サーバー上のすべてのプレイヤーにメッセージを送信する。",
+            "exmp": {
+                "je": "say Ho",
+                "be": "say Ho"
+            },
+            "options": {
+                "je": "say <message>",
+                "be": "say <message: message>"
+            }
+        },
+        "schedule": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "Java Editionでは関数を一定の遅延後にサーバー側で実行する予約をする。Bedrock Editionでは関数をその領域が読み込まれた際に実行するよう予約する。",
+            "exmp": {
+                "je": "-",
+                "be": "-"
+            },
+            "options": {
+                "je": "schedule (clear|function) <function> ...",
+                "be": "schedule on_area_loaded add ..."
+            }
+        },
+        "scoreboard": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "スコアボードに関する様々な設定を行う。",
+            "exmp": {
+                "je": "リンク先を参照",
+                "be": "リンク先を参照"
+            },
+            "options": {
+                "je": "リンク先を参照",
+                "be": "リンク先を参照"
+            }
+        },
+        "script": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "GameTest のためのデバッグ設定を行う。",
+            "exmp": {
+                "je": null,
+                "be": "-"
+            },
+            "options": {
+                "je": null,
+                "be": "script (debugger|watchdog) ..."
+            }
+        },
+        "scriptevent": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "IDと要素を渡してスクリプトイベントを発生させる。",
+            "exmp": {
+                "je": null,
+                "be": "-"
+            },
+            "options": {
+                "je": null,
+                "be": "scriptevent <messageId: string> <message: message>"
+            }
+        },
+        "seed": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "ワールドのシード値を表示する。",
+            "exmp": {
+                "je": "/seed",
+                "be": null
+            },
+            "options": {
+                "je": "seed",
+                "be": null
+            }
+        },
+        "setblock": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "ブロックを別のブロックに変更する。",
+            "exmp": {
+                "je": "/setblock 0 100 0 stone",
+                "be": "/setblock 0 100 0 stone"
+            },
+            "options": {
+                "je": "setblock <pos> <block> [destroy|keep|replace]",
+                "be": "setblock <position: x y z> <tileName: Block> <blockStates: block states> [destroy|keep|replace]"
+            }
+        },
+        "setidletimeout": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "何もしていないプレイヤーがサーバーからキックされるまでの時間を設定する。",
+            "exmp": {
+                "je": "/setidletimeout 1",
+                "be": null
+            },
+            "options": {
+                "je": "setidletimeout <minutes>",
+                "be": null
+            }
+        },
+        "setmaxplayers": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "マルチプレイに参加できるプレイヤーの最大数を設定する。",
+            "exmp": {
+                "je": null,
+                "be": "/setmaxplayers 3"
+            },
+            "options": {
+                "je": null,
+                "be": "setmaxplayers <maxPlayers: int>"
+            }
+        },
+        "setworldspawn": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "初期スポーン地点、別称ワールドのスポーン地点を設定する。",
+            "exmp": {
+                "je": "/setworldspawn ~ ~ ~",
+                "be": "/setworldspawn ~ ~ ~"
+            },
+            "options": {
+                "je": "setworldspawn [<pos>] [<angle>]",
+                "be": "setworldspawn [spawnPoint: x y z]"
+            }
+        },
+        "spawnpoint": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーのスポーン地点を設定する。スポーン地点の設定はネザーやジ・エンドでも行うことができる。",
+            "exmp": {
+                "je": "/spawnpoint @s ~ ~ ~",
+                "be": "/spawnpoint @s ~ ~ ~"
+            },
+            "options": {
+                "je": "spawnpoint [<targets>] [<pos>] [<angle>]",
+                "be": "spawnpoint [player: target] [spawnPos: x y z]"
+            }
+        },
+        "spectate": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "スペクテイターのプレイヤーを別のエンティティの視点にする。",
+            "exmp": {
+                "je": "/spectate @s @e[type=creeper,limit=1,sort=nearest]",
+                "be": null
+            },
+            "options": {
+                "je": "spectate [<target> [<player>]]",
+                "be": null
+            }
+        },
+        "spreadplayers": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "エンティティ（プレイヤー、モブ、アイテムなど）を正方形範囲内のランダムな場所に配置する。",
+            "exmp": {
+                "je": "/spreadplayers ~ ~ 100 250",
+                "be": "/spreadplayers ~ ~ 100 250"
+            },
+            "options": {
+                "je": "spreadplayers <center> <spreadDistance> <maxRange> [under <maxHeight>] <respectTeams> <targets>",
+                "be": "spreadplayers <x: value> <z: value> <spreadDistance: float> <maxRange: float> <victim: target>"
+            }
+        },
+        "stop": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "サーバーを安全に停止する。",
+            "exmp": {
+                "je": "/stop",
+                "be": "/stop"
+            },
+            "options": {
+                "je": "stop",
+                "be": "stop"
+            }
+        },
+        "stopsound": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "指定のサウンドを停止する。",
+            "exmp": {
+                "je": "/stopsound @s",
+                "be": "/stopsound @s"
+            },
+            "options": {
+                "je": "stopsound <targets> [<サウンド分類>] [<sound>]",
+                "be": "stopsound <player: target> [sound: string]"
+            }
+        },
+        "structure": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "ストラクチャーブロックを使わずにストラクチャーを保存したり読み込んだりする。",
+            "exmp": {
+                "je": null,
+                "be": "-"
+            },
+            "options": {
+                "je": null,
+                "be": "structure (save|load|delete) ..."
+            }
+        },
+        "summon": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "エンティティを出現させる。",
+            "exmp": {
+                "je": "/summon zombie ~ ~ ~",
+                "be": "/summon zombie ~ ~ ~"
+            },
+            "options": {
+                "je": "summon <entity> [<pos>] [<nbt>]",
+                "be": "summon <entityType: EntityType> [spawnPos: x y z] [yRot: value] [xRot: value] [spawnEvent: string] [nameTag: string]"
+            }
+        },
+        "tag": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "エンティティのタグの管理を行う。",
+            "exmp": {
+                "je": "/tag @s add Test",
+                "be": "/tag @s add Test"
+            },
+            "options": {
+                "je": "tag <targets> (add|list|remove) ...",
+                "be": "tag <entity: targets> (add|list|remove) ..."
+            }
+        },
+        "team": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "チームに関する設定を行う。",
+            "exmp": {
+                "je": "",
+                "be": null
+            },
+            "options": {
+                "je": "team (add|remove|list|empty|join|leave|modify) ...",
+                "be": null
+            }
+        },
+        "teammsg": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "コマンドを実行したエンティティと同じチームに所属しているプレイヤー全員にメッセージを送信する。",
+            "exmp": {
+                "je": "/teammsg Hello",
+                "be": null
+            },
+            "options": {
+                "je": "(tm|teammsg) <message>",
+                "be": null
+            }
+        },
+        "teleport": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "エンティティを指定の場所へテレポートさせる。",
+            "exmp": {
+                "je": "/teleport @a @s",
+                "be": "/teleport @a @s"
+            },
+            "options": {
+                "je": "リンク先を参照",
+                "be": "リンク先を参照"
+            }
+        },
+        "tell": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "1人以上のプレイヤーにプライベートメッセージを送信する。",
+            "exmp": {
+                "je": "/tell @a Hello",
+                "be": "/tell @a Hello"
+            },
+            "options": {
+                "je": "tell <player> <message>",
+                "be": "tell <target: target> <message: message>"
+            }
+        },
+        "tellraw": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "JSON message をプレイヤーに送信する。",
+            "exmp": {
+                "je": "/tellraw @a {\"text\":\"Hello\"}",
+                "be": "/tellraw @a {\"text\":\"Hello\"}"
+            },
+            "options": {
+                "je": "tellraw <targets> <message>",
+                "be": "tellraw <target: target> <raw json message: json>"
+            }
+        },
+        "testfor": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "指定の条件に合致するエンティティ（プレイヤー、モブ、アイテムなど）をカウントする。",
+            "exmp": {
+                "je": null,
+                "be": "/testfor @e[type=creeper]"
+            },
+            "options": {
+                "je": null,
+                "be": "testfor <victim: target>"
+            }
+        },
+        "testforblock": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "指定した場所に、指定したブロックがあるかどうかを調べる。",
+            "exmp": {
+                "je": null,
+                "be": "/testforblock ~ ~-1 ~ dirt"
+            },
+            "options": {
+                "je": null,
+                "be": "testforblock <position: x y z> <tileName: Block> [blockStates: block states]"
+            }
+        },
+        "testforblocks": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "2つの領域の各々のブロックが一致するかどうかをテストする。",
+            "exmp": {
+                "je": "",
+                "be": "/testforblocks 0 100 0 3 100 0 0 99 0"
+            },
+            "options": {
+                "je": "",
+                "be": "testforblocks <begin: x y z> <end: x y z> <destination: x y z> [masked|all]"
+            }
+        },
+        "tickingarea": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "ティック領域を追加、除去、一覧表示する。",
+            "exmp": {
+                "je": null,
+                "be": "/tickingarea add circle ~ ~ ~ 2 Test"
+            },
+            "options": {
+                "je": null,
+                "be": "tickingarea (add|remove|list|preload) ..."
+            }
+        },
+        "time": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "ゲーム内の時刻を表示もしくは変更する。",
+            "exmp": {
+                "je": "/time add 1000t",
+                "be": "/time add 1000"
+            },
+            "options": {
+                "je": "time (add|query|set) ...",
+                "be": "time (add|query|set) ..."
+            }
+        },
+        "title": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーの画面上に表示するテキストを操作する。",
+            "exmp": {
+                "je": "/title @a title Title!",
+                "be": "/title @a title Title!"
+            },
+            "options": {
+                "je": "title <targets> (clear|reset|title|subtitle|actionbar|times) ...",
+                "be": "title <player: target> <clear|reset|title|subtitle|actionbar|times> ..."
+            }
+        },
+        "titleraw": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "プレイヤーの画面上に表示するテキストを操作する。",
+            "exmp": {
+                "je": null,
+                "be": "/titleraw @a title {\"rawtext\": [{\"text\":\"Hello!\"]}]}"
+            },
+            "options": {
+                "je": null,
+                "be": "titleraw <player: target> <clear|reset|title|subtitle|actionbar|times> ..."
+            }
+        },
+        "tm": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "コマンドを実行したエンティティと同じチームに所属しているプレイヤー全員にメッセージを送信する。",
+            "exmp": {
+                "je": "/tm Hello",
+                "be": null
+            },
+            "options": {
+                "je": "(tm|teammsg) <message>",
+                "be": null
+            }
+        },
+        "toggledownfall": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "天候を切り替える。",
+            "exmp": {
+                "je": null,
+                "be": "/toggledownfall"
+            },
+            "options": {
+                "je": null,
+                "be": "toggledownfall"
+            }
+        },
+        "tp": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "エンティティを指定の場所へテレポートさせる。",
+            "exmp": {
+                "je": "/tp @a @s",
+                "be": "/tp @a @s"
+            },
+            "options": {
+                "je": "リンク先を参照",
+                "be": "リンク先を参照"
+            }
+        },
+        "trigger": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "トリガー型のスコアボードオブジェクトを変更する。",
+            "exmp": {
+                "je": "-",
+                "be": null
+            },
+            "options": {
+                "je": "trigger <objective> [<add|set> <value>]",
+                "be": null
+            }
+        },
+        "volumearea": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "現在のディメンションにあるボリューム（霧を発生させるエリア）を追加、除去、一覧表示する。",
+            "exmp": {
+                "je": null,
+                "be": "-"
+            },
+            "options": {
+                "je": null,
+                "be": "volumearea (add|remove|remove_all|list)"
+            }
+        },
+        "w": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "1人以上のプレイヤーにプライベートメッセージを送信する。",
+            "exmp": {
+                "je": "/w @a Hello",
+                "be": "/w @a Hello"
+            },
+            "options": {
+                "je": "w <player> <message>",
+                "be": "w <player> <message>"
+            }
+        },
+        "wb": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "プレイヤーのブロックの設置および破壊ができるかどうかを切り替える。",
+            "exmp": {
+                "je": null,
+                "be": "/wb"
+            },
+            "options": {
+                "je": null,
+                "be": "(wb|worldbuilder)"
+            }
+        },
+        "weather": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "天候を設定する。Bedrock Editionでは、現在の天気を取得することもできる。",
+            "exmp": {
+                "je": "/weather clear 24000",
+                "be": "/weather clear 24000"
+            },
+            "options": {
+                "je": "weather (clear|rain|thunder) [<duration>]",
+                "be": "weather <clear|rain|thunder|query> ..."
+            }
+        },
+        "whitelist": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "サーバーのホワイトリストを操作することができる。ホワイトリストを有効にすると、そのリストに含まれているプレイヤーのみがそのサーバーに参加できるようになる。",
+            "exmp": {
+                "je": "",
+                "be": ""
+            },
+            "options": {
+                "je": "whitelist add <targets>（Java Edition）",
+                "be": "allowlist add <name: string>（Bedrock Edition）\nプレイヤーのプロファイルをホワイトリストに追加する。対象のプレイヤーが現在オンラインでなくてもよい。"
+            }
+        },
+        "worldborder": {
+            "is_diff": false,
+            "ver": {
+                "je": "1.20.4",
+                "be": null
+            },
+            "desc": "ワールド境界を操作することができる。",
+            "exmp": {
+                "je": "/worldborder set 100 10",
+                "be": null
+            },
+            "options": {
+                "je": "worldborder (add|center|damage|get|set|warning) ...",
+                "be": null
+            }
+        },
+        "worldbuilder": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "プレイヤーのブロックの設置および破壊ができるかどうかを切り替える。",
+            "exmp": {
+                "je": null,
+                "be": "/wb"
+            },
+            "options": {
+                "je": null,
+                "be": "(wb|worldbuilder)"
+            }
+        },
+        "wsserver": {
+            "is_diff": false,
+            "ver": {
+                "je": null,
+                "be": "-"
+            },
+            "desc": "\"WebSocket server\"を意味する。コマンドメッセージを使用してクライアントと通信するWebSocketサーバーに接続するために使用される。主にEducation Editionで使用される。Stands for \"WebSocket server\".",
+            "exmp": {
+                "je": "",
+                "be": "-"
+            },
+            "options": {
+                "je": null,
+                "be": "(connect|wsserver) <serverUri: text>"
+            }
+        },
+        "xp": {
+            "is_diff": true,
+            "ver": {
+                "je": "1.20.4",
+                "be": "-"
+            },
+            "desc": "プレイヤーの経験値を増減させたり、値を取得したりする。\n※JEでは/experienceが使用されています。",
+            "exmp": {
+                "je": "/experience add @s 1 levels",
+                "be": "/xp add @s 1 levels"
+            },
+            "options": {
+                "je": "experience add <targets> <amount> [levels|points]",
+                "be": "xp add <targets> <amount> [levels|points]"
+            }
+        }
+    }
+}
