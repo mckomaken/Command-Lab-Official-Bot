@@ -21,6 +21,7 @@ DESCRIPTIONS = [
     "`2024/xx/yy-hh:mm`頃～`2024/xx/yy-hh:mm`頃まで\n実家帰省のためBotが止まります",
     "# **__リンクは絶対に踏まないでください__**",
     "https://komaken.net/\n検索してね(^^♪"
+    "# v2.xにアップデートされました"
 ]
 
 
@@ -71,8 +72,8 @@ class CAdminCog(commands.Cog):
     async def cn(
         self,
         interaction: discord.Interaction,
-        title: str,
-        description: str,
+        title: str = None,
+        description: str = None,
         sub_title: str = "",
         sub_description: str = ""
     ):
