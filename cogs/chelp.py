@@ -35,7 +35,7 @@ class CHelpCog(commands.Cog):
                 timestamp=datetime.now(),
                 color=0x00AA00
             )
-            for command in cmds[i:i+5]:
+            for command in cmds[i:i + 5]:
                 c_name = "/" + command.qualified_name
                 c_desc = create_codeblock(command.description)
 
