@@ -14,8 +14,8 @@ class CAdminCog(commands.Cog):
     @app_commands.command(name="cmisc", description="【運営】運営専用雑コマンド")
     @app_commands.describe(choice="選択肢")
     @app_commands.choices(choice=[
-            app_commands.Choice(name="高校おめ", value="cl1"),
-            app_commands.Choice(name="大学おめ", value="cl2")
+        app_commands.Choice(name="高校おめ", value="cl1"),
+        app_commands.Choice(name="大学おめ", value="cl2")
     ])
     @app_commands.checks.has_role(config.administrater_role_id)
     async def cmisc(self, interaction: discord.Interaction, choice: app_commands.Choice[str]):
