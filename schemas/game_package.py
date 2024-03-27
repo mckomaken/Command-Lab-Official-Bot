@@ -71,3 +71,12 @@ class GamePackage(BaseModel):
     releaseTime: datetime
     time: datetime
     type: str
+
+
+class AssetIndexEntry(BaseModel):
+    hash: str
+    size: int
+
+
+class AssetIndex(BaseModel):
+    objects: dict[str, AssetIndexEntry]

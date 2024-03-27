@@ -2,13 +2,27 @@ import hashlib
 import logging
 import os
 
+import pygit2
 import aiofiles
 import aiohttp
+from tqdm import tqdm
 
 from cogs.cnews import VersionManifest
-from schemas.game_package import GamePackage
+from schemas.game_package import AssetIndex, GamePackage
+from config import config
 
 logger = logging.getLogger("Initialize Process")
+
+
+class ProgressBar(pygit2.RemoteCallbacks):
+    def __init__(self):
+        super().__init__()
+        self.pbar = tqdm()
+
+    def transfer_progress(self, stats):
+        self.pbar.total = stats.total_objects
+        self.pbar.n = stats.indexed_objects
+        self.pbar.refresh()
 
 
 async def setup():
@@ -27,6 +41,7 @@ async def setup():
             logger.info("-------------------------------------------------")
 
             latest_version = version_manifest.latest.release
+            config.latest_version = latest_version
             url = ""
             logger.info(f"バージョン{latest_version}のclient.jarを使用します。")
 
@@ -40,6 +55,17 @@ async def setup():
             async with client.get(url=url) as resp2:
                 game_package = GamePackage.model_validate(await resp2.json())
                 path = "./tmp/client_" + game_package.id + ".jar"
+
+                logger.info("言語ファイルをダウンロードしています...")
+                async with client.get(url=game_package.assetIndex.url) as resp4:
+                    asset_index = AssetIndex.model_validate(await resp4.json())
+                    lang_file_hash = asset_index.objects["minecraft/lang/ja_jp.json"].hash
+                    async with client.get(f"https://resources.download.minecraft.net/{lang_file_hash[0:2]}/{lang_file_hash}") as resp5:
+                        async with aiofiles.open("./tmp/ja_jp.json", mode="wb") as fp2:
+                            lang_data = await resp5.text()
+                            await fp2.write(lang_data.encode())
+                            await fp2.close()
+                logger.info("言語ファイルのダウンロードが完了しました!")
 
                 if os.path.exists(path):
                     hash = hashlib.sha1(
@@ -57,3 +83,9 @@ async def setup():
                         await fp.write(await resp3.read())
                         await fp.close()
                         logger.info("ダウンロードが完了しました!")
+
+
+async def setup_mcdata():
+    if not os.path.exists("./minecraft_data"):
+        logger.info("Githubからデータをダウンロードしています...")
+        pygit2.clone_repository("https://github.com/PrismarineJS/minecraft-data.git", "minecraft_data", callbacks=ProgressBar())

@@ -11,7 +11,7 @@ from discord.abc import User
 from discord.ext import commands
 
 from config.config import config
-from utils.setup import setup
+from utils.setup import setup, setup_mcdata
 
 logger = logging.getLogger("root")
 
@@ -273,6 +273,7 @@ async def start_setup():
             Loader=yaml.SafeLoader
     ))
     await setup()
+    await setup_mcdata()
 
 if __name__ == "__main__":
     asyncio.run(start_setup())

@@ -5,4 +5,5 @@ Pillow
 markdownify
 aiohttp
 aiofiles
-minecraft_data
+tqdm
+pygit2

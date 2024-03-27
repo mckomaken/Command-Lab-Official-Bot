@@ -3,6 +3,9 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+latest_version = "1.20.4"
+
+
 class BumpNofitication(BaseModel):
     channel_id: int
     disboard_id: int
