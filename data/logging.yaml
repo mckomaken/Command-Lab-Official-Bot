@@ -1,0 +1,25 @@
+version: 1
+formatters:
+  simple_fmt:
+    format: '[%(asctime)s] [%(name)s/%(levelname)s]: %(message)s'
+    datefmt: "%H:%M:%S"
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple_fmt
+    stream: ext://sys.stdout
+  console_AAA:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple_fmt
+    stream: ext://sys.stdout
+loggers:
+  AAA:
+    level: DEBUG
+    handlers: [console_AAA]
+    propagate: no
+root:
+  level: DEBUG
+  handlers: [console]
+disable_existing_loggers: false

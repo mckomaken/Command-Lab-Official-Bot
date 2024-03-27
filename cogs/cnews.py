@@ -1,49 +1,14 @@
 from datetime import datetime
 from typing import Optional
-from discord import app_commands
-import discord
+
 import aiohttp
-from markdownify import markdownify as md
+import discord
+from discord import app_commands
 from discord.ext import commands
-from pydantic import BaseModel
+from markdownify import markdownify as md
 
-
-class PatchNoteImage(BaseModel):
-    url: str
-    title: str
-
-
-class PatchNoteEntry(BaseModel):
-    title: str
-    type: str
-    version: str
-    image: PatchNoteImage
-    body: str
-
-
-class PatchNote(BaseModel):
-    entries: list[PatchNoteEntry]
-    version: int
-
-
-class VersionManifestEntry(BaseModel):
-    id: str
-    type: str
-    url: str
-    time: datetime
-    releaseTime: datetime
-    sha1: str
-    complianceLevel: int
-
-
-class VersionManifestLatest(BaseModel):
-    release: str
-    snapshot: str
-
-
-class VersionManifest(BaseModel):
-    latest: VersionManifestLatest
-    versions: list[VersionManifestEntry]
+from schemas.patch_note import PatchNote
+from schemas.version_manifest import VersionManifest
 
 
 class CNews(commands.Cog):

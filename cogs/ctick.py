@@ -1,9 +1,10 @@
 from typing import Optional
-from discord import app_commands
+
 import discord
+from discord import app_commands
 from discord.ext import commands
 
-from util import create_embed
+from utils.util import create_embed
 
 
 class CTick(commands.Cog):

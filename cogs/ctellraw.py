@@ -1,11 +1,14 @@
-from discord import ButtonStyle, Embed, SelectOption, TextStyle, app_commands, Interaction
-from discord.ui import View, select, Select, button, Button, Modal, TextInput
+import io
 
+import discord
+from discord import (ButtonStyle, Embed, Interaction, SelectOption, TextStyle,
+                     app_commands)
 from discord.ext import commands
+from discord.ui import Button, Modal, Select, TextInput, View, button, select
+from PIL import Image, ImageDraw, ImageFont
 from pydantic import BaseModel
 
-from util import create_codeblock
-
+from utils.util import create_codeblock
 
 COLORS: list[str] = [
     "black", "dark_blue", "dark_green", "dark_aqua", "dark_red",
@@ -89,6 +92,24 @@ def create_tellraw_embed(datas: list[SectionDataText], section: tuple[int], cmd:
     embed.set_footer(text=f"Section {section[0] + 1}/{section[1]}")
 
     return embed
+
+
+def create_preview(datas: list[SectionDataText]):
+    img = Image.new("RGBA", (512, 100), color=0x000000)
+    d = ImageDraw.Draw(img)
+
+    font = ImageFont.truetype("./assets/unifont-15.1.04.ttf", 11)
+
+    cursor = 20
+    for data in datas:
+        d.text((cursor, 0), data.text, fill=get_color(data.color), font=font)
+        cursor += d.textlength(data.text, font=font)
+
+    stream = io.BytesIO()
+    img.resize((1024, 200)).save(stream, "WEBP")
+    file = discord.File(io.BytesIO(stream.getvalue()), filename="preview.webp")
+
+    return file
 
 
 class TellrawModal(Modal):
@@ -238,6 +259,13 @@ class TellrawSection(View):
             ), cmd=self.cmd),
             view=self
         )
+
+    @button(label="プレビュー")
+    async def preview(self, interaction: Interaction, item: Button):
+        embed = Embed(title="プレビュー")
+        embed.set_image(url="attachment://preview.webp")
+
+        await interaction.response.send_message(embed=embed, file=create_preview(self.data))
 
 
 class CTellraw(commands.Cog):

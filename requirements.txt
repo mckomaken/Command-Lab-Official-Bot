@@ -4,3 +4,6 @@ jishaku
 Pillow
 markdownify
 aiohttp
+aiofiles
+tqdm
+pygit2
