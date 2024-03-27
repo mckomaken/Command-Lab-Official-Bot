@@ -78,8 +78,11 @@ class CAdminCog(commands.Cog):
         sub_description: str = ""
     ):
         mntJST_time = datetime.now()
-        title = title.replace("\\n", "\n")
-        description = description.replace("\\n", "\n")
+        if title is not None:
+            title = title.replace("\\n", "\n")
+
+        if description is not None:
+            description = description.replace("\\n", "\n")
 
         notice_embed = discord.Embed(
             title=title,
