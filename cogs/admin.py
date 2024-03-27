@@ -6,6 +6,34 @@ from discord.ext import commands
 
 from config.config import config
 
+TITLES = [
+    "再起動を行います",
+    "使用停止期間",
+    "荒らし対応中",
+    "既知のバグについて",
+    "アプデ対応中",
+    "HP公開中!!!!!"
+]
+
+DESCRIPTIONS = [
+    "すぐ復活するはず(笑)",
+    "ちょっと長めの再起動になります",
+    "`2024/xx/yy-hh:mm`頃～`2024/xx/yy-hh:mm`頃まで\n実家帰省のためBotが止まります",
+    "# **__リンクは絶対に踏まないでください__**",
+    "https://komaken.net/\n検索してね(^^♪"
+]
+
+
+class CNoticeConfirm(discord.ui.View):
+    def __init__(self, embed: discord.Embed):
+        super().__init__(timeout=None)
+        self.embed = embed
+
+    @discord.ui.button(label="OK")
+    async def ok(self, interaction: discord.Interaction, item: discord.ui.Item):
+        await interaction.response.edit_message(content="送信しました", view=None, embed=None)
+        await interaction.channel.send(embed=self.embed)
+
 
 class CAdminCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -40,7 +68,7 @@ class CAdminCog(commands.Cog):
     @app_commands.checks.has_role(
         config.administrater_role_id
     )
-    async def cmaintenance(
+    async def cn(
         self,
         interaction: discord.Interaction,
         title: str,
@@ -49,20 +77,39 @@ class CAdminCog(commands.Cog):
         sub_description: str = ""
     ):
         mntJST_time = datetime.now()
+        title = title.replace("\\n", "\n")
+        description = description.replace("\\n", "\n")
 
-        mennte_embed = discord.Embed(
+        notice_embed = discord.Embed(
             title=title,
             description=description,
             color=0xff580f,
             timestamp=mntJST_time
         )
         if sub_title != "" and sub_description != "":
-            mennte_embed.add_field(
+            notice_embed.add_field(
                 name=sub_title,
                 value=sub_description,
             )
 
-        await interaction.response.send_message(embed=mennte_embed)
+        await interaction.response.send_message(
+            content="本当にこの内容で送信していいんか?",
+            embed=notice_embed,
+            ephemeral=True,
+            view=CNoticeConfirm(embed=notice_embed)
+        )
+
+    @cn.autocomplete("title")
+    async def cn_title(self, interaction: discord.Interaction, current: str):
+        return [
+            app_commands.Choice(name=n, value=n) for n in TITLES
+        ]
+
+    @cn.autocomplete("description")
+    async def cn_description(self, interaction: discord.Interaction, current: str):
+        return [
+            app_commands.Choice(name=n, value=n) for n in DESCRIPTIONS
+        ]
 
 
 async def setup(bot: commands.Bot):

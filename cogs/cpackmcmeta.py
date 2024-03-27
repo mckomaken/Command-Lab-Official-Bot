@@ -14,7 +14,7 @@ VERSION_NOT_FOUND = discord.Embed(
     title="エラー", description="バージョンが見つかりません。", color=0xff0000
 )
 
-
+# !============更新すること============
 RP_ALL_VERSIONS = [
     "13w24a-1.8.9",
     "15w31a-1.10.2",
@@ -45,9 +45,10 @@ RP_ALL_VERSIONS = [
     "---",
     "24w09a-24w10a",
     "24w11a",
-    "24w12a"
+    "24w12a",
+    "24w13a"
 ]
-
+# !============更新すること============
 DP_ALL_VERSIONS = [
     "17w48a-19w46b",
     "1.15-pre1-1.16.2-pre3",
@@ -81,16 +82,18 @@ DP_ALL_VERSIONS = [
     "24w09a",
     "24w10a",
     "24w11a",
-    "24w12a"
+    "24w12a",
+    "24w13a"
 ]
-
+# !============更新すること============
 LATEST_RELEASE_VERSION = "1.20.4"
 LATEST_RELEASE_RP = "22"
 LATEST_RELEASE_DP = "26"
-
-LATEST_SS_VERISON = "24w12a"
-LATEST_SS_VERISON_RP = "30"
-LATEST_SS_VERISON_DP = "36"
+# !============更新すること============
+LATEST_SS_VERISON = "24w13a"
+LATEST_SS_VERISON_RP = "31"
+LATEST_SS_VERISON_DP = "37"
+# !============更新すること============
 
 
 class PackMcmetaV(BaseModel):
