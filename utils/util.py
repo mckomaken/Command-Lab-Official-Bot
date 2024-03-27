@@ -2,7 +2,7 @@ import discord
 
 
 def create_codeblock(data: str):
-    return f"```{data}```"
+    return f"```{data or ' '}```"
 
 
 def create_embed(title: str, description: str):

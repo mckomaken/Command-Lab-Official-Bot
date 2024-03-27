@@ -22,23 +22,24 @@ class CHelpCog(commands.Cog):
         cmds: list[app_commands.Command] = []
         roles = [r.id for r in interaction.user.roles]
 
-        for command in self.bot.tree.walk_commands():
-            if isinstance(command, app_commands.Command):
-                if "運営" in command.description:
-                    if config.administrater_role_id in roles:
-                        continue
-                cmds.append(command)
+        for cmd in self.bot.tree.walk_commands():
+            if cmd.description in "運営":
+                if config.administrater_role_id not in roles:
+                    continue
+            if not isinstance(cmd, app_commands.Group):
+                cmds.append(cmd)
 
         for i in range(0, len(cmds), 5):
             emb = discord.Embed(
                 title="ヘルプ",
-                timestamp=datetime.now()
+                timestamp=datetime.now(),
+                color=0x00AA00
             )
             for command in cmds[i:i+5]:
-                c_name = command.qualified_name
+                c_name = "/" + command.qualified_name
                 c_desc = create_codeblock(command.description)
 
-                emb.add_field(name=f"/{c_name}", value=c_desc, inline=False)
+                emb.add_field(name=f"{c_name}", value=c_desc, inline=False)
 
             embeds.append(emb)
 
