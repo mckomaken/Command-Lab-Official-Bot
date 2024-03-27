@@ -269,8 +269,8 @@ if config.token == "FILE":
 
 async def start_setup():
     logging.config.dictConfig(yaml.load(
-            await (await aiofiles.open("./data/logging.yaml")).read(),
-            Loader=yaml.SafeLoader
+        await (await aiofiles.open("./data/logging.yaml")).read(),
+        Loader=yaml.SafeLoader
     ))
     await setup()
     await setup_mcdata()
