@@ -29,7 +29,7 @@ class CAdminCog(commands.Cog):
             ))
 
     @app_commands.command(
-        name="cmaintenance", description="【運営】各種お知らせ用"
+        name="cn", description="【運営】各種お知らせ用"
     )
     @app_commands.describe(
         title="タイトル",
