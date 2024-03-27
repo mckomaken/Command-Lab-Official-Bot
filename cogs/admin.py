@@ -7,6 +7,7 @@ from discord.ext import commands
 from config.config import config
 
 TITLES = [
+    "【お知らせ】",
     "再起動を行います",
     "使用停止期間",
     "荒らし対応中",
