@@ -1,10 +1,10 @@
-import discord
-
-from discord import app_commands
-from discord.ext import commands
 from datetime import datetime
 
-from config import config
+import discord
+from discord import app_commands
+from discord.ext import commands
+
+from config.config import config
 
 
 class CAdminCog(commands.Cog):

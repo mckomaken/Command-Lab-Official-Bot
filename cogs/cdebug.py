@@ -1,8 +1,9 @@
 
-from discord import app_commands
 import discord
+from discord import app_commands
 from discord.ext import commands
-from config import config
+
+from config.config import config
 
 
 class CDebugCog(commands.Cog):

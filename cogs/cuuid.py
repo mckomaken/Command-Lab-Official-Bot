@@ -1,12 +1,12 @@
-import discord
 import uuid
-
 from datetime import datetime
-from discord import app_commands
-from discord.ext import commands
 from typing import Optional
 
-from util import create_codeblock
+import discord
+from discord import app_commands
+from discord.ext import commands
+
+from utils.util import create_codeblock
 
 MESSAGE = """
 -----------------------------------------------------

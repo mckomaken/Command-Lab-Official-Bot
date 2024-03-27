@@ -1,15 +1,14 @@
 import io
-import discord
-
-from typing import Optional
-from discord.ext import commands
-from discord import app_commands
-from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
-from config import PackVersionEntry, pack_versions
+import discord
+from discord import app_commands
+from discord.ext import commands
+from pydantic import BaseModel
 
-from util import create_codeblock
+from config.config import PackVersionEntry, pack_versions
+from utils.util import create_codeblock
 
 VERSION_NOT_FOUND = discord.Embed(
     title="エラー", description="バージョンが見つかりません。", color=0xff0000

@@ -1,10 +1,19 @@
-import discord
+import asyncio
+import logging
+import logging.config
+from datetime import datetime, timedelta
 
+import aiofiles
+import discord
+import yaml
+from discord import app_commands
 from discord.abc import User
 from discord.ext import commands
-from datetime import datetime, timedelta
-from discord import app_commands
-from config import config
+
+from config.config import config
+from utils.setup import setup
+
+logger = logging.getLogger("root")
 
 
 class CustomBot(commands.Bot):
@@ -45,11 +54,11 @@ async def on_ready():
         timestamp=datetime.now()
     )
 
-    print("BOTが起動しました")
+    logger.info("BOTが起動しました")
 
     for f in config.enabled_features:
         await client.load_extension(f)
-        print("Successfully loaded extension: " + f)
+        logger.info(f"機能 [{f}] が正常にロードされました。")
 
     await client.tree.sync()
     await client.change_presence(activity=status)
@@ -62,7 +71,7 @@ async def on_ready():
 @client.event
 async def on_message(message: discord.Message):
     if not message.author.bot:
-        if config.administrater_role_id in [r.id for r in message.author.roles]:
+        if message.author.id in client.owner_ids or []:
             await client.process_commands(message)
 
     if message.author.id == config.bump.disboard_id:
@@ -191,7 +200,7 @@ async def on_message(message: discord.Message):
                 await message.channel.send(embed=original_embed, view=view)
 
         except Exception as e:
-            print(f"エラーらしい: {e}")
+            logger.error(f"エラーらしい: {e}")
 
     # ----------------------------------------------------------------
 
@@ -229,7 +238,7 @@ async def on_message(message: discord.Message):
                 timestamp=datetime.now())
             )
 
-    if client.user in message.mentions:
+    if client.user in message.mentions and message.reference is None:
         await message.channel.send(
             f"{message.author.mention}呼んだ？\nわからないことがあったら【/chelp】を実行してね"
         )
@@ -249,10 +258,24 @@ async def on_error(ctx: discord.Interaction, error: app_commands.AppCommandError
 
 @client.event
 async def on_close():
+    logger.info("機能のアンロードを行っています...")
     for e in client.extensions.keys():
         await client.unload_extension(e)
+    logger.info("機能のアンロードが完了しました。プロセスを終了します")
 
 if config.token == "FILE":
     config.token = open("..\\CMTK.txt", mode="r").read()
 
-client.run(config.token)
+
+async def start_setup():
+    logging.config.dictConfig(yaml.load(
+            await (await aiofiles.open("./data/logging.yaml")).read(),
+            Loader=yaml.SafeLoader
+    ))
+    await setup()
+
+if __name__ == "__main__":
+    asyncio.run(start_setup())
+
+
+client.run(config.token, log_handler=None)

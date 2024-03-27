@@ -1,59 +1,14 @@
 
-from typing import Optional
-import discord
-
 from datetime import datetime
+from typing import Optional
+
+import discord
 from discord import app_commands
 from discord.ext import commands, tasks
+from cogs.paginator import EmbedPaginator
 
-HELP_MESSAGE = """
-・`/cbase64 decode` : Base64のデコードを行います
-・`/cbase64 encode` : Base64のエンコードを行います
-・`/color preview` : 指定したカラーコードの色見本を表示します
-・`/chelp` : この説明文が出てきます
-・`/cmanifest` : BEのmanifestを生成します
-・`/cnews` : 選択バージョンの更新情報の詳細を表示します
-・`/cpack-mcmeta datapack`s : データパックのpack_format一覧を表示します
-・`/cpack-mcmeta generate-dp` : データパック版pack.mcmetaを生成します
-・`/cpack-mcmeta generate-rp` : リソースパック版pack.mcmetaを生成します
-・`/cpack-mcmeta latest` : 最新バージョンのpack_formatを表示します
-・`/cpack-mcmeta resourcepacks` : リソースパックのpack_format一覧を表示します
-・`/cpack-mcmeta search` : 選択バージョンのpack_formatを表示します
-・`/cping` : サーバーとBotとのping値を測定できます
-・`/creference` : 選択バージョンのレファレンス・Wiki(日本語&英語)を表示します
-・`/ctellraw` : tellrawコマンドを生成します
-・`/ctick` : 秒・分・時・日・週・月・年をtickに直して表示します
-・`/ctitle` : titleコマンドを生成します
-・`/cunicode decode` : Unicodeエスケープシーケンスのデコードを行います
-・`/cunicode encode` : Unicodeエスケープシーケンスのエンコードを行います
-・`/cuuid` : UUIDを自動生成してくれます(初期値:2個)
-"""
-
-HELP_U_MESSAGE = """
-・`/cbase64 decode` : Base64のデコードを行います
-・`/cbase64 encode` : Base64のエンコードを行います
-・`/color preview` : 指定したカラーコードの色見本を表示します
-・`/chelp` : この説明文が出てきます
-U `/cmaintenance` : メンテナンスコマンド
-・`/cmanifest` : BEのmanifestを生成します
-U `/cmisc` 運営用雑コマンド
-・`/cnews` : 選択バージョンの更新情報の詳細を表示します
-・`/cpack-mcmeta datapack`s : データパックのpack_format一覧を表示します
-・`/cpack-mcmeta generate-dp` : データパック版pack.mcmetaを生成します
-・`/cpack-mcmeta generate-rp` : リソースパック版pack.mcmetaを生成します
-・`/cpack-mcmeta latest` : 最新バージョンのpack_formatを表示します
-・`/cpack-mcmeta resourcepacks` : リソースパックのpack_format一覧を表示します
-・`/cpack-mcmeta search` : 選択バージョンのpack_formatを表示します
-・`/cping` : サーバーとBotとのping値を測定できます
-・`/creference` : 選択バージョンのレファレンス・Wiki(日本語&英語)を表示します
-U `/creload` リロードコマンド
-・`/ctellraw` : tellrawコマンドを生成します
-・`/ctick` : 秒・分・時・日・週・月・年をtickに直して表示します
-・`/ctitle` : titleコマンドを生成します
-・`/cunicode decode` : Unicodeエスケープシーケンスのデコードを行います
-・`/cunicode encode` : Unicodeエスケープシーケンスのエンコードを行います
-・`/cuuid` : UUIDを自動生成してくれます(初期値:2個)
-"""
+from utils.util import create_codeblock
+from config.config import config
 
 
 class CHelpCog(commands.Cog):
@@ -63,28 +18,31 @@ class CHelpCog(commands.Cog):
     @app_commands.command(name="chelp", description="このBotができること一覧")
     @app_commands.guild_only()
     async def chelp(self, interaction: discord.Interaction):
+        embeds: list[discord.Embed] = []
+        cmds: list[app_commands.Command] = []
+        roles = [r.id for r in interaction.user.roles]
 
-        chJST_time = datetime.now()
+        for command in self.bot.tree.walk_commands():
+            if isinstance(command, app_commands.Command):
+                if "運営" in command.description:
+                    if config.administrater_role_id in roles:
+                        continue
+                cmds.append(command)
 
-        chelp_embed = discord.Embed(
-            title="コマンド一覧",
-            description=HELP_MESSAGE,
-            color=0x2b9900,
-            timestamp=chJST_time
-        )
+        for i in range(0, len(cmds), 5):
+            emb = discord.Embed(
+                title="ヘルプ",
+                timestamp=datetime.now()
+            )
+            for command in cmds[i:i+5]:
+                c_name = command.qualified_name
+                c_desc = create_codeblock(command.description)
 
-        chelp_u_embed = discord.Embed(
-            title="コマンド一覧",
-            description=HELP_U_MESSAGE,
-            color=0x2b9900,
-            timestamp=chJST_time
-        )
-        role = interaction.guild.get_role(735130783760777270)  # <-コマ研運営のロールID貼ること
-        if role in interaction.user.roles:
-            await interaction.response.send_message(embed=chelp_embed)
-            await interaction.response.send_message(embed=chelp_u_embed, ephemeral=True)
-        else:
-            await interaction.response.send_message(embed=chelp_embed)
+                emb.add_field(name=f"/{c_name}", value=c_desc, inline=False)
+
+            embeds.append(emb)
+
+        await EmbedPaginator(timeout=None).start(interaction, embeds)
 
     @app_commands.command(name="cping", description="pingを計測します")
     @app_commands.guild_only()

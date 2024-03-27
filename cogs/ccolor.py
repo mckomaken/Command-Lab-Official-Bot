@@ -1,10 +1,11 @@
 import io
-import discord
-from discord.ext import commands
-from discord import app_commands
-from PIL import Image, ImageDraw, ImageColor
 
-from util import create_codeblock, create_embed
+import discord
+from discord import app_commands
+from discord.ext import commands
+from PIL import Image, ImageColor, ImageDraw
+
+from utils.util import create_codeblock, create_embed
 
 
 class CColor(app_commands.Group):

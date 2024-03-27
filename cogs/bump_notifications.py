@@ -1,13 +1,12 @@
 import os
-import discord
-
 from datetime import datetime, timedelta
 from typing import Optional
-from pydantic import BaseModel
+
+import discord
 from discord.ext import commands, tasks
+from pydantic import BaseModel
 
-from config import config
-
+from config.config import config
 
 JA_BUMP_MESSAGE = """
 BUMPの時間になったよ♪

@@ -1,14 +1,14 @@
 import io
-from typing import Literal
 import uuid
-import discord
-
-from discord.ext import commands
-from discord import app_commands
-from pydantic import BaseModel
 from datetime import datetime
+from typing import Literal
 
-from util import create_codeblock
+import discord
+from discord import app_commands
+from discord.ext import commands
+from pydantic import BaseModel
+
+from utils.util import create_codeblock
 
 
 class ManifestHeader(BaseModel):

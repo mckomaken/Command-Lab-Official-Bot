@@ -1,9 +1,10 @@
-from discord import app_commands
-import discord
 import base64
+
+import discord
+from discord import app_commands
 from discord.ext import commands
 
-from util import create_codeblock
+from utils.util import create_codeblock
 
 
 class CBase64(app_commands.Group):

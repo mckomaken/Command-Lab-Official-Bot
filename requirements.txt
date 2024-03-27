@@ -4,3 +4,5 @@ jishaku
 Pillow
 markdownify
 aiohttp
+aiofiles
+minecraft_data
