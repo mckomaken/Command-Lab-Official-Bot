@@ -1,15 +1,18 @@
 import hashlib
 import logging
 import os
+from datetime import datetime
+from typing import Optional
 
-import pygit2
 import aiofiles
 import aiohttp
+import pygit2
+from pydantic import BaseModel
 from tqdm import tqdm
 
 from cogs.cnews import VersionManifest
-from schemas.game_package import AssetIndex, GamePackage
 from config import config
+from schemas.game_package import AssetIndex, GamePackage
 
 logger = logging.getLogger("Initialize Process")
 
@@ -89,3 +92,21 @@ async def setup_mcdata():
     if not os.path.exists("./minecraft_data"):
         logger.info("Githubからデータをダウンロードしています...")
         pygit2.clone_repository("https://github.com/PrismarineJS/minecraft-data.git", "minecraft_data", callbacks=ProgressBar())
+
+
+class VersionDataPackFormat(BaseModel):
+    resource: Optional[int] = None
+    data: Optional[int] = None
+
+
+class VersionData(BaseModel):
+    id: str
+    name: str
+    world_version: int
+    series_id: str
+    protocol_version: int
+    pack_version: VersionDataPackFormat
+    build_time: datetime
+    java_component: str
+    java_version: int
+    stable: bool

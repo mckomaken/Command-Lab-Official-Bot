@@ -2,7 +2,6 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-
 latest_version = "1.20.4"
 
 

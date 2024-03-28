@@ -1,13 +1,19 @@
 import io
-from datetime import datetime
+import json
+import zipfile
+from datetime import datetime, timedelta
 from typing import Optional
 
+import aiohttp
 import discord
 from discord import app_commands
 from discord.ext import commands
 from pydantic import BaseModel
 
 from config.config import PackVersionEntry, pack_versions
+from schemas.game_package import GamePackage
+from schemas.version_manifest import VersionManifest
+from utils.setup import VersionData
 from utils.util import create_codeblock
 
 VERSION_NOT_FOUND = discord.Embed(
@@ -110,6 +116,8 @@ class CPackMcMeta(app_commands.Group):
     def __init__(self, bot: commands.Bot):
         super().__init__(name="cpack-mcmeta")
         self.bot = bot
+        self.v_cache: dict[str, VersionData] = None
+        self.v_cache_time: datetime = datetime.now()
 
     @app_commands.command(
         name="latest",
@@ -117,21 +125,58 @@ class CPackMcMeta(app_commands.Group):
     )
     @app_commands.guild_only()
     async def latest(self, interaction: discord.Interaction):
-        lv_embed = discord.Embed(
-            title="Latest Version pack_format",
-            color=discord.Color.yellow(),
-            timestamp=datetime.now()
-        )
+        async with aiohttp.ClientSession() as client:
+            async with client.get("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json") as resp1:
+                version_manifest = VersionManifest.model_validate(await resp1.json())
+                lv_embed = discord.Embed(
+                    title="Latest Version pack_format",
+                    color=discord.Color.yellow(),
+                    timestamp=datetime.now()
+                )
+                await interaction.response.defer()
+                if self.v_cache is None or datetime.now() >= self.v_cache_time + timedelta(days=1):
+                    versions: dict[str, VersionData] = {}
 
-        lv_embed.add_field(name=f"【{LATEST_RELEASE_VERSION}】Latest Release Version", value="", inline=False)
-        lv_embed.add_field(name="Resource\nPack", value=f"{create_codeblock(LATEST_RELEASE_RP)}", inline=True)
-        lv_embed.add_field(name="Data\nPack", value=f"{create_codeblock(LATEST_RELEASE_DP)}", inline=True)
+                    for ver in version_manifest.versions:
+                        if ver.id == version_manifest.latest.release or ver.id == version_manifest.latest.snapshot:
+                            async with client.get(ver.url) as resp2:
+                                game_package = GamePackage.model_validate(await resp2.json())
+                                async with client.get(game_package.downloads.client.url) as resp:
+                                    with zipfile.ZipFile(io.BytesIO(await resp.read())) as zipfp:
+                                        with zipfp.open("version.json") as fpv:
+                                            data = VersionData.model_validate(json.load(fpv))
+                                            versions[data.id] = data
+                else:
+                    versions = self.v_cache
 
-        lv_embed.add_field(name=f"【{LATEST_SS_VERISON}】Latest Snapshot Version", value="", inline=False)
-        lv_embed.add_field(name="Resource\nPack", value=f"{create_codeblock(LATEST_SS_VERISON_RP)}", inline=True)
-        lv_embed.add_field(name="Data\nPack", value=f"{create_codeblock(LATEST_SS_VERISON_DP)}", inline=True)
+                lv_embed.add_field(name=f"【{version_manifest.latest.release}】Latest Release Version", value="", inline=False)
+                lv_embed.add_field(
+                    name="Resource\nPack",
+                    value=create_codeblock(versions[version_manifest.latest.release].pack_version.resource),
+                    inline=True
+                )
+                lv_embed.add_field(
+                    name="Data\nPack",
+                    value=create_codeblock(versions[version_manifest.latest.release].pack_version.data),
+                    inline=True
+                )
 
-        await interaction.response.send_message(embed=lv_embed)
+                lv_embed.add_field(name=f"【{version_manifest.latest.snapshot}】Latest Snapshot Version", value="", inline=False)
+                lv_embed.add_field(
+                    name="Resource\nPack",
+                    value=create_codeblock(versions[version_manifest.latest.snapshot].pack_version.resource),
+                    inline=True
+                )
+                lv_embed.add_field(
+                    name="Data\nPack",
+                    value=create_codeblock(versions[version_manifest.latest.snapshot].pack_version.data),
+                    inline=True
+                )
+
+                self.v_cache = versions
+                self.v_cache_time = datetime.now()
+
+                await interaction.followup.send(embed=lv_embed)
 
     # ----------------------------------------------------------------
 

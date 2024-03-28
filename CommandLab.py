@@ -274,6 +274,7 @@ async def start_setup():
     ))
     await setup()
     await setup_mcdata()
+    # await setup_format_versions()
 
 if __name__ == "__main__":
     asyncio.run(start_setup())

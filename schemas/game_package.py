@@ -35,16 +35,16 @@ class GamePackageAssetIndex(BaseModel):
 
 class GamePackageDownload(BaseModel):
     path: Optional[str] = ""
-    sha1: str
-    size: int
-    url: str
+    sha1: Optional[str] = ""
+    size: Optional[int] = 0
+    url: Optional[str] = ""
 
 
 class GamePackageDownloads(BaseModel):
     client: GamePackageDownload
-    client_mappings: GamePackageDownload
+    client_mappings: Optional[GamePackageDownload] = None
     server: GamePackageDownload
-    server_mappings: GamePackageDownload
+    server_mappings: Optional[GamePackageDownload] = None
 
 
 class GamePackageJavaVersion(BaseModel):
@@ -59,10 +59,10 @@ class GamePackageLibrary(BaseModel):
 
 
 class GamePackage(BaseModel):
-    arguments: GamePackageArguments
+    arguments: Optional[GamePackageArguments] = None
     assetIndex: GamePackageAssetIndex
     assets: str
-    complianceLevel: int
+    complianceLevel: Optional[int] = 0
     id: str
     downloads: GamePackageDownloads
     libraries: list[GamePackageLibrary]
