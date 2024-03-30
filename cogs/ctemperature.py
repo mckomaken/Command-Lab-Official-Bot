@@ -5,14 +5,14 @@ from discord import app_commands
 from utils.util import create_codeblock
 
 
-class CTemprature(commands.Cog):
+class CTemperature(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @app_commands.command(
-        name="ctemprature", description="温度変換"
+        name="ctemperature", description="温度変換"
     )
-    async def ctemprature(self, interaction: discord.Interaction, c: float):
+    async def ctemperature(self, interaction: discord.Interaction, c: float):
         K = c - 293.15
         F = 1.8 * c + 32
         emb = discord.Embed(
@@ -28,4 +28,4 @@ class CTemprature(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(CTemprature(bot))
+    await bot.add_cog(CTemperature(bot))
