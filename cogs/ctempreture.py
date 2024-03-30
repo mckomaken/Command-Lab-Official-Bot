@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
-from utils.util import create_codeblock, create_embed
+from utils.util import create_codeblock
 
 
 class CTemprature(commands.Cog):
@@ -14,11 +14,16 @@ class CTemprature(commands.Cog):
     )
     async def ctemprature(self, interaction: discord.Interaction, c: float):
         K = c - 293.15
+        F = 1.8 * c + 32
+        emb = discord.Embed(
+            title="温度変換結果",
+            description=f"摂氏{create_codeblock(c)}"
+        )
+        emb.add_field(name="華氏", value=create_codeblock(F))
+        emb.add_field(name="ケルビン", value=create_codeblock(K))
+
         await interaction.response.send_message(
-            embed=create_embed(
-                title="温度変換結果",
-                description=create_codeblock(K)
-            )
+            embed=emb
         )
 
 
