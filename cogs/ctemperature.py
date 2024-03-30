@@ -13,14 +13,14 @@ class CTemperature(commands.Cog):
         name="ctemperature", description="温度変換"
     )
     async def ctemperature(self, interaction: discord.Interaction, c: float):
-        K = c - 293.15
+        K = c + 273.15
         F = 1.8 * c + 32
         emb = discord.Embed(
             title="温度変換結果",
-            description=f"摂氏{create_codeblock(c)}"
+            description=f"摂氏(℃){create_codeblock(c)}"
         )
-        emb.add_field(name="華氏", value=create_codeblock(F))
-        emb.add_field(name="ケルビン", value=create_codeblock(K))
+        emb.add_field(name="華氏(℉)", value=create_codeblock(F))
+        emb.add_field(name="ケルビン(K)", value=create_codeblock(K))
 
         await interaction.response.send_message(
             embed=emb
