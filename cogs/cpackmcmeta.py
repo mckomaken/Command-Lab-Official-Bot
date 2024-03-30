@@ -130,11 +130,10 @@ class CPackMcMeta(app_commands.Group):
                 version_manifest = VersionManifest.model_validate(await resp1.json())
                 lv_embed = discord.Embed(
                     title="Latest Version pack_format",
-                    color=discord.Color.yellow(),
-                    timestamp=datetime.now()
+                    color=discord.Color.yellow()
                 )
                 await interaction.response.defer()
-                if self.v_cache is None or datetime.now() >= self.v_cache_time + timedelta(days=1):
+                if self.v_cache is None or datetime.now() >= self.v_cache_time + timedelta(hours=1):
                     versions: dict[str, VersionData] = {}
 
                     for ver in version_manifest.versions:
@@ -146,9 +145,11 @@ class CPackMcMeta(app_commands.Group):
                                         with zipfp.open("version.json") as fpv:
                                             data = VersionData.model_validate(json.load(fpv))
                                             versions[data.id] = data
+                    self.v_cache_time = datetime.now()
                 else:
                     versions = self.v_cache
 
+                lv_embed.timestamp = self.v_cache_time
                 lv_embed.add_field(name=f"【{version_manifest.latest.release}】Latest Release Version", value="", inline=False)
                 lv_embed.add_field(
                     name="Resource\nPack",
@@ -174,7 +175,6 @@ class CPackMcMeta(app_commands.Group):
                 )
 
                 self.v_cache = versions
-                self.v_cache_time = datetime.now()
 
                 await interaction.followup.send(embed=lv_embed)
 
