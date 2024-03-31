@@ -1,7 +1,10 @@
 from typing import Generic, Optional, TypeVar
+
 from brigadier import StringReader
 from click import FloatRange
-from lib.commands.exceptions import CommandSyntaxException, SimpleCommandExceptionType
+
+from lib.commands.exceptions import (CommandSyntaxException,
+                                     SimpleCommandExceptionType)
 from lib.commands.text import Text
 
 EXCEPTION_EMPTY = SimpleCommandExceptionType(Text.translatable("argument.range.empty"))

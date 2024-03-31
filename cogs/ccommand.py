@@ -1,27 +1,28 @@
 import json
-from datetime import datetime
 import math
+from datetime import datetime
 from typing import Any, Literal, Optional
 
 import aiofiles
 import discord
-from discord import app_commands
-from discord.ext import commands
-from brigadier import CommandDispatcher, arguments, ParseResult
+import nbtlib
+import regex
+from brigadier import CommandDispatcher, ParseResult, arguments
+from brigadier.builder import LiteralArgumentBuilder, argument, literal
 from brigadier.context import CommandContextBuilder, SuggestionContext
 from brigadier.exceptions import CommandSyntaxException
-from brigadier.builder import literal, argument, LiteralArgumentBuilder
 from brigadier.parse_result import StringReader
-from brigadier.tree import LiteralCommandNode, ArgumentCommandNode
 from brigadier.suggestion import SuggestionsBuilder, empty_suggestion
+from brigadier.tree import ArgumentCommandNode, LiteralCommandNode
+from discord import app_commands
+from discord.ext import commands
 from pydantic import BaseModel, GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
-import regex
-import nbtlib
-from config import config
 from tqdm import tqdm
 
-from schemas.data import ArgumentCommandEntry, ArgumentParser, CommandEntry, DataPaths, Items, LiteralCommandEntry, parse_command
+from config import config
+from schemas.data import (ArgumentCommandEntry, ArgumentParser, CommandEntry,
+                          DataPaths, Items, LiteralCommandEntry, parse_command)
 from utils.util import create_codeblock, create_embed
 
 

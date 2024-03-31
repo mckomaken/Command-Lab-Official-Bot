@@ -1,6 +1,8 @@
 from typing import Callable, Optional
-from lib.commands.text import Text
+
 from brigadier import StringReader
+
+from lib.commands.text import Text
 
 
 class CommandSyntaxException(Exception):
@@ -62,7 +64,7 @@ class SimpleCommandExceptionType:
 
 
 class DynamicCommandExceptionType:
-    def __init__(self, function: Callable[...]):
+    def __init__(self, function: Callable[..., str]):
         self.function = function
 
     def create(self, *args):

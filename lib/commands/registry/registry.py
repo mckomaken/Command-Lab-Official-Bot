@@ -1,8 +1,10 @@
-from typing import Generic, Optional, TypeVar
+from typing import TYPE_CHECKING, Generic, Optional, TypeVar
 
-from lib.commands.entity import EntityType
 from lib.commands.util import Identifier
 
+if TYPE_CHECKING:
+    from lib.commands.entity import EntityType
+    from lib.commands.registry.tag_key import TagKey
 
 T = TypeVar("T")
 
@@ -11,7 +13,8 @@ class Registry(Generic[T]):
     content: dict[Identifier, T]
 
     def __init__(self) -> None:
-        self.content = {}
+        self.content: dict[Identifier, T] = dict()
+        self.tagToEntryList: dict[TagKey[T], list[T]] = dict()
 
     def get(self, id: Identifier) -> Optional[T]:
         return self.content[id]
@@ -28,6 +31,9 @@ class Registry(Generic[T]):
     def register(self, element: T, id: Identifier):
         self.content[id] = element
 
+    def stream_tags(self):
+        return self.tagToEntryList
+
 
 class Registries():
-    ENTITY_TYPE: Registry[EntityType] = Registry()
+    ENTITY_TYPE: Registry["EntityType"] = Registry()

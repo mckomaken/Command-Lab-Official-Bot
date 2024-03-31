@@ -1,5 +1,5 @@
-from pydantic import BaseModel
 from brigadier import StringReader
+from pydantic import BaseModel
 
 from lib.commands.exceptions import SimpleCommandExceptionType
 from lib.commands.text import Text
@@ -47,8 +47,8 @@ COMMAND_EXCEPTION = SimpleCommandExceptionType(Text.of(""))
 
 
 class Identifier:
-    def __init__(self, namespace: str, path: str) -> None:
-        self.namespace = namespace
+    def __init__(self, namespace: str, path: str = None) -> None:
+        self.namespace = "minecraft" if path is None else namespace
         self.path = path
 
     def get_namespace(self):
@@ -108,6 +108,10 @@ class BlockPos():
         self.x = x
         self.y = y
         self.z = z
+
+
+class ChunkPos(BlockPos):
+    pass
 
 
 MAX_INT = 2147483647

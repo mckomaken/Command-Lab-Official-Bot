@@ -1,12 +1,11 @@
 from enum import Enum
 from typing import Generic, Optional, TypeVar
 from uuid import UUID
-from pydantic import BaseModel
 
 from lib.commands.blockstate import BlockState
-from lib.commands.util import BlockPos, Vec3d
+from lib.commands.util import BlockPos, ChunkPos, Vec3d
 from lib.commands.util.random import Random
-from .world import World
+from lib.commands.world import World
 
 T = TypeVar("T")
 
@@ -19,6 +18,26 @@ class TrackedData(Generic[T]):
 
 
 class DataTracker():
+    pass
+
+
+class Box:
+    pass
+
+
+class EntityChangeListener:
+    pass
+
+
+class EntityDimensions:
+    pass
+
+
+class TrackedPosition:
+    pass
+
+
+class RemovalReason(Enum):
     pass
 
 
@@ -106,7 +125,6 @@ class Entity():
         self.nextStopSoundDistance = 1
         self.random = Random.create()
         self.fireTicks = -self.getBurningDuration()
-
 
 
 class EntityType(Enum):

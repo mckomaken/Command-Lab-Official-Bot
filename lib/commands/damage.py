@@ -1,0 +1,2 @@
+class DamageSources:
+    pass

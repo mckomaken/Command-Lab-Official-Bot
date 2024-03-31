@@ -1,8 +1,9 @@
 from typing import Callable, TypeVar
+
 from brigadier.suggestion import SuggestionsBuilder
 
-from lib.commands.util.consumer import Consumer
 from lib.commands.util import Identifier
+from lib.commands.util.consumer import Consumer
 
 T = TypeVar("T")
 
