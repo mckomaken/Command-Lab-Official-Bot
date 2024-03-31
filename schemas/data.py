@@ -1,6 +1,7 @@
 from typing import Literal, Optional
-from typing_extensions import Any
+
 from pydantic import BaseModel, RootModel
+from typing_extensions import Any
 
 
 class DataPathsEntry(BaseModel):

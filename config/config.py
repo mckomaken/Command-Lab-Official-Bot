@@ -5,6 +5,11 @@ from pydantic import BaseModel
 latest_version = "1.20.4"
 
 
+class SecretKeyConfig(BaseModel):
+    key: str
+    message: dict[str, str]
+
+
 class BumpNofitication(BaseModel):
     channel_id: int
     disboard_id: int
@@ -20,6 +25,7 @@ class Config(BaseModel):
     enabled_features: list[str] = []
     owner_ids: list[int] = []
     prefix: Optional[str] = "cm!"
+    secret_message: SecretKeyConfig
 
 # -----------------------------------------------------------
 

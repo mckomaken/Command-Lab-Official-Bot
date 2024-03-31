@@ -10,3 +10,4 @@ pygit2
 pyyaml
 brigadier.py
 lorem
+cryptography
