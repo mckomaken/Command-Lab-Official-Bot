@@ -12,6 +12,9 @@ class CTemperature(commands.Cog):
     @app_commands.command(
         name="ctemperature", description="温度変換"
     )
+    @app_commands.describe(
+        c="変換したい温度を℃単位で記入してください"
+    )
     async def ctemperature(self, interaction: discord.Interaction, c: float):
         K = c + 273.15
         F = 1.8 * c + 32
