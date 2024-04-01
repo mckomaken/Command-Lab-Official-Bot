@@ -1,6 +1,6 @@
 from typing import Generic, TypeVar
-from lib.commands.range import StringRange
 
+from lib.commands.range import StringRange
 
 T = TypeVar("T")
 S = TypeVar("S")

@@ -3,9 +3,10 @@ from typing import TYPE_CHECKING, Generic, Self, TypeVar
 from lib.commands import Command
 from lib.commands.redirect import RedirectModifier
 from lib.commands.util.predicate import Predicate
+
 if TYPE_CHECKING:
-    from lib.commands.nodes.literal import LiteralCommandNode
     from lib.commands.nodes.argument import ArgumentCommandNode
+    from lib.commands.nodes.literal import LiteralCommandNode
 
 
 S = TypeVar("S")

@@ -1,12 +1,14 @@
+import asyncio
 import os
-from lib.commands.exceptions import CommandSyntaxException
-from lib.commands.selector import EntitySelectorReader
+
+import colorama
+import readchar
 from brigadier import StringReader
 from brigadier.exceptions import CommandSyntaxException as CSE
-import asyncio
-import readchar
 from brigadier.suggestion import SuggestionsBuilder
-import colorama
+
+from lib.commands.exceptions import CommandSyntaxException
+from lib.commands.selector import EntitySelectorReader
 
 colorama.init()
 colorama.just_fix_windows_console()

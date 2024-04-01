@@ -13,13 +13,12 @@ from lib.commands.reader import StringReader
 from lib.commands.registry.registry import Registries
 from lib.commands.registry.registry_key import RegistryKeys
 from lib.commands.registry.tag_key import TagKey
+from lib.commands.source import CommandSource
 from lib.commands.suggestions import SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.util import Identifier, Vec3d
-from lib.commands.util.predicate import Predicate
-
-from lib.commands.source import CommandSource
 from lib.commands.util.consumer import Consumer
+from lib.commands.util.predicate import Predicate
 
 SELECTOR_PREFIX = '@'
 ARGUMENTS_OPENING = '['

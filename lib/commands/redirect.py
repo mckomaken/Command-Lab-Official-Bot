@@ -2,7 +2,6 @@ from typing import Generic, TypeVar
 
 from lib.commands.context import CommandContext
 
-
 S = TypeVar("S")
 
 

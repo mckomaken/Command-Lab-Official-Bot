@@ -4,7 +4,6 @@ from lib.commands.context import CommandContext
 from lib.commands.reader import StringReader
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 
-
 T = TypeVar("T")
 S = TypeVar("S")
 

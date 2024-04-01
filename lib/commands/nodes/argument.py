@@ -4,11 +4,9 @@ from typing import Generic, Self, TypeVar
 from lib.commands import Command
 from lib.commands.argument_type import ArgumentType
 from lib.commands.nodes import CommandNode
-
 from lib.commands.redirect import RedirectModifier
-from lib.commands.util.predicate import Predicate
 from lib.commands.suggestions import SuggestionProvider
-
+from lib.commands.util.predicate import Predicate
 
 S = TypeVar("S")
 T = TypeVar("T")
