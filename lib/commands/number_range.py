@@ -1,10 +1,8 @@
 from typing import Callable, Generic, Optional, TypeVar
 
-from brigadier import StringReader
-from click import FloatRange
-
 from lib.commands.exceptions import (CommandSyntaxException,
                                      SimpleCommandExceptionType)
+from lib.commands.reader import StringReader
 from lib.commands.text import Text
 
 EXCEPTION_EMPTY = SimpleCommandExceptionType(Text.translatable("argument.range.empty"))
@@ -47,7 +45,7 @@ class NumberRange(Generic[T]):
         raise NotImplementedError()
 
     @classmethod
-    def parse(cls, commandReader: StringReader, converter: Callable[[str], T]) -> "FloatRange | IntRange":
+    def parse(cls, commandReader: StringReader, converter: Callable[[str], T]) -> "FloatRnage | IntRange":
         i = commandReader.get_cursor()
 
         try:
@@ -105,7 +103,7 @@ class FloatRnage(NumberRange[float]):
         return self.max is None and self.min is None
 
     @staticmethod
-    def parse(reader: StringReader) -> "FloatRange":
+    def parse(reader: StringReader) -> "FloatRnage":
         return NumberRange.parse(reader, float)
 
 

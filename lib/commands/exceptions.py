@@ -1,12 +1,16 @@
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
-from brigadier import StringReader
+from brigadier.exceptions import BuiltInExceptions
+
+if TYPE_CHECKING:
+    from lib.commands.reader import StringReader
 
 from lib.commands.text import Text
 
 
 class CommandSyntaxException(Exception):
     CONTEXT_AMOUNT = 50
+    BUILTIN_EXCEPTIONS = BuiltInExceptions()
 
     def __init__(self, exc_type, message: Text, str_input: Optional[str] = None, cursor: int = -1):
         super().__init__(message)
@@ -49,26 +53,26 @@ class CommandSyntaxException(Exception):
         return self.cursor
 
 
-class SimpleCommandExceptionType:
+class SimpleCommandExceptionType():
     def __init__(self, message: Text):
         self.message = message
 
     def create(self):
         return CommandSyntaxException(self, self.message)
 
-    def create_with_context(self, reader: StringReader):
+    def create_with_context(self, reader: "StringReader"):
         return CommandSyntaxException(self, self.message, reader.get_string(), reader.get_cursor())
 
     def __str__(self):
         return self.message.get_string()
 
 
-class DynamicCommandExceptionType:
+class DynamicCommandExceptionType():
     def __init__(self, function: Callable[..., str]):
         self.function = function
 
     def create(self, *args):
         return CommandSyntaxException(self, self.function(*args))
 
-    def create_with_context(self, reader: StringReader, *args):
+    def create_with_context(self, reader: "StringReader", *args):
         return CommandSyntaxException(self, self.function(*args), reader.get_string(), reader.get_cursor())

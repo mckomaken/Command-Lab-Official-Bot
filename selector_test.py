@@ -55,7 +55,7 @@ async def main():
             if isinstance(e, (CommandSyntaxException, CSE)):
                 print(colorama.Fore.RED + e.get_message() + colorama.Fore.RESET)
             else:
-                print(colorama.Fore.RED + e + colorama.Fore.RESET)
+                print(colorama.Fore.RED + str(e) + colorama.Fore.RESET)
         else:
             print(f"{colorama.Fore.GREEN}エラーなし{colorama.Fore.RESET}")
 

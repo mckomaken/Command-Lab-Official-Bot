@@ -3,24 +3,23 @@ from random import shuffle
 from typing import Any, Callable, Coroutine
 from uuid import UUID
 
-from brigadier import StringReader
-from brigadier.suggestion import SuggestionsBuilder
-
 from lib.commands import util
 from lib.commands.entity import (Entity, EntityType, GameMode, LivingEntity,
                                  ServerPlayerEntity)
 from lib.commands.exceptions import (DynamicCommandExceptionType,
                                      SimpleCommandExceptionType)
 from lib.commands.number_range import FloatRnage, IntRange
+from lib.commands.reader import StringReader
 from lib.commands.registry.registry import Registries
 from lib.commands.registry.registry_key import RegistryKeys
 from lib.commands.registry.tag_key import TagKey
+from lib.commands.suggestions import SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.util import Identifier, Vec3d
 from lib.commands.util.predicate import Predicate
 
-from .source import CommandSource
-from .util.consumer import Consumer
+from lib.commands.source import CommandSource
+from lib.commands.util.consumer import Consumer
 
 SELECTOR_PREFIX = '@'
 ARGUMENTS_OPENING = '['

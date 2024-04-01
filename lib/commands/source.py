@@ -1,7 +1,6 @@
 from typing import Callable, TypeVar
 
-from brigadier.suggestion import SuggestionsBuilder
-
+from lib.commands.suggestions import SuggestionsBuilder
 from lib.commands.util import Identifier
 from lib.commands.util.consumer import Consumer
 
@@ -31,7 +30,7 @@ def should_suggest(remaining: str, candinate: str):
 class CommandSource():
     @classmethod
     def suggest_identifiers(cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str):
-        string = builder.get_remaining().lower()
+        string = builder.remaining.lower()
         cls.for_each_matching(candinates, string, lambda id: id, lambda id: builder.suggest(str(id)))
 
         return builder.build_async()
