@@ -17,7 +17,7 @@ class Registry(Generic[T]):
         self.tagToEntryList: dict[TagKey[T], list[T]] = dict()
 
     def get(self, id: Identifier) -> Optional[T]:
-        return self.content[id]
+        return self.content[id] if id in self.content else None
 
     def get_ids(self) -> list[Identifier]:
         return self.content.keys()

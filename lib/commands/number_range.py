@@ -18,14 +18,14 @@ class NumberRange(Generic[T]):
         self.min = min
         self.max = max
 
-    @classmethod
-    def from_string_reader(self, reader: StringReader):
+    @staticmethod
+    def from_string_reader(reader: StringReader):
         i = reader.get_cursor()
 
         while reader.can_read() and reader.is_allowed_number(reader.peek()):
             reader.skip()
 
-        string = reader.get_string()[i:reader.cursor]
+        string = reader.get_string()[i:reader.get_cursor()]
         if string == "":
             return None
 
@@ -65,12 +65,12 @@ class FloatRnage(NumberRange[float]):
         self.min = min
         self.max = max
 
-    @classmethod
-    def create(cls, reader: StringReader, min: float, max: float) -> "FloatRnage":
+    @staticmethod
+    def create(reader: StringReader, min: str, max: str) -> "FloatRnage":
         if min > max:
             raise EXCEPTION_SWAPPED.create_with_context(reader)
         else:
-            return FloatRnage(min, max)
+            return FloatRnage(float(min), float(max))
 
     @classmethod
     def exactly(cls, value: float) -> "FloatRnage":
@@ -90,6 +90,9 @@ class FloatRnage(NumberRange[float]):
         else:
             return self.max is None or self.max < value
 
+    def is_dummy(self) -> bool:
+        return self.max is None and self.min is None
+
 
 class IntRange(NumberRange[int]):
     def __init__(self, min: Optional[int], max: Optional[int]) -> None:
@@ -97,11 +100,11 @@ class IntRange(NumberRange[int]):
         self.max = max
 
     @classmethod
-    def create(cls, reader: StringReader, min: int, max: int) -> "IntRange":
+    def create(cls, reader: StringReader, min: str, max: str) -> "IntRange":
         if min > max:
             raise EXCEPTION_SWAPPED.create_with_context(reader)
         else:
-            return FloatRnage(min, max)
+            return IntRange(int(min), int(max))
 
     @classmethod
     def exactly(cls, value: int) -> "IntRange":
@@ -120,3 +123,6 @@ class IntRange(NumberRange[int]):
             return False
         else:
             return self.max is None or self.max >= value
+
+    def is_dummy(self) -> bool:
+        return self.max is None and self.min is None

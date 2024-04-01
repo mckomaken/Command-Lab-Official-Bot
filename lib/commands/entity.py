@@ -3,6 +3,7 @@ from typing import Generic, Optional, TypeVar
 from uuid import UUID
 
 from lib.commands.blockstate import BlockState
+from lib.commands.text import Text
 from lib.commands.util import BlockPos, ChunkPos, Vec3d
 from lib.commands.util.random import Random
 from lib.commands.world import World
@@ -125,6 +126,12 @@ class Entity():
         self.nextStopSoundDistance = 1
         self.random = Random.create()
         self.fireTicks = -self.getBurningDuration()
+
+    def is_alive():
+        return True
+
+    def get_name():
+        return Text("test")
 
 
 class EntityType(Enum):
