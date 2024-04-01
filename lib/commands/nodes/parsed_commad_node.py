@@ -1,5 +1,6 @@
 from typing import Generic, TypeVar
-from lib.commands import StringRange, CommandNode
+from lib.commands.nodes import CommandNode
+from lib.commands.range import StringRange
 
 
 S = TypeVar("S")
