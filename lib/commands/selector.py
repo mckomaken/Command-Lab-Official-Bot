@@ -387,7 +387,7 @@ class EntitySelectorOptions():
             def handle(self, reader: EntitySelectorReader):
                 i = reader.get_reader().get_cursor()
                 doubleRange = FloatRnage.parse(reader.get_reader())
-                if ((doubleRange.min is None or doubleRange.min < 0.0)) and (doubleRange.max is None or not ((doubleRange.max < 0.0))):
+                if (doubleRange.min is None or doubleRange.min < 0.0) and (doubleRange.max is None or not doubleRange.max < 0.0):
                     reader.distance = doubleRange
                     reader.set_local_world_only()
                 else:

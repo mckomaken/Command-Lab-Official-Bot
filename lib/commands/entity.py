@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Generic, Optional, TypeVar
+from typing import Any, Generic, Optional, TypeVar
 from uuid import UUID
 
 from lib.commands.blockstate import BlockState
@@ -23,11 +23,40 @@ class DataTracker():
 
 
 class Box:
+    minX: float
+    minY: float
+    minZ: float
+    maxX: float
+    maxY: float
+    maxZ: float
+
+    def __init__(self, minX: float, minY: float, minZ: float, maxX: float, maxY: float, maxZ: float) -> None:
+        self.minX = minX
+        self.minY = minY
+        self.minZ = minZ
+        self.maxX = maxX
+        self.maxY = maxY
+        self.maxZ = maxZ
+
+    @classmethod
+    def fromBlockPos(cls, pos: BlockPos):
+        return cls(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)
+
+    @classmethod
+    def from2Pos(cls, pos1: Vec3d, pos2: Vec3d):
+        return cls(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z)
+
+
+class RemovalReason(Enum):
     pass
 
 
 class EntityChangeListener:
-    pass
+    def updateEntityPosition():
+        pass
+
+    def remove():
+        pass
 
 
 class EntityDimensions:
@@ -35,10 +64,6 @@ class EntityDimensions:
 
 
 class TrackedPosition:
-    pass
-
-
-class RemovalReason(Enum):
     pass
 
 
@@ -121,11 +146,16 @@ class Entity():
         self.id = 1
         self.passengerList = list()
         self.velocity = Vec3d.ZERO
-        self.boundingBox = NULL_BOX
+        self.boundingBox = Box(0, 0, 0, 0, 0, 0)
         self.movementMultiplier = Vec3d.ZERO
         self.nextStopSoundDistance = 1
         self.random = Random.create()
         self.fireTicks = -self.getBurningDuration()
+        self.fluidHeight: list[dict[Any, float]] = list()
+        self.submergedFluidTag = set()
+        self.firstUpdate = True
+        self.changeListener = EntityChangeListener()
+        self.trackedPosition = TrackedPosition()
 
     def is_alive():
         return True

@@ -1,4 +1,4 @@
-from typing import Generic, Optional, TypeVar
+from typing import Callable, Generic, Optional, TypeVar
 
 from brigadier import StringReader
 from click import FloatRange
@@ -13,38 +13,49 @@ EXCEPTION_SWAPPED = SimpleCommandExceptionType(Text.translatable("argument.range
 T = TypeVar("T", int, float)
 
 
+def is_next_char_valid(reader: StringReader):
+    c = reader.peek()
+    if not c.isdigit() and c != '-':
+        if c != '.':
+            return False
+        else:
+            return not reader.can_read(2) or reader.peek(1) != '.'
+    else:
+        return True
+
+
 class NumberRange(Generic[T]):
     def __init__(self, min: T, max: T):
         self.min = min
         self.max = max
 
     @staticmethod
-    def from_string_reader(reader: StringReader):
+    def from_string_reader(reader: StringReader, converter: Callable[[str], T]):
         i = reader.get_cursor()
 
-        while reader.can_read() and reader.is_allowed_number(reader.peek()):
+        while reader.can_read() and is_next_char_valid(reader):
             reader.skip()
 
         string = reader.get_string()[i:reader.get_cursor()]
         if string == "":
             return None
 
-        return string
+        return converter(string)
 
     @classmethod
     def create(self, reader: StringReader, min, max) -> "NumberRange[T]":
         raise NotImplementedError()
 
     @classmethod
-    def parse(cls, commandReader: StringReader) -> "FloatRange | IntRange":
+    def parse(cls, commandReader: StringReader, converter: Callable[[str], T]) -> "FloatRange | IntRange":
         i = commandReader.get_cursor()
 
         try:
-            optional = cls.from_string_reader(commandReader)
+            optional = cls.from_string_reader(commandReader, converter)
             if commandReader.can_read(2) and commandReader.peek() == '.' and commandReader.peek(1) == '.':
                 commandReader.skip()
                 commandReader.skip()
-                optional2 = cls.from_string_reader(commandReader)
+                optional2 = cls.from_string_reader(commandReader, converter)
 
                 if optional is None and optional2 is None:
                     raise EXCEPTION_EMPTY.create_with_context(commandReader)
@@ -93,6 +104,10 @@ class FloatRnage(NumberRange[float]):
     def is_dummy(self) -> bool:
         return self.max is None and self.min is None
 
+    @staticmethod
+    def parse(reader: StringReader) -> "FloatRange":
+        return NumberRange.parse(reader, float)
+
 
 class IntRange(NumberRange[int]):
     def __init__(self, min: Optional[int], max: Optional[int]) -> None:
@@ -126,3 +141,7 @@ class IntRange(NumberRange[int]):
 
     def is_dummy(self) -> bool:
         return self.max is None and self.min is None
+
+    @staticmethod
+    def parse(reader: StringReader) -> "IntRange":
+        return NumberRange.parse(reader, int)
