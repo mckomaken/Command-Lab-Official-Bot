@@ -8,3 +8,5 @@ aiofiles
 tqdm
 pygit2
 pyyaml
+brigadier.py
+lorem

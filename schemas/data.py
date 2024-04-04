@@ -1,4 +1,5 @@
-from typing import Optional
+from typing import Literal, Optional
+from typing_extensions import Any
 from pydantic import BaseModel, RootModel
 
 
@@ -87,3 +88,38 @@ class CommandEntry(BaseModel):
     desc: str
     exmp: CommandEntryJEBE
     options: CommandEntryJEBE
+
+
+class BaseCommandEntry(BaseModel):
+    type: Literal["literal", "argument"]
+    name: str
+    executable: bool
+    redirects: list
+    children: list
+
+
+class LiteralCommandEntry(BaseCommandEntry):
+    pass
+
+
+class ArgumentCommandEntryParser(BaseModel):
+    parser: str
+    modifier: Optional[dict[str, Any]] = None
+
+
+class ArgumentParser(BaseModel):
+    parser: str
+    modifier: Optional[dict[str, Any]] = None
+    examples: list[str] = []
+
+
+class ArgumentCommandEntry(LiteralCommandEntry):
+    parser: ArgumentCommandEntryParser
+
+
+async def parse_command(cmd: dict):
+    base = BaseCommandEntry.model_validate(cmd)
+    if base.type == "literal":
+        return LiteralCommandEntry.model_validate(cmd)
+    elif base.type == "argument":
+        return ArgumentCommandEntry.model_validate(cmd)

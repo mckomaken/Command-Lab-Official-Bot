@@ -5,10 +5,10 @@ from typing import Optional
 import discord
 from discord import app_commands
 from discord.ext import commands, tasks
-from cogs.paginator import EmbedPaginator
 
-from utils.util import create_codeblock
+from cogs.paginator import EmbedPaginator
 from config.config import config
+from utils.util import create_codeblock
 
 
 class CHelpCog(commands.Cog):
