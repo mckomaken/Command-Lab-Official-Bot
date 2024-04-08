@@ -25,7 +25,7 @@ class CBnoticetime(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="cbnoticetime", description="【運営】再起動後の通知時間設定用")
-    @discord.app_commands.describe(
+    @app_commands.describe(
         addminutes="入力分後に通知されます"
     )
     @app_commands.checks.has_role(config.administrater_role_id)
