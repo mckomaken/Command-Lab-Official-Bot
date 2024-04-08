@@ -69,7 +69,7 @@ class CHelpCog(commands.Cog):
         if count > 10:
             await interaction.response.send_message("countには10以下の自然数を入れてね(^^♪\n自然数がわからない人はこのサーバーから追放するね(^^♪♪♪", ephemeral=True)
 
-        if count >= 1:
+        elif count >= 1 and count <= 10:
             await interaction.response.send_message(embed=ping1_embed)
 
             if count > 1:
@@ -108,8 +108,6 @@ class CHelpCog(commands.Cog):
 
                     interval_cb.start()
 
-        elif count > 10:
-            await interaction.response.send_message("countには10以下の自然数を入れてね(^^♪\n自然数がわからない人はこのサーバーから追放するね(^^♪♪♪", ephemeral=True)
         else:
             await interaction.response.send_message("countには10以下の自然数を入れてね(^^♪\n自然数がわからない人はこのサーバーから追放するね(^^♪♪♪", ephemeral=True)
 
