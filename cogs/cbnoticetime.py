@@ -33,7 +33,8 @@ class CBnoticetime(commands.Cog):
         bnJST_time = datetime.now()
         ScheduledTime = bnJST_time + timedelta(minutes=addminutes)
         fScheduledTime = ScheduledTime.strftime(" %Y/%m/%d %H:%M ")
-        notice_channel = client.get_channel(965098244193542154)
+        notice_channel = await self.bot.fetch_channel(config.bump.channel_id)
+        # notice_channel = client.get_channel(965098244193542154)
         bump_file = discord.File("./assets/bump.png", filename="bump.png")
 
         bump_embed = discord.Embed(
@@ -50,7 +51,7 @@ class CBnoticetime(commands.Cog):
 
         await interaction.response.send_message(f"{addminutes}分後({fScheduledTime}頃)に通知されます")
         await asyncio.sleep(addminutes * 60)
-        await notice_channel.send("BUMP TIME !!", file=bump_file, embed=bump_embed)
+        await notice_channel.send(embed=bump_embed, file=bump_file)
 
 
 async def setup(bot: commands.Bot):
