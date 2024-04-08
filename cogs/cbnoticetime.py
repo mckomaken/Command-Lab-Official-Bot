@@ -34,7 +34,7 @@ class CBnoticetime(commands.Cog):
         ScheduledTime = bnJST_time + timedelta(minutes=addminutes)
         fScheduledTime = ScheduledTime.strftime(" %Y/%m/%d %H:%M ")
         notice_channel = client.get_channel(965098244193542154)
-        bump_file = discord.File("bump.png", filename="bump.png")
+        bump_file = discord.File("./assets/bump.png", filename="bump.png")
 
         bump_embed = discord.Embed(
             title="BUMPの時間だよ(^O^)/",
