@@ -33,7 +33,7 @@ class CBnoticetime(commands.Cog):
         bnJST_time = datetime.now()
         ScheduledTime = bnJST_time + timedelta(minutes=addminutes)
         fScheduledTime = ScheduledTime.strftime(" %Y/%m/%d %H:%M ")
-        notice_channel = await client.get_channel(965098244193542154)
+        notice_channel = client.get_channel(965098244193542154)
         bump_file = discord.File("bump.png", filename="bump.png")
 
         bump_embed = discord.Embed(
