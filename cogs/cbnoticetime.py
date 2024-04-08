@@ -29,7 +29,7 @@ class CBnoticetime(commands.Cog):
         addminutes="入力分後に通知されます"
     )
     @app_commands.checks.has_role(config.administrater_role_id)
-    async def cbnoticetime(interaction: discord.Interaction, addminutes: int):
+    async def cbnoticetime(interaction: discord.Interaction, addminutes: int = 0):
         bnJST_time = datetime.now()
         ScheduledTime = bnJST_time + timedelta(minutes=addminutes)
         fScheduledTime = ScheduledTime.strftime(" %Y/%m/%d %H:%M ")
