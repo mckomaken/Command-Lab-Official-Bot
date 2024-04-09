@@ -53,9 +53,6 @@ class CHelpCog(commands.Cog):
     )
     async def cping(self, interaction: discord.Interaction, count: Optional[int] = 1, t_or_f: Optional[bool] = True):
 
-        if count < 10:
-            return
-
         pi1JST_time = datetime.now()
         text1 = f'{round(self.bot.latency * 20)}tick\n{round(self.bot.latency * 1000)}ms'
 
