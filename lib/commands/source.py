@@ -1,8 +1,13 @@
 from typing import Callable, TypeVar
 
+from lib.commands.entity import Entity
+from lib.commands.output import CommandOutput
+from lib.commands.server import MinecraftServer
 from lib.commands.suggestions import SuggestionsBuilder
-from lib.commands.util import Identifier
-from lib.commands.util.consumer import Consumer
+from lib.commands.text import Text
+from lib.commands.util import Identifier, Vec2f, Vec3d
+from lib.commands.util.consumer import Consumer, ReturnValueConsumer
+from lib.commands.world import ServerWorld
 
 T = TypeVar("T")
 
@@ -53,3 +58,22 @@ class CommandSource():
                 elif (should_suggest(remaining, identifier2.get_namespace())
                       or identifier2.get_namespace() == "minecraft" and should_suggest(remaining, identifier2.get_path())):
                     action.accept(obj)
+
+
+class ServerCommandSource(CommandSource):
+    def __init__(
+        self,
+        output: CommandOutput,
+        pos: Vec3d,
+        rot: Vec2f,
+        world: ServerWorld,
+        level: int,
+        name: str,
+        displayName: Text,
+        server: MinecraftServer,
+        entity: Entity,
+        silent: bool,
+        resultStorer: ReturnValueConsumer,
+
+    ) -> None:
+        super().__init__()

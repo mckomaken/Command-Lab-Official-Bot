@@ -1,9 +1,11 @@
 from typing import Any, Coroutine, Generic, Self, TypeVar
 
-from lib.commands import Command, StringRange, StringReader
+from lib.commands import Command
 from lib.commands.context import CommandContextBuilder
 from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.nodes import CommandNode
+from lib.commands.range import StringRange
+from lib.commands.reader import StringReader
 from lib.commands.redirect import RedirectModifier
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.util.predicate import Predicate

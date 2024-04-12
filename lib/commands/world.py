@@ -162,3 +162,7 @@ class World:
     thunderGradient: float
     thunderGradientPrev: float
     tickOrder: int
+
+
+class ServerWorld(World):
+    pass

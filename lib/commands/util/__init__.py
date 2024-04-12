@@ -1,6 +1,4 @@
-from brigadier import StringReader
-from pydantic import BaseModel
-
+from lib.commands.reader import StringReader
 from lib.commands.exceptions import SimpleCommandExceptionType
 from lib.commands.text import Text
 
@@ -84,7 +82,7 @@ class Identifier:
         return f"{self.namespace}:{self.path}"
 
 
-class Vec3d(BaseModel):
+class Vec3d():
     x: float
     y: float
     z: float
@@ -112,6 +110,15 @@ class BlockPos():
 
 class ChunkPos(BlockPos):
     pass
+
+
+class Vec2f():
+    x: float
+    y: float
+
+    def __init__(self, x: float, y: float) -> None:
+        self.x = x
+        self.y = y
 
 
 MAX_INT = 2147483647

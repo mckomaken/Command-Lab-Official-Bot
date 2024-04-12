@@ -24,4 +24,4 @@ class StringRange:
 
     @classmethod
     def at(cls, pos: int):
-        cls(pos, pos)
+        return cls(pos, pos)

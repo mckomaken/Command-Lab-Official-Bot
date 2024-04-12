@@ -5,10 +5,14 @@ import colorama
 import readchar
 from brigadier import StringReader
 from brigadier.exceptions import CommandSyntaxException as CSE
-from brigadier.suggestion import SuggestionsBuilder
-
+from lib.commands.dispatcher import CommandDispatcher
+from lib.commands.entity import Entity, EntityType
 from lib.commands.exceptions import CommandSyntaxException
-from lib.commands.selector import EntitySelectorReader
+from lib.commands.output import CommandOutput
+from lib.commands.server import MinecraftServer
+from lib.commands.source import ServerCommandSource
+from lib.commands.util import Vec2f, Vec3d
+from lib.commands.world import ServerWorld, World
 
 colorama.init()
 colorama.just_fix_windows_console()
@@ -32,27 +36,19 @@ async def main():
             print("Exit.")
             return
 
+        if data == "":
+            return
+
         r = StringReader(data)
-        r.skip()
-
-        reader = EntitySelectorReader(r, True)
-        if "[" in data:
-            if data.endswith(","):
-                builder = SuggestionsBuilder(data, len(data))
-                opts = await reader.suggest_option(builder, None)
-            else:
-                builder = SuggestionsBuilder(data, data.find("[") + 1)
-                opts = await reader.suggest_option_or_end(builder, None)
-
-        elif data == "" or data == "@":
-            builder = SuggestionsBuilder(data, 0)
-            opts = await reader.suggest_selector(builder, None)
-        elif not data.endswith("]"):
-            builder = SuggestionsBuilder(data, len(data) - 1)
-            opts = await reader.suggest_open(builder, None)
 
         try:
-            reader.read_at_variable()
+            dispatcher = CommandDispatcher()
+            parsed = dispatcher.parse(r, ServerCommandSource(
+                CommandOutput.DUMMY, Vec3d(0, 0, 0), Vec2f(0, 0), ServerWorld(), 1, "akpc_0504", "ap12",
+                MinecraftServer(), Entity(EntityType.PLAYER, World()), False, print
+            ))
+            opts = await dispatcher.getCompletionSuggestions(parsed, None)
+
         except Exception as e:
             if isinstance(e, (CommandSyntaxException, CSE)):
                 print(colorama.Fore.RED + e.get_message() + colorama.Fore.RESET)

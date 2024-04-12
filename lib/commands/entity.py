@@ -157,11 +157,14 @@ class Entity():
         self.changeListener = EntityChangeListener()
         self.trackedPosition = TrackedPosition()
 
-    def is_alive():
+    def is_alive(self):
         return True
 
-    def get_name():
+    def get_name(self):
         return Text("test")
+
+    def getBurningDuration(self):
+        return 0
 
 
 class EntityType(Enum):

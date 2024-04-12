@@ -1,6 +1,8 @@
-from typing import Generic, Self, TypeVar
+from typing import TYPE_CHECKING, Generic, Self, TypeVar
 
-from lib.commands.context import CommandContext
+if TYPE_CHECKING:
+    from lib.commands.context import CommandContext
+    from lib.commands.nodes import CommandNode
 from lib.commands.range import StringRange
 
 S = TypeVar("S")
@@ -112,5 +114,14 @@ class SuggestionsBuilder:
 
 
 class SuggestionProvider(Generic[S]):
-    def getSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
+    def getSuggestions(self, context: "CommandContext[S]", builder: "SuggestionsBuilder"):
         raise NotImplementedError()
+
+
+class SuggestionContext(Generic[S]):
+    parent: "CommandNode[S]"
+    startPos: int
+
+    def __init__(self, parent: "CommandNode[S]", startPos: int) -> None:
+        self.parent = parent
+        self.startPos = startPos

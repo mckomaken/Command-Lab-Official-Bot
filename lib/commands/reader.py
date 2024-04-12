@@ -162,7 +162,7 @@ class StringReader:
 
         return self.read_unquoted_string()
 
-    def readBoolean(self):
+    def read_boolean(self):
         start = self.cursor
         value = self.read_string()
         if value == "":
