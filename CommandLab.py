@@ -28,10 +28,55 @@ client = CustomBot(
 )
 
 
-status = discord.Activity(
-    type=discord.ActivityType.playing,
-    name=config.status
-)
+# status = discord.Activity(
+#     type=discord.ActivityType.playing,
+#     name=config.status
+# )
+
+
+# ステータス変更
+async def change_status(statuses: list):
+    while True:
+        for status_info in statuses:
+            name, activity_type, interval = status_info
+            if activity_type == "playing":  # ~をプレイ中
+                activity = discord.Activity(type=discord.ActivityType.playing, name=name)
+            elif activity_type == "streaming":  # ~を配信中
+                activity = discord.Streaming(name=name, url="your_stream_url")
+            elif activity_type == "listening":  # ~を再生中
+                activity = discord.Activity(type=discord.ActivityType.listening, name=name)
+            elif activity_type == "watching":  # ~を視聴中
+                activity = discord.Activity(type=discord.ActivityType.watching, name=name)
+            elif activity_type == "competing":  # ~に参戦中
+                activity = discord.Activity(type=discord.ActivityType.competing, name=name)
+            else:  # その他
+                activity = discord.Activity(type=discord.ActivityType.custom, name=name)
+
+            await client.change_presence(activity=activity)
+            await asyncio.sleep(interval)
+
+
+# ステータス定義 ({key}を{value}中)
+statuses = [
+    ("JavaEdition", "playing", 120),
+    ("BedrockEdition", "playing", 120),
+    ("BugEdition", "playing", 10),
+    ("マイクラのコマンドを勉強中", "playing", 100),
+    ("discord.pyとpythonを勉強中", "playing", 100),
+    ("Javaを勉強中", "playing", 100),
+    ("JavaScriptを勉強中", "playing", 100),
+    ("コマ研Botはいつでもあなたのメッセージを見ている", "watching", 20),
+    ("大体何でもできるのだ♪", "watching", 30),
+    ("私はボットです", "playing", 30),
+    ("Netflixで映画", "watching", 30),
+    ("ポテトをツンツン中", "playing", 30),
+    ("YouTube", "watching", 100),
+    ("春菊を調理中", "playing", 120),
+    ("春菊の配信", "watching", 10),
+    ("YouTube", "watching", 100),
+    ("Spotify", "listening", 100)
+]
+
 
 ORUVANORUVAN = """ஒருவன் ஒருவன் முதலாளி
 உலகில் மற்றவன் தொழிலாளி
@@ -61,7 +106,7 @@ async def on_ready():
         logger.info(f"機能 [{f}] が正常にロードされました。")
 
     await client.tree.sync()
-    await client.change_presence(activity=status)
+    await change_status(statuses)
 
     if config.start_notice_channel is not None:
         start_notice_channel = await client.fetch_channel(config.start_notice_channel)
