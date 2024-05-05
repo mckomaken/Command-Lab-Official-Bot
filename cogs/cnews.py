@@ -45,9 +45,10 @@ class CNews(commands.Cog):
                 async with client.get("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json") as resp:
                     data = VersionManifest.model_validate(await resp.json())
 
-                    clsv: str = data.latest.snapshot
-                    clrv: str = version or data.latest.release
-                    cclrv: str = clrv.replace(".", "-")
+                    clsv = data.latest.snapshot
+                    clrv = version or data.latest.release
+                    cclrv = clrv.replace(".", "-")
+                    cclsv = ("" if "pre" in clsv else "snapshot-") + clsv.replace(".", "-").replace("-pre", "-pre-release-")
 
                     clsv2 = f"{clsv} & {clrv}" if version == "" else clrv
                     latest_embed = discord.Embed(
@@ -60,7 +61,7 @@ class CNews(commands.Cog):
                             name="--------------------------\nLatest Snapshot Version\n--------------------------", value="", inline=False
                         )
                         latest_embed.add_field(
-                            name="【English References】", value="https://www.minecraft.net/en-us/article/minecraft-snapshot-" + clsv, inline=False
+                            name="【English References】", value="https://www.minecraft.net/en-us/article/minecraft-" + cclsv, inline=False
                         )
                         latest_embed.add_field(name="【English Wiki】", value="https://minecraft.wiki/w/Java_Edition_" + clsv, inline=False)
                         latest_embed.add_field(name="【Japanese Wiki】", value="https://ja.minecraft.wiki/w/Java_Edition_" + clsv, inline=False)
