@@ -91,6 +91,9 @@ class CAdminCog(commands.Cog):
             color=0xff580f,
             timestamp=mntJST_time
         )
+
+        notice_embed.set_footer(text=f"Send by {interaction.user.display_name}")
+
         if sub_title != "" and sub_description != "":
             notice_embed.add_field(
                 name=sub_title,
