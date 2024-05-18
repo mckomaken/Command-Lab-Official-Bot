@@ -18,19 +18,19 @@ class CRoleRankButtons(discord.ui.View):  # コマンダーランク
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="駆け出し", style=discord.ButtonStyle.gray, emoji="🇦")
+    @discord.ui.button(label="駆け出し", style=discord.ButtonStyle.gray, emoji="🇦", custom_id="kake")
     async def pressedCom1(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(965084663855063040, interaction)
 
-    @discord.ui.button(label="初級", style=discord.ButtonStyle.blurple, emoji="🇧")
+    @discord.ui.button(label="初級", style=discord.ButtonStyle.blurple, emoji="🇧", custom_id="syosinn")
     async def pressedCom2(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(738936069428478013, interaction)
 
-    @discord.ui.button(label="中級", style=discord.ButtonStyle.red, emoji="🇨")
+    @discord.ui.button(label="中級", style=discord.ButtonStyle.red, emoji="🇨", custom_id="tyuu")
     async def pressedCom3(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(965084054204608582, interaction)
 
-    @discord.ui.button(label="上級", style=discord.ButtonStyle.green, emoji="🇩")
+    @discord.ui.button(label="上級", style=discord.ButtonStyle.green, emoji="🇩", custom_id="zyou")
     async def pressedCom4(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(965084145644601344, interaction)
 
@@ -39,23 +39,23 @@ class CRoleJEBEButtons(discord.ui.View):  # JE or BE & 遊んでる機種
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="JE勢", style=discord.ButtonStyle.green, emoji="<:JE:892256704123772931>", row=0)
+    @discord.ui.button(label="JE勢", style=discord.ButtonStyle.green, emoji="<:JE:892256704123772931>", row=0, custom_id="jez")
     async def pressedJebe1(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(744471714574106664, interaction)
 
-    @discord.ui.button(label="BE勢", style=discord.ButtonStyle.blurple, emoji="<:BE:892256680509861929>", row=0)
+    @discord.ui.button(label="BE勢", style=discord.ButtonStyle.blurple, emoji="<:BE:892256680509861929>", row=0, custom_id="bez")
     async def pressedJebe2(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(744471657061548223, interaction)
 
-    @discord.ui.button(label="PC", style=discord.ButtonStyle.gray, emoji="🖥️", row=1)
+    @discord.ui.button(label="PC", style=discord.ButtonStyle.gray, emoji="🖥️", row=1, custom_id="pcz")
     async def pressedJebe3(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(1103559576953045042, interaction)
 
-    @discord.ui.button(label="スマホ", style=discord.ButtonStyle.gray, emoji="📱", row=1)
+    @discord.ui.button(label="スマホ", style=discord.ButtonStyle.gray, emoji="📱", row=1, custom_id="sumahoz")
     async def pressedJebe4(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(1103559803827146823, interaction)
 
-    @discord.ui.button(label="家庭用ゲーム機", style=discord.ButtonStyle.gray, emoji="🎮", row=1)
+    @discord.ui.button(label="家庭用ゲーム機", style=discord.ButtonStyle.gray, emoji="🎮", row=1, custom_id="switchz")
     async def pressedJebe5(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(1103559906872795178, interaction)
 
@@ -64,23 +64,23 @@ class CRoleAdButtons(discord.ui.View):  # 宣伝関連 & 質問メンション
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="宣伝し隊", style=discord.ButtonStyle.green, emoji="📝", row=0)
+    @discord.ui.button(label="宣伝し隊", style=discord.ButtonStyle.green, emoji="📝", row=0, custom_id="sdsitai")
     async def pressedSen1(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(808617738180231178, interaction)
 
-    @discord.ui.button(label="宣伝ウェルカム", style=discord.ButtonStyle.blurple, emoji="📩", row=0)
+    @discord.ui.button(label="宣伝ウェルカム", style=discord.ButtonStyle.blurple, emoji="📩", row=0, custom_id="sdwelcom")
     async def pressedSen2(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(808618017247330324, interaction)
 
-    @discord.ui.button(label="DM質問OK", style=discord.ButtonStyle.red, emoji="📮", row=0)
+    @discord.ui.button(label="DM質問OK", style=discord.ButtonStyle.red, emoji="📮", row=0, custom_id="dmqok")
     async def pressedSen5(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(972312252889837598, interaction)
 
-    @discord.ui.button(label="JE-質問メンション可", style=discord.ButtonStyle.gray, emoji="<:JE:892256704123772931>", row=1)
+    @discord.ui.button(label="JE-質問メンション可", style=discord.ButtonStyle.gray, emoji="<:JE:892256704123772931>", row=1, custom_id="jeqmt")
     async def pressedSen3(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(888048122616500224, interaction)
 
-    @discord.ui.button(label="BE-質問メンション可", style=discord.ButtonStyle.gray, emoji="<:BE:892256680509861929>", row=1)
+    @discord.ui.button(label="BE-質問メンション可", style=discord.ButtonStyle.gray, emoji="<:BE:892256680509861929>", row=1, custom_id="beqmt")
     async def pressedSen4(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(888048127699996712, interaction)
 
@@ -89,19 +89,19 @@ class CRoleOtherButtons(discord.ui.View):  # その他
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="通知ON", style=discord.ButtonStyle.gray, emoji="🔔")
+    @discord.ui.button(label="通知ON", style=discord.ButtonStyle.gray, emoji="🔔", custom_id="notion")
     async def pressedHoka1(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(763342542719811605, interaction)
 
-    @discord.ui.button(label="MEE6レベル無効化", style=discord.ButtonStyle.gray, emoji="🔏")
+    @discord.ui.button(label="MEE6レベル無効化", style=discord.ButtonStyle.gray, emoji="🔏", custom_id="mee6no")
     async def pressedHoka2(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(891286619783581706, interaction)
 
-    @discord.ui.button(label="FOREVER_18", style=discord.ButtonStyle.gray, emoji="🔞")
+    @discord.ui.button(label="FOREVER_18", style=discord.ButtonStyle.gray, emoji="🔞", custom_id="r18")
     async def pressedHoka3(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(892062948531523665, interaction)
 
-    @discord.ui.button(label="bump非表示", style=discord.ButtonStyle.gray, emoji="⤴️")
+    @discord.ui.button(label="bump非表示", style=discord.ButtonStyle.gray, emoji="⤴️", custom_id="nobump")
     async def pressedHoka5(self, interaction: discord.Interaction, button: discord.ui.Button):
         await add_or_remove_role(873890138063794236, interaction)
 
