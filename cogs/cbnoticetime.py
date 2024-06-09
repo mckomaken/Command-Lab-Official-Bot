@@ -1,9 +1,10 @@
-from discord.ext import commands
 import asyncio
-import discord
 from datetime import datetime, timedelta
 
+import discord
 from discord import app_commands
+from discord.ext import commands
+
 from config.config import config
 
 
@@ -12,9 +13,7 @@ class CBnoticetime(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="cbnoticetime", description="【運営】再起動後の通知時間設定用")
-    @app_commands.describe(
-        addminutes="入力分後に通知されます"
-    )
+    @app_commands.describe(addminutes="入力分後に通知されます")
     @app_commands.checks.has_role(config.administrater_role_id)
     async def cbnoticetime(self, interaction: discord.Interaction, addminutes: int = 0):
         bnJST_time = datetime.now()
@@ -27,16 +26,18 @@ class CBnoticetime(commands.Cog):
         bump_embed = discord.Embed(
             title="BUMPの時間だよ(^O^)/",
             description="BUMPの時間になったよ♪ \n </bump:947088344167366698> って打ってね \n \n なお他のサーバーで30分以内にBumpしてる場合はBump出来ない可能性があります。 \n ",
-            color=0x00ffff,
-            timestamp=ScheduledTime
+            color=0x00FFFF,
+            timestamp=ScheduledTime,
         )
         bump_embed.add_field(
             name="It's BUMP time (^O^)/",
-            value="It's BUMP time♪ \n Please send </bump:947088344167366698> \n \n If you bumped within 30 minutes on another server, you may not be able to bump."
+            value="It's BUMP time♪ \n Please send </bump:947088344167366698> \n \n If you bumped within 30 minutes on another server, you may not be able to bump.",
         )
         bump_embed.set_image(url="attachment://bump.png")
 
-        await interaction.response.send_message(f"{addminutes}分後({fScheduledTime}頃)に通知されます")
+        await interaction.response.send_message(
+            f"{addminutes}分後({fScheduledTime}頃)に通知されます"
+        )
         await asyncio.sleep(addminutes * 60)
         await notice_channel.send(embed=bump_embed, file=bump_file)
 
