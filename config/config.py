@@ -20,6 +20,8 @@ class Config(BaseModel):
     enabled_features: list[str] = []
     owner_ids: list[int] = []
     prefix: Optional[str] = "cm!"
+    question_channels: list[int] = []
+
 
 # -----------------------------------------------------------
 
@@ -33,9 +35,7 @@ class PackVersions(BaseModel):
     versions: dict[str, PackVersionEntry]
 
 
-config = Config.model_validate_json(
-    open("./config/config.json", mode="rb").read()
-)
+config = Config.model_validate_json(open("./config/config.json", mode="rb").read())
 
 pack_versions = PackVersions.model_validate_json(
     open("./data/pack_versions.json").read()

@@ -11,19 +11,29 @@ class ConvertView(discord.ui.View):
         self.text = text
 
     @discord.ui.button(label="titleに変換", style=discord.ButtonStyle.green)
-    async def convert_title(self, interaction: discord.Interaction, item: discord.ui.Item):
+    async def convert_title(
+        self, interaction: discord.Interaction, item: discord.ui.Item
+    ):
         await interaction.response.send_message(
-            embed=create_embed(title="コマンド", description=create_codeblock(
-                "/title @a title {\"text\":\"" + self.text + "\"}"
-            ))
+            embed=create_embed(
+                title="コマンド",
+                description=create_codeblock(
+                    '/title @a title {"text":"' + self.text + '"}'
+                ),
+            )
         )
 
     @discord.ui.button(label="tellrawに変換", style=discord.ButtonStyle.green)
-    async def convert_tellraw(self, interaction: discord.Interaction, item: discord.ui.Item):
+    async def convert_tellraw(
+        self, interaction: discord.Interaction, item: discord.ui.Item
+    ):
         await interaction.response.send_message(
-            embed=create_embed(title="コマンド", description=create_codeblock(
-                "/tellraw @a {\"text\":\"" + self.text + "\"}"
-            ))
+            embed=create_embed(
+                title="コマンド",
+                description=create_codeblock(
+                    '/tellraw @a {"text":"' + self.text + '"}'
+                ),
+            )
         )
 
 
@@ -31,8 +41,7 @@ class ConvertView(discord.ui.View):
 class CUnicode(app_commands.Group):
     def __init__(self, bot: commands.Bot):
         super().__init__(
-            name="cunicode",
-            description="UNICODEエスケープシーケンスのエンコード/デコードをします。"
+            name="cunicode", description="UNICODEエスケープシーケンスのエンコード/デコードをします。"
         )
         self.bot = bot
 
@@ -43,8 +52,7 @@ class CUnicode(app_commands.Group):
         data = text.encode("unicode-escape").decode()
 
         embed = discord.Embed(
-            title="Unicodeエスケープシーケンス変換 - エンコード",
-            description=create_codeblock(data)
+            title="Unicodeエスケープシーケンス変換 - エンコード", description=create_codeblock(data)
         )
 
         await interaction.response.send_message(embed=embed, view=ConvertView(data))
@@ -56,8 +64,7 @@ class CUnicode(app_commands.Group):
         data = text.encode().decode("unicode-escape")
 
         embed = discord.Embed(
-            title="Unicodeエスケープシーケンス変換 - デコード",
-            description=create_codeblock(data)
+            title="Unicodeエスケープシーケンス変換 - デコード", description=create_codeblock(data)
         )
 
         await interaction.response.send_message(embed=embed)

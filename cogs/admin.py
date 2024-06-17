@@ -6,15 +6,7 @@ from discord.ext import commands
 
 from config.config import config
 
-TITLES = [
-    "【お知らせ】",
-    "再起動を行います",
-    "使用停止期間",
-    "荒らし対応中",
-    "既知のバグについて",
-    "アプデ対応中",
-    "HP公開中!!!!!"
-]
+TITLES = ["【お知らせ】", "再起動を行います", "使用停止期間", "荒らし対応中", "既知のバグについて", "アプデ対応中", "HP公開中!!!!!"]
 
 DESCRIPTIONS = [
     "すぐ復活するはず(笑)",
@@ -22,7 +14,7 @@ DESCRIPTIONS = [
     "`2024/xx/yy-hh:mm`頃～`2024/xx/yy-hh:mm`頃まで\n実家帰省のためBotが止まります",
     "# **__リンクは絶対に踏まないでください__**",
     "https://komaken.net/\n検索してね(^^♪",
-    "# v2.xにアップデートされました"
+    "# v2.xにアップデートされました",
 ]
 
 
@@ -43,40 +35,37 @@ class CAdminCog(commands.Cog):
 
     @app_commands.command(name="cmisc", description="【運営】運営専用雑コマンド")
     @app_commands.describe(choice="選択肢")
-    @app_commands.choices(choice=[
-        app_commands.Choice(name="高校おめ", value="cl1"),
-        app_commands.Choice(name="大学おめ", value="cl2")
-    ])
+    @app_commands.choices(
+        choice=[
+            app_commands.Choice(name="高校おめ", value="cl1"),
+            app_commands.Choice(name="大学おめ", value="cl2"),
+        ]
+    )
     @app_commands.checks.has_role(config.administrater_role_id)
-    async def cmisc(self, interaction: discord.Interaction, choice: app_commands.Choice[str]):
+    async def cmisc(
+        self, interaction: discord.Interaction, choice: app_commands.Choice[str]
+    ):
         if choice.value == "cl1":
-            await interaction.response.send_message(embed=discord.Embed(
-                title="高校合格おめでとうございます!!", color=0x2b9788
-            ))
+            await interaction.response.send_message(
+                embed=discord.Embed(title="高校合格おめでとうございます!!", color=0x2B9788)
+            )
         elif choice.value == "cl2":
-            await interaction.response.send_message(embed=discord.Embed(
-                title="大学合格おめでとうございます!!", color=0x2b9788
-            ))
+            await interaction.response.send_message(
+                embed=discord.Embed(title="大学合格おめでとうございます!!", color=0x2B9788)
+            )
 
-    @app_commands.command(
-        name="cn", description="【運営】各種お知らせ用"
-    )
+    @app_commands.command(name="cn", description="【運営】各種お知らせ用")
     @app_commands.describe(
-        title="タイトル",
-        description="説明",
-        sub_title="サブタイトル",
-        sub_description="サブ説明"
+        title="タイトル", description="説明", sub_title="サブタイトル", sub_description="サブ説明"
     )
-    @app_commands.checks.has_role(
-        config.administrater_role_id
-    )
+    @app_commands.checks.has_role(config.administrater_role_id)
     async def cn(
         self,
         interaction: discord.Interaction,
         title: str = None,
         description: str = None,
         sub_title: str = "",
-        sub_description: str = ""
+        sub_description: str = "",
     ):
         mntJST_time = datetime.now()
         if title is not None:
@@ -86,38 +75,30 @@ class CAdminCog(commands.Cog):
             description = description.replace("\\n", "\n")
 
         notice_embed = discord.Embed(
-            title=title,
-            description=description,
-            color=0xff580f,
-            timestamp=mntJST_time
+            title=title, description=description, color=0xFF580F, timestamp=mntJST_time
         )
 
         notice_embed.set_footer(text=f"Send by {interaction.user.display_name}")
 
         if sub_title != "" and sub_description != "":
             notice_embed.add_field(
-                name=sub_title,
-                value=sub_description,
+                name=sub_title, value=sub_description,
             )
 
         await interaction.response.send_message(
             content="本当にこの内容で送信していいんか?",
             embed=notice_embed,
             ephemeral=True,
-            view=CNoticeConfirm(embed=notice_embed)
+            view=CNoticeConfirm(embed=notice_embed),
         )
 
     @cn.autocomplete("title")
     async def cn_title(self, interaction: discord.Interaction, current: str):
-        return [
-            app_commands.Choice(name=n, value=n) for n in TITLES
-        ]
+        return [app_commands.Choice(name=n, value=n) for n in TITLES]
 
     @cn.autocomplete("description")
     async def cn_description(self, interaction: discord.Interaction, current: str):
-        return [
-            app_commands.Choice(name=n, value=n) for n in DESCRIPTIONS
-        ]
+        return [app_commands.Choice(name=n, value=n) for n in DESCRIPTIONS]
 
 
 async def setup(bot: commands.Bot):

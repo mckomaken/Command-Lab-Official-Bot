@@ -14,14 +14,15 @@ class CTick(commands.Cog):
     @app_commands.command(name="ctick", description="tickに変換します")
     @app_commands.guild_only()
     async def ctick(
-        self, interaction: discord.Interaction,
+        self,
+        interaction: discord.Interaction,
         year: Optional[int] = 0,
         month: Optional[int] = 0,
         week: Optional[int] = 0,
         day: Optional[int] = 0,
         hour: Optional[int] = 0,
         minute: Optional[int] = 0,
-        second: Optional[int] = 0
+        second: Optional[int] = 0,
     ):
         tick = 0
         tick += second * 20
@@ -35,7 +36,9 @@ class CTick(commands.Cog):
         datestr = f"{year}年{month}ヶ月{week * 7 + day}日{hour}時間{minute}分{second}秒"
 
         await interaction.response.send_message(
-            embed=create_embed(title="TICK換算", description=f"**{datestr}** は **{tick}Tick** です")
+            embed=create_embed(
+                title="TICK換算", description=f"**{datestr}** は **{tick}Tick** です"
+            )
         )
 
 
