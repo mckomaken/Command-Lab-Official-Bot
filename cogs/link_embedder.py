@@ -51,7 +51,7 @@ class CTemplate(commands.Cog):
 
                 # Embedオブジェクトを作成
                 embed = discord.Embed(
-                    description=content, color=0x00BFFF, timestamp=timestamp
+                    description=content, color=0xff8000, timestamp=timestamp
                 )
                 embed.set_author(name=name, icon_url=icon_url)
                 embed.set_footer(text=f"From #{target_message.channel}")
