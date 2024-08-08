@@ -6,6 +6,11 @@ from discord.ext import commands
 logger = logging.getLogger(__name__)
 
 
+class DeleteButton(discord.ui.Button):
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.message.delete()
+
+
 class CTemplate(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -74,6 +79,11 @@ class CTemplate(commands.Cog):
                         url=target_message_link,
                     )
                 )
+                delete_button = DeleteButton(
+                    label="削除",
+                    style=discord.ButtonStyle.gray
+                )
+                view.add_item(delete_button)
 
                 # EmbedとViewをメッセージとして送信
                 await message.channel.send(embed=embed, view=view)
