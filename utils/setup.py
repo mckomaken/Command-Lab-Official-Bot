@@ -29,9 +29,9 @@ class ProgressBar(pygit2.RemoteCallbacks):
 
 
 async def setup():
-    if not os.path.exists("./tmp"):
+    if not os.path.exists(os.getenv("TMP_DIRECTORY", "./.tmp")):
         logger.warning("tmpフォルダが存在しません。新しく作成します。")
-        os.mkdir("./tmp")
+        os.mkdir(os.getenv("TMP_DIRECTORY", "./.tmp"))
 
     logger.info("バージョン情報をダウンロードしています...")
     async with aiohttp.ClientSession() as client:
@@ -59,7 +59,7 @@ async def setup():
 
             async with client.get(url=url) as resp2:
                 game_package = GamePackage.model_validate(await resp2.json())
-                path = "./tmp/client_" + game_package.id + ".jar"
+                path = os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "client_" + game_package.id + ".jar")
 
                 logger.info("言語ファイルをダウンロードしています...")
                 async with client.get(url=game_package.assetIndex.url) as resp4:
@@ -70,7 +70,7 @@ async def setup():
                     async with client.get(
                         f"https://resources.download.minecraft.net/{lang_file_hash[0:2]}/{lang_file_hash}"
                     ) as resp5:
-                        async with aiofiles.open("./tmp/ja_jp.json", mode="wb") as fp2:
+                        async with aiofiles.open(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"), mode="wb") as fp2:
                             lang_data = await resp5.text()
                             await fp2.write(lang_data.encode())
                             await fp2.close()

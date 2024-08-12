@@ -2,7 +2,7 @@ import asyncio
 import logging
 import logging.config
 from datetime import datetime
-from os import listdir
+from os import listdir, path
 import os
 
 import aiofiles
@@ -106,7 +106,9 @@ class CommandLabBot(commands.Bot):
     async def start(cls, token: str) -> None:
         logging.config.dictConfig(
             yaml.load(
-                await (await aiofiles.open("./data/logging.yaml")).read(),
+                await (await aiofiles.open(
+                    path.join(os.getenv("BASE_DIR", "."), "data/logging.yaml")
+                )).read(),
                 Loader=yaml.SafeLoader,
             )
         )

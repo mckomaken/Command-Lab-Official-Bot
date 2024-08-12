@@ -10,15 +10,15 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # copy sources
-COPY assets .
-COPY cogs .
-COPY config .
-COPY data .
-COPY schemas .
-COPY utils .
-COPY CommandLab.py .
+COPY assets /app/
+COPY cogs /app/
+COPY config /app/
+COPY data /app/
+COPY schemas /app/
+COPY utils /app/
+COPY CommandLab.py /app/
 
 # create tmp directory
-RUN mkdir tmp
+RUN mkdir .tmp
 
 CMD ["python3", "/app/CommandLab.py"]
