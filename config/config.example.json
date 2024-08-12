@@ -20,5 +20,9 @@
         "channel_id": 0,
         "_c7-2": "DISBOARDのユーザーID",
         "disboard_id": 0
-    }
+    },
+    "_c8": "質問チャンネル指定",
+    "question_channels": [
+        ""
+    ]
 }
