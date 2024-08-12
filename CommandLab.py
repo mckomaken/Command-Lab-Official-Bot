@@ -3,6 +3,7 @@ import logging
 import logging.config
 from datetime import datetime
 from os import listdir
+import os
 
 import aiofiles
 import discord
@@ -187,6 +188,8 @@ class CommandLabBot(commands.Bot):
 
 if config.token == "FILE":
     config.token = open("..\\CMTK.txt", mode="r").read()
+if config.token == "ENV":
+    config.token = os.getenv("TOKEN")
 
 if __name__ == "__main__":
     asyncio.run(CommandLabBot.start(token=config.token))
