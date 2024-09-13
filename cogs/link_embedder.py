@@ -33,6 +33,10 @@ class CTemplate(commands.Cog):
             if message.guild.id != guild_id:
                 # 現在のサーバー以外のリンクには反応しない
                 return
+            
+            # 宣伝チャンネルを除外
+            if channel_id == 775004819004981258:
+                return
 
             try:
                 # リンク先のメッセージオブジェクトを取得
