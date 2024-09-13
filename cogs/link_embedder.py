@@ -35,7 +35,7 @@ class CTemplate(commands.Cog):
                 return
             
             # 宣伝チャンネルを除外
-            if channel_id == 775004819004981258:
+            if channel_id in [775004819004981258]:
                 return
 
             try:
