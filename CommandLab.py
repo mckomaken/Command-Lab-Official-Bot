@@ -86,6 +86,7 @@ class CommandLabBot(commands.Bot):
         if self.status_index > len(STATUSES):
             self.status_index = 0
         await asyncio.sleep(interval)
+        asyncio.create_task(self.change_status())
 
     async def setup_hook(self) -> None:
         if "*" in config.enabled_features:
@@ -100,6 +101,7 @@ class CommandLabBot(commands.Bot):
                 await self.load_extension(f)
                 logger.info(f"機能 [{f}] が正常にロードされました。")
         await self.tree.sync()
+
         self.loop.create_task(self.change_status())
 
     @classmethod
