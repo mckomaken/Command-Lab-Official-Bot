@@ -33,14 +33,14 @@ class CTemplate(commands.Cog):
             if message.guild.id != guild_id:
                 # 現在のサーバー以外のリンクには反応しない
                 return
-            
+
             # 宣伝チャンネルを除外
             if channel_id in [775004819004981258]:
                 return
 
             try:
                 # リンク先のメッセージオブジェクトを取得
-                target_channel = self.bot.get_guild(guild_id).get_channel(channel_id)
+                target_channel = self.bot.get_guild(guild_id).get_channel_or_thread(channel_id)
                 target_message = await target_channel.fetch_message(message_id)
 
                 # リンク先のメッセージオブジェクトから、メッセージの内容、送信者の名前とアイコンなどの情報を取得
