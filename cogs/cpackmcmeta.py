@@ -219,7 +219,7 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.dp, DP_ALL_VERSIONS[i], k))
                 i += 1
 
-        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/dp.json"), filename="dp.png")
+        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/dp.png"), filename="dp.png")
 
         embed = discord.Embed(title="データパックバージョン一覧")
         embed.set_image(url="attachment://dp.png")
@@ -241,7 +241,7 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.rp, RP_ALL_VERSIONS[i], k))
                 i += 1
 
-        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/rp.json"), filename="rp.png")
+        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/rp.png"), filename="rp.png")
 
         embed = discord.Embed(title="リソースパックバージョン一覧")
         embed.set_image(url="attachment://rp.png")
