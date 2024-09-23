@@ -139,8 +139,7 @@ class CPackMcMeta(app_commands.Group):
 
                     for ver in version_manifest.versions:
                         if (
-                            ver.id == version_manifest.latest.release
-                            or ver.id == version_manifest.latest.snapshot
+                            ver.id == version_manifest.latest.release or ver.id == version_manifest.latest.snapshot
                         ):
                             async with client.get(ver.url) as resp2:
                                 game_package = GamePackage.model_validate(
