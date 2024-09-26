@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import os
 from typing import Any, Optional
 
 import aiofiles
@@ -36,7 +37,7 @@ class CCommandInfo(commands.Cog):
 
     @app_commands.command(name="ccommand", description="コマンドの情報を表示します")
     async def ccommand(self, interaction: discord.Interaction, command: str):
-        async with aiofiles.open("./data/commands.json", mode="rb") as fp:
+        async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
             if command not in data:
                 await interaction.response.send_message(
@@ -103,7 +104,7 @@ class CCommandInfo(commands.Cog):
     async def ccommand_autocomplete(
         self, interaction: discord.Interaction, current: str
     ):
-        async with aiofiles.open("./data/commands.json", mode="rb") as fp:
+        async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
 
             return [

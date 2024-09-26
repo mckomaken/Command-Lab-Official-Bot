@@ -2,7 +2,8 @@ import asyncio
 import logging
 import logging.config
 from datetime import datetime
-from os import listdir
+from os import listdir, path
+import os
 
 import aiofiles
 import discord
@@ -85,6 +86,7 @@ class CommandLabBot(commands.Bot):
         if self.status_index > len(STATUSES):
             self.status_index = 0
         await asyncio.sleep(interval)
+        asyncio.create_task(self.change_status())
 
     async def setup_hook(self) -> None:
         if "*" in config.enabled_features:
@@ -99,13 +101,16 @@ class CommandLabBot(commands.Bot):
                 await self.load_extension(f)
                 logger.info(f"機能 [{f}] が正常にロードされました。")
         await self.tree.sync()
+
         self.loop.create_task(self.change_status())
 
     @classmethod
     async def start(cls, token: str) -> None:
         logging.config.dictConfig(
             yaml.load(
-                await (await aiofiles.open("./data/logging.yaml")).read(),
+                await (await aiofiles.open(
+                    path.join(os.getenv("BASE_DIR", "."), "data/logging.yaml")
+                )).read(),
                 Loader=yaml.SafeLoader,
             )
         )
@@ -187,6 +192,8 @@ class CommandLabBot(commands.Bot):
 
 if config.token == "FILE":
     config.token = open("..\\CMTK.txt", mode="r").read()
+if config.token == "ENV":
+    config.token = os.getenv("TOKEN")
 
 if __name__ == "__main__":
     asyncio.run(CommandLabBot.start(token=config.token))

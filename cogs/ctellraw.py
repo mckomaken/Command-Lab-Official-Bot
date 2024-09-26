@@ -1,4 +1,5 @@
 import io
+import os
 
 import discord
 from discord import (ButtonStyle, Embed, Interaction, SelectOption, TextStyle,
@@ -114,7 +115,7 @@ def create_preview(datas: list[SectionDataText]):
     img = Image.new("RGBA", (512, 100), color=0x000000)
     d = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype("./assets/unifont-15.1.05.otf", 14)
+    font = ImageFont.truetype(os.path.join(os.getenv("BASE_DIR", "."), "assets/unifont-15.1.05.otf"), 14)
 
     cursor = 10
     cursor_y = 10

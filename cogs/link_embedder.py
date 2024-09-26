@@ -6,6 +6,11 @@ from discord.ext import commands
 logger = logging.getLogger(__name__)
 
 
+class DeleteButton(discord.ui.Button):
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.message.delete()
+
+
 class CTemplate(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -29,9 +34,13 @@ class CTemplate(commands.Cog):
                 # 現在のサーバー以外のリンクには反応しない
                 return
 
+            # 宣伝チャンネルを除外
+            if channel_id in [775004819004981258]:
+                return
+
             try:
                 # リンク先のメッセージオブジェクトを取得
-                target_channel = self.bot.get_guild(guild_id).get_channel(channel_id)
+                target_channel = self.bot.get_guild(guild_id).get_channel_or_thread(channel_id)
                 target_message = await target_channel.fetch_message(message_id)
 
                 # リンク先のメッセージオブジェクトから、メッセージの内容、送信者の名前とアイコンなどの情報を取得
@@ -74,6 +83,11 @@ class CTemplate(commands.Cog):
                         url=target_message_link,
                     )
                 )
+                delete_button = DeleteButton(
+                    label="削除",
+                    style=discord.ButtonStyle.gray
+                )
+                view.add_item(delete_button)
 
                 # EmbedとViewをメッセージとして送信
                 await message.channel.send(embed=embed, view=view)

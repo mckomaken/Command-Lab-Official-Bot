@@ -1,5 +1,6 @@
 import io
 import json
+import os
 import zipfile
 from datetime import datetime
 
@@ -47,10 +48,10 @@ class CItem(commands.Cog):
                             )
 
                             async with aiofiles.open(
-                                "./tmp/ja_jp.json", mode="rb"
+                                os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"), mode="rb"
                             ) as lang_fp:
                                 with zipfile.ZipFile(
-                                    f"./tmp/client_{config.latest_version}.jar"
+                                    os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), f"client_{config.latest_version}.jar")
                                 ) as zipfp:
                                     tn = "item" if is_item else "block"
                                     lang_data = json.loads(await lang_fp.read())

@@ -1,5 +1,6 @@
 import io
 import json
+import os
 import zipfile
 from datetime import datetime, timedelta
 from typing import Optional
@@ -138,8 +139,7 @@ class CPackMcMeta(app_commands.Group):
 
                     for ver in version_manifest.versions:
                         if (
-                            ver.id == version_manifest.latest.release
-                            or ver.id == version_manifest.latest.snapshot
+                            ver.id == version_manifest.latest.release or ver.id == version_manifest.latest.snapshot
                         ):
                             async with client.get(ver.url) as resp2:
                                 game_package = GamePackage.model_validate(
@@ -218,7 +218,7 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.dp, DP_ALL_VERSIONS[i], k))
                 i += 1
 
-        file = discord.File("./assets/dp.png", filename="dp.png")
+        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/dp.png"), filename="dp.png")
 
         embed = discord.Embed(title="データパックバージョン一覧")
         embed.set_image(url="attachment://dp.png")
@@ -240,7 +240,7 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.rp, RP_ALL_VERSIONS[i], k))
                 i += 1
 
-        file = discord.File("./assets/rp.png", filename="rp.png")
+        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/rp.png"), filename="rp.png")
 
         embed = discord.Embed(title="リソースパックバージョン一覧")
         embed.set_image(url="attachment://rp.png")
