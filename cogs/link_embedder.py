@@ -17,14 +17,22 @@ class CTemplate(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
-        if "https://discord.com/channels/" in message.content:
-            # メッセージリンクが含まれている場合
+        # メッセージリンクが含まれている場合
+        if any(domain in message.content for domain in ["https://discord.com/channels/", "https://canary.discord.com/channels/"]):
             try:
-                link = (
-                    message.content.split("https://discord.com/channels/")[1]
-                    .split(" ")[0]
-                    .split("\n")[0]
-                )
+                if "https://discord.com/channels/" in message.content:
+                    link = (
+                        message.content.split("https://discord.com/channels/")[1]
+                        .split(" ")[0]
+                        .split("\n")[0]
+                    )
+                elif "https://canary.discord.com/channels/" in message.content:
+                    link = (
+                        message.content.split("https://canary.discord.com/channels/")[1]
+                        .split(" ")[0]
+                        .split("\n")[0]
+                    )
+
                 guild_id, channel_id, message_id = map(int, link.split("/"))
             except Exception:
                 return
