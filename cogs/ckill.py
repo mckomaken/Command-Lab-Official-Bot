@@ -48,8 +48,8 @@ class CKill(commands.Cog):
             logs: list[str] = []
             for _ in range(count):
                 logs.append(self.generate_death_log(
-                    escape(interaction.user.display_name, True),
-                    target_name
+                    target_name,
+                    escape(interaction.user.display_name, True)
                 ))
 
             await interaction.response.send_message(
