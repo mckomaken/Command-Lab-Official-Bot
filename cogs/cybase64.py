@@ -4,6 +4,7 @@ import discord
 from discord import app_commands
 
 from utils.util import create_codeblock, create_embed
+from config.config import config
 
 
 class UrlView(discord.ui.View):
@@ -33,8 +34,8 @@ class CYbase64(commands.Cog):
     @app_commands.command(name="cybase64", description="y談用のBase64変換です")
     @app_commands.describe(text="送信したい内容を書いてください")
     async def cybase64(self, interaction: discord.Interaction, text: str):
-        send_channel = await self.bot.fetch_channel(892062687557738548)
-        admin_channel = await self.bot.fetch_channel(1213498919145963551)
+        send_channel = await self.bot.fetch_channel(config.y_channel.channel_id)
+        admin_channel = await self.bot.fetch_channel(config.y_channel.admin_channel_id)
         yembed = discord.Embed(
             color=0xd51ebe,
             title=interaction.user.display_name,

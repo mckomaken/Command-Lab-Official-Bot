@@ -12,6 +12,11 @@ class BumpNofitication(BaseModel):
     disboard_id: int
 
 
+class YChannel(BaseModel):
+    channel_id: int
+    admin_channel_id: int
+
+
 class Config(BaseModel):
     token: str
     guild_id: int
@@ -23,7 +28,7 @@ class Config(BaseModel):
     owner_ids: list[int] = []
     prefix: Optional[str] = "cm!"
     question_channels: list[int] = []
-
+    y_channel: YChannel
 
 # -----------------------------------------------------------
 
@@ -31,6 +36,7 @@ class Config(BaseModel):
 class PackVersionEntry(BaseModel):
     rp: int
     dp: int
+
 
 class PackVersions(BaseModel):
     versions: dict[str, PackVersionEntry]
