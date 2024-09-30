@@ -27,6 +27,7 @@ class CKill(commands.Cog):
         # 指定なし -> 1人のみのdeath log
         if victim is None:
             death_logs = [t for t in self.death_logs if "%2$s" not in t]
+            victim = ""
 
         # キルログ生成
         return random.choice(death_logs) \
