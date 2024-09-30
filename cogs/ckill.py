@@ -1,27 +1,28 @@
 import discord
-from discord import app_commands
+from discord import Member, app_commands
 from discord.ext import commands
 
 import json
 import random
 
+
 def kill(name, target=None):
 
     # jsonファイル を dict(lang_data) に変換
-    with open(file='ja_jp.json',mode='r',encoding='utf-8') as file:
+    with open(file='ja_jp.json', mode='r', encoding='utf-8') as file:
         lang_data = json.load(file)
 
     # lang_data からデスログ、エンティティ名、アイテム名を抽出
     death_logs = [v for k, v in lang_data.items() if "death." in k]
-    entities = [v.replace("のスポーンエッグ","") for k, v in lang_data.items() if "item.minecraft." in k and "_spawn_egg" in k]
+    entities = [v.replace("のスポーンエッグ", "") for k, v in lang_data.items() if "item.minecraft." in k and "_spawn_egg" in k]
     items = [v for k, v in lang_data.items() if "item.minecraft." in k]
 
     # もしtargetがいなかったら、targetをエンティティの中から選出する
-    if target == None:
+    if target is None:
         target = random.choice(entities)
 
     # キルログ生成
-    death_log = random.choice(death_logs).replace("%1$s",name + " ").replace("%2$s",target).replace("%3$s",f"[{random.choice(items)}]")
+    death_log = random.choice(death_logs).replace("%1$s", name + " ").replace("%2$s", target).replace("%3$s", f"[{random.choice(items)}]")
     return death_log
 
 
@@ -31,8 +32,8 @@ class CKill(commands.Cog):
 
     @app_commands.command(name="ckill", description="キルコマンド(ネタ)")
     @app_commands.describe(target="キルするユーザー(任意)")
-    async def ctemperature(self, interaction: discord.Interaction, target=None):
-        await interaction.response.send_message(kill(f"<@{interaction.user.id}>", target))
+    async def ckill(self, interaction: discord.Interaction, target: Member=None):
+        await interaction.response.send_message(kill(interaction.user.mention, target))
 
 
 async def setup(bot: commands.Bot):
