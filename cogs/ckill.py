@@ -50,7 +50,8 @@ class CKill(commands.Cog):
             )
         else:
             await interaction.response.send_message(
-                f"回数は1～{self.max_count}にしてください", ephemeral=True
+                f"countには{self.max_count}以下の自然数を入れてね(^^♪\n自然数がわからない人はこのサーバーから追放するね(^^♪♪♪",
+                ephemeral=True
             )
 
     async def cog_load(self) -> None:
