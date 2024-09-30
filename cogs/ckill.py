@@ -21,10 +21,12 @@ class CKill(commands.Cog):
         # 最大数設定
         self.max_count = 10
 
-    def generate_death_log(self, user: Optional[str], target: str) -> str:
+    def generate_death_log(self, target: Optional[str], user: str) -> str:
         # もしtargetがいなかったら、targetをエンティティの中から選出する
-        if user is None:
-            user = random.choice(self.entities)
+        if target is None:
+            target = random.choice(self.entities)
+        else:
+            target, user = user, target
 
         # キルログ生成
         return random.choice(self.death_logs) \
