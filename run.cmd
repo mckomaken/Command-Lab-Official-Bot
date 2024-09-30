@@ -8,6 +8,7 @@ git pull
 %PY% -m pip install -r requirements.txt
 
 set /p TOKEN=<..\CMTK.txt
+copy /Y ..\config.json .\config\
 %PY% CommandLab.py
 
 endlocal
