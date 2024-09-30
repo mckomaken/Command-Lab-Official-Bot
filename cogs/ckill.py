@@ -32,7 +32,7 @@ class CKill(commands.Cog):
 
     @app_commands.command(name="ckill", description="キルコマンド(ネタ)")
     @app_commands.describe(target="キルするユーザー(任意)")
-    async def ckill(self, interaction: discord.Interaction, target: Member = None):
+    async def ckill(self, interaction: discord.Interaction, target: str = None):
         await interaction.response.send_message(kill(interaction.user.mention, target))
 
 
