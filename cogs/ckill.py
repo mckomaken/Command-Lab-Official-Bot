@@ -30,8 +30,8 @@ class CKill(commands.Cog):
 
         # キルログ生成
         return random.choice(self.death_logs) \
-            .replace("%1$s", target + " ") \
-            .replace("%2$s", user + " ") \
+            .replace("%1$s", user + " ") \
+            .replace("%2$s", target + " ") \
             .replace("%3$s", f"[{random.choice(self.items)}]")
 
     @app_commands.command(name="ckill", description="キルコマンド(ネタ)")
