@@ -51,6 +51,16 @@ def randhex() -> str:
     return hex(random.randint(0x00, 0xFF))
 
 
+def get_rgb_from_hex(color_code: str) -> tuple:
+    r = int(color_code[1:3], 16)
+    g = int(color_code[3:5], 16)
+    b = int(color_code[5:7], 16)
+    if len(color_code) == 9:
+        a = int(color_code[7:9], 16)
+        return (r, g, b, a)
+    return (r, g, b)
+
+
 class CColor(app_commands.Group):
     def __init__(self, bot: commands.Bot):
         super().__init__(name="ccolor")
@@ -60,7 +70,7 @@ class CColor(app_commands.Group):
     async def preview(self, interaction: discord.Interaction, color: str):
         try:
             c_color = int(color.replace("#", ""), base=16)
-            cc_color = ImageColor.getrgb(color)
+            cc_color = get_rgb_from_hex(color)
             image = create_image(1024, 300, color)
 
             file = discord.File(image, filename="color.png")
@@ -88,7 +98,7 @@ class CColor(app_commands.Group):
         try:
             color = "#" + randhex()[2:].zfill(2) + randhex()[2:].zfill(2) + randhex()[2:].zfill(2)
             c_color = int(color.replace("#", ""), base=16)
-            cc_color = ImageColor.getrgb(color)
+            cc_color = get_rgb_from_hex(color)
             image = create_image(1024, 300, color)
 
             file = discord.File(image, filename="color.png")
