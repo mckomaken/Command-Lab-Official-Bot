@@ -2,9 +2,14 @@ from typing import Optional
 import discord
 from discord import Member, app_commands
 from discord.ext import commands
+from discord.utils import escape_markdown, escape_mentions
 
 import json
 import random
+
+
+def escape(text: str) -> str:
+    return escape_markdown(escape_mentions(text), True)
 
 
 class CKill(commands.Cog):
@@ -36,13 +41,16 @@ class CKill(commands.Cog):
         # もしtargetがいなかったら、targetをエンティティの中から選出する
         target_name = None
         if target:
-            target_name = target.display_name
+            target_name = escape(target.display_name)
 
         # 最大数制限
         if 0 < count <= self.max_count:
             logs: list[str] = []
             for _ in range(count):
-                logs.append(self.generate_death_log(interaction.user.display_name, target_name))
+                logs.append(self.generate_death_log(
+                    escape(interaction.user.display_name, True),
+                    target_name
+                ))
 
             await interaction.response.send_message(
                 "\n".join(logs).rstrip("\n"),
