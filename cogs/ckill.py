@@ -45,7 +45,7 @@ class CKill(commands.Cog):
                 logs.append(self.generate_death_log(interaction.user.display_name, target_name))
 
             await interaction.response.send_message(
-                "\n".join(logs),
+                "\n".join(logs).rstrip("\n"),
                 allowed_mentions=discord.AllowedMentions.none()
             )
         else:
