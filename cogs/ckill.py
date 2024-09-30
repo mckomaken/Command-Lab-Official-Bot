@@ -9,7 +9,7 @@ import random
 
 
 def escape(text: str) -> str:
-    return escape_markdown(escape_mentions(text), True)
+    return escape_markdown(escape_mentions(text), as_needed=True)
 
 
 class CKill(commands.Cog):
@@ -49,7 +49,7 @@ class CKill(commands.Cog):
             for _ in range(count):
                 logs.append(self.generate_death_log(
                     target_name,
-                    escape(interaction.user.display_name, True)
+                    escape(interaction.user.display_name)
                 ))
 
             await interaction.response.send_message(
