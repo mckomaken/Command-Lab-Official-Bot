@@ -12,21 +12,44 @@ class CKill(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.max_count = 20
 
-    @app_commands.command(name="ckill", description="キルコマンド(ネタ)")
-    @app_commands.describe(target="キルするユーザー(任意)")
-    async def ckill(self, interaction: discord.Interaction, target: Optional[Member] = None):
-        # もしtargetがいなかったら、targetをエンティティの中から選出する
+    def generate_death_log(self, user: str, target: Optional[str]) -> str:
         if target is None:
             target = random.choice(self.entities)
 
         # キルログ生成
-        death_log = random.choice(self.death_logs) \
-            .replace("%1$s", interaction.user.display_name + " ") \
+        return random.choice(self.death_logs) \
+            .replace("%1$s", user + " ") \
             .replace("%2$s", target) \
             .replace("%3$s", f"[{random.choice(self.items)}]")
 
-        await interaction.response.send_message(death_log)
+    @app_commands.command(name="ckill", description="キルコマンド(ネタ)")
+    @app_commands.describe(target="キルするユーザー(任意)", count="回数(デフォルト1)")
+    async def ckill(
+        self, interaction: discord.Interaction,
+        target: Optional[Member] = None,
+        count: Optional[int] = 1
+    ):
+        # もしtargetがいなかったら、targetをエンティティの中から選出する
+        target_name = None
+        if target:
+            target_name = target.display_name
+
+        # 0-100に制限
+        if 0 < count <= self.max_count:
+            logs: list[str] = []
+            for _ in range(count):
+                logs.append(self.generate_death_log(interaction.user.display_name, target_name))
+
+            await interaction.response.send_message(
+                "\n".join(logs),
+                allowed_mentions=discord.AllowedMentions.none()
+            )
+        else:
+            await interaction.response.send_message(
+                f"回数は1～{self.max_count}にしてください", ephemeral=True
+            )
 
     async def cog_load(self) -> None:
         # jsonファイル を dict(lang_data) に変換
