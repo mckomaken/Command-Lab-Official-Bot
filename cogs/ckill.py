@@ -12,6 +12,8 @@ class CKill(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+
+        # 最大数設定
         self.max_count = 20
 
     def generate_death_log(self, user: str, target: Optional[str]) -> str:
@@ -36,7 +38,7 @@ class CKill(commands.Cog):
         if target:
             target_name = target.display_name
 
-        # 0-100に制限
+        # 最大数制限
         if 0 < count <= self.max_count:
             logs: list[str] = []
             for _ in range(count):
