@@ -3,7 +3,27 @@ import base64
 import discord
 from discord import app_commands
 
-from utils.util import create_codeblock
+from utils.util import create_codeblock, create_embed
+
+
+class UrlView(discord.ui.View):
+    def __init__(self, text: str):
+        super().__init__(timeout=None)
+        self.text = text
+
+    @discord.ui.button(label="送信内容を見る", style=discord.ButtonStyle.red)
+    async def convert_title(
+        self, interaction: discord.Interaction, item: discord.ui.Item
+    ):
+        await interaction.response.send_message(
+            embed=create_embed(
+                title="送信内容",
+                description=(
+                    f"{self.text}"
+                )
+            ),
+            ephemeral=True,
+        )
 
 
 class CYbase64(commands.Cog):
@@ -27,7 +47,7 @@ class CYbase64(commands.Cog):
         )
         if interaction.channel == send_channel:
             await interaction.response.send_message("送信しました", ephemeral=True)
-            await send_channel.send(embed=yembed)
+            await send_channel.send(embed=yembed, view=UrlView(text))
             await admin_channel.send(embed=admin_embed)
         else:
             await interaction.response.send_message("チャンネル違うよ！", ephemeral=True)
