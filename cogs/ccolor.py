@@ -98,7 +98,7 @@ class CColor(app_commands.Group):
         try:
             color = "#" + randhex()[2:].zfill(2) + randhex()[2:].zfill(2) + randhex()[2:].zfill(2)
             c_color = int(color.replace("#", ""), base=16)
-            cc_color = get_rgb_from_hex(color)  # 手動でRGBを取得
+            cc_color = get_rgb_from_hex(color)
             image = create_image(1024, 300, color)
 
             file = discord.File(image, filename="color.png")
