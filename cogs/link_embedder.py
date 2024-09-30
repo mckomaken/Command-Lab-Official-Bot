@@ -2,8 +2,10 @@ import logging
 
 import discord
 from discord.ext import commands
+import regex
 
 logger = logging.getLogger(__name__)
+LINK_PATTERN = regex.compile("https?://(ptb\\.|canary\\.)?discord.com/[0-9]+/[0-9]+/[0-9]+/?")
 
 
 class DeleteButton(discord.ui.Button):
@@ -11,29 +13,16 @@ class DeleteButton(discord.ui.Button):
         await interaction.message.delete()
 
 
-class CTemplate(commands.Cog):
+class CLinkEmbedder(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
         # メッセージリンクが含まれている場合
-        if any(domain in message.content for domain in ["https://discord.com/channels/", "https://canary.discord.com/channels/"]):
+        if LINK_PATTERN.fullmatch(message.content):
             try:
-                if "https://discord.com/channels/" in message.content:
-                    link = (
-                        message.content.split("https://discord.com/channels/")[1]
-                        .split(" ")[0]
-                        .split("\n")[0]
-                    )
-                elif "https://canary.discord.com/channels/" in message.content:
-                    link = (
-                        message.content.split("https://canary.discord.com/channels/")[1]
-                        .split(" ")[0]
-                        .split("\n")[0]
-                    )
-
-                guild_id, channel_id, message_id = map(int, link.split("/"))
+                guild_id, channel_id, message_id = map(int, message.content.split("/"))
             except Exception:
                 return
 
@@ -109,4 +98,4 @@ class CTemplate(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(CTemplate(bot))
+    await bot.add_cog(CLinkEmbedder(bot))
