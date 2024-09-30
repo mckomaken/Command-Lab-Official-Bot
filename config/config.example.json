@@ -24,5 +24,10 @@
     "_c8": "質問チャンネル指定",
     "question_channels": [
         ""
-    ]
+    ],
+    "_c9": "Y談チャンネルの設定",
+    "y_channels": {
+        "channel_id": 0,
+        "admin_channel_id": 0
+    }
 }
