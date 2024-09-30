@@ -9,7 +9,7 @@ import random
 def kill(name, target=None):
 
     # jsonファイル を dict(lang_data) に変換
-    with open(file='ja_jp.json', mode='r', encoding='utf-8') as file:
+    with open(file='./assets/ja_jp.json', mode='r', encoding='utf-8') as file:
         lang_data = json.load(file)
 
     # lang_data からデスログ、エンティティ名、アイテム名を抽出
