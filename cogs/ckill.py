@@ -1,11 +1,14 @@
+import io
+import json
+import os
+import random
 from typing import Optional
+
 import discord
 from discord import Member, app_commands
 from discord.ext import commands
 from discord.utils import escape_markdown, escape_mentions
-
-import json
-import random
+from PIL import Image, ImageDraw, ImageFont
 
 
 def escape(text: str) -> str:
@@ -20,6 +23,36 @@ class CKill(commands.Cog):
 
         # 最大数設定
         self.max_count = 10
+
+    def generate_image(self, msg: str) -> discord.File:
+        img = Image.open("./assets/death_screen_bg.png").convert("RGBA")
+        filter_img = Image.new("RGBA", size=img.size, color=0xff0000ff)
+        img = Image.blend(img, filter_img, 0.2)
+
+        draw = ImageDraw.Draw(img)
+
+        def unifont(size: int):
+            return ImageFont.truetype(os.path.join(os.getenv("BASE_DIR", "."), "assets/mcfont.ttf"), size)
+
+        def drawtext(text: str, y: float, size: int):
+            draw.text(((img.width / 2) - (draw.textlength(text, font=unifont(size)) / 2) + 1, y + 2), text, fill=0x42424201, font=unifont(size))
+            draw.text(((img.width / 2) - (draw.textlength(text, font=unifont(size)) / 2) - 1, y), text, fill=0xffffffff, font=unifont(size))
+
+        drawtext("死んでしまった！", 256, 74)
+        drawtext(msg, 364, 32)
+        drawtext(f"スコア：{random.randint(1, 9999)}", 428, 32)
+
+        respawn_button = Image.open("./assets/button-respawn.png").convert("RGBA")
+        title_button = Image.open("./assets/button-title.png").convert("RGBA")
+
+        img.paste(respawn_button, (560, 563))
+        img.paste(title_button, (560, 659))
+
+        stream = io.BytesIO()
+        img.save(stream, "WEBP")
+        file = discord.File(io.BytesIO(stream.getvalue()), filename="preview.webp")
+
+        return file
 
     def generate_death_log(self, victim: Optional[str], player: str) -> str:
         death_logs = self.death_logs
@@ -57,9 +90,11 @@ class CKill(commands.Cog):
                     escape(interaction.user.display_name)
                 ))
 
+
             await interaction.response.send_message(
                 "\n".join(logs).rstrip("\n"),
-                allowed_mentions=discord.AllowedMentions.none()
+                allowed_mentions=discord.AllowedMentions.none(),
+                file=self.generate_image(logs[-1])
             )
         else:
             await interaction.response.send_message(
