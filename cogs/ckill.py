@@ -21,17 +21,17 @@ class CKill(commands.Cog):
         # 最大数設定
         self.max_count = 10
 
-    def generate_death_log(self, target: Optional[str], user: str) -> str:
-        # もしtargetがいなかったら、targetをエンティティの中から選出する
-        if target is None:
-            target, user = user, target
-        else:
-            user = random.choice(self.entities)
+    def generate_death_log(self, victim: Optional[str], player: str) -> str:
+        death_logs = self.death_logs
+
+        # 指定なし -> 1人のみのdeath log
+        if victim is None:
+            death_logs = [t for t in self.death_logs if "%2$s" not in t]
 
         # キルログ生成
-        return random.choice(self.death_logs) \
-            .replace("%1$s", target + " ") \
-            .replace("%2$s", user + " ") \
+        return random.choice(death_logs) \
+            .replace("%1$s", player + " ") \
+            .replace("%2$s", victim + " ") \
             .replace("%3$s", f"[{random.choice(self.items)}]")
 
     @app_commands.command(name="ckill", description="キルコマンド(ネタ)")
