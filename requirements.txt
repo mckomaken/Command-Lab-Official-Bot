@@ -1,7 +1,6 @@
 discord
 pydantic
 jishaku
-Pillow
 markdownify
 aiohttp
 aiofiles

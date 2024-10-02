@@ -1,4 +1,5 @@
 import io
+import os
 
 import discord
 from discord import (ButtonStyle, Embed, Interaction, SelectOption, TextStyle,
@@ -11,9 +12,22 @@ from pydantic import BaseModel
 from utils.util import create_codeblock
 
 COLORS: list[str] = [
-    "black", "dark_blue", "dark_green", "dark_aqua", "dark_red",
-    "dark_purple", "gold", "gray", "dark_gray", "blue", "green",
-    "aqua", "red", "light_purple", "yellow", "white"
+    "black",
+    "dark_blue",
+    "dark_green",
+    "dark_aqua",
+    "dark_red",
+    "dark_purple",
+    "gold",
+    "gray",
+    "dark_gray",
+    "blue",
+    "green",
+    "aqua",
+    "red",
+    "light_purple",
+    "yellow",
+    "white",
 ]
 
 
@@ -73,7 +87,9 @@ def to_command(data: list[SectionDataText], cmd: str) -> str:
     return cmd.format(f"[{','.join(result)}]")
 
 
-def create_tellraw_embed(datas: list[SectionDataText], section: tuple[int], cmd: str) -> Embed:
+def create_tellraw_embed(
+    datas: list[SectionDataText], section: tuple[int], cmd: str
+) -> Embed:
     data = datas[section[0]]
     cmd = to_command(datas, cmd)
 
@@ -99,7 +115,7 @@ def create_preview(datas: list[SectionDataText]):
     img = Image.new("RGBA", (512, 100), color=0x000000)
     d = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype("./assets/unifont-15.1.05.otf", 14)
+    font = ImageFont.truetype(os.path.join(os.getenv("BASE_DIR", "."), "assets/unifont-15.1.05.otf"), 14)
 
     cursor = 10
     cursor_y = 10
@@ -138,7 +154,9 @@ def create_preview(datas: list[SectionDataText]):
 
 
 class TellrawModal(Modal):
-    def __init__(self, data: list[SectionDataText], section: int, view: View, cmd: str) -> None:
+    def __init__(
+        self, data: list[SectionDataText], section: int, view: View, cmd: str
+    ) -> None:
         super().__init__(title="内容を設定", timeout=None)
         self.data = data
         self.section = section
@@ -147,7 +165,7 @@ class TellrawModal(Modal):
             placeholder="名前がありません",
             style=TextStyle.long,
             default=data[section].text,
-            required=False
+            required=False,
         )
         self.view = view
         self.cmd = cmd
@@ -158,10 +176,10 @@ class TellrawModal(Modal):
         self.data[self.section].text = self.text.value or ""
 
         await interaction.response.edit_message(
-            embed=create_tellraw_embed(datas=self.data, section=(
-                self.section, len(self.data)
-            ), cmd=self.cmd),
-            view=self.view
+            embed=create_tellraw_embed(
+                datas=self.data, section=(self.section, len(self.data)), cmd=self.cmd
+            ),
+            view=self.view,
         )
 
 
@@ -181,10 +199,10 @@ class TellrawSection(View):
             self.remove_section.disabled = True
 
         await interaction.response.edit_message(
-            embed=create_tellraw_embed(datas=self.data, section=(
-                self.section, len(self.data)
-            ), cmd=self.cmd),
-            view=self
+            embed=create_tellraw_embed(
+                datas=self.data, section=(self.section, len(self.data)), cmd=self.cmd
+            ),
+            view=self,
         )
 
     @button(label="<", style=ButtonStyle.secondary, disabled=True)
@@ -196,17 +214,17 @@ class TellrawSection(View):
             self.next_section.disabled = False
 
         await interaction.response.edit_message(
-            embed=create_tellraw_embed(datas=self.data, section=(
-                self.section, len(self.data)
-            ), cmd=self.cmd),
-            view=self
+            embed=create_tellraw_embed(
+                datas=self.data, section=(self.section, len(self.data)), cmd=self.cmd
+            ),
+            view=self,
         )
 
     @button(label="Edit", style=ButtonStyle.primary, disabled=True)
     async def edit_section(self, interaction: Interaction, item: Button):
-        await interaction.response.send_modal(TellrawModal(
-            self.data, self.section, self, self.cmd
-        ))
+        await interaction.response.send_modal(
+            TellrawModal(self.data, self.section, self, self.cmd)
+        )
 
     @button(label=">", style=ButtonStyle.secondary, disabled=True)
     async def next_section(self, interaction: Interaction, item: Button):
@@ -218,10 +236,10 @@ class TellrawSection(View):
 
         self.prev_section.disabled = False
         await interaction.response.edit_message(
-            embed=create_tellraw_embed(datas=self.data, section=(
-                self.section, len(self.data)
-            ), cmd=self.cmd),
-            view=self
+            embed=create_tellraw_embed(
+                datas=self.data, section=(self.section, len(self.data)), cmd=self.cmd
+            ),
+            view=self,
         )
 
     @button(label="+", style=ButtonStyle.success)
@@ -235,22 +253,22 @@ class TellrawSection(View):
             self.remove_section.disabled = False
             self.prev_section.disabled = False
 
-        await interaction.response.send_modal(TellrawModal(
-            self.data, self.section, self, self.cmd
-        ))
+        await interaction.response.send_modal(
+            TellrawModal(self.data, self.section, self, self.cmd)
+        )
 
     @select(
         placeholder="色",
         options=[SelectOption(label=c, value=c) for c in COLORS],
-        disabled=True
+        disabled=True,
     )
     async def set_color(self, interaction: Interaction, item: Select):
         self.data[self.section].color = item.values[0]
         await interaction.response.edit_message(
-            embed=create_tellraw_embed(datas=self.data, section=(
-                self.section, len(self.data)
-            ), cmd=self.cmd),
-            view=self
+            embed=create_tellraw_embed(
+                datas=self.data, section=(self.section, len(self.data)), cmd=self.cmd
+            ),
+            view=self,
         )
 
     @select(
@@ -260,11 +278,11 @@ class TellrawSection(View):
             SelectOption(label="斜体", value="italic"),
             SelectOption(label="下線", value="underline"),
             SelectOption(label="取消線", value="strikethrough"),
-            SelectOption(label="隠し", value="obfuscated")
+            SelectOption(label="隠し", value="obfuscated"),
         ],
         disabled=True,
         max_values=5,
-        min_values=0
+        min_values=0,
     )
     async def set_style(self, interaction: Interaction, item: Select):
         for i in item.values:
@@ -273,39 +291,47 @@ class TellrawSection(View):
             if i == "italic":
                 self.data[self.section].italic = not self.data[self.section].italic
             if i == "underline":
-                self.data[self.section].underline = not self.data[self.section].underline
+                self.data[self.section].underline = not self.data[
+                    self.section
+                ].underline
             if i == "obfuscated":
-                self.data[self.section].obfuscated = not self.data[self.section].obfuscated
+                self.data[self.section].obfuscated = not self.data[
+                    self.section
+                ].obfuscated
             if i == "strikethrough":
-                self.data[self.section].strikethrough = not self.data[self.section].strikethrough
+                self.data[self.section].strikethrough = not self.data[
+                    self.section
+                ].strikethrough
 
         await interaction.response.edit_message(
-            embed=create_tellraw_embed(datas=self.data, section=(
-                self.section, len(self.data)
-            ), cmd=self.cmd),
-            view=self
+            embed=create_tellraw_embed(
+                datas=self.data, section=(self.section, len(self.data)), cmd=self.cmd
+            ),
+            view=self,
         )
 
     @button(label="プレビュー")
     async def preview(self, interaction: Interaction, item: Button):
-        embed = Embed(title="プレビュー", description="※斜体と隠し文字は非対応です。\n※あくまでイメージです。実際は異なる場合があります。")
+        embed = Embed(
+            title="プレビュー", description="※斜体と隠し文字は非対応です。\n※あくまでイメージです。実際は異なる場合があります。"
+        )
         embed.set_image(url="attachment://preview.webp")
 
-        await interaction.response.send_message(embed=embed, file=create_preview(self.data), ephemeral=True)
+        await interaction.response.send_message(
+            embed=embed, file=create_preview(self.data), ephemeral=True
+        )
 
     @button(label="更新")
     async def refresh(self, interaction: Interaction, item: Button):
         if len(self.data) <= 0:
-            await interaction.response.edit_message(
-                view=self
-            )
+            await interaction.response.edit_message(view=self)
             return
 
         await interaction.response.edit_message(
-            embed=create_tellraw_embed(datas=self.data, section=(
-                self.section, len(self.data)
-            ), cmd=self.cmd),
-            view=self
+            embed=create_tellraw_embed(
+                datas=self.data, section=(self.section, len(self.data)), cmd=self.cmd
+            ),
+            view=self,
         )
 
 
@@ -313,19 +339,19 @@ class CTellraw(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(
-        name="ctellraw", description="tellrawコマンドを作成します"
-    )
+    @app_commands.command(name="ctellraw", description="tellrawコマンドを作成します")
     @app_commands.guild_only()
     async def tellraw(self, interaction: Interaction):
-        await interaction.response.send_message(view=TellrawSection(0, 1, "/tellraw @a {}"))
+        await interaction.response.send_message(
+            view=TellrawSection(0, 1, "/tellraw @a {}")
+        )
 
-    @app_commands.command(
-        name="ctitle", description="titleコマンドを作成します"
-    )
+    @app_commands.command(name="ctitle", description="titleコマンドを作成します")
     @app_commands.guild_only()
     async def title(self, interaction: Interaction):
-        await interaction.response.send_message(view=TellrawSection(0, 1, "/title @a title {}"))
+        await interaction.response.send_message(
+            view=TellrawSection(0, 1, "/title @a title {}")
+        )
 
 
 async def setup(bot: commands.Bot):

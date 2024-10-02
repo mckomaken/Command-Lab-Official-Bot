@@ -213,7 +213,7 @@ class ItemArgumentType:
 
 
 class CCommandInfoButtons(discord.ui.View):
-    def __init__(self, je: Optional[discord.Embed] = None, be: Optional[discord.Embed] = None):
+    def __init__(self, je: Optional[Embed] = None, be: Optional[Embed] = None):
         super().__init__(timeout=None)
         if je is None:
             self.je.disabled = True
@@ -235,12 +235,9 @@ class CCommandInfo(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(
-        name="ccommand",
-        description="コマンドの情報を表示します"
-    )
+    @app_commands.command(name="ccommand", description="コマンドの情報を表示します")
     async def ccommand(self, interaction: discord.Interaction, command: str):
-        async with aiofiles.open("./data/commands.json", mode="rb") as fp:
+        async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
             if command not in data:
                 await interaction.response.send_message(
@@ -252,26 +249,50 @@ class CCommandInfo(commands.Cog):
         je_embed = None
         be_embed = None
         if d.ver.je is not None:
-            je_embed = discord.Embed(
+            je_embed = Embed(
                 color=0xAA00BB,
                 title=f"/{command}",
                 description=d.desc,
-                timestamp=datetime.now()
+                timestamp=datetime.now(),
             )
             je_embed.set_author(name="Java Edition")
-            je_embed.add_field(name="使用法", value=create_codeblock("/" + d.options.je if d.options.je != "-" else f"/{command}"), inline=False)
-            je_embed.add_field(name="例", value=create_codeblock(d.exmp.je if d.exmp.je != "-" else f"/{command}"), inline=False)
+            je_embed.add_field(
+                name="使用法",
+                value=create_codeblock(
+                    "/" + d.options.je if d.options.je != "-" else f"/{command}"
+                ),
+                inline=False,
+            )
+            je_embed.add_field(
+                name="例",
+                value=create_codeblock(
+                    d.exmp.je if d.exmp.je != "-" else f"/{command}"
+                ),
+                inline=False,
+            )
 
         if d.ver.be is not None:
-            be_embed = discord.Embed(
+            be_embed = Embed(
                 color=0xAA00BB,
                 title=f"/{command}",
                 description=d.desc,
-                timestamp=datetime.now()
+                timestamp=datetime.now(),
             )
             be_embed.set_author(name="Bedrock Edition")
-            be_embed.add_field(name="使用法", value=create_codeblock("/" + d.options.be if d.options.be != "-" else f"/{command}"), inline=False)
-            be_embed.add_field(name="例", value=create_codeblock(d.exmp.be if d.exmp.be != "-" else f"/{command}"), inline=False)
+            be_embed.add_field(
+                name="使用法",
+                value=create_codeblock(
+                    "/" + d.options.be if d.options.be != "-" else f"/{command}"
+                ),
+                inline=False,
+            )
+            be_embed.add_field(
+                name="例",
+                value=create_codeblock(
+                    d.exmp.be if d.exmp.be != "-" else f"/{command}"
+                ),
+                inline=False,
+            )
 
         view = None
         if d.is_diff:
@@ -283,7 +304,7 @@ class CCommandInfo(commands.Cog):
     async def ccommand_autocomplete(
         self, interaction: discord.Interaction, current: str
     ):
-        async with aiofiles.open("./data/commands.json", mode="rb") as fp:
+        async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
 
             return [
