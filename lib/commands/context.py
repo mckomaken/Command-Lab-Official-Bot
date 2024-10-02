@@ -10,8 +10,8 @@ if TYPE_CHECKING:
     from lib.commands.nodes import CommandNode
     from lib.commands.nodes.parsed_commad_node import ParsedCommandNode
     from lib.commands.redirect import RedirectModifier
-from lib.commands.suggestions import SuggestionContext
 
+from lib.commands.suggestions import SuggestionContext
 
 S = TypeVar("S")
 V = TypeVar("V")

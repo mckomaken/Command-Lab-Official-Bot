@@ -78,8 +78,8 @@ class BiomeAccess:
         return self.storage.getBiomeForNoiseGen(p, w, x)
 
     @staticmethod
-    def method_38108(l: int):
-        d = math.modf(l >> 24, 1024) / 1024.0
+    def method_38108(i: int):
+        d = math.modf(i >> 24, 1024) / 1024.0
         return (d - 0.5) * 0.9
 
     @staticmethod

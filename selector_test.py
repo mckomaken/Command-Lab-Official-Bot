@@ -5,6 +5,7 @@ import colorama
 import readchar
 from brigadier import StringReader
 from brigadier.exceptions import CommandSyntaxException as CSE
+
 from lib.commands.dispatcher import CommandDispatcher
 from lib.commands.entity import Entity, EntityType
 from lib.commands.exceptions import CommandSyntaxException

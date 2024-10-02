@@ -1,5 +1,5 @@
-from lib.commands.reader import StringReader
 from lib.commands.exceptions import SimpleCommandExceptionType
+from lib.commands.reader import StringReader
 from lib.commands.text import Text
 
 

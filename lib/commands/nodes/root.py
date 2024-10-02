@@ -1,9 +1,9 @@
 from typing import Generic, TypeVar
+
 from lib.commands.context import CommandContext
 from lib.commands.nodes import CommandNode
 from lib.commands.nodes.literal import LiteralCommandNode
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
-
 
 S = TypeVar("S")
 

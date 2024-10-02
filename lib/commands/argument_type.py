@@ -1,13 +1,14 @@
-from enum import Enum
 import math
+from enum import Enum
 from typing import Any, Generic, TypeVar, overload
 
-
 from lib.commands.context import CommandContext
+from lib.commands.exceptions import (CommandSyntaxException,
+                                     DynamicCommandExceptionType,
+                                     SimpleCommandExceptionType)
 from lib.commands.reader import StringReader
 from lib.commands.source import ServerCommandSource
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
-from lib.commands.exceptions import CommandSyntaxException, DynamicCommandExceptionType, SimpleCommandExceptionType
 from lib.commands.text import Text
 from lib.commands.util import BlockPos, Vec2f, Vec3d
 

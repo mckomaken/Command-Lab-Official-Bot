@@ -1,12 +1,13 @@
 import json
 import math
+import os
+import re
 from datetime import datetime
 from typing import Any, Literal, Optional
 
 import aiofiles
 import discord
 import nbtlib
-import regex
 from brigadier import CommandDispatcher, ParseResult, arguments
 from brigadier.builder import LiteralArgumentBuilder, argument, literal
 from brigadier.context import CommandContextBuilder, SuggestionContext
@@ -14,7 +15,7 @@ from brigadier.exceptions import CommandSyntaxException
 from brigadier.parse_result import StringReader
 from brigadier.suggestion import SuggestionsBuilder, empty_suggestion
 from brigadier.tree import ArgumentCommandNode, LiteralCommandNode
-from discord import app_commands
+from discord import Embed, app_commands
 from discord.ext import commands
 from pydantic import BaseModel, GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
@@ -125,7 +126,10 @@ class Selector(BaseModel):
     advancements: Optional[dict] = None
     predicate: Optional[Identifier] = None
 
-SELECTOR_PATTERN = regex.compile(r"(@e|@s|@r|@p|@a)\[((target|distance|x|y|z|dx|dy|dz|scores|tag|team|limit|sort|level|gamemode|x_rotation|y_rotation|type|nbt|advancements|predicate)=(.+?))*\]")
+
+SELECTOR_PATTERN = re.compile(
+    r"(@e|@s|@r|@p|@a)\[((target|distance|x|y|z|dx|dy|dz|scores|tag|team|limit|sort|level|gamemode|x_rotation|y_rotation|type|nbt|advancements|predicate)=(.+?))*\]"
+)
 
 
 class SelectorArgumentType:

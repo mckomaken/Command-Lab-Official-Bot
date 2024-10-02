@@ -1,5 +1,6 @@
 import copy
 from typing import Any, Coroutine, TypeVar
+
 from lib.commands.context import CommandContextBuilder
 from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.nodes import CommandNode
@@ -7,7 +8,6 @@ from lib.commands.nodes.root import RootCommandNode
 from lib.commands.parse_result import ParseResults
 from lib.commands.reader import StringReader
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
-
 
 S = TypeVar("S")
 
