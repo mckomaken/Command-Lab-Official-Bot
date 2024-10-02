@@ -1,6 +1,6 @@
 # config
 config.json
-tmp/
+.tmp/
 CMTK.txt
 _StartBot
 minecraft_data/
