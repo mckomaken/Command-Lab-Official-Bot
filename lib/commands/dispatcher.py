@@ -28,7 +28,7 @@ class CommandDispatcher:
 
     async def getCompletionSuggestions(self, parse: ParseResults[S], cursor: int = None) -> Suggestions:
         if cursor is None:
-            cursor = parse.reader.get_total_length()
+            cursor = parse.reader.getTotalLength()
 
         context = parse.getContext()
 
@@ -36,7 +36,7 @@ class CommandDispatcher:
         parent = nodeBeforeCursor.parent
         start = min(nodeBeforeCursor.startPos, cursor)
 
-        fullInput = parse.getReader().get_string()
+        fullInput = parse.getReader().getString()
         truncatedInput = fullInput[0:cursor]
         truncatedInputLowerCase = truncatedInput.lower()
         futures: list[Coroutine[Any, Any, Suggestions]] = []
@@ -44,7 +44,7 @@ class CommandDispatcher:
         for node in parent.children.values():
             future = Suggestions.empty()
             try:
-                future = node.list_suggestions(context.build(truncatedInput), SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start))
+                future = node.listSuggestions(context.build(truncatedInput), SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start))
             except CommandSyntaxException:
                 pass
             futures.append(future)
@@ -57,17 +57,17 @@ class CommandDispatcher:
         return result
 
     def parse(self, command: StringReader, source: S):
-        context = CommandContextBuilder(self, source, self.root, command.get_cursor())
+        context = CommandContextBuilder(self, source, self.root, command.getCursor())
         return self.parseNodes(self.root, command, context)
 
     def parseNodes(self, node: CommandNode[S], originalReader: StringReader, contextSoFar: CommandContextBuilder[S]) -> ParseResults:
         source: S = contextSoFar.get_source()
         errors: dict[CommandNode[S], CommandSyntaxException] = None
         potentials: list[ParseResults[S]] = None
-        cursor = originalReader.get_cursor()
+        cursor = originalReader.getCursor()
 
         for child in node.getRelevantNodes(originalReader):
-            if not child.can_use():
+            if not child.canUse():
                 continue
 
             context = copy.deepcopy(contextSoFar)
@@ -76,22 +76,22 @@ class CommandDispatcher:
                 try:
                     child.parse(reader, context)
                 except Exception as ex:
-                    raise CommandSyntaxException.BUILTIN_EXCEPTIONS.dispatcher_parse_expection().create_with_context(reader, str(ex))
+                    raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(reader, str(ex))
 
-                if reader.can_read():
+                if reader.canRead():
                     if reader.peek() != ARGUMENT_SEPARATOR:
-                        raise CommandSyntaxException.BUILTIN_EXCEPTIONS.dispatcher_expected_argument_separator().create_with_context(reader)
+                        raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(reader)
             except CommandSyntaxException as ex:
                 if errors is None:
                     errors = list()
                 errors[child] = ex
-                reader.set_cursor(cursor)
+                reader.setCursor(cursor)
                 continue
             context.withCommand(child.command)
-            if reader.can_read(2 if child.redirect is None else 1):
+            if reader.canRead(2 if child.redirect is None else 1):
                 reader.skip()
                 if child.redirect is not None:
-                    childContext = CommandContextBuilder[S](self, source, child.redirect, reader.get_cursor())
+                    childContext = CommandContextBuilder[S](self, source, child.redirect, reader.getCursor())
                     parse: ParseResults[S] = self.parseNodes(child.redirect, reader, childContext)
                     context.withChild(parse.context)
                     return ParseResults[S](context, parse.reader, parse.exceptions)

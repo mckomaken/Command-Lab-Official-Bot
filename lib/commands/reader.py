@@ -20,28 +20,28 @@ class StringReader:
             self.string = other.string
             self.cursor = other.cursor
 
-    def get_string(self):
+    def getString(self):
         return self.string
 
-    def set_cursor(self, cursor: int):
+    def setCursor(self, cursor: int):
         self.cursor = cursor
 
-    def get_remaining_length(self):
+    def getRemainingLength(self):
         return len(self.string) - self.cursor
 
-    def get_total_length(self):
+    def getTotalLength(self):
         return len(self.string)
 
-    def get_cursor(self):
+    def getCursor(self):
         return self.cursor
 
-    def get_read(self):
+    def getRead(self):
         return self.string[0:self.cursor]
 
-    def get_remaining(self):
+    def getRemaining(self):
         return self.string[self.cursor:]
 
-    def can_read(self, length: int = 1):
+    def canRead(self, length: int = 1):
         return self.cursor + length <= len(self.string)
 
     def peek(self, offset: int = 0):
@@ -64,43 +64,43 @@ class StringReader:
         return c == SYNTAX_DOUBLE_QUOTE or c == SYNTAX_SINGLE_QUOTE
 
     def skipWhitespace(self):
-        while self.can_read() and self.peek == " ":
+        while self.canRead() and self.peek == " ":
             self.skip()
 
     def read_int(self):
         start = self.cursor
-        while self.can_read() and self.is_allowed_number(self.peek()):
+        while self.canRead() and self.is_allowed_number(self.peek()):
             self.skip()
 
         number = string[start:self.cursor]
         if number == " ":
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_expected_int().create_with_context(self)
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_expected_int().createWithContext(self)
 
         try:
             return int(number)
         except Exception:
             self.cursor = start
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_invalid_int().create_with_context(self, number)
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_invalid_int().createWithContext(self, number)
 
     def read_long(self) -> int:
         return self.read_int()
 
     def read_float(self) -> float:
         start = self.cursor
-        while self.can_read() and self.is_allowed_number(self.peek()):
+        while self.canRead() and self.is_allowed_number(self.peek()):
             self.skip()
 
         number = self.string[start:self.cursor]
         if number == "":
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_expected_double().create_with_context(self)
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_expected_double().createWithContext(self)
 
         try:
             return float(number)
         except Exception:
             self.cursor = start
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_invalid_double().create_with_context(self, number)
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_invalid_double().createWithContext(self, number)
 
-    def read_double(self):
+    def readDouble(self):
         return self.read_float()
 
     @staticmethod
@@ -111,36 +111,36 @@ class StringReader:
             or c == '_' or c == '-' \
             or c == '.' or c == '+'
 
-    def read_unquoted_string(self):
+    def readUnquotedString(self):
         start = self.cursor
-        while self.can_read() and self.is_allowed_in_unquoted_string(self.peek()):
+        while self.canRead() and self.is_allowed_in_unquoted_string(self.peek()):
             self.skip()
 
         return self.string[start:self.cursor]
 
-    def read_quoted_string(self):
-        if not self.can_read():
+    def readQuotedString(self):
+        if not self.canRead():
             return ""
 
         next = self.peek()
         if self.is_quoted_string_start(next):
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_expected_start_of_quote().create_with_context(self)
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_expected_start_of_quote().createWithContext(self)
 
         self.skip()
-        return self.read_string_until(next)
+        return self.readStringUntil(next)
 
-    def read_string_until(self, terminator: str):
+    def readStringUntil(self, terminator: str):
         result = ""
         escaped = False
-        while self.can_read():
+        while self.canRead():
             c = self.read()
             if escaped:
                 if c == terminator or c == SYNTAX_ESCAPE:
                     result += c
                     escaped = False
                 else:
-                    self.set_cursor(self.get_cursor() - 1)
-                    raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_invalid_escape().create_with_context(self, str(c))
+                    self.setCursor(self.getCursor() - 1)
+                    raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_invalid_escape().createWithContext(self, str(c))
 
             elif c == SYNTAX_ESCAPE:
                 escaped = True
@@ -149,24 +149,24 @@ class StringReader:
             else:
                 result += c
 
-        raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_expected_end_of_quote().create_with_context(self)
+        raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_expected_end_of_quote().createWithContext(self)
 
-    def read_string(self):
-        if not self.can_read():
+    def readString(self):
+        if not self.canRead():
             return ""
 
         next = self.peek()
         if self.is_quoted_string_start(next):
             self.skip()
-            return self.read_string_until(next)
+            return self.readStringUntil(next)
 
-        return self.read_unquoted_string()
+        return self.readUnquotedString()
 
-    def read_boolean(self):
+    def readBoolean(self):
         start = self.cursor
-        value = self.read_string()
+        value = self.readString()
         if value == "":
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_expected_bool().create_with_context(self)
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_expected_bool().createWithContext(self)
 
         if value == "true":
             return True
@@ -174,10 +174,10 @@ class StringReader:
             return False
         else:
             self.cursor = start
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_invalid_bool().create_with_context(self, value)
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_invalid_bool().createWithContext(self, value)
 
     def expect(self, c):
-        if not self.can_read() or self.peek() != c:
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS.reader_expected_symbol().create_with_context(self, str(c))
+        if not self.canRead() or self.peek() != c:
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.reader_expected_symbol().createWithContext(self, str(c))
 
         self.skip()

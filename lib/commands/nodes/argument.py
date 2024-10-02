@@ -1,4 +1,3 @@
-
 from typing import Generic, Self, TypeVar
 
 from lib.commands import Command
@@ -31,7 +30,7 @@ class ArgumentCommandNode(Generic[S, T], CommandNode[S]):
         self.customSuggestions = customSuggestions
         self.children = dict()
 
-    def list_suggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
+    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
         if self.customSuggestions is None:
             return self.type.list_suggestions(context, builder)
         else:

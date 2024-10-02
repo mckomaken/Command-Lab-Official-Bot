@@ -1,3 +1,5 @@
+from pydantic import GetCoreSchemaHandler
+from pydantic_core import CoreSchema, core_schema
 from lib.commands.exceptions import SimpleCommandExceptionType
 from lib.commands.reader import StringReader
 from lib.commands.text import Text
@@ -44,6 +46,48 @@ def is_valid(text: str):
 COMMAND_EXCEPTION = SimpleCommandExceptionType(Text.of(""))
 
 
+class classproperty(property):
+    def __get__(self, cls, owner):
+        return classmethod(self.fget).__get__(None, owner)()
+
+
+class RangedNumber:
+    min: int | float
+    max: int | float
+    original: str
+
+    def __init__(self, cont: str) -> None:
+        self.min = cont.split("..", maxsplit=1)[0] or -2147483648
+        self.max = cont.split("..", maxsplit=1)[1] or 2147483647
+        self.original = cont
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.check
+
+    @classmethod
+    def check(cls, cont: str):
+        if ".." in cont:
+            raise TypeError("Invalid range number")
+        _min = cont.split("..", maxsplit=1)[0]
+        _max = cont.split("..", maxsplit=1)[1]
+
+        if not (_min.isdigit() or (_min.replace('.', '', 1).isdigit() and _min.count('.') < 2)):
+            raise TypeError("Invalid minimum value of range number")
+
+        if not (_max.isdigit() or (_max.replace('.', '', 1).isdigit() and _max.count('.') < 2)):
+            raise TypeError("Invalid maximum value of range number")
+
+        return cont
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_after_validator_function(cls, handler(str))
+
+
+RangeNumberOrNumber = RangedNumber | float | int
+
+
 class Identifier:
     def __init__(self, namespace: str, path: str = None) -> None:
         self.namespace = "minecraft" if path is None else namespace
@@ -65,18 +109,18 @@ class Identifier:
 
     @classmethod
     def from_command_input(cls, reader: StringReader):
-        i = reader.get_cursor()
+        i = reader.getCursor()
 
-        while reader.can_read() and is_char_valid(reader.peek()):
+        while reader.canRead() and is_char_valid(reader.peek()):
             reader.skip()
 
-        string = reader.get_string()[i:reader.get_cursor()]
+        string = reader.getString()[i:reader.getCursor()]
 
         try:
             return cls(string)
         except InvalidIdentifierException:
-            reader.set_cursor(i)
-            raise COMMAND_EXCEPTION.create_with_context(reader)
+            reader.setCursor(i)
+            raise COMMAND_EXCEPTION.createWithContext(reader)
 
     def __str__(self) -> str:
         return f"{self.namespace}:{self.path}"

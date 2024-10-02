@@ -31,27 +31,27 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
         self.literalLowerCase = literal.lower()
 
     def parse(self, reader: StringReader, builder: CommandContextBuilder[S] = None):
-        start = reader.get_cursor()
+        start = reader.getCursor()
         end = self._parse()
 
         if end > -1:
-            builder.with_node(self, StringRange(start, end))
+            builder.withChild(self, StringRange(start, end))
         else:
-            raise CommandSyntaxException.BUILTIN_EXCEPTIONS
+            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS
 
     def _parse(self, reader: StringReader) -> int:
-        start: int = reader.get_cursor()
-        if reader.can_read(len(self.literal)):
+        start: int = reader.getCursor()
+        if reader.canRead(len(self.literal)):
             end = start + len(self.literal)
-            if reader.get_string()[start:end] == self.literal:
-                reader.set_cursor(end)
-                if not reader.can_read() or reader.peek() == ' ':
+            if reader.getString()[start:end] == self.literal:
+                reader.setCursor(end)
+                if not reader.canRead() or reader.peek() == ' ':
                     return end
                 else:
-                    reader.set_cursor(start)
+                    reader.setCursor(start)
         return -1
 
-    def list_suggestions(self, builder: SuggestionsBuilder) -> Coroutine[Any, Any, Suggestions]:
+    def listSuggestions(self, builder: SuggestionsBuilder) -> Coroutine[Any, Any, Suggestions]:
         if self.literalLowerCase.startswith(builder.remaining.lower()):
             return builder.suggest(self.literal, "").build_async()
         else:

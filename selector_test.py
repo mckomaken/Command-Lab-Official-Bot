@@ -3,13 +3,12 @@ import os
 
 import colorama
 import readchar
-from brigadier import StringReader
-from brigadier.exceptions import CommandSyntaxException as CSE
 
 from lib.commands.dispatcher import CommandDispatcher
 from lib.commands.entity import Entity, EntityType
 from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.output import CommandOutput
+from lib.commands.reader import StringReader
 from lib.commands.server import MinecraftServer
 from lib.commands.source import ServerCommandSource
 from lib.commands.util import Vec2f, Vec3d
@@ -51,15 +50,15 @@ async def main():
             opts = await dispatcher.getCompletionSuggestions(parsed, None)
 
         except Exception as e:
-            if isinstance(e, (CommandSyntaxException, CSE)):
+            if isinstance(e, CommandSyntaxException):
                 print(colorama.Fore.RED + e.get_message() + colorama.Fore.RESET)
             else:
                 print(colorama.Fore.RED + str(e) + colorama.Fore.RESET)
         else:
             print(f"{colorama.Fore.GREEN}エラーなし{colorama.Fore.RESET}")
 
-        for a in opts.get_list():
-            print(f"{colorama.Fore.LIGHTBLACK_EX}{' ' * len(data)}{a.text}{' ' * (30 - len(a.text))}{a.tooltip}{colorama.Fore.RESET}")
+            for a in opts.get_list():
+                print(f"{colorama.Fore.LIGHTBLACK_EX}{' ' * len(data)}{a.text}{' ' * (30 - len(a.text))}{a.tooltip}{colorama.Fore.RESET}")
 
 
 if __name__ == "__main__":

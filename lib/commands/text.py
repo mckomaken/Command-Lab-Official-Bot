@@ -98,7 +98,7 @@ class Text():
 
         return Text(tr % options)
 
-    def get_string(self):
+    def getString(self):
         return self.string
 
     def __str__(self) -> str:

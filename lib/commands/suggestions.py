@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING, Generic, Self, TypeVar
 
+from lib.commands.util import classproperty
+
 if TYPE_CHECKING:
     from lib.commands.context import CommandContext
     from lib.commands.nodes import CommandNode
@@ -29,10 +31,9 @@ class Suggestion:
 
 
 class Suggestions:
-    @staticmethod
-    @property
-    def EMPTY():
-        return Suggestions(StringRange.at(0), [])
+    @classproperty
+    def EMPTY(cls):
+        return cls(StringRange.at(0), [])
 
     def __init__(self, range: StringRange, suggestions: list[Suggestion]) -> None:
         self.range = range

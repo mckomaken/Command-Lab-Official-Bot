@@ -17,7 +17,7 @@ def is_next_char_valid(reader: StringReader):
         if c != '.':
             return False
         else:
-            return not reader.can_read(2) or reader.peek(1) != '.'
+            return not reader.canRead(2) or reader.peek(1) != '.'
     else:
         return True
 
@@ -29,12 +29,12 @@ class NumberRange(Generic[T]):
 
     @staticmethod
     def from_string_reader(reader: StringReader, converter: Callable[[str], T]):
-        i = reader.get_cursor()
+        i = reader.getCursor()
 
-        while reader.can_read() and is_next_char_valid(reader):
+        while reader.canRead() and is_next_char_valid(reader):
             reader.skip()
 
-        string = reader.get_string()[i:reader.get_cursor()]
+        string = reader.getString()[i:reader.getCursor()]
         if string == "":
             return None
 
@@ -46,27 +46,27 @@ class NumberRange(Generic[T]):
 
     @classmethod
     def parse(cls, commandReader: StringReader, converter: Callable[[str], T]) -> "FloatRnage | IntRange":
-        i = commandReader.get_cursor()
+        i = commandReader.getCursor()
 
         try:
             optional = cls.from_string_reader(commandReader, converter)
-            if commandReader.can_read(2) and commandReader.peek() == '.' and commandReader.peek(1) == '.':
+            if commandReader.canRead(2) and commandReader.peek() == '.' and commandReader.peek(1) == '.':
                 commandReader.skip()
                 commandReader.skip()
                 optional2 = cls.from_string_reader(commandReader, converter)
 
                 if optional is None and optional2 is None:
-                    raise EXCEPTION_EMPTY.create_with_context(commandReader)
+                    raise EXCEPTION_EMPTY.createWithContext(commandReader)
             else:
                 optional2 = optional
 
             if optional is None and optional2 is None:
-                raise EXCEPTION_EMPTY.create_with_context(commandReader)
+                raise EXCEPTION_EMPTY.createWithContext(commandReader)
             else:
                 return cls.create(commandReader, optional, optional2)
         except CommandSyntaxException as e:
-            commandReader.set_cursor(i)
-            raise CommandSyntaxException(e.get_type(), e.get_raw_message(), e.get_input(), i)
+            commandReader.setCursor(i)
+            raise CommandSyntaxException(e.getType(), e.getRawMessage(), e.getInput(), i)
 
 
 class FloatRnage(NumberRange[float]):
@@ -77,7 +77,7 @@ class FloatRnage(NumberRange[float]):
     @staticmethod
     def create(reader: StringReader, min: str, max: str) -> "FloatRnage":
         if min > max:
-            raise EXCEPTION_SWAPPED.create_with_context(reader)
+            raise EXCEPTION_SWAPPED.createWithContext(reader)
         else:
             return FloatRnage(float(min), float(max))
 
@@ -115,7 +115,7 @@ class IntRange(NumberRange[int]):
     @classmethod
     def create(cls, reader: StringReader, min: str, max: str) -> "IntRange":
         if min > max:
-            raise EXCEPTION_SWAPPED.create_with_context(reader)
+            raise EXCEPTION_SWAPPED.createWithContext(reader)
         else:
             return IntRange(int(min), int(max))
 

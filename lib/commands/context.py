@@ -29,7 +29,7 @@ class CommandContext(Generic[S]):
     modifier: "RedirectModifier[S]"
     forks: bool
 
-    def get_argument(self, name: str, clazz: Type[V]):
+    def getArgument(self, name: str, clazz: Type[V]):
         argument: ParsedArgument[S, V] = self.arguments.get(name)
         if argument is None:
             raise ValueError("No such argument '" + name + "' exists on this command")
