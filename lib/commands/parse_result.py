@@ -13,7 +13,12 @@ class ParseResults(Generic[S]):
     exceptions: dict[CommandNode[S], CommandSyntaxException]
     reader: StringReader
 
-    def __init__(self, context: CommandContextBuilder[S], reader: StringReader, exceptions: dict[CommandNode[S], CommandSyntaxException]):
+    def __init__(
+        self,
+        context: CommandContextBuilder[S],
+        reader: StringReader,
+        exceptions: dict[CommandNode[S], CommandSyntaxException],
+    ):
         self.context = context
         self.reader = reader
         self.exceptions = exceptions

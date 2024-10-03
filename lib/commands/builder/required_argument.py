@@ -1,4 +1,3 @@
-
 from typing import Self, TypeVar
 
 from lib.commands.builder.argument import ArgumentBuilder
@@ -41,9 +40,14 @@ class RequiredArgumentBuilder(ArgumentBuilder[S, "RequiredArgumentBuilder[T]"]):
 
     def build(self) -> Self:
         result = ArgumentCommandNode(
-            self.getName(), self.getType(), self.getCommand(),
-            self.getRequirement(), self.getRedirect(), self.getRedirectModifier(),
-            self.isFork(), self.getSuggestionsProvider()
+            self.getName(),
+            self.getType(),
+            self.getCommand(),
+            self.getRequirement(),
+            self.getRedirect(),
+            self.getRedirectModifier(),
+            self.isFork(),
+            self.getSuggestionsProvider(),
         )
 
         for argument in self.getArguments():

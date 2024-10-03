@@ -28,14 +28,16 @@ class IntegerArgumentType(ArgumentType[int]):
     def parse(self, reader: StringReader) -> int:
         start = reader.getCursor()
         result = reader.readDouble()
-        if (result < self.minimum):
+        if result < self.minimum:
             reader.setCursor(start)
-            raise BUILT_IN_EXCEPTIONS.integer_too_low() \
-                .createWithContext(reader, result, self.minimum)
-        if (result > self.maximum):
+            raise BUILT_IN_EXCEPTIONS.integer_too_low().createWithContext(
+                reader, result, self.minimum
+            )
+        if result > self.maximum:
             reader.setCursor(start)
-            raise BUILT_IN_EXCEPTIONS.integer_too_high() \
-                .createWithContext(reader, result, self.maximum)
+            raise BUILT_IN_EXCEPTIONS.integer_too_high().createWithContext(
+                reader, result, self.maximum
+            )
 
         return result
 

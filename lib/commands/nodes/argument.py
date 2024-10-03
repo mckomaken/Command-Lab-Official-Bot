@@ -24,7 +24,7 @@ class ArgumentCommandNode(Generic[S, T], CommandNode[S]):
         redirect: Self,
         modifier: RedirectModifier[S],
         forks: bool,
-        customSuggestions: SuggestionProvider[S]
+        customSuggestions: SuggestionProvider[S],
     ) -> None:
         super().__init__(command, requirement, redirect, modifier, forks)
         self.name = name
@@ -32,7 +32,9 @@ class ArgumentCommandNode(Generic[S, T], CommandNode[S]):
         self.customSuggestions = customSuggestions
         self.children = dict()
 
-    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    def listSuggestions(
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ) -> Suggestions:
         if self.customSuggestions is None:
             return self.type.listSuggestions(context, builder)
         else:

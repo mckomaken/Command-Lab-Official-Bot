@@ -11,6 +11,7 @@ class Supplier(Generic[T]):
     def create(cls, supplier: T) -> "Supplier[T]":
         def _c():
             return supplier
+
         cls(_c)
 
     def get(self) -> T:

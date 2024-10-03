@@ -22,10 +22,10 @@ class Suggestion:
 
         result = ""
         if range.start < self.range.start:
-            result += command[range.start:self.range.start]
+            result += command[range.start : self.range.start]
         result += self.text
         if range.end > self.range.end:
-            result += command[self.range.end:range.end]
+            result += command[self.range.end : range.end]
 
         return Suggestion(range, result, self.tooltip)
 
@@ -97,7 +97,9 @@ class SuggestionsBuilder:
         if text == self.remaining:
             return self
 
-        self.result.append(Suggestion(StringRange.between(self.start, len(self.input)), text, tooltip))
+        self.result.append(
+            Suggestion(StringRange.between(self.start, len(self.input)), text, tooltip)
+        )
         return self
 
     def add(self, other: Self) -> Self:
@@ -110,11 +112,14 @@ class SuggestionsBuilder:
     def build_async(self):
         async def _a():
             self.build()
+
         return _a()
 
 
 class SuggestionProvider(Generic[S]):
-    def getSuggestions(self, context: "CommandContext[S]", builder: "SuggestionsBuilder"):
+    def getSuggestions(
+        self, context: "CommandContext[S]", builder: "SuggestionsBuilder"
+    ):
         raise NotImplementedError()
 
 

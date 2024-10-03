@@ -31,7 +31,7 @@ class CommandNode(Generic[S]):
         requirement: Predicate[S],
         redirect: Self,
         modifier: RedirectModifier[S],
-        forks: bool
+        forks: bool,
     ) -> None:
         self.command = command
         self.requirement = requirement
@@ -45,10 +45,10 @@ class CommandNode(Generic[S]):
     def getRelevantNodes(self, input: StringReader) -> list["CommandNode[S]"]:
         if len(self.literals) > 0:
             cursor = input.getCursor()
-            while input.canRead() and input.peek() != ' ':
+            while input.canRead() and input.peek() != " ":
                 input.skip()
 
-            text = input.getString()[cursor:input.getCursor()]
+            text = input.getString()[cursor : input.getCursor()]
             input.setCursor(cursor)
             literal = self.literals.get(text)
             if literal is not None:
@@ -76,7 +76,9 @@ class CommandNode(Generic[S]):
         from lib.commands.nodes.literal import LiteralCommandNode
 
         if isinstance(node, RootCommandNode):
-            raise ValueError("Cannot add a RootCommandNode as a child to any other CommandNode")
+            raise ValueError(
+                "Cannot add a RootCommandNode as a child to any other CommandNode"
+            )
 
         child = self.children.get(node.getName())
         if child is not None:

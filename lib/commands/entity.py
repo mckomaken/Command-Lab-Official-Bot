@@ -18,7 +18,7 @@ class TrackedData(Generic[T]):
         super().__init__()
 
 
-class DataTracker():
+class DataTracker:
     pass
 
 
@@ -30,7 +30,15 @@ class Box:
     maxY: float
     maxZ: float
 
-    def __init__(self, minX: float, minY: float, minZ: float, maxX: float, maxY: float, maxZ: float) -> None:
+    def __init__(
+        self,
+        minX: float,
+        minY: float,
+        minZ: float,
+        maxX: float,
+        maxY: float,
+        maxZ: float,
+    ) -> None:
         self.minX = minX
         self.minY = minY
         self.minZ = minZ
@@ -67,7 +75,7 @@ class TrackedPosition:
     pass
 
 
-class Entity():
+class Entity:
     age: int
     AIR: TrackedData[int]
     blockPos: BlockPos

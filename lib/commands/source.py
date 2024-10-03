@@ -14,7 +14,7 @@ T = TypeVar("T")
 
 def common_prefix(a: str, b: str):
     if not a:
-        return ''
+        return ""
     for i, c in enumerate(a):
         if c != b[i]:
             return a[:i]
@@ -32,16 +32,26 @@ def should_suggest(remaining: str, candinate: str):
     return True
 
 
-class CommandSource():
+class CommandSource:
     @classmethod
-    def suggest_identifiers(cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str):
+    def suggest_identifiers(
+        cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str
+    ):
         string = builder.remaining.lower()
-        cls.for_each_matching(candinates, string, lambda id: id, lambda id: builder.suggest(str(id)))
+        cls.for_each_matching(
+            candinates, string, lambda id: id, lambda id: builder.suggest(str(id))
+        )
 
         return builder.build_async()
 
     @classmethod
-    def for_each_matching(cls, candinates: list[T], remaining: str, identitfier: Callable[[T], Identifier], action: Consumer[T]):
+    def for_each_matching(
+        cls,
+        candinates: list[T],
+        remaining: str,
+        identitfier: Callable[[T], Identifier],
+        action: Consumer[T],
+    ):
         bl = remaining.find(chr(58)) > -1
         var5 = iter(candinates)
 
@@ -55,8 +65,11 @@ class CommandSource():
                     if should_suggest(remaining, string):
                         action.accept(obj)
 
-                elif (should_suggest(remaining, identifier2.get_namespace())
-                      or identifier2.get_namespace() == "minecraft" and should_suggest(remaining, identifier2.get_path())):
+                elif (
+                    should_suggest(remaining, identifier2.get_namespace())
+                    or identifier2.get_namespace() == "minecraft"
+                    and should_suggest(remaining, identifier2.get_path())
+                ):
                     action.accept(obj)
 
 
@@ -74,6 +87,5 @@ class ServerCommandSource(CommandSource):
         entity: Entity,
         silent: bool,
         resultStorer: ReturnValueConsumer,
-
     ) -> None:
         super().__init__()

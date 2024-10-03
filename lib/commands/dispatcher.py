@@ -30,7 +30,9 @@ class CommandDispatcher:
     def __init__(self) -> None:
         self.root = RootCommandNode()
 
-    def getCompletionSuggestions(self, parse: ParseResults[S], cursor: int = None) -> Suggestions:
+    def getCompletionSuggestions(
+        self, parse: ParseResults[S], cursor: int = None
+    ) -> Suggestions:
         if cursor is None:
             cursor = parse.getReader().getTotalLength()
 
@@ -48,7 +50,10 @@ class CommandDispatcher:
         for node in parent.getChildren():
             suggest = Suggestions.empty()
             try:
-                suggest = node.listSuggestions(context.build(truncatedInput), SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start))
+                suggest = node.listSuggestions(
+                    context.build(truncatedInput),
+                    SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start),
+                )
             except CommandSyntaxException:
                 pass
             else:
@@ -65,7 +70,12 @@ class CommandDispatcher:
         context = CommandContextBuilder(self, source, self.root, command.getCursor())
         return self.parseNodes(self.root, command, context)
 
-    def parseNodes(self, node: CommandNode[S], originalReader: StringReader, contextSoFar: CommandContextBuilder[S]) -> ParseResults:
+    def parseNodes(
+        self,
+        node: CommandNode[S],
+        originalReader: StringReader,
+        contextSoFar: CommandContextBuilder[S],
+    ) -> ParseResults:
         source: S = contextSoFar.get_source()
         errors: dict[CommandNode[S], CommandSyntaxException] = None
         potentials: list[ParseResults[S]] = None
@@ -81,11 +91,15 @@ class CommandDispatcher:
                 try:
                     child.parse(reader, context)
                 except Exception as ex:
-                    raise BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(reader, str(ex))
+                    raise BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(
+                        reader, str(ex)
+                    )
 
                 if reader.canRead():
                     if reader.peek() != ARGUMENT_SEPARATOR:
-                        raise BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(reader)
+                        raise BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(
+                            reader
+                        )
             except CommandSyntaxException as ex:
                 if errors is None:
                     errors = dict()
@@ -96,8 +110,12 @@ class CommandDispatcher:
             if reader.canRead(2 if child.redirect is None else 1):
                 reader.skip()
                 if child.redirect is not None:
-                    childContext = CommandContextBuilder[S](self, source, child.redirect, reader.getCursor())
-                    parse: ParseResults[S] = self.parseNodes(child.redirect, reader, childContext)
+                    childContext = CommandContextBuilder[S](
+                        self, source, child.redirect, reader.getCursor()
+                    )
+                    parse: ParseResults[S] = self.parseNodes(
+                        child.redirect, reader, childContext
+                    )
                     context.withChild(parse.context)
                     return ParseResults[S](context, parse.reader, parse.exceptions)
                 else:
@@ -112,6 +130,7 @@ class CommandDispatcher:
 
         if potentials is not None:
             if len(potentials) > 1:
+
                 def _cmp(a: ParseResults, b: ParseResults):
                     if not a.getReader().canRead() and b.getReader().canRead():
                         return -1
@@ -126,7 +145,9 @@ class CommandDispatcher:
                 potentials.sort(key=functools.cmp_to_key(_cmp))
             return potentials[0]
 
-        return ParseResults(contextSoFar, originalReader, dict() if errors is None else errors)
+        return ParseResults(
+            contextSoFar, originalReader, dict() if errors is None else errors
+        )
 
     def register(self, command: LiteralArgumentBuilder[S]) -> LiteralCommandNode[S]:
         build = command.build()

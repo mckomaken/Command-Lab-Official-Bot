@@ -35,5 +35,5 @@ class Registry(Generic[T]):
         return self.tagToEntryList
 
 
-class Registries():
+class Registries:
     ENTITY_TYPE: Registry["EntityType"] = Registry()

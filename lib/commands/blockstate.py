@@ -1,2 +1,2 @@
-class BlockState():
+class BlockState:
     pass

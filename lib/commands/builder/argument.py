@@ -53,7 +53,9 @@ class ArgumentBuilder(Generic[S, T]):
     def getRequirement(self) -> Predicate[S]:
         return self.requirement
 
-    def forward(self, target: CommandNode[S], modifier: RedirectModifier[S], fork: bool):
+    def forward(
+        self, target: CommandNode[S], modifier: RedirectModifier[S], fork: bool
+    ):
         if len(self.arguments.getChildren()) != 0:
             raise ValueError("Cannot forward a node with children")
         self.target = target

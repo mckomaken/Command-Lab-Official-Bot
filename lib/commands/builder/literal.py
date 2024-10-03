@@ -19,8 +19,12 @@ class LiteralArgumentBuilder(ArgumentBuilder[S, "LiteralArgumentBuilder[S]"]):
 
     def build(self):
         result = LiteralCommandNode(
-            self.getLiteral(), self.getCommand(), self.getRequirement(),
-            self.getRedirect(), self.getRedirectModifier(), self.isFork()
+            self.getLiteral(),
+            self.getCommand(),
+            self.getRequirement(),
+            self.getRedirect(),
+            self.getRedirectModifier(),
+            self.isFork(),
         )
         for argument in self.getArguments():
             result.addChild(argument)
@@ -28,6 +32,7 @@ class LiteralArgumentBuilder(ArgumentBuilder[S, "LiteralArgumentBuilder[S]"]):
 
     def __str__(self) -> str:
         return f"literal[{self.literal}]"
+
 
 def literal(name):
     return LiteralArgumentBuilder(name)

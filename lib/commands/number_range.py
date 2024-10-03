@@ -1,23 +1,24 @@
 from typing import Callable, Generic, Optional, TypeVar
 
-from lib.commands.exceptions import (CommandSyntaxException,
-                                     SimpleCommandExceptionType)
+from lib.commands.exceptions import CommandSyntaxException, SimpleCommandExceptionType
 from lib.commands.reader import StringReader
 from lib.commands.text import Text
 
 EXCEPTION_EMPTY = SimpleCommandExceptionType(Text.translatable("argument.range.empty"))
-EXCEPTION_SWAPPED = SimpleCommandExceptionType(Text.translatable("argument.range.swapped"))
+EXCEPTION_SWAPPED = SimpleCommandExceptionType(
+    Text.translatable("argument.range.swapped")
+)
 
 T = TypeVar("T", int, float)
 
 
 def is_next_char_valid(reader: StringReader):
     c = reader.peek()
-    if not c.isdigit() and c != '-':
-        if c != '.':
+    if not c.isdigit() and c != "-":
+        if c != ".":
             return False
         else:
-            return not reader.canRead(2) or reader.peek(1) != '.'
+            return not reader.canRead(2) or reader.peek(1) != "."
     else:
         return True
 
@@ -34,7 +35,7 @@ class NumberRange(Generic[T]):
         while reader.canRead() and is_next_char_valid(reader):
             reader.skip()
 
-        string = reader.getString()[i:reader.getCursor()]
+        string = reader.getString()[i : reader.getCursor()]
         if string == "":
             return None
 
@@ -45,12 +46,18 @@ class NumberRange(Generic[T]):
         raise NotImplementedError()
 
     @classmethod
-    def parse(cls, commandReader: StringReader, converter: Callable[[str], T]) -> "FloatRnage | IntRange":
+    def parse(
+        cls, commandReader: StringReader, converter: Callable[[str], T]
+    ) -> "FloatRnage | IntRange":
         i = commandReader.getCursor()
 
         try:
             optional = cls.from_string_reader(commandReader, converter)
-            if commandReader.canRead(2) and commandReader.peek() == '.' and commandReader.peek(1) == '.':
+            if (
+                commandReader.canRead(2)
+                and commandReader.peek() == "."
+                and commandReader.peek(1) == "."
+            ):
                 commandReader.skip()
                 commandReader.skip()
                 optional2 = cls.from_string_reader(commandReader, converter)
@@ -66,7 +73,9 @@ class NumberRange(Generic[T]):
                 return cls.create(commandReader, optional, optional2)
         except CommandSyntaxException as e:
             commandReader.setCursor(i)
-            raise CommandSyntaxException(e.getType(), e.getRawMessage(), e.getInput(), i)
+            raise CommandSyntaxException(
+                e.getType(), e.getRawMessage(), e.getInput(), i
+            )
 
 
 class FloatRnage(NumberRange[float]):

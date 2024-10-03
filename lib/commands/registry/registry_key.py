@@ -1,4 +1,3 @@
-
 from typing import TYPE_CHECKING, Any, Generic, Self, TypeVar
 
 from lib.commands.util import Identifier
@@ -10,7 +9,7 @@ INSTANCES: dict["RegistryKeyPair", "RegistryKey[Any]"] = dict()
 T = TypeVar("T")
 
 
-class RegistryKeys():
+class RegistryKeys:
     ROOT: "RegistryKey" = Identifier("root")
     ENTITY_TYPE: "RegistryKey[EntityType]" = Identifier("entity_type")
 
@@ -41,7 +40,7 @@ class RegistryKey(Generic[T]):
         return "ResourceKey[" + self.registry + " / " + self.value + "]"
 
 
-class RegistryKeyPair():
+class RegistryKeyPair:
     id: Identifier
     registry: Identifier
 

@@ -25,7 +25,7 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
         requirement: Predicate[S],
         redirect: Self,
         modifier: RedirectModifier[S],
-        forks: bool
+        forks: bool,
     ) -> None:
         super().__init__(command, requirement, redirect, modifier, forks)
         self.literal = literal
@@ -47,13 +47,15 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
             end = start + len(self.literal)
             if reader.getString()[start:end] == self.literal:
                 reader.setCursor(end)
-                if not reader.canRead() or reader.peek() == ' ':
+                if not reader.canRead() or reader.peek() == " ":
                     return end
                 else:
                     reader.setCursor(start)
         return -1
 
-    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    def listSuggestions(
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ) -> Suggestions:
         if self.literalLowerCase.startswith(builder.remaining.lower()):
             return builder.suggest(self.literal, "").build()
         else:

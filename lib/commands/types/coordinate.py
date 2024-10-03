@@ -5,9 +5,15 @@ from lib.commands.types import ArgumentType
 from lib.commands.util import Vec3d
 
 
-MISSING_COORDINATE = SimpleCommandExceptionType(Text.translatable("argument.pos.missing.double"))
-MIXED_COORDINATE_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.pos.mixed"))
-MISSING_BLOCK_POSITION = SimpleCommandExceptionType(Text.translatable("argument.pos.missing.int"))
+MISSING_COORDINATE = SimpleCommandExceptionType(
+    Text.translatable("argument.pos.missing.double")
+)
+MIXED_COORDINATE_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.pos.mixed")
+)
+MISSING_BLOCK_POSITION = SimpleCommandExceptionType(
+    Text.translatable("argument.pos.missing.int")
+)
 
 
 class CoordinateArgument(ArgumentType[Vec3d]):
@@ -24,15 +30,19 @@ class CoordinateArgument(ArgumentType[Vec3d]):
 
     @staticmethod
     def parse(reader: StringReader, centerIntegers: bool):
-        if reader.canRead() and reader.peek() == '^':
+        if reader.canRead() and reader.peek() == "^":
             raise MIXED_COORDINATE_EXCEPTION.createWithContext(reader)
         elif not reader.canRead():
             raise MISSING_COORDINATE.createWithContext(reader)
         else:
             bl = CoordinateArgument.isRelative(reader)
             i = reader.getCursor()
-            d = reader.readDouble() if reader.canRead() and reader.peek() != ' ' else 0.0
-            string = reader.getString()[i:reader.getCursor()]
+            d = (
+                reader.readDouble()
+                if reader.canRead() and reader.peek() != " "
+                else 0.0
+            )
+            string = reader.getString()[i : reader.getCursor()]
             if bl and string == "":
                 return CoordinateArgument(True, 0.0)
             else:
@@ -43,21 +53,21 @@ class CoordinateArgument(ArgumentType[Vec3d]):
 
     @staticmethod
     def parse(reader: StringReader):
-        if reader.canRead() and reader.peek() == '^':
+        if reader.canRead() and reader.peek() == "^":
             raise MIXED_COORDINATE_EXCEPTION.createWithContext(reader)
         elif not reader.canRead():
             raise MISSING_BLOCK_POSITION.createWithContext(reader)
         else:
             bl = CoordinateArgument.isRelative(reader)
             d = 0.0
-            if reader.canRead() and reader.peek() != ' ':
+            if reader.canRead() and reader.peek() != " ":
                 d = reader.readDouble() if bl else reader.read_int()
 
             return CoordinateArgument(bl, d)
 
     @staticmethod
     def isRelative(reader: StringReader):
-        if reader.peek() == '~':
+        if reader.peek() == "~":
             bl = True
             reader.skip()
         else:

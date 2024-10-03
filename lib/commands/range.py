@@ -16,7 +16,7 @@ class StringRange:
         return self.start == self.end
 
     def get(self, string: str) -> str:
-        return string[self.start:self.end]
+        return string[self.start : self.end]
 
     @classmethod
     def between(cls, start: int, end: int):

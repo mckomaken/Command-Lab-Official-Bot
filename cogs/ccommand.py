@@ -34,12 +34,18 @@ from lib.commands.types.selector import SelectorArgumentType
 from lib.commands.types.string import StringArgumentType
 from lib.commands.util import Vec2f, Vec3d
 from lib.commands.world import ServerWorld, World
-from schemas.data import (ArgumentCommandEntry, ArgumentParser, CommandEntry,
-                          DataPaths, LiteralCommandEntry, parse_command)
+from schemas.data import (
+    ArgumentCommandEntry,
+    ArgumentParser,
+    CommandEntry,
+    DataPaths,
+    LiteralCommandEntry,
+    parse_command,
+)
 from utils.util import create_codeblock, create_embed
 
 
-class BaseParser():
+class BaseParser:
     def __init__(self, parse, examples: list[str]):
         self._parse = parse
         self.examples = examples
@@ -74,7 +80,9 @@ class Identifier:
         return cont
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
+    def __get_pydantic_core_schema__(
+        cls, source_type, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
         return core_schema.no_info_after_validator_function(cls, handler(str))
 
 
@@ -103,7 +111,9 @@ class CCommandInfo(commands.Cog):
 
     @app_commands.command(name="ccommand", description="コマンドの情報を表示します")
     async def ccommand(self, interaction: discord.Interaction, command: str):
-        async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
+        async with aiofiles.open(
+            os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb"
+        ) as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
             if command not in data:
                 await interaction.response.send_message(
@@ -170,7 +180,9 @@ class CCommandInfo(commands.Cog):
     async def ccommand_autocomplete(
         self, interaction: discord.Interaction, current: str
     ):
-        async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
+        async with aiofiles.open(
+            os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb"
+        ) as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
 
             return [
@@ -180,27 +192,32 @@ class CCommandInfo(commands.Cog):
             ][:25]
 
     @app_commands.command(
-        name="crun",
-        description="コマンドの実行結果をシミュレーションします"
+        name="crun", description="コマンドの実行結果をシミュレーションします"
     )
     async def crun(self, interaction: discord.Interaction, command: str):
         result = self.dispatcher.execute(command)
         embed = discord.Embed(
-            title="コマンド実行",
-            description=create_codeblock(command)
+            title="コマンド実行", description=create_codeblock(command)
         )
         embed.add_field(name="結果", value=create_codeblock(result))
 
         await interaction.response.send_message(embed=embed)
 
     @crun.autocomplete("command")
-    async def crun_autocomplete(
-        self, interaction: discord.Interaction, current: str
-    ):
+    async def crun_autocomplete(self, interaction: discord.Interaction, current: str):
         try:
             source = ServerCommandSource(
-                CommandOutput.DUMMY, Vec3d(0, 0, 0), Vec2f(0, 0), ServerWorld(), 1, "akpc_0504", "ap12",
-                MinecraftServer(), Entity(EntityType.PLAYER, World()), False, print
+                CommandOutput.DUMMY,
+                Vec3d(0, 0, 0),
+                Vec2f(0, 0),
+                ServerWorld(),
+                1,
+                "akpc_0504",
+                "ap12",
+                MinecraftServer(),
+                Entity(EntityType.PLAYER, World()),
+                False,
+                print,
             )
             parsed = self.dispatcher.parse(StringReader(current), source)
             opts = self.dispatcher.getCompletionSuggestions(parsed, None)
@@ -210,20 +227,24 @@ class CCommandInfo(commands.Cog):
                 try:
                     result.append(node.text)
                 except CommandSyntaxException as e:
-                    return [
-                        app_commands.Choice(name=e, value=e)
-                    ]
-            return [
-                app_commands.Choice(name=f"{n} ", value=f"{n} ") for n in result
-            ][:25]
+                    return [app_commands.Choice(name=e, value=e)]
+            return [app_commands.Choice(name=f"{n} ", value=f"{n} ") for n in result][
+                :25
+            ]
         except Exception as e:
             traceback.print_exception(e)
 
     async def cog_load(self):
-        async with aiofiles.open("./minecraft_data/data/dataPaths.json", mode="rb") as datap:
-            cmds_path = DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
+        async with aiofiles.open(
+            "./minecraft_data/data/dataPaths.json", mode="rb"
+        ) as datap:
+            cmds_path = (
+                DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
+            )
 
-        async with aiofiles.open("./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb") as fp:
+        async with aiofiles.open(
+            "./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb"
+        ) as fp:
             raw = json.loads(await fp.read())
             cmds: list = raw["root"]["children"]
             parsers: list = raw["parsers"]
@@ -240,13 +261,18 @@ class CCommandInfo(commands.Cog):
 
         self.dispatcher = CommandDispatcher()
 
-        async def _rescusive(builder: Optional[LiteralArgumentBuilder], _cmd: dict) -> LiteralArgumentBuilder:
+        async def _rescusive(
+            builder: Optional[LiteralArgumentBuilder], _cmd: dict
+        ) -> LiteralArgumentBuilder:
             cmd = await parse_command(_cmd)
             if isinstance(cmd, LiteralCommandEntry):
                 b = literal(cmd.name)
             if isinstance(cmd, ArgumentCommandEntry):
                 cmdp = cmd.parser
-                if cmdp.parser == "brigadier:integer" or cmdp.parser == "minecraft:time":
+                if (
+                    cmdp.parser == "brigadier:integer"
+                    or cmdp.parser == "minecraft:time"
+                ):
                     minimum = -2147483648
                     maximum = 2147483647
                     if cmdp.modifier is not None:
@@ -266,7 +292,10 @@ class CCommandInfo(commands.Cog):
                             elif cmdp.modifier["type"] == "word":
                                 parser = StringArgumentType.word()
 
-                elif cmdp.parser == "brigadier:double" or cmdp.parser == "brigadier:float":
+                elif (
+                    cmdp.parser == "brigadier:double"
+                    or cmdp.parser == "brigadier:float"
+                ):
                     minimum = -math.inf
                     maximum = math.inf
                     if cmdp.modifier is not None:

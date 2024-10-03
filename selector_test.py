@@ -29,7 +29,13 @@ from lib.commands.types.selector import SelectorArgumentType
 from lib.commands.types.string import StringArgumentType
 from lib.commands.util import Vec2f, Vec3d
 from lib.commands.world import ServerWorld, World
-from schemas.data import ArgumentCommandEntry, ArgumentParser, DataPaths, LiteralCommandEntry, parse_command
+from schemas.data import (
+    ArgumentCommandEntry,
+    ArgumentParser,
+    DataPaths,
+    LiteralCommandEntry,
+    parse_command,
+)
 
 colorama.init()
 colorama.just_fix_windows_console()
@@ -42,10 +48,16 @@ dispatcher = CommandDispatcher()
 async def load():
     global parsers, dispatcher
 
-    async with aiofiles.open("./minecraft_data/data/dataPaths.json", mode="rb") as datap:
-        cmds_path = DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
+    async with aiofiles.open(
+        "./minecraft_data/data/dataPaths.json", mode="rb"
+    ) as datap:
+        cmds_path = (
+            DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
+        )
 
-    async with aiofiles.open("./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb") as fp:
+    async with aiofiles.open(
+        "./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb"
+    ) as fp:
         raw = json.loads(await fp.read())
         cmds: list = raw["root"]["children"]
         _parsers: list = raw["parsers"]
@@ -58,7 +70,9 @@ async def load():
 
         parsers[p.parser] = BaseParser(_parse, p.examples)
 
-    async def _rescusive(builder: Optional[LiteralArgumentBuilder], _cmd: dict) -> LiteralArgumentBuilder:
+    async def _rescusive(
+        builder: Optional[LiteralArgumentBuilder], _cmd: dict
+    ) -> LiteralArgumentBuilder:
         cmd = await parse_command(_cmd)
         if isinstance(cmd, LiteralCommandEntry):
             b = literal(cmd.name)
@@ -126,6 +140,7 @@ async def load():
         dispatcher.register(data)
         progress.update(1)
 
+
 async def main():
     await load()
 
@@ -133,7 +148,7 @@ async def main():
     while True:
         d = readchar.readchar()
         if ord(d) == 0x0008:
-            data = data[0:len(data) - 1]
+            data = data[0 : len(data) - 1]
         elif ord(d) == 0x000A or ord(d) == 0x000D:
             data = ""
         else:
@@ -152,10 +167,22 @@ async def main():
         r = StringReader(data)
 
         try:
-            parsed = dispatcher.parse(r, ServerCommandSource(
-                CommandOutput.DUMMY, Vec3d(0, 0, 0), Vec2f(0, 0), ServerWorld(), 1, "akpc_0504", "ap12",
-                MinecraftServer(), Entity(EntityType.PLAYER, World()), False, print
-            ))
+            parsed = dispatcher.parse(
+                r,
+                ServerCommandSource(
+                    CommandOutput.DUMMY,
+                    Vec3d(0, 0, 0),
+                    Vec2f(0, 0),
+                    ServerWorld(),
+                    1,
+                    "akpc_0504",
+                    "ap12",
+                    MinecraftServer(),
+                    Entity(EntityType.PLAYER, World()),
+                    False,
+                    print,
+                ),
+            )
             opts = dispatcher.getCompletionSuggestions(parsed, None)
 
         except Exception as e:
@@ -167,7 +194,9 @@ async def main():
             print(f"{colorama.Fore.GREEN}エラーなし{colorama.Fore.RESET}")
 
             for a in opts.get_list():
-                print(f"{colorama.Fore.LIGHTBLACK_EX}{' ' * len(data)}{a.text}{' ' * (30 - len(a.text))}{a.tooltip}{colorama.Fore.RESET}")
+                print(
+                    f"{colorama.Fore.LIGHTBLACK_EX}{' ' * len(data)}{a.text}{' ' * (30 - len(a.text))}{a.tooltip}{colorama.Fore.RESET}"
+                )
 
 
 if __name__ == "__main__":

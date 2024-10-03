@@ -38,6 +38,7 @@ class ReturnValueConsumer:
         if a == ReturnValueConsumer.EMPTY:
             return b
         else:
+
             def _chain(successful, returnValue):
                 a.onResult(successful, returnValue)
                 b.onResult(successful, returnValue)

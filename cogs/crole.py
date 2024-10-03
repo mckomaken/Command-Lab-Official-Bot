@@ -70,13 +70,21 @@ class CRoleJEBEButtons(View):  # JE or BE & 遊んでる機種
         await add_or_remove_role(1103559576953045042, interaction)
 
     @button(
-        label="スマホ", style=ButtonStyle.gray, emoji="📱", row=1, custom_id="smartphone"
+        label="スマホ",
+        style=ButtonStyle.gray,
+        emoji="📱",
+        row=1,
+        custom_id="smartphone",
     )
     async def pressedJebe4(self, interaction: Interaction, button: Button):
         await add_or_remove_role(1103559803827146823, interaction)
 
     @button(
-        label="家庭用ゲーム機", style=ButtonStyle.gray, emoji="🎮", row=1, custom_id="console"
+        label="家庭用ゲーム機",
+        style=ButtonStyle.gray,
+        emoji="🎮",
+        row=1,
+        custom_id="console",
     )
     async def pressedJebe5(self, interaction: Interaction, button: Button):
         await add_or_remove_role(1103559906872795178, interaction)
@@ -87,7 +95,11 @@ class CRoleAdButtons(View):  # 宣伝関連 & 質問メンション
         super().__init__(timeout=None)
 
     @button(
-        label="宣伝し隊", style=ButtonStyle.green, emoji="📝", row=0, custom_id="ads-sender"
+        label="宣伝し隊",
+        style=ButtonStyle.green,
+        emoji="📝",
+        row=0,
+        custom_id="ads-sender",
     )
     async def pressedSen1(self, interaction: Interaction, button: Button):
         await add_or_remove_role(808617738180231178, interaction)
@@ -142,7 +154,10 @@ class CRoleOtherButtons(View):  # その他
         await add_or_remove_role(763342542719811605, interaction)
 
     @button(
-        label="MEE6レベル無効化", style=ButtonStyle.gray, emoji="🔏", custom_id="disable-mee6"
+        label="MEE6レベル無効化",
+        style=ButtonStyle.gray,
+        emoji="🔏",
+        custom_id="disable-mee6",
     )
     async def pressedHoka2(self, interaction: Interaction, button: Button):
         await add_or_remove_role(891286619783581706, interaction)
@@ -160,7 +175,10 @@ class CRole(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="crole", description="【運営】ロール付与するボタンを表示させるコマンドです)")
+    @app_commands.command(
+        name="crole",
+        description="【運営】ロール付与するボタンを表示させるコマンドです)",
+    )
     @app_commands.checks.has_role(config.administrater_role_id)
     async def croll(self, interaction: Interaction):
         role_embed = discord.Embed(
@@ -169,10 +187,14 @@ class CRole(commands.Cog):
             color=0x3AFF11,
         )
         com_embed = discord.Embed(
-            title="コマンダーランク設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="コマンダーランク設定",
+            description="ーーーーーーーーーー",
+            color=0x3AFF11,
         )
         com_embed.add_field(
-            name="--【@駆け出しコマンダー】--", value="🇦:興味を持っている/これから勉強を始める方はこちら!", inline=False
+            name="--【@駆け出しコマンダー】--",
+            value="🇦:興味を持っている/これから勉強を始める方はこちら!",
+            inline=False,
         )
         com_embed.add_field(
             name="--【@初級コマンダー】--",
@@ -204,10 +226,14 @@ class CRole(commands.Cog):
             inline=False,
         )
         jebe_embed.add_field(
-            name="--【@PC】--", value="🖥️:パソコンを使ってプレイしてる人はこちら !", inline=False
+            name="--【@PC】--",
+            value="🖥️:パソコンを使ってプレイしてる人はこちら !",
+            inline=False,
         )
         jebe_embed.add_field(
-            name="--【@スマホ】--", value="📱:スマートフォンを使ってプレイしてる人はこちら!", inline=False
+            name="--【@スマホ】--",
+            value="📱:スマートフォンを使ってプレイしてる人はこちら!",
+            inline=False,
         )
         jebe_embed.add_field(
             name="--【@家庭用ゲーム機】--",
@@ -216,16 +242,24 @@ class CRole(commands.Cog):
         )
 
         sen_embed = discord.Embed(
-            title="宣伝・質問受付設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="宣伝・質問受付設定",
+            description="ーーーーーーーーーー",
+            color=0x3AFF11,
         )
         sen_embed.add_field(
-            name="--【@宣伝し隊】--", value="📝:宣伝したい人はこのロールを付けて宣伝してください!", inline=False
+            name="--【@宣伝し隊】--",
+            value="📝:宣伝したい人はこのロールを付けて宣伝してください!",
+            inline=False,
         )
         sen_embed.add_field(
-            name="--【@宣伝ウェルカム】--", value="📩:宣伝はしないけど宣伝チャンネルを見たい人はこちら!", inline=False
+            name="--【@宣伝ウェルカム】--",
+            value="📩:宣伝はしないけど宣伝チャンネルを見たい人はこちら!",
+            inline=False,
         )
         sen_embed.add_field(
-            name="--【@DM質問OK】--", value="📮:DMでの質問対応をしてもいいよという方はこちら!", inline=False
+            name="--【@DM質問OK】--",
+            value="📮:DMでの質問対応をしてもいいよという方はこちら!",
+            inline=False,
         )
         sen_embed.add_field(
             name="--【@java 質問受け付け-メンション可】--",
@@ -242,7 +276,9 @@ class CRole(commands.Cog):
             title="その他設定", description="ーーーーーーーーーー", color=0x3AFF11
         )
         hoka_embed.add_field(
-            name="--【@通知ON】--", value="🔔:ゲームの勧誘などの通知が行っても大丈夫な方はこちら!", inline=False
+            name="--【@通知ON】--",
+            value="🔔:ゲームの勧誘などの通知が行っても大丈夫な方はこちら!",
+            inline=False,
         )
         hoka_embed.add_field(
             name="--【@MEE6レベル無効化】--",

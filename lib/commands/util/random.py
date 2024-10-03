@@ -51,7 +51,7 @@ class Random:
             return bound * self.next(31) >> 31
         else:
             i, j = 0, 0
-            while (i - j + (bound - 1) < 0):
+            while i - j + (bound - 1) < 0:
                 i = self.next(31)
                 j = i % bound
 
@@ -61,4 +61,4 @@ class Random:
         return self.next(1) != 0
 
     def nextFloat(self) -> float:
-        return float(self.next(24) * 5.9604645E-8)
+        return float(self.next(24) * 5.9604645e-8)

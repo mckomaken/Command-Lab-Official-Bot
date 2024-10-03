@@ -14,6 +14,7 @@ INVALID_ENUM_EXCEPTION = DynamicCommandExceptionType(
     lambda opt: Text.stringifiedTranslatable("argument.enum.invalid", [opt])
 )
 
+
 class EnumArgumentType(Generic[E], ArgumentType[Enum]):
     def parse(self, reader: StringReader) -> E:
         if isinstance(E, Enum[E]):

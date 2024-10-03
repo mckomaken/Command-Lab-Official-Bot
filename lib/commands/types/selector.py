@@ -1,5 +1,3 @@
-
-
 import re
 
 from lib.commands.exceptions import CommandSyntaxException
@@ -20,7 +18,7 @@ class SelectorArgumentType(ArgumentType[Selector]):
         while reader.canRead() and reader.peek() != " ":
             reader.skip()
 
-        d = reader.string[start:reader.cursor]
+        d = reader.string[start : reader.cursor]
         gps = SELECTOR_PATTERN.match(d)
         print(d)
         if gps is None:

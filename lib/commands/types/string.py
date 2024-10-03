@@ -4,7 +4,7 @@ from lib.commands.types import ArgumentType
 from lib.commands.util import classproperty
 
 
-class StringType():
+class StringType:
     examples: list[str]
 
     def __init__(self, *examples: str):
@@ -19,11 +19,11 @@ class StringType():
 
     @classproperty
     def QUOTABLE_PHRASE(cls):
-        return cls("\"quoted phrase\"", "word", "\"\"")
+        return cls('"quoted phrase"', "word", '""')
 
     @classproperty
     def GREEDY_PHRASE(cls):
-        return cls("word", "words with spaces", "\"and symbols\"")
+        return cls("word", "words with spaces", '"and symbols"')
 
 
 class StringArgumentType(ArgumentType[str]):
@@ -51,7 +51,7 @@ class StringArgumentType(ArgumentType[str]):
         return self.type
 
     def parse(self, reader: StringReader):
-        if (self.type == StringType.GREEDY_PHRASE):
+        if self.type == StringType.GREEDY_PHRASE:
             text = reader.getRemaining()
             reader.setCursor(reader.getTotalLength())
             return text
@@ -71,12 +71,12 @@ class StringArgumentType(ArgumentType[str]):
         return inpu
 
     def escape(self, inpu: str):
-        result = "\""
+        result = '"'
 
         for c in inpu:
-            if c == '\\' or c == '"':
+            if c == "\\" or c == '"':
                 result += "\\"
             result += c
 
-        result += "\""
+        result += '"'
         return result

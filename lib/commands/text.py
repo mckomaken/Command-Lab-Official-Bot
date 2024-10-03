@@ -70,7 +70,7 @@ class TranslatableTextContent:
             raise ValueError("Illegal Argument Exception")
 
 
-class Text():
+class Text:
     def __init__(self, text: str):
         self.string = text
 

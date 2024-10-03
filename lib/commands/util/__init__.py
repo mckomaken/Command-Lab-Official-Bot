@@ -11,16 +11,42 @@ class InvalidIdentifierException(Exception):
 
 
 def is_char_valid(c: str):
-    return c >= '0' and c <= '9' or c >= 'a' and c <= 'z' or c == '_' or c == ':' or c == '/' or c == '.' or c == '-'
+    return (
+        c >= "0"
+        and c <= "9"
+        or c >= "a"
+        and c <= "z"
+        or c == "_"
+        or c == ":"
+        or c == "/"
+        or c == "."
+        or c == "-"
+    )
 
 
 def is_namespace_character_valid(character: str):
-    return character == '_' or character == '-' or character >= 'a' and character <= 'z' or character >= '0' and character <= '9' or character == '.'
+    return (
+        character == "_"
+        or character == "-"
+        or character >= "a"
+        and character <= "z"
+        or character >= "0"
+        and character <= "9"
+        or character == "."
+    )
 
 
 def is_path_character_valid(character: str):
-    return character == '_' or character == '-' or character >= 'a' and character <= 'z' or character >= '0' \
-        and character <= '9' or character == '/' or character == '.'
+    return (
+        character == "_"
+        or character == "-"
+        or character >= "a"
+        and character <= "z"
+        or character >= "0"
+        and character <= "9"
+        or character == "/"
+        or character == "."
+    )
 
 
 def is_path_valid(path: str):
@@ -40,8 +66,10 @@ def is_namespace_valid(path: str):
 
 
 def is_valid(text: str):
-    strings = text.split(':')
-    return is_namespace_valid("minecraft" if strings[0] == "" else strings[0]) and is_path_valid(strings[1])
+    strings = text.split(":")
+    return is_namespace_valid(
+        "minecraft" if strings[0] == "" else strings[0]
+    ) and is_path_valid(strings[1])
 
 
 COMMAND_EXCEPTION = SimpleCommandExceptionType(Text.of(""))
@@ -73,16 +101,24 @@ class RangedNumber:
         _min = cont.split("..", maxsplit=1)[0]
         _max = cont.split("..", maxsplit=1)[1]
 
-        if not (_min.isdigit() or (_min.replace('.', '', 1).isdigit() and _min.count('.') < 2)):
+        if not (
+            _min.isdigit()
+            or (_min.replace(".", "", 1).isdigit() and _min.count(".") < 2)
+        ):
             raise TypeError("Invalid minimum value of range number")
 
-        if not (_max.isdigit() or (_max.replace('.', '', 1).isdigit() and _max.count('.') < 2)):
+        if not (
+            _max.isdigit()
+            or (_max.replace(".", "", 1).isdigit() and _max.count(".") < 2)
+        ):
             raise TypeError("Invalid maximum value of range number")
 
         return cont
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
+    def __get_pydantic_core_schema__(
+        cls, source_type, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
         return core_schema.no_info_after_validator_function(cls, handler(str))
 
 
@@ -115,7 +151,7 @@ class Identifier:
         while reader.canRead() and is_char_valid(reader.peek()):
             reader.skip()
 
-        string = reader.getString()[i:reader.getCursor()]
+        string = reader.getString()[i : reader.getCursor()]
 
         try:
             return cls(string)
@@ -127,11 +163,13 @@ class Identifier:
         return f"{self.namespace}:{self.path}"
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
+    def __get_pydantic_core_schema__(
+        cls, source_type, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
         return core_schema.no_info_after_validator_function(cls, handler(str))
 
 
-class Vec3d():
+class Vec3d:
     x: float
     y: float
     z: float
@@ -146,7 +184,7 @@ class Vec3d():
         self.z = z
 
 
-class BlockPos():
+class BlockPos:
     x: int
     y: int
     z: int
@@ -165,7 +203,7 @@ class ChunkPos(BlockPos):
     pass
 
 
-class Vec2f():
+class Vec2f:
     x: float
     y: float
 

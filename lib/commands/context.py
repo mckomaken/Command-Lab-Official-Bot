@@ -1,4 +1,3 @@
-
 from typing import TYPE_CHECKING, Any, Generic, Self, Type, TypeVar
 
 from lib.commands.parsed_argument import ParsedArgument
@@ -40,7 +39,7 @@ class CommandContext(Generic[S]):
         range: StringRange,
         child: "CommandContext[S]",
         modifier: "RedirectModifier[S]",
-        forks: bool
+        forks: bool,
     ) -> None:
         self.source = source
         self.input = input
@@ -53,7 +52,6 @@ class CommandContext(Generic[S]):
         self.modifier = modifier
         self.forks = forks
 
-
     def getArgument(self, name: str, clazz: Type[V]):
         argument: ParsedArgument[S, V] = self.arguments.get(name)
         if argument is None:
@@ -63,7 +61,14 @@ class CommandContext(Generic[S]):
         if r := clazz(result):
             return r
         else:
-            raise ValueError("Argument '" + name + "' is defined as " + str(V) + ", not " + str(clazz))
+            raise ValueError(
+                "Argument '"
+                + name
+                + "' is defined as "
+                + str(V)
+                + ", not "
+                + str(clazz)
+            )
 
     def get_source(self):
         return self.source
@@ -81,7 +86,13 @@ class CommandContextBuilder(Generic[S]):
     modifier: "RedirectModifier[S]" = None
     forks: bool
 
-    def __init__(self, dispatcher: "CommandDispatcher[S]", source: S, rootNode: "CommandNode[S]", start: int):
+    def __init__(
+        self,
+        dispatcher: "CommandDispatcher[S]",
+        source: S,
+        rootNode: "CommandNode[S]",
+        start: int,
+    ):
         self.rootNode = rootNode
         self.dispatcher = dispatcher
         self.source = source
@@ -121,8 +132,16 @@ class CommandContextBuilder(Generic[S]):
 
     def build(self, input: str):
         return CommandContext(
-            self.source, input, self.arguments, self.command, self.rootNode, self.nodes, self.range,
-            None if self.child is None else self.child.build(input), self.modifier, self.forks
+            self.source,
+            input,
+            self.arguments,
+            self.command,
+            self.rootNode,
+            self.nodes,
+            self.range,
+            None if self.child is None else self.child.build(input),
+            self.modifier,
+            self.forks,
         )
 
     def withChild(self, child: "CommandContextBuilder[S]"):

@@ -3,9 +3,11 @@ from enum import Enum
 from typing import Any, Generic, TypeVar, overload
 
 from lib.commands.context import CommandContext
-from lib.commands.exceptions import (CommandSyntaxException,
-                                     DynamicCommandExceptionType,
-                                     SimpleCommandExceptionType)
+from lib.commands.exceptions import (
+    CommandSyntaxException,
+    DynamicCommandExceptionType,
+    SimpleCommandExceptionType,
+)
 from lib.commands.reader import StringReader
 from lib.commands.selector import Selector
 from lib.commands.source import ServerCommandSource
@@ -18,8 +20,12 @@ T = TypeVar("T")
 S = TypeVar("S")
 
 
-INCOMPLETE_ANGLE_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.angle.incomplete"))
-INVALID_ANGLE_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.angle.invalid"))
+INCOMPLETE_ANGLE_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.angle.incomplete")
+)
+INVALID_ANGLE_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.angle.invalid")
+)
 
 latest_version = "1.21.1"
 
@@ -55,12 +61,9 @@ class Angle:
         self.relative = relative
 
     def get_angle(self, source: ServerCommandSource):
-        return math.degrees(self.angle + source.get_rotation().y if self.relative else self.angle)
-
-
-
-
-
+        return math.degrees(
+            self.angle + source.get_rotation().y if self.relative else self.angle
+        )
 
 
 class AngleArgumentType(ArgumentType[Angle]):
@@ -89,21 +92,13 @@ class AngleArgumentType(ArgumentType[Angle]):
         return context.getArgument(name, Angle).get_angle(context.get_source())
 
 
-
-
-
-
-
-
-
-
-
-
 class EntityAnchor:
     pass
 
 
-INVALID_ANCHOR_EXCEPTIONS = DynamicCommandExceptionType(lambda opt: Text.stringifiedTranslatable("argument.anchor.invalid", [opt]))
+INVALID_ANCHOR_EXCEPTIONS = DynamicCommandExceptionType(
+    lambda opt: Text.stringifiedTranslatable("argument.anchor.invalid", [opt])
+)
 
 
 class EntityAnchorArgumentType(ArgumentType[EntityAnchor]):
@@ -115,5 +110,7 @@ class EntityAnchorArgumentType(ArgumentType[EntityAnchor]):
         return EntityAnchorArgumentType()
 
     @staticmethod
-    def get_entity_anchor(self, context: CommandContext[ServerCommandSource], name: str):
+    def get_entity_anchor(
+        self, context: CommandContext[ServerCommandSource], name: str
+    ):
         return context.getArgument(name, EntityAnchor)
