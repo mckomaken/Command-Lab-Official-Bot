@@ -1,7 +1,8 @@
 from typing import Any, Coroutine, Generic, Self, TypeVar
 
 from lib.commands import Command
-from lib.commands.context import CommandContextBuilder
+from lib.commands.builtin_exceptions import BUILT_IN_EXCEPTIONS
+from lib.commands.context import CommandContext, CommandContextBuilder
 from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.nodes import CommandNode
 from lib.commands.range import StringRange
@@ -29,6 +30,7 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
         super().__init__(command, requirement, redirect, modifier, forks)
         self.literal = literal
         self.literalLowerCase = literal.lower()
+        self.children = dict()
 
     def parse(self, reader: StringReader, builder: CommandContextBuilder[S] = None):
         start = reader.getCursor()
@@ -37,7 +39,7 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
         if end > -1:
             builder.withChild(self, StringRange(start, end))
         else:
-            raise CommandSyntaxException.BUILT_IN_EXCEPTIONS
+            raise BUILT_IN_EXCEPTIONS
 
     def _parse(self, reader: StringReader) -> int:
         start: int = reader.getCursor()
@@ -51,11 +53,14 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
                     reader.setCursor(start)
         return -1
 
-    def listSuggestions(self, builder: SuggestionsBuilder) -> Coroutine[Any, Any, Suggestions]:
+    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
         if self.literalLowerCase.startswith(builder.remaining.lower()):
-            return builder.suggest(self.literal, "").build_async()
+            return builder.suggest(self.literal, "").build()
         else:
-            return Suggestions.empty()
+            return Suggestions.EMPTY
 
     def is_valid_input(self, input: str):
         return self._parse(StringReader(input)) > -1
+
+    def getName(self) -> str:
+        return self.literal

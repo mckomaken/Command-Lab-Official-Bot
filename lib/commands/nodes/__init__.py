@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Generic, Self, TypeVar
 
-from lib.commands.context import CommandContext
+from lib.commands.context import CommandContext, CommandContextBuilder
 from lib.commands.reader import StringReader
 from lib.commands.redirect import RedirectModifier
 from lib.commands.suggestions import SuggestionsBuilder
@@ -9,7 +9,6 @@ from lib.commands.util.predicate import Predicate
 if TYPE_CHECKING:
     from lib.commands.nodes.argument import ArgumentCommandNode
     from lib.commands.nodes.literal import LiteralCommandNode
-    from lib.commands.nodes.root import RootCommandNode
     from lib.commands import Command
 
 
@@ -72,6 +71,10 @@ class CommandNode(Generic[S]):
         return self.redirect
 
     def addChild(self, node: "CommandNode[S]"):
+        from lib.commands.nodes.root import RootCommandNode
+        from lib.commands.nodes.argument import ArgumentCommandNode
+        from lib.commands.nodes.literal import LiteralCommandNode
+
         if isinstance(node, RootCommandNode):
             raise ValueError("Cannot add a RootCommandNode as a child to any other CommandNode")
 
@@ -89,4 +92,8 @@ class CommandNode(Generic[S]):
                 self.arguments[node.getName()] = node
 
     def canUse(self, source: S):
-        return self.requirement.test(source)
+        # return self.requirement.test(source)
+        return True
+
+    def parse(self, reader: StringReader, contextBuilder: CommandContextBuilder):
+        raise NotImplementedError()

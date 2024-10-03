@@ -1,9 +1,13 @@
 import copy
+import functools
 from typing import Any, Coroutine, TypeVar
 
+from lib.commands.builder.literal import LiteralArgumentBuilder
+from lib.commands.builtin_exceptions import BUILT_IN_EXCEPTIONS
 from lib.commands.context import CommandContextBuilder
 from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.nodes import CommandNode
+from lib.commands.nodes.literal import LiteralCommandNode
 from lib.commands.nodes.root import RootCommandNode
 from lib.commands.parse_result import ParseResults
 from lib.commands.reader import StringReader
@@ -26,9 +30,9 @@ class CommandDispatcher:
     def __init__(self) -> None:
         self.root = RootCommandNode()
 
-    async def getCompletionSuggestions(self, parse: ParseResults[S], cursor: int = None) -> Suggestions:
+    def getCompletionSuggestions(self, parse: ParseResults[S], cursor: int = None) -> Suggestions:
         if cursor is None:
-            cursor = parse.reader.getTotalLength()
+            cursor = parse.getReader().getTotalLength()
 
         context = parse.getContext()
 
@@ -39,19 +43,20 @@ class CommandDispatcher:
         fullInput = parse.getReader().getString()
         truncatedInput = fullInput[0:cursor]
         truncatedInputLowerCase = truncatedInput.lower()
-        futures: list[Coroutine[Any, Any, Suggestions]] = []
+        suggests: list[Suggestions] = []
 
-        for node in parent.children.values():
-            future = Suggestions.empty()
+        for node in parent.getChildren():
+            suggest = Suggestions.empty()
             try:
-                future = node.listSuggestions(context.build(truncatedInput), SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start))
+                suggest = node.listSuggestions(context.build(truncatedInput), SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start))
             except CommandSyntaxException:
                 pass
-            futures.append(future)
+            else:
+                suggests.append(suggest)
 
         suggestions: list[Suggestions] = []
-        for future in futures:
-            suggestions.append(await future())
+        for suggest in suggests:
+            suggestions.append(suggest)
         result = Suggestions.merge(fullInput, suggestions)
 
         return result
@@ -67,7 +72,7 @@ class CommandDispatcher:
         cursor = originalReader.getCursor()
 
         for child in node.getRelevantNodes(originalReader):
-            if not child.canUse():
+            if not child.canUse(source):
                 continue
 
             context = copy.deepcopy(contextSoFar)
@@ -76,14 +81,14 @@ class CommandDispatcher:
                 try:
                     child.parse(reader, context)
                 except Exception as ex:
-                    raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(reader, str(ex))
+                    raise BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(reader, str(ex))
 
                 if reader.canRead():
                     if reader.peek() != ARGUMENT_SEPARATOR:
-                        raise CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(reader)
+                        raise BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(reader)
             except CommandSyntaxException as ex:
                 if errors is None:
-                    errors = list()
+                    errors = dict()
                 errors[child] = ex
                 reader.setCursor(cursor)
                 continue
@@ -107,7 +112,23 @@ class CommandDispatcher:
 
         if potentials is not None:
             if len(potentials) > 1:
-                potentials.sort()
+                def _cmp(a: ParseResults, b: ParseResults):
+                    if not a.getReader().canRead() and b.getReader().canRead():
+                        return -1
+                    if a.getReader().canRead() and not b.getReader().canRead():
+                        return 1
+                    if len(a.getExceptions()) == 0 and len(b.getExceptions()) != 0:
+                        return -1
+                    if len(a.getExceptions()) != 0 and len(b.getExceptions()) == 0:
+                        return 1
+                    return 0
+
+                potentials.sort(key=functools.cmp_to_key(_cmp))
             return potentials[0]
 
         return ParseResults(contextSoFar, originalReader, dict() if errors is None else errors)
+
+    def register(self, command: LiteralArgumentBuilder[S]) -> LiteralCommandNode[S]:
+        build = command.build()
+        self.root.addChild(build)
+        return build

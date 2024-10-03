@@ -6,6 +6,7 @@ from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.reader import StringReader
 from lib.commands.selector import Selector
 from lib.commands.suggestions import SuggestionsBuilder
+from lib.commands.types import ArgumentType
 
 
 SELECTOR_PATTERN = re.compile(
@@ -13,7 +14,7 @@ SELECTOR_PATTERN = re.compile(
 )
 
 
-class SelectorArgumentType:
+class SelectorArgumentType(ArgumentType[Selector]):
     def parse(self, reader: StringReader):
         start = reader.getCursor()
         while reader.canRead() and reader.peek() != " ":
@@ -48,7 +49,7 @@ class SelectorArgumentType:
 
         return selector
 
-    def list_suggestions(self, builder: SuggestionsBuilder):
+    def listSuggestions(self, builder: SuggestionsBuilder):
         builder.add("@a")
         builder.add("@p")
         builder.add("@e")
@@ -56,5 +57,5 @@ class SelectorArgumentType:
         builder.add("@s")
         return builder.build()
 
-    def get_examples(self):
+    def getExamples(self):
         return ["@p", "@r", "@a", "@e", "@s"]

@@ -19,8 +19,16 @@ class ArgumentBuilder(Generic[S, T]):
     modifier: RedirectModifier[S]
     forks: bool
 
+    def __init__(self) -> None:
+        self.arguments = RootCommandNode[S]()
+        self.command = None
+        self.target = None
+        self.requirement = Predicate(lambda _: True)
+        self.modifier = None
+        self.forks = False
+
     def getThis(self) -> Self:
-        raise NotImplementedError
+        return self
 
     def then(self, argument: "ArgumentBuilder[S, Any]") -> T:
         if self.target is not None:
@@ -46,7 +54,7 @@ class ArgumentBuilder(Generic[S, T]):
         return self.requirement
 
     def forward(self, target: CommandNode[S], modifier: RedirectModifier[S], fork: bool):
-        if not self.arguments.getChildren():
+        if len(self.arguments.getChildren()) != 0:
             raise ValueError("Cannot forward a node with children")
         self.target = target
         self.modifier = modifier

@@ -32,7 +32,7 @@ class Suggestion:
 
 class Suggestions:
     @classproperty
-    def EMPTY(cls):
+    def EMPTY(cls) -> Self:
         return cls(StringRange.at(0), [])
 
     def __init__(self, range: StringRange, suggestions: list[Suggestion]) -> None:
@@ -46,10 +46,8 @@ class Suggestions:
         return len(self.suggestions) == 0
 
     @staticmethod
-    def empty():
-        async def _empty():
-            return Suggestions.EMPTY
-        return _empty()
+    def empty() -> Self:
+        return Suggestions.EMPTY
 
     @staticmethod
     def merge(command: str, input: list["Suggestions"]) -> "Suggestions":
@@ -60,7 +58,8 @@ class Suggestions:
 
         texts: set[Suggestion] = set()
         for suggestion in input:
-            texts.add(suggestion.get_list())
+            for suggest in suggestion.get_list():
+                texts.add(suggest)
 
         return Suggestions.create(command, texts)
 

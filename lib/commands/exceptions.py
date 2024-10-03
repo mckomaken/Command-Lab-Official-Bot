@@ -10,11 +10,6 @@ from lib.commands.text import Text
 class CommandSyntaxException(Exception):
     CONTEXT_AMOUNT = 50
 
-    @property
-    def BUILT_IN_EXCEPTIONS():
-        from lib.commands.builtin_exceptions import BuiltInExceptions
-        return BuiltInExceptions()
-
     def __init__(self, exc_type, message: Text, str_input: Optional[str] = None, cursor: int = -1):
         super().__init__(message)
         self.type = exc_type

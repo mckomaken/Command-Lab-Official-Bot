@@ -46,83 +46,85 @@ DISPATCHER_PARSE_EXPECTION = DynamicCommandExceptionType(lambda message: Literal
 
 
 class BuiltInExceptions:
-    def double_too_low():
+    def double_too_low(self):
         return DOUBLE_TOO_SMALL
 
-    def double_too_high():
+    def double_too_high(self):
         return DOUBLE_TOO_BIG
 
-    def float_too_low():
+    def float_too_low(self):
         return FLOAT_TOO_SMALL
 
-    def float_too_high():
+    def float_too_high(self):
         return FLOAT_TOO_BIG
 
-    def integer_too_low():
+    def integer_too_low(self):
         return INTEGER_TOO_SMALL
 
-    def integer_too_high():
+    def integer_too_high(self):
         return INTEGER_TOO_BIG
 
-    def long_too_low():
+    def long_too_low(self):
         return LONG_TOO_SMALL
 
-    def long_too_high():
+    def long_too_high(self):
         return LONG_TOO_BIG
 
-    def literal_incorrect():
+    def literal_incorrect(self):
         return LITERAL_INCORRECT
 
-    def reader_expected_start_of_quote():
+    def reader_expected_start_of_quote(self):
         return READER_EXPECTED_START_OF_QUOTE
 
-    def reader_expected_end_of_quote():
+    def reader_expected_end_of_quote(self):
         return READER_EXPECTED_END_OF_QUOTE
 
-    def reader_invalid_escape():
+    def reader_invalid_escape(self):
         return READER_INVALID_ESCAPE
 
-    def reader_invalid_bool():
+    def reader_invalid_bool(self):
         return READER_INVALID_BOOL
 
-    def reader_invalid_int():
+    def reader_invalid_int(self):
         return READER_INVALID_INT
 
-    def reader_expected_int():
+    def reader_expected_int(self):
         return READER_EXPECTED_INT
 
-    def reader_invalid_long():
+    def reader_invalid_long(self):
         return READER_INVALID_FLOAT
 
-    def reader_expected_long():
+    def reader_expected_long(self):
         return READER_EXPECTED_LONG
 
-    def reader_expected_double():
+    def reader_expected_double(self):
         return READER_EXPECTED_DOUBLE
 
-    def reader_invalid_double():
+    def reader_invalid_double(self):
         return READER_INVALID_DOUBLE
 
-    def reader_invalid_float():
+    def reader_invalid_float(self):
         return READER_INVALID_FLOAT
 
-    def reader_expected_float():
+    def reader_expected_float(self):
         return READER_EXPECTED_FLOAT
 
-    def reader_expected_symbol():
+    def reader_expected_symbol(self):
         return READER_EXPECTED_SYMBOL
 
-    def dispatcher_unknown_command():
+    def dispatcher_unknown_command(self):
         return DISPATCHER_UNKNOWN_COMMAND
 
-    def dispatcher_unknown_argument():
+    def dispatcher_unknown_argument(self):
         return DISPATCHER_UNKNOWN_ARGUMENT
 
-    def dispatcher_expected_argument_separator():
+    def dispatcher_expected_argument_separator(self):
         return DISPATCHER_EXPECTED_ARGUMENT_SEPARATOR
 
-    def dispatcher_parse_expection():
+    def dispatcher_parse_expection(self):
         return DISPATCHER_PARSE_EXPECTION
 
-    def reader_expected_bool():
+    def reader_expected_bool(self):
         return READER_EXPECTED_BOOL
+
+BUILT_IN_EXCEPTIONS = BuiltInExceptions()

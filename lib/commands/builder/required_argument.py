@@ -1,10 +1,10 @@
 
 from typing import Self, TypeVar
 
-from lib.commands.argument_type import ArgumentType
 from lib.commands.builder.argument import ArgumentBuilder
 from lib.commands.nodes.argument import ArgumentCommandNode
 from lib.commands.suggestions import SuggestionProvider
+from lib.commands.types import ArgumentType
 
 
 S = TypeVar("S")
@@ -19,8 +19,11 @@ class RequiredArgumentBuilder(ArgumentBuilder[S, "RequiredArgumentBuilder[T]"]):
     def __init__(self, name: str, type: ArgumentType[T]):
         self.name = name
         self.type = type
+        self.suggestionsProvider = None
 
-    def suggests(self, provider: SuggestionProvider[S]) -> Self[S, T]:
+        super().__init__()
+
+    def suggests(self, provider: SuggestionProvider[S]) -> Self:
         self.suggestionsProvider = provider
         return self
 
@@ -47,6 +50,9 @@ class RequiredArgumentBuilder(ArgumentBuilder[S, "RequiredArgumentBuilder[T]"]):
             result.addChild(argument)
 
         return result
+
+    def __str__(self) -> str:
+        return f"literal[{self.name}]"
 
 
 def argument(name: str, type: ArgumentType[T]):

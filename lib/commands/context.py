@@ -29,6 +29,31 @@ class CommandContext(Generic[S]):
     modifier: "RedirectModifier[S]"
     forks: bool
 
+    def __init__(
+        self,
+        source: S,
+        input: str,
+        arguments: dict[str, ParsedArgument[S, Any]],
+        command: "Command[S]",
+        rootNode: "CommandNode[S]",
+        nodes: list["ParsedCommandNode[S]"],
+        range: StringRange,
+        child: "CommandContext[S]",
+        modifier: "RedirectModifier[S]",
+        forks: bool
+    ) -> None:
+        self.source = source
+        self.input = input
+        self.arguments = arguments
+        self.command = command
+        self.rootNode = rootNode
+        self.nodes = nodes
+        self.range = range
+        self.child = child
+        self.modifier = modifier
+        self.forks = forks
+
+
     def getArgument(self, name: str, clazz: Type[V]):
         argument: ParsedArgument[S, V] = self.arguments.get(name)
         if argument is None:
@@ -62,6 +87,8 @@ class CommandContextBuilder(Generic[S]):
         self.source = source
         self.range = StringRange.at(start)
         self.child = None
+        self.command = None
+        self.forks = None
 
     def withSource(self, source: S) -> Self:
         self.source = source
@@ -93,7 +120,7 @@ class CommandContextBuilder(Generic[S]):
         raise ValueError("Can't find node before cursor")
 
     def build(self, input: str):
-        return CommandContext[S](
+        return CommandContext(
             self.source, input, self.arguments, self.command, self.rootNode, self.nodes, self.range,
             None if self.child is None else self.child.build(input), self.modifier, self.forks
         )

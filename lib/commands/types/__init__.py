@@ -14,7 +14,7 @@ class ArgumentType(Generic[T]):
     def parse(self, reader: StringReader) -> T:
         raise NotImplementedError()
 
-    def list_suggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
+    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
         return Suggestions.EMPTY
 
     def getExamples(self) -> list[str]:

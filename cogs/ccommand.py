@@ -2,18 +2,23 @@ import json
 import math
 import os
 from datetime import datetime
+import traceback
 from typing import Any, Optional
 
 import aiofiles
 import discord
 from lib.commands.dispatcher import CommandDispatcher
 from lib.commands.context import CommandContextBuilder, SuggestionContext
+from lib.commands.entity import Entity, EntityType
 from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.builder.literal import LiteralArgumentBuilder, literal
 from lib.commands.builder.required_argument import argument
+from lib.commands.output import CommandOutput
 from lib.commands.reader import StringReader
+from lib.commands.server import MinecraftServer
+from lib.commands.source import ServerCommandSource
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
-from lib.commands.nodes import LiteralCommandNode
+from lib.commands.nodes.literal import LiteralCommandNode
 from discord import Embed, app_commands
 from discord.ext import commands
 from pydantic import GetCoreSchemaHandler
@@ -23,7 +28,12 @@ from tqdm import tqdm
 from lib.commands.types.boolean import BoolArgumentType
 from lib.commands.types.double import DoubleArgumentType
 from lib.commands.types.integer import IntegerArgumentType
+from lib.commands.types.item import ItemArgumentType
+from lib.commands.types.nbt import NbtArgumentType
+from lib.commands.types.selector import SelectorArgumentType
 from lib.commands.types.string import StringArgumentType
+from lib.commands.util import Vec2f, Vec3d
+from lib.commands.world import ServerWorld, World
 from schemas.data import (ArgumentCommandEntry, ArgumentParser, CommandEntry,
                           DataPaths, LiteralCommandEntry, parse_command)
 from utils.util import create_codeblock, create_embed
@@ -187,27 +197,27 @@ class CCommandInfo(commands.Cog):
     async def crun_autocomplete(
         self, interaction: discord.Interaction, current: str
     ):
-        parse = self.dispatcher.parse(current, {})
-        cursor = len(current)
-        context: CommandContextBuilder = parse.context
-        node_before_cursor: SuggestionContext = context.findSuggestionContext(cursor)
-        parent: LiteralCommandNode = node_before_cursor.parent
-        result: list[str] = []
-        childrens = parent.children
+        try:
+            source = ServerCommandSource(
+                CommandOutput.DUMMY, Vec3d(0, 0, 0), Vec2f(0, 0), ServerWorld(), 1, "akpc_0504", "ap12",
+                MinecraftServer(), Entity(EntityType.PLAYER, World()), False, print
+            )
+            parsed = self.dispatcher.parse(StringReader(current), source)
+            opts = self.dispatcher.getCompletionSuggestions(parsed, None)
+            result = list()
 
-        for node in childrens:
-            try:
-                if isinstance(node, str):
-                    result.append(node)
-                if isinstance(node, LiteralCommandNode):
-                    result.append(node.literal)
-            except CommandSyntaxException as e:
-                return [
-                    app_commands.Choice(name=e, value=e)
-                ]
-        return [
-            app_commands.Choice(name=f"{n} ", value=f"{n} ") for n in result
-        ][:25]
+            for node in opts.get_list():
+                try:
+                    result.append(node.text)
+                except CommandSyntaxException as e:
+                    return [
+                        app_commands.Choice(name=e, value=e)
+                    ]
+            return [
+                app_commands.Choice(name=f"{n} ", value=f"{n} ") for n in result
+            ][:25]
+        except Exception as e:
+            traceback.print_exception(e)
 
     async def cog_load(self):
         async with aiofiles.open("./minecraft_data/data/dataPaths.json", mode="rb") as datap:
@@ -285,7 +295,7 @@ class CCommandInfo(commands.Cog):
                 await _rescusive(b, _cmd_c)
 
             for _cmd_r in cmd.redirects:
-                b.redirect(target=_cmd_r, modifier=None)
+                b.redirect(_cmd_r)
 
             if builder is None:
                 return b
@@ -295,7 +305,7 @@ class CCommandInfo(commands.Cog):
         progress = tqdm(total=len(cmds))
         for cmd in cmds:
             data = await _rescusive(None, cmd)
-            self.dispatcher.root.register(data)
+            self.dispatcher.register(data)
             progress.update(1)
 
 

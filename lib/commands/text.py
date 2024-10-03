@@ -83,7 +83,7 @@ class Text():
 
     @staticmethod
     def translatable(trans: str):
-        with open("./tmp/ja_jp.json", mode="rb") as fp:
+        with open("./.tmp/ja_jp.json", mode="rb") as fp:
             data: dict[str, str] = json.load(fp)
         tr = data.get(trans, trans)
 
@@ -91,7 +91,7 @@ class Text():
 
     @staticmethod
     def stringifiedTranslatable(trans: str, options: tuple[str]):
-        with open("./tmp/ja_jp.json", mode="rb") as fp:
+        with open("./.tmp/ja_jp.json", mode="rb") as fp:
             data: dict[str, str] = json.load(fp)
 
         tr = data.get(trans, trans)

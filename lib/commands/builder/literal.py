@@ -26,6 +26,8 @@ class LiteralArgumentBuilder(ArgumentBuilder[S, "LiteralArgumentBuilder[S]"]):
             result.addChild(argument)
         return result
 
+    def __str__(self) -> str:
+        return f"literal[{self.literal}]"
 
 def literal(name):
     return LiteralArgumentBuilder(name)

@@ -1,3 +1,4 @@
+import math
 from pydantic import GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
 from lib.commands.exceptions import SimpleCommandExceptionType
@@ -125,6 +126,10 @@ class Identifier:
     def __str__(self) -> str:
         return f"{self.namespace}:{self.path}"
 
+    @classmethod
+    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_after_validator_function(cls, handler(str))
+
 
 class Vec3d():
     x: float
@@ -150,6 +155,10 @@ class BlockPos():
         self.x = x
         self.y = y
         self.z = z
+
+    @classmethod
+    def ofFloored(cls, x: float, y: float, z: float):
+        return cls(math.floor(x), math.floor(y), math.floor(z))
 
 
 class ChunkPos(BlockPos):

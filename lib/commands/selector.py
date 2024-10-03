@@ -3,6 +3,8 @@ from random import shuffle
 from typing import Any, Callable, Coroutine, Literal, Optional
 from uuid import UUID
 
+from pydantic import BaseModel
+
 from lib.commands import util
 from lib.commands.entity import (Entity, EntityType, GameMode, LivingEntity,
                                  ServerPlayerEntity)
@@ -16,7 +18,7 @@ from lib.commands.registry.tag_key import TagKey
 from lib.commands.source import CommandSource
 from lib.commands.suggestions import SuggestionsBuilder
 from lib.commands.text import Text
-from lib.commands.util import Identifier, Vec3d
+from lib.commands.util import Identifier, RangeNumberOrNumber, Vec3d
 from lib.commands.util.consumer import Consumer
 from lib.commands.util.predicate import Predicate
 
