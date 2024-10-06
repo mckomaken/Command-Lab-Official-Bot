@@ -39,9 +39,7 @@ class BumpNofiticationCog(commands.Cog):
     async def bump_check_task(self):
         if self.bump_data.last_timestamp is None:
             return
-        last = datetime.fromtimestamp(self.bump_data.last_timestamp) + timedelta(
-            hours=2
-        )
+        last = datetime.fromtimestamp(self.bump_data.last_timestamp) + timedelta(hours=2)
         now = datetime.now()
 
         if last < now and not self.bump_data.notified:
@@ -65,9 +63,7 @@ class BumpNofiticationCog(commands.Cog):
             self.bump_data.notified = True
 
     async def cog_load(self):
-        if not os.path.exists(
-            os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png")
-        ):
+        if not os.path.exists(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png")):
             open(
                 os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"),
                 mode="w",
@@ -93,9 +89,7 @@ class BumpNofiticationCog(commands.Cog):
     async def on_message(self, message: discord.Message):
         if message.channel.id == config.bump.channel_id:
             if message.content.startswith("!d bump"):
-                await message.channel.send(
-                    "そのコマンドは<t:1648767600:F>にサ終しました(笑)"
-                )
+                await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
 
             elif message.content.startswith("/bump"):
                 await message.channel.send(
@@ -114,9 +108,7 @@ class BumpNofiticationCog(commands.Cog):
                     JST_time = datetime.now()
                     master = JST_time + timedelta(hours=2)
                     fmaster = master.strftime(" %Y/%m/%d %H:%M:%S ")
-                    notice_channel = await self.bot.fetch_channel(
-                        config.bump.channel_id
-                    )
+                    notice_channel = await self.bot.fetch_channel(config.bump.channel_id)
 
                     bump_notice_embed = discord.Embed(
                         title="BUMPを検知しました",
@@ -152,12 +144,8 @@ class BumpNofiticationCog(commands.Cog):
                     )
 
                     if message.channel.id != config.bump.channel_id:
-                        await notice_channel.send(
-                            "＼(^o^)／", embed=another_channel_bump_notice_embed
-                        )
-                        await message.channel.send(
-                            embed=caution_another_channel_bump_notice_embed
-                        )
+                        await notice_channel.send("＼(^o^)／", embed=another_channel_bump_notice_embed)
+                        await message.channel.send(embed=caution_another_channel_bump_notice_embed)
                     else:
                         await message.channel.send(embed=bump_notice_embed)
 

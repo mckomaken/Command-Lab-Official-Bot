@@ -20,9 +20,7 @@ class ItemArgumentType(ArgumentType[str]):
         result = []
         with open("./minecraft_data/data/dataPaths.json") as fp:
             dataPath = DataPaths.model_validate_json(fp.read())
-            with open(
-                "./minecraft_data/data/" + dataPath.pc["1.20.4"].items + "/items.json"
-            ) as fp2:
+            with open("./minecraft_data/data/" + dataPath.pc["1.20.4"].items + "/items.json") as fp2:
                 items = Items.model_validate_json(fp2.read())
                 for item in items.root:
                     result.append(f"minecraft:{item.name}")

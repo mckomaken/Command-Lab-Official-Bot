@@ -11,28 +11,20 @@ class ConvertView(discord.ui.View):
         self.text = text
 
     @discord.ui.button(label="titleに変換", style=discord.ButtonStyle.green)
-    async def convert_title(
-        self, interaction: discord.Interaction, item: discord.ui.Item
-    ):
+    async def convert_title(self, interaction: discord.Interaction, item: discord.ui.Item):
         await interaction.response.send_message(
             embed=create_embed(
                 title="コマンド",
-                description=create_codeblock(
-                    '/title @a title {"text":"' + self.text + '"}'
-                ),
+                description=create_codeblock('/title @a title {"text":"' + self.text + '"}'),
             )
         )
 
     @discord.ui.button(label="tellrawに変換", style=discord.ButtonStyle.green)
-    async def convert_tellraw(
-        self, interaction: discord.Interaction, item: discord.ui.Item
-    ):
+    async def convert_tellraw(self, interaction: discord.Interaction, item: discord.ui.Item):
         await interaction.response.send_message(
             embed=create_embed(
                 title="コマンド",
-                description=create_codeblock(
-                    '/tellraw @a {"text":"' + self.text + '"}'
-                ),
+                description=create_codeblock('/tellraw @a {"text":"' + self.text + '"}'),
             )
         )
 
@@ -46,9 +38,7 @@ class CUnicode(app_commands.Group):
         )
         self.bot = bot
 
-    @app_commands.command(
-        name="encode", description="UNICODEエスケープシーケンスのエンコードをします。"
-    )
+    @app_commands.command(name="encode", description="UNICODEエスケープシーケンスのエンコードをします。")
     @app_commands.describe(text="エンコードする文字列")
     @app_commands.guild_only()
     async def unicode_encode(self, interaction: discord.Interaction, text: str):
@@ -61,9 +51,7 @@ class CUnicode(app_commands.Group):
 
         await interaction.response.send_message(embed=embed, view=ConvertView(data))
 
-    @app_commands.command(
-        name="decode", description="UNICODEエスケープシーケンスのデコードをします。"
-    )
+    @app_commands.command(name="decode", description="UNICODEエスケープシーケンスのデコードをします。")
     @app_commands.describe(text="デコードする文字列")
     @app_commands.guild_only()
     async def unicode_decode(self, interaction: discord.Interaction, text: str):

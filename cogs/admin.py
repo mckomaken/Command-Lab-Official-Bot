@@ -33,9 +33,7 @@ class CNoticeConfirm(discord.ui.View):
 
     @discord.ui.button(label="OK")
     async def ok(self, interaction: discord.Interaction, item: discord.ui.Item):
-        await interaction.response.edit_message(
-            content="送信しました", view=None, embed=None
-        )
+        await interaction.response.edit_message(content="送信しました", view=None, embed=None)
         await interaction.channel.send(embed=self.embed)
 
 
@@ -52,20 +50,14 @@ class CAdminCog(commands.Cog):
         ]
     )
     @app_commands.checks.has_role(config.administrater_role_id)
-    async def cmisc(
-        self, interaction: discord.Interaction, choice: app_commands.Choice[str]
-    ):
+    async def cmisc(self, interaction: discord.Interaction, choice: app_commands.Choice[str]):
         if choice.value == "cl1":
             await interaction.response.send_message(
-                embed=discord.Embed(
-                    title="高校合格おめでとうございます!!", color=0x2B9788
-                )
+                embed=discord.Embed(title="高校合格おめでとうございます!!", color=0x2B9788)
             )
         elif choice.value == "cl2":
             await interaction.response.send_message(
-                embed=discord.Embed(
-                    title="大学合格おめでとうございます!!", color=0x2B9788
-                )
+                embed=discord.Embed(title="大学合格おめでとうございます!!", color=0x2B9788)
             )
 
     @app_commands.command(name="cn", description="【運営】各種お知らせ用")
@@ -91,9 +83,7 @@ class CAdminCog(commands.Cog):
         if description is not None:
             description = description.replace("\\n", "\n")
 
-        notice_embed = discord.Embed(
-            title=title, description=description, color=0xFF580F, timestamp=mntJST_time
-        )
+        notice_embed = discord.Embed(title=title, description=description, color=0xFF580F, timestamp=mntJST_time)
 
         notice_embed.set_footer(text=f"Send by {interaction.user.display_name}")
 

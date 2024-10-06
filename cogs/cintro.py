@@ -16,9 +16,7 @@ class IntroView(View):
         old_message_id = interaction.message.reference.message_id
         old_message = await interaction.channel.fetch_message(old_message_id)
         if old_message is None:
-            await interaction.followup.send(
-                content="メッセージ情報がないから消去できないよ!!!", ephemeral=True
-            )
+            await interaction.followup.send(content="メッセージ情報がないから消去できないよ!!!", ephemeral=True)
         member_id = old_message.author.id
         member = await interaction.guild.fetch_member(member_id)
         if member is None:
@@ -34,9 +32,7 @@ class IntroView(View):
             if member.resolved_permissions.manage_messages:
                 await interaction.message.delete()
             else:
-                await interaction.followup.send(
-                    content="権限がないから消去できないよ", ephemeral=True
-                )
+                await interaction.followup.send(content="権限がないから消去できないよ", ephemeral=True)
 
 
 class CIntro(commands.Cog):

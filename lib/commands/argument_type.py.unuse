@@ -20,12 +20,8 @@ T = TypeVar("T")
 S = TypeVar("S")
 
 
-INCOMPLETE_ANGLE_EXCEPTION = SimpleCommandExceptionType(
-    Text.translatable("argument.angle.incomplete")
-)
-INVALID_ANGLE_EXCEPTION = SimpleCommandExceptionType(
-    Text.translatable("argument.angle.invalid")
-)
+INCOMPLETE_ANGLE_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.angle.incomplete"))
+INVALID_ANGLE_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.angle.invalid"))
 
 latest_version = "1.21.1"
 
@@ -61,9 +57,7 @@ class Angle:
         self.relative = relative
 
     def get_angle(self, source: ServerCommandSource):
-        return math.degrees(
-            self.angle + source.get_rotation().y if self.relative else self.angle
-        )
+        return math.degrees(self.angle + source.get_rotation().y if self.relative else self.angle)
 
 
 class AngleArgumentType(ArgumentType[Angle]):
@@ -110,7 +104,5 @@ class EntityAnchorArgumentType(ArgumentType[EntityAnchor]):
         return EntityAnchorArgumentType()
 
     @staticmethod
-    def get_entity_anchor(
-        self, context: CommandContext[ServerCommandSource], name: str
-    ):
+    def get_entity_anchor(self, context: CommandContext[ServerCommandSource], name: str):
         return context.getArgument(name, EntityAnchor)

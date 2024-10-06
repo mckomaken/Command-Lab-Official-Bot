@@ -1,6 +1,7 @@
 from typing import Callable, Generic, TypeVar
 
 T = TypeVar("T")
+T2 = TypeVar("T2")
 
 
 class Consumer(Generic[T]):
@@ -9,6 +10,14 @@ class Consumer(Generic[T]):
 
     def accept(self, v: T):
         self.cb(v)
+
+
+class BiConsumer(Generic[T, T2]):
+    def __init__(self, cb: Callable[[T, T2], None]) -> None:
+        self.cb = cb
+
+    def accept(self, v: T, v2: T2):
+        self.cb(v, v2)
 
 
 class ReturnValueConsumer:

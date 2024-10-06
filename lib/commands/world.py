@@ -6,7 +6,7 @@ from lib.commands.damage import DamageSources
 from lib.commands.registry.dynamic import DynamicRegistryManager
 from lib.commands.registry.registry_entry import RegistryEntry
 from lib.commands.registry.registry_key import RegistryKey
-from lib.commands.util import BlockPos
+from lib.commands.util.math.block_pos import BlockPos
 from lib.commands.util.random import Random
 from lib.commands.util.supplier import Supplier
 
@@ -16,9 +16,7 @@ class Biome:
 
 
 class BiomeStorage:
-    def getBiomeForNoiseGen(
-        biomeX: int, biomeY: int, biomeZ: int
-    ) -> RegistryEntry[Biome]:
+    def getBiomeForNoiseGen(biomeX: int, biomeY: int, biomeZ: int) -> RegistryEntry[Biome]:
         raise NotImplementedError()
 
 
@@ -49,7 +47,7 @@ class BiomeAccess:
         i = pos.x - 2
         j = pos.y - 2
         k = pos.z - 2
-        l = i >> 2
+        y = i >> 2
         m = j >> 2
         n = k >> 2
         d = (i & 3) / 4.0
@@ -62,7 +60,7 @@ class BiomeAccess:
             bl = (p & 4) == 0
             bl2 = (p & 2) == 0
             bl3 = (p & 1) == 0
-            q = bl if l else l + 1
+            q = bl if y else y + 1
             r = bl2 if m else m + 1
             s = bl3 if n else n + 1
             h = bl if d else d - 1.0
@@ -73,7 +71,7 @@ class BiomeAccess:
                 o = p
                 g = v
 
-        p = (o & 4) == 0 if l else l + 1
+        p = (o & 4) == 0 if y else y + 1
         w = (o & 2) == 0 if m else m + 1
         x = (o & 1) == 0 if n else n + 1
 
@@ -85,17 +83,17 @@ class BiomeAccess:
         return (d - 0.5) * 0.9
 
     @staticmethod
-    def method_38106(l: int, i: int, j: int, k: int, d: float, e: float, f: float):
-        m = SeedMixer.mixSeed(l, i)
+    def method_38106(w: int, i: int, j: int, k: int, d: float, e: float, f: float):
+        m = SeedMixer.mixSeed(w, i)
         m = SeedMixer.mixSeed(m, j)
         m = SeedMixer.mixSeed(m, k)
         m = SeedMixer.mixSeed(m, i)
         m = SeedMixer.mixSeed(m, j)
         m = SeedMixer.mixSeed(m, k)
         g = BiomeAccess.method_38108(m)
-        m = SeedMixer.mixSeed(m, l)
+        m = SeedMixer.mixSeed(m, w)
         h = BiomeAccess.method_38108(m)
-        m = SeedMixer.mixSeed(m, l)
+        m = SeedMixer.mixSeed(m, w)
         n = BiomeAccess.method_38108(m)
         return square(f + n) + square(e + h) + square(d + g)
 

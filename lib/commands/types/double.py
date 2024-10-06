@@ -2,7 +2,6 @@ import math
 from typing import override
 from lib.commands.builtin_exceptions import BUILT_IN_EXCEPTIONS
 from lib.commands.context import CommandContext
-from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.reader import StringReader
 from lib.commands.types import ArgumentType
 
@@ -30,14 +29,10 @@ class DoubleArgumentType(ArgumentType[float]):
         result = reader.readDouble()
         if result < self.minimum:
             reader.setCursor(start)
-            raise BUILT_IN_EXCEPTIONS.double_too_low().createWithContext(
-                reader, result, self.minimum
-            )
+            raise BUILT_IN_EXCEPTIONS.double_too_low().createWithContext(reader, result, self.minimum)
         if result > self.maximum:
             reader.setCursor(start)
-            raise BUILT_IN_EXCEPTIONS.double_too_high().createWithContext(
-                reader, result, self.maximum
-            )
+            raise BUILT_IN_EXCEPTIONS.double_too_high().createWithContext(reader, result, self.maximum)
 
         return result
 

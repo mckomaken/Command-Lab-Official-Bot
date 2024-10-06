@@ -28,12 +28,8 @@ class EmbedPaginator(discord.ui.View):
         self,
         *,
         timeout: int = 60,
-        PreviousButton: discord.ui.Button = discord.ui.Button(
-            emoji=discord.PartialEmoji(name="\U000025c0")
-        ),
-        NextButton: discord.ui.Button = discord.ui.Button(
-            emoji=discord.PartialEmoji(name="\U000025b6")
-        ),
+        PreviousButton: discord.ui.Button = discord.ui.Button(emoji=discord.PartialEmoji(name="\U000025c0")),
+        NextButton: discord.ui.Button = discord.ui.Button(emoji=discord.PartialEmoji(name="\U000025b6")),
         PageCounterStyle: discord.ButtonStyle = discord.ButtonStyle.grey,
         InitialPage: int = 0,
         AllowExtInput: bool = False,
@@ -56,9 +52,7 @@ class EmbedPaginator(discord.ui.View):
 
         super().__init__(timeout=timeout)
 
-    async def start(
-        self, ctx: discord.Interaction | commands.Context, pages: list[discord.Embed]
-    ):
+    async def start(self, ctx: discord.Interaction | commands.Context, pages: list[discord.Embed]):
 
         if isinstance(ctx, discord.Interaction):
             ctx = await commands.Context.from_interaction(ctx)
@@ -81,9 +75,7 @@ class EmbedPaginator(discord.ui.View):
         self.add_item(self.page_counter)
         self.add_item(self.NextButton)
 
-        self.message = await ctx.send(
-            embed=self.pages[self.InitialPage], view=self, ephemeral=self.ephemeral
-        )
+        self.message = await ctx.send(embed=self.pages[self.InitialPage], view=self, ephemeral=self.ephemeral)
 
     async def previous(self):
         if self.current_page == 0:
@@ -126,6 +118,4 @@ class EmbedPaginator(discord.ui.View):
 
 class SimplePaginatorPageCounter(discord.ui.Button):
     def __init__(self, style: discord.ButtonStyle, TotalPages, InitialPage):
-        super().__init__(
-            label=f"{InitialPage + 1}/{TotalPages}", style=style, disabled=True
-        )
+        super().__init__(label=f"{InitialPage + 1}/{TotalPages}", style=style, disabled=True)

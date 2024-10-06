@@ -5,8 +5,9 @@ from lib.commands.output import CommandOutput
 from lib.commands.server import MinecraftServer
 from lib.commands.suggestions import SuggestionsBuilder
 from lib.commands.text import Text
-from lib.commands.util import Identifier, Vec2f, Vec3d
+from lib.commands.util import Identifier, Vec2f
 from lib.commands.util.consumer import Consumer, ReturnValueConsumer
+from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.world import ServerWorld
 
 T = TypeVar("T")
@@ -34,13 +35,9 @@ def should_suggest(remaining: str, candinate: str):
 
 class CommandSource:
     @classmethod
-    def suggest_identifiers(
-        cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str
-    ):
+    def suggest_identifiers(cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str):
         string = builder.remaining.lower()
-        cls.for_each_matching(
-            candinates, string, lambda id: id, lambda id: builder.suggest(str(id))
-        )
+        cls.for_each_matching(candinates, string, lambda id: id, lambda id: builder.suggest(str(id)))
 
         return builder.build_async()
 
@@ -88,4 +85,27 @@ class ServerCommandSource(CommandSource):
         silent: bool,
         resultStorer: ReturnValueConsumer,
     ) -> None:
+        self.output = output
+        self.pos = pos
+        self.rot = rot
+        self.world = world
+        self.level = level
+        self.name = name
+        self.displayName = displayName
+        self.server = server
+        self.entity = entity
+        self.silent = silent
+        self.resultStorer = resultStorer
         super().__init__()
+
+    def getServer(self):
+        return self.server
+
+    def getPosition(self):
+        return self.pos
+
+    def getEntity(self):
+        return self.entity
+
+    def getWorld(self):
+        return self.world

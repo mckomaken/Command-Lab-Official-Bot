@@ -10,7 +10,7 @@ import discord
 import yaml
 from discord import app_commands
 from discord.abc import User
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 from config.config import config
 from utils.setup import setup, setup_mcdata
@@ -108,11 +108,7 @@ class CommandLabBot(commands.Bot):
     async def start(cls, token: str) -> None:
         logging.config.dictConfig(
             yaml.load(
-                await (
-                    await aiofiles.open(
-                        path.join(os.getenv("BASE_DIR", "."), "data/logging.yaml")
-                    )
-                ).read(),
+                await (await aiofiles.open(path.join(os.getenv("BASE_DIR", "."), "data/logging.yaml"))).read(),
                 Loader=yaml.SafeLoader,
             )
         )
@@ -133,9 +129,7 @@ class CommandLabBot(commands.Bot):
 
                 logger.info("BOTが起動しました")
                 if config.start_notice_channel is not None:
-                    start_notice_channel = await client.fetch_channel(
-                        config.start_notice_channel
-                    )
+                    start_notice_channel = await client.fetch_channel(config.start_notice_channel)
                     await start_notice_channel.send(embed=start_embed)
 
             @client.event
@@ -152,9 +146,7 @@ class CommandLabBot(commands.Bot):
                         await message.channel.send("ｶﾞﾌﾞｯ")
 
                     elif message.content.startswith("!d bump"):
-                        await message.channel.send(
-                            "そのコマンドは<t:1648767600:F>にサ終しました(笑)"
-                        )
+                        await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
 
                     elif message.content.startswith("/bump"):
                         await message.channel.send(
@@ -174,15 +166,9 @@ class CommandLabBot(commands.Bot):
                     )
 
             @client.tree.error
-            async def on_error(
-                ctx: discord.Interaction, error: app_commands.AppCommandError
-            ):
-                if isinstance(error, app_commands.MissingRole) or isinstance(
-                    error, app_commands.MissingPermissions
-                ):
-                    await ctx.response.send_message(
-                        "権限あらへんで(関西弁)", ephemeral=True
-                    )
+            async def on_error(ctx: discord.Interaction, error: app_commands.AppCommandError):
+                if isinstance(error, app_commands.MissingRole) or isinstance(error, app_commands.MissingPermissions):
+                    await ctx.response.send_message("権限あらへんで(関西弁)", ephemeral=True)
                 else:
                     logger.error(error)
 

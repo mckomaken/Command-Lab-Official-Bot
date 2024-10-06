@@ -4,7 +4,9 @@ from uuid import UUID
 
 from lib.commands.blockstate import BlockState
 from lib.commands.text import Text
-from lib.commands.util import BlockPos, ChunkPos, Vec3d
+from lib.commands.util import ChunkPos
+from lib.commands.util.math.block_pos import BlockPos
+from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.util.random import Random
 from lib.commands.world import World
 
@@ -165,14 +167,23 @@ class Entity:
         self.changeListener = EntityChangeListener()
         self.trackedPosition = TrackedPosition()
 
-    def is_alive(self):
+    def isAlive(self):
         return True
 
-    def get_name(self):
+    def getName(self):
         return Text("test")
 
     def getBurningDuration(self):
         return 0
+
+    def getYaw(self):
+        return self.yaw
+
+    def getPitch(self):
+        return self.pitch
+
+    def getUUID(self):
+        return self.uuid
 
 
 class EntityType(Enum):

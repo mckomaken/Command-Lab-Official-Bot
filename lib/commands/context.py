@@ -61,14 +61,7 @@ class CommandContext(Generic[S]):
         if r := clazz(result):
             return r
         else:
-            raise ValueError(
-                "Argument '"
-                + name
-                + "' is defined as "
-                + str(V)
-                + ", not "
-                + str(clazz)
-            )
+            raise ValueError("Argument '" + name + "' is defined as " + str(V) + ", not " + str(clazz))
 
     def get_source(self):
         return self.source

@@ -20,7 +20,6 @@ class SelectorArgumentType(ArgumentType[Selector]):
 
         d = reader.string[start : reader.cursor]
         gps = SELECTOR_PATTERN.match(d)
-        print(d)
         if gps is None:
             raise CommandSyntaxException(message="Selector Error")
 

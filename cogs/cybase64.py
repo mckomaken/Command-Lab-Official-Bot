@@ -14,9 +14,7 @@ class UrlView(discord.ui.View):
         self.text = text
 
     @discord.ui.button(label="送信内容を見る", style=discord.ButtonStyle.red)
-    async def convert_title(
-        self, interaction: discord.Interaction, item: discord.ui.Item
-    ):
+    async def convert_title(self, interaction: discord.Interaction, item: discord.ui.Item):
         await interaction.response.send_message(
             embed=create_embed(title="送信内容", description=(f"{self.text}")),
             ephemeral=True,
@@ -47,9 +45,7 @@ class CYbase64(commands.Cog):
             await send_channel.send(embed=yembed, view=UrlView(text))
             await admin_channel.send(embed=admin_embed)
         else:
-            await interaction.response.send_message(
-                "チャンネル違うよ！", ephemeral=True
-            )
+            await interaction.response.send_message("チャンネル違うよ！", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

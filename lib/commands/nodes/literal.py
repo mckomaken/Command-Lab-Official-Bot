@@ -1,9 +1,8 @@
-from typing import Any, Coroutine, Generic, Self, TypeVar
+from typing import Generic, Self, TypeVar
 
 from lib.commands import Command
 from lib.commands.builtin_exceptions import BUILT_IN_EXCEPTIONS
 from lib.commands.context import CommandContext, CommandContextBuilder
-from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.nodes import CommandNode
 from lib.commands.range import StringRange
 from lib.commands.reader import StringReader
@@ -53,9 +52,7 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
                     reader.setCursor(start)
         return -1
 
-    def listSuggestions(
-        self, context: CommandContext[S], builder: SuggestionsBuilder
-    ) -> Suggestions:
+    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
         if self.literalLowerCase.startswith(builder.remaining.lower()):
             return builder.suggest(self.literal, "").build()
         else:

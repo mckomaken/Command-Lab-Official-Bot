@@ -5,9 +5,7 @@ from lib.commands.reader import StringReader
 from lib.commands.text import Text
 
 EXCEPTION_EMPTY = SimpleCommandExceptionType(Text.translatable("argument.range.empty"))
-EXCEPTION_SWAPPED = SimpleCommandExceptionType(
-    Text.translatable("argument.range.swapped")
-)
+EXCEPTION_SWAPPED = SimpleCommandExceptionType(Text.translatable("argument.range.swapped"))
 
 T = TypeVar("T", int, float)
 
@@ -46,18 +44,12 @@ class NumberRange(Generic[T]):
         raise NotImplementedError()
 
     @classmethod
-    def parse(
-        cls, commandReader: StringReader, converter: Callable[[str], T]
-    ) -> "FloatRnage | IntRange":
+    def parse(cls, commandReader: StringReader, converter: Callable[[str], T]) -> "FloatRange | IntRange":
         i = commandReader.getCursor()
 
         try:
             optional = cls.from_string_reader(commandReader, converter)
-            if (
-                commandReader.canRead(2)
-                and commandReader.peek() == "."
-                and commandReader.peek(1) == "."
-            ):
+            if commandReader.canRead(2) and commandReader.peek() == "." and commandReader.peek(1) == ".":
                 commandReader.skip()
                 commandReader.skip()
                 optional2 = cls.from_string_reader(commandReader, converter)
@@ -73,33 +65,31 @@ class NumberRange(Generic[T]):
                 return cls.create(commandReader, optional, optional2)
         except CommandSyntaxException as e:
             commandReader.setCursor(i)
-            raise CommandSyntaxException(
-                e.getType(), e.getRawMessage(), e.getInput(), i
-            )
+            raise CommandSyntaxException(e.getType(), e.getRawMessage(), e.getInput(), i)
 
 
-class FloatRnage(NumberRange[float]):
+class FloatRange(NumberRange[float]):
     def __init__(self, min: Optional[float], max: Optional[float]) -> None:
         self.min = min
         self.max = max
 
     @staticmethod
-    def create(reader: StringReader, min: str, max: str) -> "FloatRnage":
+    def create(reader: StringReader, min: str, max: str) -> "FloatRange":
         if min > max:
             raise EXCEPTION_SWAPPED.createWithContext(reader)
         else:
-            return FloatRnage(float(min), float(max))
+            return FloatRange(float(min), float(max))
 
     @classmethod
-    def exactly(cls, value: float) -> "FloatRnage":
+    def exactly(cls, value: float) -> "FloatRange":
         return cls(value, value)
 
     @classmethod
-    def between(cls, min: float, max: float) -> "FloatRnage":
+    def between(cls, min: float, max: float) -> "FloatRange":
         return cls(min, max)
 
     @classmethod
-    def any(cls) -> "FloatRnage":
+    def any(cls) -> "FloatRange":
         return cls(None, None)
 
     def test(self, value: float) -> bool:
@@ -108,11 +98,11 @@ class FloatRnage(NumberRange[float]):
         else:
             return self.max is None or self.max < value
 
-    def is_dummy(self) -> bool:
+    def isDummy(self) -> bool:
         return self.max is None and self.min is None
 
     @staticmethod
-    def parse(reader: StringReader) -> "FloatRnage":
+    def parse(reader: StringReader) -> "FloatRange":
         return NumberRange.parse(reader, float)
 
 
@@ -146,7 +136,7 @@ class IntRange(NumberRange[int]):
         else:
             return self.max is None or self.max >= value
 
-    def is_dummy(self) -> bool:
+    def isDummy(self) -> bool:
         return self.max is None and self.min is None
 
     @staticmethod

@@ -6,101 +6,61 @@ from lib.commands.exceptions import (
 
 
 FLOAT_TOO_SMALL = DynamicCommandExceptionType(
-    lambda found, minimum: LiteralMessage(
-        f"Float must not be less than {minimum}, found {found}"
-    )
+    lambda found, minimum: LiteralMessage(f"Float must not be less than {minimum}, found {found}")
 )
 FLOAT_TOO_BIG = DynamicCommandExceptionType(
-    lambda found, maximum: LiteralMessage(
-        f"Float must not be more than {maximum}, found {found}"
-    )
+    lambda found, maximum: LiteralMessage(f"Float must not be more than {maximum}, found {found}")
 )
 
 INTEGER_TOO_SMALL = DynamicCommandExceptionType(
-    lambda found, minimum: LiteralMessage(
-        f"Integer must not be less than {minimum}, found {found}"
-    )
+    lambda found, minimum: LiteralMessage(f"Integer must not be less than {minimum}, found {found}")
 )
 INTEGER_TOO_BIG = DynamicCommandExceptionType(
-    lambda found, maximum: LiteralMessage(
-        f"Integer must not be more than {maximum}, found {found}"
-    )
+    lambda found, maximum: LiteralMessage(f"Integer must not be more than {maximum}, found {found}")
 )
 
 LONG_TOO_SMALL = DynamicCommandExceptionType(
-    lambda found, minimum: LiteralMessage(
-        f"Long must not be less than {minimum}, found {found}"
-    )
+    lambda found, minimum: LiteralMessage(f"Long must not be less than {minimum}, found {found}")
 )
 LONG_TOO_BIG = DynamicCommandExceptionType(
-    lambda found, maximum: LiteralMessage(
-        f"Long must not be more than {maximum}, found {found}"
-    )
+    lambda found, maximum: LiteralMessage(f"Long must not be more than {maximum}, found {found}")
 )
 
 DOUBLE_TOO_SMALL = DynamicCommandExceptionType(
-    lambda found, minimum: LiteralMessage(
-        f"Double must not be less than {minimum}, found {found}"
-    )
+    lambda found, minimum: LiteralMessage(f"Double must not be less than {minimum}, found {found}")
 )
 DOUBLE_TOO_BIG = DynamicCommandExceptionType(
-    lambda found, maximum: LiteralMessage(
-        f"Double must not be more than {maximum}, found {found}"
-    )
+    lambda found, maximum: LiteralMessage(f"Double must not be more than {maximum}, found {found}")
 )
 
-LITERAL_INCORRECT = DynamicCommandExceptionType(
-    lambda expected: LiteralMessage(f"Expected literal {expected}")
-)
+LITERAL_INCORRECT = DynamicCommandExceptionType(lambda expected: LiteralMessage(f"Expected literal {expected}"))
 
-READER_EXPECTED_START_OF_QUOTE = SimpleCommandExceptionType(
-    LiteralMessage("Expected quote to start a string")
-)
-READER_EXPECTED_END_OF_QUOTE = SimpleCommandExceptionType(
-    LiteralMessage("Unclosed quoted string")
-)
+READER_EXPECTED_START_OF_QUOTE = SimpleCommandExceptionType(LiteralMessage("Expected quote to start a string"))
+READER_EXPECTED_END_OF_QUOTE = SimpleCommandExceptionType(LiteralMessage("Unclosed quoted string"))
 READER_INVALID_ESCAPE = DynamicCommandExceptionType(
-    lambda character: LiteralMessage(
-        f"Invalid escape sequence '{character}' in quoted string"
-    )
+    lambda character: LiteralMessage(f"Invalid escape sequence '{character}' in quoted string")
 )
-READER_EXPECTED_SYMBOL = DynamicCommandExceptionType(
-    lambda symbol: LiteralMessage(f"Expected {symbol}")
-)
+READER_EXPECTED_SYMBOL = DynamicCommandExceptionType(lambda symbol: LiteralMessage(f"Expected {symbol}"))
 
 READER_INVALID_BOOL = DynamicCommandExceptionType(
-    lambda value: LiteralMessage(
-        f"Invalid bool, expected true or false but found '{value}'"
-    )
+    lambda value: LiteralMessage(f"Invalid bool, expected true or false but found '{value}'")
 )
 READER_EXPECTED_BOOL = SimpleCommandExceptionType(LiteralMessage("Expected bool"))
 
-READER_INVALID_INT = DynamicCommandExceptionType(
-    lambda value: LiteralMessage(f"Invalid integer '{value}'")
-)
+READER_INVALID_INT = DynamicCommandExceptionType(lambda value: LiteralMessage(f"Invalid integer '{value}'"))
 READER_EXPECTED_INT = SimpleCommandExceptionType(LiteralMessage("Expected integer"))
 
-READER_INVALID_LONG = DynamicCommandExceptionType(
-    lambda value: LiteralMessage(f"Invalid long '{value}'")
-)
+READER_INVALID_LONG = DynamicCommandExceptionType(lambda value: LiteralMessage(f"Invalid long '{value}'"))
 READER_EXPECTED_LONG = SimpleCommandExceptionType(LiteralMessage("Expected long"))
 
-READER_INVALID_DOUBLE = DynamicCommandExceptionType(
-    lambda value: LiteralMessage(f"Invalid double '{value}'")
-)
+READER_INVALID_DOUBLE = DynamicCommandExceptionType(lambda value: LiteralMessage(f"Invalid double '{value}'"))
 READER_EXPECTED_DOUBLE = SimpleCommandExceptionType(LiteralMessage("Expected double"))
 
-READER_INVALID_FLOAT = DynamicCommandExceptionType(
-    lambda value: LiteralMessage(f"Invalid float '{value}'")
-)
+READER_INVALID_FLOAT = DynamicCommandExceptionType(lambda value: LiteralMessage(f"Invalid float '{value}'"))
 READER_EXPECTED_FLOAT = SimpleCommandExceptionType(LiteralMessage("Expected float"))
 
-DISPATCHER_UNKNOWN_COMMAND = SimpleCommandExceptionType(
-    LiteralMessage("Unknown command")
-)
-DISPATCHER_UNKNOWN_ARGUMENT = SimpleCommandExceptionType(
-    LiteralMessage("Incorrect argument for command")
-)
+DISPATCHER_UNKNOWN_COMMAND = SimpleCommandExceptionType(LiteralMessage("Unknown command"))
+DISPATCHER_UNKNOWN_ARGUMENT = SimpleCommandExceptionType(LiteralMessage("Incorrect argument for command"))
 DISPATCHER_EXPECTED_ARGUMENT_SEPARATOR = SimpleCommandExceptionType(
     LiteralMessage("Expected whitespace to end one argument, but found trailing data")
 )

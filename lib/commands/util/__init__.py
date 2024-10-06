@@ -1,9 +1,12 @@
-import math
 from pydantic import GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
 from lib.commands.exceptions import SimpleCommandExceptionType
 from lib.commands.reader import StringReader
 from lib.commands.text import Text
+from lib.commands.util.consumer import Consumer
+from lib.commands.util.math.block_pos import BlockPos
+from lib.commands.util.predicate import Predicate
+from lib.commands.util.supplier import Supplier
 
 
 class InvalidIdentifierException(Exception):
@@ -11,17 +14,7 @@ class InvalidIdentifierException(Exception):
 
 
 def is_char_valid(c: str):
-    return (
-        c >= "0"
-        and c <= "9"
-        or c >= "a"
-        and c <= "z"
-        or c == "_"
-        or c == ":"
-        or c == "/"
-        or c == "."
-        or c == "-"
-    )
+    return c >= "0" and c <= "9" or c >= "a" and c <= "z" or c == "_" or c == ":" or c == "/" or c == "." or c == "-"
 
 
 def is_namespace_character_valid(character: str):
@@ -67,9 +60,38 @@ def is_namespace_valid(path: str):
 
 def is_valid(text: str):
     strings = text.split(":")
-    return is_namespace_valid(
-        "minecraft" if strings[0] == "" else strings[0]
-    ) and is_path_valid(strings[1])
+    return is_namespace_valid("minecraft" if strings[0] == "" else strings[0]) and is_path_valid(strings[1])
+
+
+def allOf[T](predicates: list[Predicate[T]]) -> Predicate[T]:
+    match len(predicates):
+        case 0:
+            predicate = lambda _: True
+        case 1:
+            predicate = predicates[0]
+        case 2:
+            predicate = predicates[0].And(predicates[1])
+        case _:
+            predicates2 = list(predicates)
+
+            def predicate(obj: T):
+                for pred in predicates2:
+                    if not pred.test(obj):
+                        return False
+                return True
+
+    return predicate
+
+
+class Util:
+    @staticmethod
+    def make[T](obj: T, initializer: Consumer[T]) -> T:
+        initializer.accept(obj)
+        return obj
+
+    @staticmethod
+    def makeSupplier[T](factory: Supplier[T]) -> T:
+        return factory.get()
 
 
 COMMAND_EXCEPTION = SimpleCommandExceptionType(Text.of(""))
@@ -101,24 +123,16 @@ class RangedNumber:
         _min = cont.split("..", maxsplit=1)[0]
         _max = cont.split("..", maxsplit=1)[1]
 
-        if not (
-            _min.isdigit()
-            or (_min.replace(".", "", 1).isdigit() and _min.count(".") < 2)
-        ):
+        if not (_min.isdigit() or (_min.replace(".", "", 1).isdigit() and _min.count(".") < 2)):
             raise TypeError("Invalid minimum value of range number")
 
-        if not (
-            _max.isdigit()
-            or (_max.replace(".", "", 1).isdigit() and _max.count(".") < 2)
-        ):
+        if not (_max.isdigit() or (_max.replace(".", "", 1).isdigit() and _max.count(".") < 2)):
             raise TypeError("Invalid maximum value of range number")
 
         return cont
 
     @classmethod
-    def __get_pydantic_core_schema__(
-        cls, source_type, handler: GetCoreSchemaHandler
-    ) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
         return core_schema.no_info_after_validator_function(cls, handler(str))
 
 
@@ -163,40 +177,8 @@ class Identifier:
         return f"{self.namespace}:{self.path}"
 
     @classmethod
-    def __get_pydantic_core_schema__(
-        cls, source_type, handler: GetCoreSchemaHandler
-    ) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
         return core_schema.no_info_after_validator_function(cls, handler(str))
-
-
-class Vec3d:
-    x: float
-    y: float
-    z: float
-
-    @property
-    def ZERO() -> "Vec3d":
-        return Vec3d(0, 0, 0)
-
-    def __init__(self, x: float, y: float, z: float):
-        self.x = x
-        self.y = y
-        self.z = z
-
-
-class BlockPos:
-    x: int
-    y: int
-    z: int
-
-    def __init__(self, x: int, y: int, z: int):
-        self.x = x
-        self.y = y
-        self.z = z
-
-    @classmethod
-    def ofFloored(cls, x: float, y: float, z: float):
-        return cls(math.floor(x), math.floor(y), math.floor(z))
 
 
 class ChunkPos(BlockPos):

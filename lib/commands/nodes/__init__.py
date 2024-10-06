@@ -76,9 +76,7 @@ class CommandNode(Generic[S]):
         from lib.commands.nodes.literal import LiteralCommandNode
 
         if isinstance(node, RootCommandNode):
-            raise ValueError(
-                "Cannot add a RootCommandNode as a child to any other CommandNode"
-            )
+            raise ValueError("Cannot add a RootCommandNode as a child to any other CommandNode")
 
         child = self.children.get(node.getName())
         if child is not None:

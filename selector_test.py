@@ -27,7 +27,8 @@ from lib.commands.types.item import ItemArgumentType
 from lib.commands.types.nbt import NbtArgumentType
 from lib.commands.types.selector import SelectorArgumentType
 from lib.commands.types.string import StringArgumentType
-from lib.commands.util import Vec2f, Vec3d
+from lib.commands.util import Vec2f
+from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.world import ServerWorld, World
 from schemas.data import (
     ArgumentCommandEntry,
@@ -48,16 +49,10 @@ dispatcher = CommandDispatcher()
 async def load():
     global parsers, dispatcher
 
-    async with aiofiles.open(
-        "./minecraft_data/data/dataPaths.json", mode="rb"
-    ) as datap:
-        cmds_path = (
-            DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
-        )
+    async with aiofiles.open("./minecraft_data/data/dataPaths.json", mode="rb") as datap:
+        cmds_path = DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
 
-    async with aiofiles.open(
-        "./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb"
-    ) as fp:
+    async with aiofiles.open("./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb") as fp:
         raw = json.loads(await fp.read())
         cmds: list = raw["root"]["children"]
         _parsers: list = raw["parsers"]
@@ -70,9 +65,7 @@ async def load():
 
         parsers[p.parser] = BaseParser(_parse, p.examples)
 
-    async def _rescusive(
-        builder: Optional[LiteralArgumentBuilder], _cmd: dict
-    ) -> LiteralArgumentBuilder:
+    async def _rescusive(builder: Optional[LiteralArgumentBuilder], _cmd: dict) -> LiteralArgumentBuilder:
         cmd = await parse_command(_cmd)
         if isinstance(cmd, LiteralCommandEntry):
             b = literal(cmd.name)

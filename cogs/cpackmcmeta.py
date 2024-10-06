@@ -17,9 +17,7 @@ from schemas.version_manifest import VersionManifest
 from utils.setup import VersionData
 from utils.util import create_codeblock
 
-VERSION_NOT_FOUND = discord.Embed(
-    title="エラー", description="バージョンが見つかりません。", color=0xFF0000
-)
+VERSION_NOT_FOUND = discord.Embed(title="エラー", description="バージョンが見つかりません。", color=0xFF0000)
 
 # !============更新すること============
 RP_ALL_VERSIONS = [
@@ -120,45 +118,25 @@ class CPackMcMeta(app_commands.Group):
         self.v_cache: dict[str, VersionData] = None
         self.v_cache_time: datetime = datetime.now()
 
-    @app_commands.command(
-        name="latest", description="最新バージョンのformatを出力します"
-    )
+    @app_commands.command(name="latest", description="最新バージョンのformatを出力します")
     @app_commands.guild_only()
     async def latest(self, interaction: discord.Interaction):
         async with aiohttp.ClientSession() as client:
-            async with client.get(
-                "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
-            ) as resp1:
+            async with client.get("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json") as resp1:
                 version_manifest = VersionManifest.model_validate(await resp1.json())
-                lv_embed = discord.Embed(
-                    title="Latest Version pack_format", color=discord.Color.yellow()
-                )
+                lv_embed = discord.Embed(title="Latest Version pack_format", color=discord.Color.yellow())
                 await interaction.response.defer()
-                if (
-                    self.v_cache is None
-                    or datetime.now() >= self.v_cache_time + timedelta(hours=1)
-                ):
+                if self.v_cache is None or datetime.now() >= self.v_cache_time + timedelta(hours=1):
                     versions: dict[str, VersionData] = {}
 
                     for ver in version_manifest.versions:
-                        if (
-                            ver.id == version_manifest.latest.release
-                            or ver.id == version_manifest.latest.snapshot
-                        ):
+                        if ver.id == version_manifest.latest.release or ver.id == version_manifest.latest.snapshot:
                             async with client.get(ver.url) as resp2:
-                                game_package = GamePackage.model_validate(
-                                    await resp2.json()
-                                )
-                                async with client.get(
-                                    game_package.downloads.client.url
-                                ) as resp:
-                                    with zipfile.ZipFile(
-                                        io.BytesIO(await resp.read())
-                                    ) as zipfp:
+                                game_package = GamePackage.model_validate(await resp2.json())
+                                async with client.get(game_package.downloads.client.url) as resp:
+                                    with zipfile.ZipFile(io.BytesIO(await resp.read())) as zipfp:
                                         with zipfp.open("version.json") as fpv:
-                                            data = VersionData.model_validate(
-                                                json.load(fpv)
-                                            )
+                                            data = VersionData.model_validate(json.load(fpv))
                                             versions[data.id] = data
                     self.v_cache_time = datetime.now()
                 else:
@@ -172,16 +150,12 @@ class CPackMcMeta(app_commands.Group):
                 )
                 lv_embed.add_field(
                     name="Resource\nPack",
-                    value=create_codeblock(
-                        versions[version_manifest.latest.release].pack_version.resource
-                    ),
+                    value=create_codeblock(versions[version_manifest.latest.release].pack_version.resource),
                     inline=True,
                 )
                 lv_embed.add_field(
                     name="Data\nPack",
-                    value=create_codeblock(
-                        versions[version_manifest.latest.release].pack_version.data
-                    ),
+                    value=create_codeblock(versions[version_manifest.latest.release].pack_version.data),
                     inline=True,
                 )
 
@@ -192,16 +166,12 @@ class CPackMcMeta(app_commands.Group):
                 )
                 lv_embed.add_field(
                     name="Resource\nPack",
-                    value=create_codeblock(
-                        versions[version_manifest.latest.snapshot].pack_version.resource
-                    ),
+                    value=create_codeblock(versions[version_manifest.latest.snapshot].pack_version.resource),
                     inline=True,
                 )
                 lv_embed.add_field(
                     name="Data\nPack",
-                    value=create_codeblock(
-                        versions[version_manifest.latest.snapshot].pack_version.data
-                    ),
+                    value=create_codeblock(versions[version_manifest.latest.snapshot].pack_version.data),
                     inline=True,
                 )
 
@@ -211,9 +181,7 @@ class CPackMcMeta(app_commands.Group):
 
     # ----------------------------------------------------------------
 
-    @app_commands.command(
-        name="datapacks", description="データパックのpack_formatをすべて出力します"
-    )
+    @app_commands.command(name="datapacks", description="データパックのpack_formatをすべて出力します")
     @app_commands.guild_only()
     async def datapacks(self, interaction: discord.Interaction):
 
@@ -224,9 +192,7 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.dp, DP_ALL_VERSIONS[i], k))
                 i += 1
 
-        file = discord.File(
-            os.path.join(os.getenv("BASE_DIR", "."), "assets/dp.png"), filename="dp.png"
-        )
+        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/dp.png"), filename="dp.png")
 
         embed = discord.Embed(title="データパックバージョン一覧")
         embed.set_image(url="attachment://dp.png")
@@ -249,9 +215,7 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.rp, RP_ALL_VERSIONS[i], k))
                 i += 1
 
-        file = discord.File(
-            os.path.join(os.getenv("BASE_DIR", "."), "assets/rp.png"), filename="rp.png"
-        )
+        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/rp.png"), filename="rp.png")
 
         embed = discord.Embed(title="リソースパックバージョン一覧")
         embed.set_image(url="attachment://rp.png")
@@ -275,23 +239,15 @@ class CPackMcMeta(app_commands.Group):
                 ver1 = [int(n) for n in k.split("-")[1].split(".")]
 
                 if ver0[1] <= ver[1] <= ver1[1] and ver0[2] <= ver[2] <= ver1[2]:
-                    embed.add_field(
-                        name="リソースパックバージョン", value=f"```{v.rp}```"
-                    )
-                    embed.add_field(
-                        name="データパックバージョン", value=f"```{v.dp}```"
-                    )
+                    embed.add_field(name="リソースパックバージョン", value=f"```{v.rp}```")
+                    embed.add_field(name="データパックバージョン", value=f"```{v.dp}```")
                     await interaction.response.send_message(embed=embed)
 
                     return
             else:
                 if version == k:
-                    embed.add_field(
-                        name="リソースパックバージョン", value=f"```{v.rp}```"
-                    )
-                    embed.add_field(
-                        name="データパックバージョン", value=f"```{v.dp}```"
-                    )
+                    embed.add_field(name="リソースパックバージョン", value=f"```{v.rp}```")
+                    embed.add_field(name="データパックバージョン", value=f"```{v.dp}```")
                     await interaction.response.send_message(embed=embed)
 
                     return
@@ -317,13 +273,9 @@ class CPackMcMeta(app_commands.Group):
                 if version == k:
                     return v
 
-    @app_commands.command(
-        name="generate-dp", description="データパックのpack.mcmetaを生成します"
-    )
+    @app_commands.command(name="generate-dp", description="データパックのpack.mcmetaを生成します")
     @app_commands.guild_only()
-    async def generate_dp(
-        self, interaction: discord.Interaction, description: str, version: str
-    ):
+    async def generate_dp(self, interaction: discord.Interaction, description: str, version: str):
         ver: PackVersionEntry = self._search(version)
         if ver is None:
             await interaction.response.send_message(embed=VERSION_NOT_FOUND)
@@ -336,24 +288,16 @@ class CPackMcMeta(app_commands.Group):
             timestamp=datetime.now(),
         )
         embed.add_field(name="説明", value=create_codeblock(description))
-        embed.add_field(
-            name="パックバージョン", value=create_codeblock(f"({version}) {ver.dp}")
-        )
+        embed.add_field(name="パックバージョン", value=create_codeblock(f"({version}) {ver.dp}"))
 
-        data: str = PackMcmeta(
-            pack=PackMcmetaV(pack_format=ver.dp, description=description)
-        ).model_dump_json(indent=4)
+        data: str = PackMcmeta(pack=PackMcmetaV(pack_format=ver.dp, description=description)).model_dump_json(indent=4)
         file = discord.File(io.StringIO(data), filename="pack.mcmeta")
 
         await interaction.response.send_message(embed=embed, file=file, ephemeral=True)
 
-    @app_commands.command(
-        name="generate-rp", description="リソースパックのpack.mcmetaを生成します"
-    )
+    @app_commands.command(name="generate-rp", description="リソースパックのpack.mcmetaを生成します")
     @app_commands.guild_only()
-    async def generate_rp(
-        self, interaction: discord.Interaction, description: str, version: str
-    ):
+    async def generate_rp(self, interaction: discord.Interaction, description: str, version: str):
         ver: PackVersionEntry = self._search(version)
         if ver is None:
             await interaction.response.send_message(embed=VERSION_NOT_FOUND)
@@ -366,13 +310,9 @@ class CPackMcMeta(app_commands.Group):
             timestamp=datetime.now(),
         )
         embed.add_field(name="説明", value=create_codeblock(description))
-        embed.add_field(
-            name="パックバージョン", value=create_codeblock(f"({version}) {ver.rp}")
-        )
+        embed.add_field(name="パックバージョン", value=create_codeblock(f"({version}) {ver.rp}"))
 
-        data: str = PackMcmeta(
-            pack=PackMcmetaV(pack_format=ver.rp, description=description)
-        ).model_dump_json(indent=4)
+        data: str = PackMcmeta(pack=PackMcmetaV(pack_format=ver.rp, description=description)).model_dump_json(indent=4)
         file = discord.File(io.StringIO(data), filename="pack.mcmeta")
 
         await interaction.response.send_message(embed=embed, file=file, ephemeral=True)

@@ -97,9 +97,7 @@ class SuggestionsBuilder:
         if text == self.remaining:
             return self
 
-        self.result.append(
-            Suggestion(StringRange.between(self.start, len(self.input)), text, tooltip)
-        )
+        self.result.append(Suggestion(StringRange.between(self.start, len(self.input)), text, tooltip))
         return self
 
     def add(self, other: Self) -> Self:
@@ -109,17 +107,12 @@ class SuggestionsBuilder:
     def build(self):
         return Suggestions.create(self.input, self.result)
 
-    def build_async(self):
-        async def _a():
-            self.build()
-
-        return _a()
+    def create_offset(self, start: int):
+        return SuggestionsBuilder(self.input, self.inputLowerCase, start)
 
 
 class SuggestionProvider(Generic[S]):
-    def getSuggestions(
-        self, context: "CommandContext[S]", builder: "SuggestionsBuilder"
-    ):
+    def getSuggestions(self, context: "CommandContext[S]", builder: "SuggestionsBuilder"):
         raise NotImplementedError()
 
 

@@ -32,9 +32,7 @@ class ArgumentCommandNode(Generic[S, T], CommandNode[S]):
         self.customSuggestions = customSuggestions
         self.children = dict()
 
-    def listSuggestions(
-        self, context: CommandContext[S], builder: SuggestionsBuilder
-    ) -> Suggestions:
+    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
         if self.customSuggestions is None:
             return self.type.listSuggestions(context, builder)
         else:

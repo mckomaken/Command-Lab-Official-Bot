@@ -13,9 +13,7 @@ class RootCommandNode(CommandNode[S]):
         super().__init__(None, lambda _: None, None, lambda s: [s.source], False)
         self.children = dict()
 
-    def listSuggestions(
-        self, context: CommandContext[S], builder: SuggestionsBuilder
-    ) -> Suggestions:
+    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
         return Suggestions.empty()
 
     def __str__(self) -> str:
