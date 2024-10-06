@@ -1,6 +1,7 @@
 from typing import Optional, Union
 from uuid import UUID
-from lib.commands.entity import ServerPlayerEntity
+
+from lib.commands.player import ServerPlayerEntity
 from lib.commands.world import ServerWorld
 
 
@@ -21,6 +22,10 @@ class PlayerManager:
     def getPlayerList(self):
         return self.players
 
+    def getPlayerNames(self):
+        return [player.getGameProfile().getName() for player in self.players]
+
+
 
 class MinecraftServer:
     def __init__(self) -> None:
@@ -31,3 +36,6 @@ class MinecraftServer:
 
     def getWorlds() -> list[ServerWorld]:
         return []
+
+    def getPlayerNames(self):
+        return self.playerManager.getPlayerNames()

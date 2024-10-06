@@ -5,6 +5,7 @@ from lib.commands.util import classproperty
 if TYPE_CHECKING:
     from lib.commands.context import CommandContext
     from lib.commands.nodes import CommandNode
+
 from lib.commands.range import StringRange
 
 S = TypeVar("S")
@@ -54,7 +55,7 @@ class Suggestions:
         if len(input) == 0:
             return Suggestions.EMPTY
         elif len(input) == 1:
-            return next(input)
+            return next(iter(input))
 
         texts: set[Suggestion] = set()
         for suggestion in input:
@@ -92,6 +93,12 @@ class SuggestionsBuilder:
         self.remaining = input[start:]
         self.remainingLowerCase = inputLowerCase[start:]
         self.result: list[Suggestion] = list()
+
+    def getInput(self) -> str:
+        return self.input
+
+    def getStart(self) -> int:
+        return self.start
 
     def suggest(self, text: str, tooltip: str = None) -> Self:
         if text == self.remaining:

@@ -1,27 +1,28 @@
-from enum import Enum
 import math
+from enum import Enum
 from random import Random
 from tkinter import NO
 from typing import Optional, Self
 from xml.dom.minidom import Entity
 
 from lib.commands.util import Util
-from lib.commands.util.math.quaternion import Quaternion
 from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.util.math.vec3i import Vec3i
 from lib.commands.util.mathhelper import MathHelper
+from lib.math.vector.quaternion import Quaternion
 
 
 class Axis(Enum):
-    X = "x"
-    Y = "y"
-    Z = "z"
+    X = (0, "x")
+    Y = (1, "y")
+    Z = (2, "z")
 
-    def __init__(self) -> None:
-        self._ordinal = len(Axis)
+    def __init__(self, ordinal: int, literal: str) -> None:
+        self.literal = literal
+        self._ordinal = ordinal
 
     def choose(self, x: float, y: float, z: float):
-        match self.value:
+        match self.literal:
             case "x":
                 return x
             case "y":
@@ -30,10 +31,10 @@ class Axis(Enum):
                 return z
 
     def isVertical(self):
-        return self == self.Y
+        return self == Axis.Y
 
     def isHorizontal(self):
-        return self == self.X or self == self.Z
+        return self == Axis.X or self == Axis.Z
 
     def ordinal(self):
         return self._ordinal
@@ -50,6 +51,12 @@ class AxisDirection(Enum):
     def __init__(self, offset: int, description: str):
         self.offest = offset
         self.description = description
+
+    def getOpposite(self):
+        return AxisDirection.POSITIVE if self == AxisDirection.NEGATIVE else AxisDirection.NEGATIVE
+
+    def __str__(self) -> str:
+        return self.description
 
 
 class Direction(Enum):
@@ -91,13 +98,13 @@ class Direction(Enum):
         self.id = id
         self.idOpposite = idOpposite
         self.idHorizontal = idHorizontal
-        self.name = name
+        self._name = name
         self.axis = axis
         self.direction = direction
         self.vector = vector
 
     def getRotationQuaternion(self):
-        match self.name:
+        match self._name:
             case 0:
                 result = (Quaternion()).rotationX(3.1415927)
             case 1:

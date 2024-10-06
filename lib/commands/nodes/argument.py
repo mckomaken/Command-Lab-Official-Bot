@@ -1,13 +1,13 @@
 from typing import Generic, Self, TypeVar
 
 from lib.commands import Command
-from lib.commands.parsed_argument import ParsedArgument
-from lib.commands.reader import StringReader
-from lib.commands.types import ArgumentType
 from lib.commands.context import CommandContext, CommandContextBuilder
 from lib.commands.nodes import CommandNode
+from lib.commands.parsed_argument import ParsedArgument
+from lib.commands.reader import StringReader
 from lib.commands.redirect import RedirectModifier
 from lib.commands.suggestions import SuggestionProvider, Suggestions, SuggestionsBuilder
+from lib.commands.types import ArgumentType
 from lib.commands.util.predicate import Predicate
 
 S = TypeVar("S")
@@ -43,8 +43,11 @@ class ArgumentCommandNode(Generic[S, T], CommandNode[S]):
         result = self.type.parse(reader)
         parsed = ParsedArgument(start, reader.getCursor(), result)
 
-        # contextBuilder.withArgument(self.name, parsed)
-        # contextBuilder.withNode(self, parsed.getRange())
+        contextBuilder.withArgument(self.name, parsed)
+        contextBuilder.withNode(self, parsed.range)
 
     def getName(self) -> str:
         return self.name
+
+    def getCommand(self) -> Command[S]:
+        return self.command

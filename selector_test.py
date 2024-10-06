@@ -22,6 +22,7 @@ from lib.commands.server import MinecraftServer
 from lib.commands.source import ServerCommandSource
 from lib.commands.types.boolean import BoolArgumentType
 from lib.commands.types.double import DoubleArgumentType
+from lib.commands.types.entity import EntityArgumentType
 from lib.commands.types.integer import IntegerArgumentType
 from lib.commands.types.item import ItemArgumentType
 from lib.commands.types.nbt import NbtArgumentType
@@ -30,13 +31,7 @@ from lib.commands.types.string import StringArgumentType
 from lib.commands.util import Vec2f
 from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.world import ServerWorld, World
-from schemas.data import (
-    ArgumentCommandEntry,
-    ArgumentParser,
-    DataPaths,
-    LiteralCommandEntry,
-    parse_command,
-)
+from schemas.data import ArgumentCommandEntry, ArgumentParser, DataPaths, LiteralCommandEntry, parse_command
 
 colorama.init()
 colorama.just_fix_windows_console()
@@ -103,7 +98,7 @@ async def load():
                 parser = DoubleArgumentType(minimum, maximum)
 
             elif cmdp.parser == "minecraft:entity":
-                parser = SelectorArgumentType()
+                parser = EntityArgumentType.entity()
             elif cmdp.parser == "brigadier:bool":
                 parser = BoolArgumentType.boolean()
             elif cmdp.parser == "minecraft:nbt_compound_tag":
@@ -176,6 +171,7 @@ async def main():
                     print,
                 ),
             )
+
             opts = dispatcher.getCompletionSuggestions(parsed, None)
 
         except Exception as e:

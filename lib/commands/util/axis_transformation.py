@@ -1,7 +1,9 @@
-from enum import Enum
+from enum import Enum, nonmember
+
+from pyrr import Matrix33
 
 from lib.commands.util import Util
-from pyrr import Matrix33
+from lib.math.matrix.matrix3 import Matrix3
 
 
 class AxisTransformation(Enum):
@@ -33,14 +35,13 @@ class AxisTransformation(Enum):
 
     def __init__(self, xMapping: int, yMapping: int, zMapping: int):
         self.mappings = [xMapping, yMapping, zMapping]
-        self.matrix = Matrix33()
+        self.matrix = Matrix3()
         self.matrix.set(self.map(0), 0, 1.0)
         self.matrix.set(self.map(1), 1, 1.0)
         self.matrix.set(self.map(2), 2, 1.0)
-        self._ordinal = len(AxisTransformation)
 
     def ordinal(self):
-        return self._ordinal
+        return list(AxisTransformation).index(self)
 
     def prepend(self, transformation: "AxisTransformation"):
         return AxisTransformation.COMBINATIONS[self.ordinal()][transformation.ordinal()]

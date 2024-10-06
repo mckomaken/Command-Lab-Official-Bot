@@ -5,9 +5,9 @@ from lib.commands.range import StringRange
 
 if TYPE_CHECKING:
     from lib.commands.dispatcher import CommandDispatcher
+    from lib.commands.nodes.parsed_commad_node import ParsedCommandNode
     from lib.commands import Command
     from lib.commands.nodes import CommandNode
-    from lib.commands.nodes.parsed_commad_node import ParsedCommandNode
     from lib.commands.redirect import RedirectModifier
 
 from lib.commands.suggestions import SuggestionContext
@@ -108,19 +108,19 @@ class CommandContextBuilder(Generic[S]):
                     return self.child.findSuggestionContext(cursor)
                 elif len(self.nodes) != 0:
                     last = self.nodes[-1]
-                    return SuggestionContext[S](last.node, last.range.end + 1)
+                    return SuggestionContext(last.node, last.range.end + 1)
                 else:
-                    return SuggestionContext[S](self.rootNode, self.range.start)
+                    return SuggestionContext(self.rootNode, self.range.start)
             else:
                 prev = self.rootNode
                 for node in self.nodes:
                     nodeRange = node.range
-                    if nodeRange.start() <= cursor <= nodeRange.end:
-                        return SuggestionContext[S](prev, nodeRange.start)
+                    if nodeRange.start <= cursor <= nodeRange.end:
+                        return SuggestionContext(prev, nodeRange.start)
                     prev = node.node
                 if prev is None:
                     raise ValueError("Can't find node before cursor")
-                return SuggestionContext[S](prev, self.range.start)
+                return SuggestionContext(prev, self.range.start)
         raise ValueError("Can't find node before cursor")
 
     def build(self, input: str):
@@ -143,4 +143,16 @@ class CommandContextBuilder(Generic[S]):
 
     def withCommand(self, command: "Command[S]"):
         self.command = command
+        return self
+
+    def withNode(self, node: "CommandNode[S]", range: StringRange):
+        from lib.commands.nodes.parsed_commad_node import ParsedCommandNode
+        self.nodes.append(ParsedCommandNode(node, range))
+        self.range = StringRange.encompassing(self.range, range)
+        self.modifier = node.modifier
+        self.forks = node.forks
+        return self
+
+    def withArgument(self, name: str, argument: ParsedArgument[S, Any]):
+        self.arguments[name] = argument
         return self

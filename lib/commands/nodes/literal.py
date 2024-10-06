@@ -33,10 +33,10 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
 
     def parse(self, reader: StringReader, builder: CommandContextBuilder[S] = None):
         start = reader.getCursor()
-        end = self._parse()
+        end = self._parse(reader)
 
         if end > -1:
-            builder.withChild(self, StringRange(start, end))
+            builder.withNode(self, StringRange(start, end))
         else:
             raise BUILT_IN_EXCEPTIONS
 
@@ -63,3 +63,7 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
 
     def getName(self) -> str:
         return self.literal
+
+
+    def getCommand(self) -> Command[S]:
+        return self.command

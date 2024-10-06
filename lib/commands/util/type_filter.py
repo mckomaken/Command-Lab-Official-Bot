@@ -1,8 +1,7 @@
 from typing import Any, Generic, Self, Type, TypeVar
 
-
 T = TypeVar("T")
-B = TypeVar("B", T)
+B = TypeVar("B")
 
 
 class TypeFilter(Generic[B, T]):

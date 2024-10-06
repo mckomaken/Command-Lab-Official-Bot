@@ -1,13 +1,15 @@
 from typing import Self
+
 from lib.commands.context import CommandContext
 from lib.commands.entity import Entity
-from lib.commands.exceptions import SimpleCommandExceptionType
+from lib.commands.exceptions import CommandSyntaxException, SimpleCommandExceptionType
 from lib.commands.reader import StringReader
 from lib.commands.selector import EntitySelector, EntitySelectorReader
-from lib.commands.source import ServerCommandSource
+from lib.commands.source import CommandSource, ServerCommandSource
+from lib.commands.suggestions import SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.types import ArgumentType
-
+from lib.commands.util.consumer import Consumer
 
 TOO_MANY_ENTITIES_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.toomany"))
 TOO_MANY_PLAYERS_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.player.toomany"))
@@ -60,6 +62,36 @@ class EntityArgumentType(ArgumentType[EntitySelector]):
         return EntityArgumentType(False, True)
 
     def parse(self, reader: StringReader) -> EntitySelector:
-        i = False
         entitySelectorReader = EntitySelectorReader(reader, True)
         entitySelector = entitySelectorReader.read()
+
+        if entitySelector.getLimit() > 1 and self.singleTarget:
+            if self.playersOnly:
+                reader.setCursor(0)
+                raise TOO_MANY_PLAYERS_EXCEPTION.createWithContext(reader)
+            else:
+                reader.setCursor(0)
+                raise TOO_MANY_ENTITIES_EXCEPTION.createWithContext(reader)
+        elif entitySelector.includesNonPlayers and self.playersOnly and not entitySelector.isSenderOnly():
+            reader.setCursor(0)
+            raise PLAYER_SELECTOR_HAS_ENTITIES_EXCEPTION.createWithContext(reader)
+        else:
+            return entitySelector
+
+    def listSuggestions[S](self, context: CommandContext[S], builder: SuggestionsBuilder):
+        commandSource: CommandSource = context.get_source()
+        stringReader = StringReader(builder.getInput())
+        stringReader.setCursor(builder.getStart())
+        entitySelectorReader = EntitySelectorReader(stringReader, True)
+        try:
+            entitySelectorReader.read()
+        except CommandSyntaxException as e:
+            print(e)
+            pass
+
+        def _consumer1(builderx: SuggestionsBuilder):
+            collection = commandSource.getPlayerNames()
+            # iterable = collection if self.playersOnly else (collection + commandSource.getEntitySuggestions())
+            # CommandSource.suggestMatching(iterable, builderx)
+
+        return entitySelectorReader.listSuggestions(builder, Consumer(_consumer1))

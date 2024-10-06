@@ -1,5 +1,5 @@
-from ast import Call
 import math
+from ast import Call
 from random import shuffle
 from typing import Any, Callable, Coroutine, Literal, Optional
 from uuid import UUID
@@ -7,26 +7,17 @@ from uuid import UUID
 from pydantic import BaseModel
 
 from lib.commands import util
-from lib.commands.entity import (
-    Box,
-    Entity,
-    EntityType,
-    GameMode,
-    LivingEntity,
-    ServerPlayerEntity,
-)
-from lib.commands.exceptions import (
-    DynamicCommandExceptionType,
-    SimpleCommandExceptionType,
-)
+from lib.commands.entity import Box, Entity, EntityType, LivingEntity
+from lib.commands.exceptions import DynamicCommandExceptionType, SimpleCommandExceptionType
 from lib.commands.featureset import FeatureSet
 from lib.commands.number_range import FloatRange, IntRange
+from lib.commands.player import GameMode, ServerPlayerEntity
 from lib.commands.reader import StringReader
 from lib.commands.registry.registry import Registries
 from lib.commands.registry.registry_key import RegistryKeys
 from lib.commands.registry.tag_key import TagKey
 from lib.commands.source import CommandSource, ServerCommandSource
-from lib.commands.suggestions import SuggestionsBuilder
+from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.util import Identifier, RangeNumberOrNumber
 from lib.commands.util.consumer import BiConsumer, Consumer
@@ -58,7 +49,12 @@ UNTERMINATED_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.
 VALUELESS_EXCEPTION = DynamicCommandExceptionType(
     lambda option: Text.stringifiedTranslatable("argument.entity.options.valueless", option)
 )
-
+TOO_MANY_ENTITIES_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.toomany"))
+TOO_MANY_PLAYERS_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.player.toomany"))
+PLAYER_SELECTOR_HAS_ENTITIES_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.player.entities"))
+ENTITY_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.notfound.entity"))
+PLAYER_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.notfound.player"))
+NOT_ALLOWED_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.selector.not_allowed"))
 
 def NEAREST(pos: Vec3d, entities: list[Entity]):
     entities.sort(key=lambda e: e.squeredDistanceTo(pos))
@@ -319,13 +315,13 @@ class EntitySelectorReader:
     dz: float = None
     pitchRange: FloatRange = None
     yawRange: FloatRange = None
-    predicates: list[Predicate[Entity]] = None
+    predicates: list[Predicate[Entity]] = list()
     sorter: Callable = None
     senderOnly: bool = False
     playerName: str = None
     startCursor: int = None
     uuid: UUID = None
-    suggestionProvider: Coroutine[Any, Any, SuggestionsBuilder] = None
+    suggestionProvider: Callable[[SuggestionsBuilder, Consumer[SuggestionsBuilder]], Suggestions] = None
     selectsName: bool = False
     excludesName: bool = False
     hasLimit: bool = False
@@ -614,8 +610,8 @@ class EntitySelectorReader:
         )
 
     def rotationPredicate(self, angleRange: FloatRange, entityToAngle: Callable[[Entity], float]) -> Predicate[Entity]:
-        d = MathHelper.wrapDegrees(0.0 if angleRange.min() is None else angleRange.min())
-        e = MathHelper.wrapDegrees(359.0 if angleRange.max() is None else angleRange.max())
+        d = MathHelper.wrapDegrees(0.0 if angleRange.min is None else angleRange.min)
+        e = MathHelper.wrapDegrees(359.0 if angleRange.max is None else angleRange.max)
 
         def _pred(entity: Entity):
             f = MathHelper.wrapDegrees(entityToAngle(entity))
@@ -625,6 +621,9 @@ class EntitySelectorReader:
                 return f >= d and f <= e
 
         return _pred
+
+    def listSuggestions(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+        return self.suggestionProvider(builder.create_offset(self.reader.getCursor()), consumer)
 
 
 class SelectorHandler:

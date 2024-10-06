@@ -4,8 +4,8 @@ from uuid import UUID
 
 from lib.commands.blockstate import BlockState
 from lib.commands.text import Text
-from lib.commands.util import ChunkPos
 from lib.commands.util.math.block_pos import BlockPos
+from lib.commands.util.math.chunk_pos import ChunkPos
 from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.util.random import Random
 from lib.commands.world import World
@@ -77,7 +77,7 @@ class TrackedPosition:
     pass
 
 
-class Entity:
+class Entity[T]():
     age: int
     AIR: TrackedData[int]
     blockPos: BlockPos
@@ -190,20 +190,9 @@ class EntityType(Enum):
     PLAYER = "player"
 
 
-class GameMode(Enum):
-    SURVIVAL = "survival"
-    CREATIVE = "creative"
-    ADVENTRUE = "adventure"
-    SPECTATOR = "spectator"
-
-
 class LivingEntity(Entity):
     pass
 
 
-class PlayerEntity(LivingEntity):
-    pass
 
 
-class ServerPlayerEntity(PlayerEntity):
-    pass

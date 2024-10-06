@@ -39,7 +39,7 @@ class CommandSource:
         string = builder.remaining.lower()
         cls.for_each_matching(candinates, string, lambda id: id, lambda id: builder.suggest(str(id)))
 
-        return builder.build_async()
+        return builder.build()
 
     @classmethod
     def for_each_matching(
@@ -68,6 +68,9 @@ class CommandSource:
                     and should_suggest(remaining, identifier2.get_path())
                 ):
                     action.accept(obj)
+
+    def getPlayerNames():
+        raise NotImplementedError()
 
 
 class ServerCommandSource(CommandSource):
@@ -109,3 +112,6 @@ class ServerCommandSource(CommandSource):
 
     def getWorld(self):
         return self.world
+
+    def getPlayerNames(self):
+        return self.server.getPlayerNames()

@@ -18,6 +18,12 @@ class StringRange:
     def get(self, string: str) -> str:
         return string[self.start : self.end]
 
+    def getStart(self):
+        return self.start
+
+    def getEnd(self):
+        return self.end
+
     @classmethod
     def between(cls, start: int, end: int):
         return cls(start, end)
@@ -25,3 +31,7 @@ class StringRange:
     @classmethod
     def at(cls, pos: int):
         return cls(pos, pos)
+
+    @staticmethod
+    def encompassing(a: "StringRange", b: "StringRange"):
+        return StringRange(min(a.getStart(), b.getStart()), max(a.getEnd(), b.getEnd()))

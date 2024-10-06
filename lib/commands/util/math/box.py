@@ -1,11 +1,13 @@
 from math import isnan
-from multipledispatch import dispatch
 from typing import Optional
+
+from multipledispatch import dispatch
+
+from lib.commands.util.direction import Axis, Direction
 from lib.commands.util.hit_result import BlockHitResult
 from lib.commands.util.math.block_box import BlockBox
-from lib.commands.util.math.vec3d import Vec3d
-from lib.commands.util.direction import Axis, Direction
 from lib.commands.util.math.block_pos import BlockPos
+from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.util.mathhelper import MathHelper
 
 

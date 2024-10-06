@@ -2,17 +2,16 @@ import re
 
 from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.reader import StringReader
-from lib.commands.selector import Selector
+from lib.commands.selector import EntitySelector
 from lib.commands.suggestions import SuggestionsBuilder
 from lib.commands.types import ArgumentType
-
 
 SELECTOR_PATTERN = re.compile(
     r"(@e|@s|@r|@p|@a)\[((target|distance|x|y|z|dx|dy|dz|scores|tag|team|limit|sort|level|gamemode|x_rotation|y_rotation|type|nbt|advancements|predicate)=(.+?))*\]"
 )
 
 
-class SelectorArgumentType(ArgumentType[Selector]):
+class SelectorArgumentType(ArgumentType[EntitySelector]):
     def parse(self, reader: StringReader):
         start = reader.getCursor()
         while reader.canRead() and reader.peek() != " ":
@@ -25,15 +24,15 @@ class SelectorArgumentType(ArgumentType[Selector]):
 
         atX = gps.group(0)
         if atX == "@e":
-            selector = Selector(target="all_entities")
+            selector = EntitySelector(target="all_entities")
         elif atX == "@p":
-            selector = Selector(target="nearest_player")
+            selector = EntitySelector(target="nearest_player")
         elif atX == "@a":
-            selector = Selector(target="all_players")
+            selector = EntitySelector(target="all_players")
         elif atX == "@r":
-            selector = Selector(target="random_player")
+            selector = EntitySelector(target="random_player")
         elif atX == "@s":
-            selector = Selector(target="nearest_player")
+            selector = EntitySelector(target="nearest_player")
         else:
             raise CommandSyntaxException(message="Selector Error")
 

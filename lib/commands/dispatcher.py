@@ -1,5 +1,6 @@
 import copy
 import functools
+import traceback
 from typing import TypeVar
 
 from lib.commands.builder.literal import LiteralArgumentBuilder
@@ -44,6 +45,9 @@ class CommandDispatcher:
         truncatedInput = fullInput[0:cursor]
         truncatedInputLowerCase = truncatedInput.lower()
         suggests: list[Suggestions] = []
+        print(f"Len={len(parent.getChildren())}, START={start}, TRUNC={truncatedInput}")
+        print(f"C={cursor}, Before={nodeBeforeCursor.startPos},{parent}")
+        print(f"CRange={context.range.start}-{context.range.end}")
 
         for node in parent.getChildren():
             suggest = Suggestions.empty()
@@ -52,8 +56,10 @@ class CommandDispatcher:
                     context.build(truncatedInput),
                     SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start),
                 )
-            except CommandSyntaxException:
-                pass
+            except CommandSyntaxException as e:
+                print(e)
+            except Exception as e:
+                print(e)
             else:
                 suggests.append(suggest)
 
@@ -88,26 +94,29 @@ class CommandDispatcher:
             try:
                 try:
                     child.parse(reader, context)
-                except Exception as ex:
+                except RuntimeError as ex:
                     raise BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(reader, str(ex))
+                except Exception as e:
+                    pass
 
                 if reader.canRead():
                     if reader.peek() != ARGUMENT_SEPARATOR:
                         raise BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(reader)
             except CommandSyntaxException as ex:
+                # traceback.print_exc(ex)
                 if errors is None:
                     errors = dict()
                 errors[child] = ex
                 reader.setCursor(cursor)
                 continue
-            context.withCommand(child.command)
+            context.withCommand(child.getCommand())
             if reader.canRead(2 if child.redirect is None else 1):
                 reader.skip()
                 if child.redirect is not None:
-                    childContext = CommandContextBuilder[S](self, source, child.redirect, reader.getCursor())
+                    childContext = CommandContextBuilder[S](self, source, child.getRedirect(), reader.getCursor())
                     parse: ParseResults[S] = self.parseNodes(child.redirect, reader, childContext)
                     context.withChild(parse.context)
-                    return ParseResults[S](context, parse.reader, parse.exceptions)
+                    return ParseResults[S](context, parse.getReader(), parse.getExceptions())
                 else:
                     parse = self.parseNodes(child, reader, context)
                     if potentials is None:
@@ -117,6 +126,8 @@ class CommandDispatcher:
                 if potentials is None:
                     potentials = list()
                 potentials.append(ParseResults[S](context, reader, dict()))
+
+        print(len(potentials) if potentials is not None else "None")
 
         if potentials is not None:
             if len(potentials) > 1:

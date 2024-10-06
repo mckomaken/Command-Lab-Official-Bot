@@ -1,12 +1,18 @@
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any, Optional
+
 from pydantic import GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
+
 from lib.commands.exceptions import SimpleCommandExceptionType
 from lib.commands.reader import StringReader
 from lib.commands.text import Text
 from lib.commands.util.consumer import Consumer
-from lib.commands.util.math.block_pos import BlockPos
 from lib.commands.util.predicate import Predicate
 from lib.commands.util.supplier import Supplier
+
+if TYPE_CHECKING:
+    from lib.commands.util.math.block_pos import BlockPos
 
 
 class InvalidIdentifierException(Exception):
@@ -176,14 +182,24 @@ class Identifier:
     def __str__(self) -> str:
         return f"{self.namespace}:{self.path}"
 
-    @classmethod
-    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
-        return core_schema.no_info_after_validator_function(cls, handler(str))
 
+class classprop[T]():
+    def __init__(self, type: type[T], initialValue: T):
+        self.type = type
+        self.value = initialValue
 
-class ChunkPos(BlockPos):
-    pass
+    def __get__(self, instance, owner) -> T | Callable[[Optional[T]], T]:
+        class _P(self.type):
+            def __call__(_self, val: Optional[T] = None):
+                if val is None:
+                    return _self
+                else:
+                    self.value = val
+                    return _self
+        return _P(self.value)
 
+    def __set__(self, instance, val: T):
+        self.value = val
 
 class Vec2f:
     x: float
