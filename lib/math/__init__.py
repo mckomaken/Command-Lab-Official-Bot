@@ -4,6 +4,7 @@ PIHalf = math.pi * 0.5
 PI2 = math.pi * 2
 PI = math.pi
 
+
 class Math:
     @staticmethod
     def sqrt(v: float):

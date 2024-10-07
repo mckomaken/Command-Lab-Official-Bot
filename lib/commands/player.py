@@ -34,7 +34,6 @@ class PlayerEntity(LivingEntity):
         return self.gameProfile
 
 
-
 class ServerPlayerEntity(PlayerEntity):
     pass
 

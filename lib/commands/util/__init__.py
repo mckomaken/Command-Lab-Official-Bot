@@ -196,10 +196,12 @@ class classprop[T]():
                 else:
                     self.value = val
                     return _self
+
         return _P(self.value)
 
     def __set__(self, instance, val: T):
         self.value = val
+
 
 class Vec2f:
     x: float

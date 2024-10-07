@@ -64,6 +64,5 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
     def getName(self) -> str:
         return self.literal
 
-
     def getCommand(self) -> Command[S]:
         return self.command

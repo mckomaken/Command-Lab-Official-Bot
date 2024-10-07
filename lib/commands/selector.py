@@ -56,6 +56,7 @@ ENTITY_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argum
 PLAYER_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.notfound.player"))
 NOT_ALLOWED_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.selector.not_allowed"))
 
+
 def NEAREST(pos: Vec3d, entities: list[Entity]):
     entities.sort(key=lambda e: e.squeredDistanceTo(pos))
 

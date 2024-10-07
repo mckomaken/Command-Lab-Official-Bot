@@ -147,6 +147,7 @@ class CommandContextBuilder(Generic[S]):
 
     def withNode(self, node: "CommandNode[S]", range: StringRange):
         from lib.commands.nodes.parsed_commad_node import ParsedCommandNode
+
         self.nodes.append(ParsedCommandNode(node, range))
         self.range = StringRange.encompassing(self.range, range)
         self.modifier = node.modifier

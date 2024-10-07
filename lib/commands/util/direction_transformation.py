@@ -69,7 +69,9 @@ class DirectionTransformation(Enum):
         directionTransformations: list[list[DirectionTransformation]]
         mapping = dict()
         for directionTransformationx in DirectionTransformation.values():
-            mapping[Pair.of(directionTransformationx.axisTransformation, directionTransformationx.getAxisFlips())] = directionTransformationx
+            mapping[Pair.of(directionTransformationx.axisTransformation, directionTransformationx.getAxisFlips())] = (
+                directionTransformationx
+            )
 
         for directionTransformation in DirectionTransformation.values():
             for directionTransformation2 in DirectionTransformation.values():

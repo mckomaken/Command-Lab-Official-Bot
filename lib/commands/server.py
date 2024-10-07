@@ -26,7 +26,6 @@ class PlayerManager:
         return [player.getGameProfile().getName() for player in self.players]
 
 
-
 class MinecraftServer:
     def __init__(self) -> None:
         self.playerManager = PlayerManager()

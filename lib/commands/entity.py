@@ -192,7 +192,3 @@ class EntityType(Enum):
 
 class LivingEntity(Entity):
     pass
-
-
-
-

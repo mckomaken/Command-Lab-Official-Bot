@@ -5,11 +5,12 @@ from multipledispatch import dispatch
 
 
 class prop(property):
-    def __init__(self, fget = ..., fset = ..., fdel = ..., doc: str = ...) -> None:
+    def __init__(self, fget=..., fset=..., fdel=..., doc: str = ...) -> None:
         super().__init__(fget, fset, fdel)
 
     def __get__(self, i, _):
         val = self.fget(i)
+
         class _P(type(val)):
             def __call__(_self, val: Any = None):
                 if val is None:
@@ -18,6 +19,7 @@ class prop(property):
                     return self.fset(i, val)
 
         return _P(val)
+
 
 class classprop[T]():
     def __init__(self, type: type[T], initialValue: T):
@@ -31,14 +33,16 @@ class classprop[T]():
                     return _self
                 else:
                     self.value = val
+
         return _P(self.value)
 
     def __set__(self, instance, val: T):
         self.value = val
 
 
-class Test():
+class Test:
     prop1 = classprop(int, 2)
+
 
 a = Test()
 print(a.prop1)

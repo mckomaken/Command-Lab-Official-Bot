@@ -9,7 +9,7 @@ from lib.math.vector.quaternion import Quaternion
 from lib.math.vector.vector3 import Vector3
 
 
-class Matrix3():
+class Matrix3:
     m00 = classprop(float, 0)
     m01 = classprop(float, 0)
     m02 = classprop(float, 0)
@@ -29,9 +29,15 @@ class Matrix3():
     @dispatch(float, float, float, float, float, float, float, float, float)
     def __init__(
         self,
-        m00: float, m01: float, m02: float,
-        m10: float, m11: float, m12: float,
-        m20: float, m21: float, m22: float
+        m00: float,
+        m01: float,
+        m02: float,
+        m10: float,
+        m11: float,
+        m12: float,
+        m20: float,
+        m21: float,
+        m22: float,
     ):
         self.m00 = m00
         self.m01 = m01
@@ -57,26 +63,26 @@ class Matrix3():
         y = axisAngle.y
         z = axisAngle.z
         angle = axisAngle.angle
-        invLength = Math.invsqrt(x*x + y*y + z*z)
+        invLength = Math.invsqrt(x * x + y * y + z * z)
         x *= invLength
         y *= invLength
         z *= invLength
         s = Math.sin(angle)
         c = Math.cosFromSin(s, angle)
         omc = 1.0 - c
-        self.m00 = c + x*x*omc
-        self.m11 = c + y*y*omc
-        self.m22 = c + z*z*omc
-        tmp1 = x*y*omc
-        tmp2 = z*s
+        self.m00 = c + x * x * omc
+        self.m11 = c + y * y * omc
+        self.m22 = c + z * z * omc
+        tmp1 = x * y * omc
+        tmp2 = z * s
         self.m10 = tmp1 - tmp2
         self.m01 = tmp1 + tmp2
-        tmp1 = x*z*omc
-        tmp2 = y*s
+        tmp1 = x * z * omc
+        tmp2 = y * s
         self.m20 = tmp1 + tmp2
         self.m02 = tmp1 - tmp2
-        tmp1 = y*z*omc
-        tmp2 = x*s
+        tmp1 = y * z * omc
+        tmp2 = x * s
         self.m21 = tmp1 - tmp2
         self.m12 = tmp1 + tmp2
         return self
@@ -110,7 +116,7 @@ class Matrix3():
         return dest
 
     def mulLocalSelf(self, left: "Matrix3"):
-       return self.mulLocal(left, self)
+        return self.mulLocal(left, self)
 
     def mulLocal(self, left: "Matrix3", dest: "Matrix3"):
         nm00 = left.m00() * self.m00 + left.m10() * self.m01 + left.m20() * self.m02
@@ -147,10 +153,11 @@ class Matrix3():
         return self
 
     def determinant(self):
-        return (self.m00 * self.m11 - self.m01 * self.m10) * self.m22 \
-             + (self.m02 * self.m10 - self.m00 * self.m12) * self.m21 \
-             + (self.m01 * self.m12 - self.m02 * self.m11) * self.m20
-
+        return (
+            (self.m00 * self.m11 - self.m01 * self.m10) * self.m22
+            + (self.m02 * self.m10 - self.m00 * self.m12) * self.m21
+            + (self.m01 * self.m12 - self.m02 * self.m11) * self.m20
+        )
 
     def invertSelf(self):
         return invert(self)
@@ -185,12 +192,7 @@ class Matrix3():
         return self.transpose(self)
 
     def transpose(self, dest: "Matrix3"):
-        return dest.set(
-            self.m00, self.m10, self.m20,
-            self.m01, self.m11, self.m21,
-            self.m02, self.m12, self.m22
-        )
-
+        return dest.set(self.m00, self.m10, self.m20, self.m01, self.m11, self.m21, self.m02, self.m12, self.m22)
 
     def get(self, dest):
         return dest.set(self)
@@ -198,17 +200,14 @@ class Matrix3():
     def getUnnormalizedRotation(self, dest):
         return dest.setFromUnnormalized(self)
 
-
     def getNormalizedRotation(self, dest):
         return dest.setFromNormalized(self)
-
 
     def scale(self, xyz: "Vector3", dest: "Matrix3"):
         return self.scale(xyz.x(), xyz.y(), xyz.z(), dest)
 
     def scaleSelf(self, xyz: "Vector3"):
         return self.scale(xyz.x(), xyz.y(), xyz.z(), self)
-
 
     def scale(self, x: float, y: float, z: float, dest: "Matrix3"):
         dest.m00 = self.m00 * x
@@ -222,10 +221,8 @@ class Matrix3():
         dest.m22 = self.m22 * z
         return dest
 
-
     def scale(self, x: float, y: float, z: float):
         return self.scale(x, y, z, self)
-
 
     def scale(self, xyz: float, dest: "Matrix3"):
         return self.scale(xyz, xyz, xyz, dest)
@@ -255,7 +252,6 @@ class Matrix3():
     def rotation(self, axisAngle: AxisAngle4):
         return self.rotation(axisAngle.angle, axisAngle.x, axisAngle.y, axisAngle.z)
 
-
     @dispatch(float, float, float, float)
     def rotation(self, angle: float, x: float, y: float, z: float):
         sin = Math.sin(angle)
@@ -275,7 +271,6 @@ class Matrix3():
         self.m22 = cos + z * z * C
         return self
 
-
     def rotationX(self, ang: float):
         sin = Math.sin(ang)
         cos = Math.cosFromSin(sin, ang)
@@ -289,7 +284,6 @@ class Matrix3():
         self.m21 = -sin
         self.m22 = cos
         return self
-
 
     def rotationY(self, ang: float):
         sin = Math.sin(ang)
@@ -306,7 +300,6 @@ class Matrix3():
         self.m22 = cos
         return self
 
-
     def rotationZ(self, ang: float):
         sin = Math.sin(ang)
         cos = Math.cosFromSin(sin, ang)
@@ -320,7 +313,6 @@ class Matrix3():
         self.m21 = 0.0
         self.m22 = 1.0
         return self
-
 
     def rotationXYZ(self, angleX: float, angleY: float, angleZ: float):
         sinX = Math.sin(angleX)
