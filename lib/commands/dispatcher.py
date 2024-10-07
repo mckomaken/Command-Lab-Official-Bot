@@ -31,13 +31,14 @@ class CommandDispatcher:
     def __init__(self) -> None:
         self.root = RootCommandNode()
 
-    def getCompletionSuggestions(self, parse: ParseResults[S], cursor: int = None) -> Suggestions:
+    async def getCompletionSuggestions(self, parse: ParseResults[S], cursor: int = None) -> Suggestions:
         if cursor is None:
             cursor = parse.getReader().getTotalLength()
 
         context = parse.getContext()
 
         nodeBeforeCursor = context.findSuggestionContext(cursor)
+        print(nodeBeforeCursor)
         parent = nodeBeforeCursor.parent
         start = min(nodeBeforeCursor.startPos, cursor)
 
@@ -45,14 +46,14 @@ class CommandDispatcher:
         truncatedInput = fullInput[0:cursor]
         truncatedInputLowerCase = truncatedInput.lower()
         suggests: list[Suggestions] = []
-        print(f"Len={len(parent.getChildren())}, START={start}, TRUNC={truncatedInput}")
+        print(f"Child={len(parent.getChildren())}, START={start}, TRUNC={truncatedInput}")
         print(f"C={cursor}, Before={nodeBeforeCursor.startPos},{parent}")
         print(f"CRange={context.range.start}-{context.range.end}")
 
         for node in parent.getChildren():
             suggest = Suggestions.empty()
             try:
-                suggest = node.listSuggestions(
+                suggest = await node.listSuggestions(
                     context.build(truncatedInput),
                     SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start),
                 )

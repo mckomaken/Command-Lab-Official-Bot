@@ -13,7 +13,7 @@ class RootCommandNode(CommandNode[S]):
         super().__init__(None, lambda _: None, None, lambda s: [s.source], False)
         self.children = dict()
 
-    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
         return Suggestions.empty()
 
     def __str__(self) -> str:
@@ -21,3 +21,6 @@ class RootCommandNode(CommandNode[S]):
 
     def register(self, literal: "LiteralCommandNode[S]"):
         self.children[literal.literal] = literal
+
+BaseException
+Exception

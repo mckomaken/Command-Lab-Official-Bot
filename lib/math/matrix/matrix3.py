@@ -1,6 +1,6 @@
 from operator import invert
 
-from multipledispatch import dispatch
+from plum import dispatch
 
 from lib.commands.util import classprop
 from lib.math import Math
@@ -20,13 +20,13 @@ class Matrix3:
     m21 = classprop(float, 0)
     m22 = classprop(float, 0)
 
-    @dispatch()
+    @dispatch
     def __init__(self):
         self.m00 = 1.0
         self.m11 = 1.0
         self.m22 = 1.0
 
-    @dispatch(float, float, float, float, float, float, float, float, float)
+    @dispatch
     def __init__(
         self,
         m00: float,
@@ -57,7 +57,7 @@ class Matrix3:
 
         return self.set(m)
 
-    @dispatch(AxisAngle4)
+    @dispatch
     def set(self, axisAngle: AxisAngle4):
         x = axisAngle.x
         y = axisAngle.y
@@ -87,7 +87,7 @@ class Matrix3:
         self.m12 = tmp1 + tmp2
         return self
 
-    @dispatch(Quaternion)
+    @dispatch
     def set(self, q: Quaternion):
         return self.rotation(q)
 
@@ -139,7 +139,7 @@ class Matrix3:
         dest.m22 = nm22
         return dest
 
-    @dispatch(Vector3, Vector3, Vector3)
+    @dispatch
     def set(self, col0: Vector3, col1: Vector3, col2: Vector3):
         self.m00 = col0.x()
         self.m01 = col0.y()
@@ -221,38 +221,41 @@ class Matrix3:
         dest.m22 = self.m22 * z
         return dest
 
+    @dispatch
     def scale(self, x: float, y: float, z: float):
         return self.scale(x, y, z, self)
 
+    @dispatch
     def scale(self, xyz: float, dest: "Matrix3"):
         return self.scale(xyz, xyz, xyz, dest)
 
+    @dispatch
     def scale(self, xyz: float):
         return self.scale(xyz, xyz, xyz)
 
-    @dispatch(float)
+    @dispatch
     def scaling(self, factor: float):
         self.m00 = factor
         self.m11 = factor
         self.m22 = factor
         return self
 
-    @dispatch(float, float, float)
+    @dispatch
     def scaling(self, x: float, y: float, z: float):
         self.m00 = x
         self.m11 = y
         self.m22 = z
         return self
 
-    @dispatch(float, Vector3)
+    @dispatch
     def rotation(self, angle: float, axis: Vector3):
         return self.rotation(angle, axis.x(), axis.y(), axis.z())
 
-    @dispatch(AxisAngle4)
+    @dispatch
     def rotation(self, axisAngle: AxisAngle4):
         return self.rotation(axisAngle.angle, axisAngle.x, axisAngle.y, axisAngle.z)
 
-    @dispatch(float, float, float, float)
+    @dispatch
     def rotation(self, angle: float, x: float, y: float, z: float):
         sin = Math.sin(angle)
         cos = Math.cosFromSin(sin, angle)
@@ -346,7 +349,7 @@ class Matrix3:
         self.m12 = nm02 * m_sinZ + nm12 * cosZ
         return self
 
-    @dispatch(int, int, float)
+    @dispatch
     def set(self, row: int, col: int, val: float):
         match col:
             case 0:

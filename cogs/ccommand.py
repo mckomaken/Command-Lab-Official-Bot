@@ -198,7 +198,7 @@ class CCommandInfo(commands.Cog):
             opts = self.dispatcher.getCompletionSuggestions(parsed, None)
             result = list()
 
-            for node in opts.get_list():
+            for node in opts.getList():
                 try:
                     result.append(node.text)
                 except CommandSyntaxException as e:

@@ -12,11 +12,7 @@ if TYPE_CHECKING:
 
 from lib.commands.suggestions import SuggestionContext
 
-S = TypeVar("S")
-V = TypeVar("V")
-
-
-class CommandContext(Generic[S]):
+class CommandContext[S]():
     source: S
     input: str
     command: "Command[S]"
@@ -52,7 +48,7 @@ class CommandContext(Generic[S]):
         self.modifier = modifier
         self.forks = forks
 
-    def getArgument(self, name: str, clazz: Type[V]):
+    def getArgument[V](self, name: str, clazz: Type[V]):
         argument: ParsedArgument[S, V] = self.arguments.get(name)
         if argument is None:
             raise ValueError("No such argument '" + name + "' exists on this command")
@@ -67,7 +63,7 @@ class CommandContext(Generic[S]):
         return self.source
 
 
-class CommandContextBuilder(Generic[S]):
+class CommandContextBuilder[S]():
     arguments: dict[str, ParsedArgument[S, Any]] = dict()
     rootNode: "CommandNode[S]"
     nodes: list["ParsedCommandNode[S]"] = []
@@ -102,6 +98,7 @@ class CommandContextBuilder(Generic[S]):
         return self.source
 
     def findSuggestionContext(self, cursor: int) -> "SuggestionContext[S]":
+        print(f"{self.range}@{cursor}")
         if self.range.start <= cursor:
             if self.range.end < cursor:
                 if self.child is not None:
@@ -115,7 +112,7 @@ class CommandContextBuilder(Generic[S]):
                 prev = self.rootNode
                 for node in self.nodes:
                     nodeRange = node.range
-                    if nodeRange.start <= cursor <= nodeRange.end:
+                    if nodeRange.start <= cursor and cursor <= nodeRange.end:
                         return SuggestionContext(prev, nodeRange.start)
                     prev = node.node
                 if prev is None:
@@ -136,6 +133,9 @@ class CommandContextBuilder(Generic[S]):
             self.modifier,
             self.forks,
         )
+
+    def __str__(self) -> str:
+        return f"CommandContextBuilder[range={self.range},nodes={len(self.nodes)}]"
 
     def withChild(self, child: "CommandContextBuilder[S]"):
         self.child = child

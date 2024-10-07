@@ -1,10 +1,7 @@
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 
 from lib.commands.context import CommandContext
 
-S = TypeVar("S")
-
-
-class RedirectModifier(Generic[S]):
+class RedirectModifier[S]():
     def apply(context: CommandContext[S]) -> list[S]:
         raise NotImplementedError()

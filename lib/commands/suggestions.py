@@ -8,8 +8,6 @@ if TYPE_CHECKING:
 
 from lib.commands.range import StringRange
 
-S = TypeVar("S")
-
 
 class Suggestion:
     def __init__(self, range: StringRange, text: str, tooltip: str = None) -> None:
@@ -40,10 +38,10 @@ class Suggestions:
         self.range = range
         self.suggestions = suggestions
 
-    def get_list(self) -> list[Suggestion]:
+    def getList(self) -> list[Suggestion]:
         return self.suggestions
 
-    def is_empty(self) -> bool:
+    def isEmpty(self) -> bool:
         return len(self.suggestions) == 0
 
     @staticmethod
@@ -59,7 +57,7 @@ class Suggestions:
 
         texts: set[Suggestion] = set()
         for suggestion in input:
-            for suggest in suggestion.get_list():
+            for suggest in suggestion.getList():
                 texts.add(suggest)
 
         return Suggestions.create(command, texts)
@@ -80,6 +78,7 @@ class Suggestions:
             texts.add(suggestion.expand(command, range))
 
         sorte = sorted(texts, key=lambda a: a.text.lower())
+        print([v.text for v in sorte])
         return Suggestions(range, sorte)
 
 
@@ -101,6 +100,7 @@ class SuggestionsBuilder:
         return self.start
 
     def suggest(self, text: str, tooltip: str = None) -> Self:
+        print(f"Suggest: {text}")
         if text == self.remaining:
             return self
 
@@ -108,25 +108,38 @@ class SuggestionsBuilder:
         return self
 
     def add(self, other: Self) -> Self:
-        self.result.append(other.result)
+        print(f"Add: {other}")
+        [self.result.append(v) for v in other.result]
         return self
 
     def build(self):
         return Suggestions.create(self.input, self.result)
 
-    def create_offset(self, start: int):
+    async def build_async(self):
+        return Suggestions.create(self.input, self.result)
+
+    def createOffset(self, start: int):
         return SuggestionsBuilder(self.input, self.inputLowerCase, start)
 
+    def __str__(self) -> str:
+        return ",".join([v.text for v in self.result])
 
-class SuggestionProvider(Generic[S]):
-    def getSuggestions(self, context: "CommandContext[S]", builder: "SuggestionsBuilder"):
+    def getRemaining(self):
+        return self.remaining
+
+
+class SuggestionProvider[S]():
+    async def getSuggestions(self, context: "CommandContext[S]", builder: "SuggestionsBuilder"):
         raise NotImplementedError()
 
 
-class SuggestionContext(Generic[S]):
+class SuggestionContext[S]():
     parent: "CommandNode[S]"
     startPos: int
 
     def __init__(self, parent: "CommandNode[S]", startPos: int) -> None:
         self.parent = parent
         self.startPos = startPos
+
+    def __str__(self) -> str:
+        return f"SuggestionContext[parent={self.parent},startPos={self.startPos}]"

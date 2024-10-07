@@ -3,6 +3,7 @@ from typing import Any, Generic, Optional, TypeVar
 from uuid import UUID
 
 from lib.commands.blockstate import BlockState
+from lib.commands.featureset import FeatureSet
 from lib.commands.text import Text
 from lib.commands.util.math.block_pos import BlockPos
 from lib.commands.util.math.chunk_pos import ChunkPos
@@ -185,9 +186,17 @@ class Entity[T]():
     def getUUID(self):
         return self.uuid
 
+    def getBoundingBox(self):
+        return self.boundingBox
+
+    def getType(self):
+        return self.type
 
 class EntityType(Enum):
     PLAYER = "player"
+
+    def isEnabled(features: FeatureSet):
+        return True
 
 
 class LivingEntity(Entity):

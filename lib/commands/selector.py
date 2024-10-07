@@ -73,8 +73,8 @@ def ARBITRARY(pos: Vec3d, entities: list[Entity]):
     pass
 
 
-def DEFAULT_SUGGESTION_PROVIDER(builder: SuggestionsBuilder, consumer: Callable):
-    return builder.build()
+async def DEFAULT_SUGGESTION_PROVIDER(builder: SuggestionsBuilder, consumer: Callable):
+    return await builder.build_async()
 
 
 class EntitySelector:
@@ -263,7 +263,7 @@ class EntitySelector:
             li = self.predicates
         else:
             li2: list[Predicate[Entity]] = list()
-            li2.append(self.predicates)
+            [li2.append(v) for v in self.predicates]
             if bl:
 
                 def _pred(entity: Entity) -> bool:
@@ -337,68 +337,75 @@ class EntitySelectorReader:
     selectsAdvancements: bool = False
     usesAt: bool = False
 
-    def __init__(self, reader: StringReader, atAllowed: bool):
+    def __init__(self, reader: StringReader, atAllowed: bool = True):
         self.distance = FloatRange.any()
         self.levelRange = IntRange.any()
         self.pitchRange = FloatRange.any()
         self.yawRange = FloatRange.any()
-        self.predicate = lambda entity: True
         self.sorter = ARBITRARY
         self.suggestionProvider = DEFAULT_SUGGESTION_PROVIDER
         self.reader = reader
         self.atAllowed = atAllowed
 
-    def set_entity_type(self, type: EntityType):
+    def setEntityType(self, type: EntityType):
         self.entityType = type
 
     def readAtVariable(self):
-        self.usesAt = True
-        self.suggestionProvider = self.suggest_selector_rest
+        self._usesAt = True
+        self.suggestionProvider = self.suggestSelectorRest
         if not self.reader.canRead():
             raise MISSING_EXCEPTION.createWithContext(self.reader)
         else:
             i = self.reader.getCursor()
             c = self.reader.read()
-            if c == "p":
-                self.limit = 1
-                self.includesNonPlayers = False
-                self.sorter = NEAREST
-                self.set_entity_type(EntityType.PLAYER)
-            elif c == "a":
-                self.limit = util.MAX_INT
-                self.includesNonPlayers = False
-                self.sorter = ARBITRARY
-                self.set_entity_type(EntityType.PLAYER)
-            elif c == "r":
-                self.limit = 1
-                self.includesNonPlayers = False
-                self.sorter = RANDOM
-                self.set_entity_type(EntityType.PLAYER)
-            elif c == "s":
-                self.limit = 1
-                self.includesNonPlayers = True
-                self.senderOnly = True
-            else:
-                if c != "e":
+            bl = False
+            match c:
+                case "a":
+                    self.limit = util.MAX_INT
+                    self.includesNonPlayers = False
+                    self.sorter = ARBITRARY
+                    self.setEntityType(EntityType.PLAYER)
+                case "e":
+                    self.limit = util.MAX_INT
+                    self.includesNonPlayers = True
+                    self.sorter = ARBITRARY
+                    bl = True
+                case "n":
+                    self.limit = 1
+                    self.includesNonPlayers = True
+                    self.sorter = NEAREST
+                    bl = True
+                case "p":
+                    self.limit = 1
+                    self.includesNonPlayers = False
+                    self.sorter = NEAREST
+                    self.setEntityType(EntityType.PLAYER)
+                case "r":
+                    self.limit = 1
+                    self.includesNonPlayers = False
+                    self.sorter = RANDOM
+                    self.setEntityType(EntityType.PLAYER)
+                case "p":
+                    self.limit = 1
+                    self.includesNonPlayers = True
+                    self.senderOnly = True
+                case _:
                     self.reader.setCursor(i)
-                    UNKNOWN_SELECTOR_EXCEPTION.createWithContext(self.reader, "@" + str(c))
+                    raise UNKNOWN_SELECTOR_EXCEPTION.createWithContext(self.reader, f"@{c}")
+            if bl:
+                self.predicates.append(Predicate(Entity.isAlive))
 
-                self.limit = util.MAX_INT
-                self.includesNonPlayers = True
-                self.sorter = ARBITRARY
-                self.predicate = Entity.isAlive
-
-            self.suggestionProvider = self.suggest_open
+            self.suggestionProvider = self.suggestOpen
             if self.reader.canRead() and self.reader.peek() == "[":
                 self.reader.skip()
-                self.suggestionProvider = self.suggest_option_or_end
-                self.read_arguments()
+                self.suggestionProvider = self.suggestOptionOrEnd
+                self.readArguments()
 
     def readRegular(self):
         if self.reader.canRead():
-            self.suggestionProvider = self.suggest_normal
+            self.suggestionProvider = self.suggestNormal
 
-        i: int = self.reader.getCursor()
+        i = self.reader.getCursor()
         string = self.reader.readString()
 
         try:
@@ -414,8 +421,8 @@ class EntitySelectorReader:
 
         self.limit = 1
 
-    def read_arguments(self):
-        self.suggestionProvider = self.suggest_option
+    def readArguments(self):
+        self.suggestionProvider = self.suggestOption
         self.reader.skipWhitespace()
 
         while self.reader.canRead() and self.reader.peek() != "]":
@@ -430,13 +437,13 @@ class EntitySelectorReader:
                 self.suggestionProvider = DEFAULT_SUGGESTION_PROVIDER
                 selectorHandler.handle(self)
                 self.reader.skipWhitespace()
-                self.suggestionProvider = self.suggest_end_next
+                self.suggestionProvider = self.suggestEndNext
                 if not self.reader.canRead():
                     continue
 
                 if self.reader.peek() == ",":
                     self.reader.skip()
-                    self.suggestionProvider = self.suggest_option
+                    self.suggestionProvider = self.suggestOption
                     continue
 
                 if self.reader.peek() != "]":
@@ -452,60 +459,61 @@ class EntitySelectorReader:
         else:
             raise UNTERMINATED_EXCEPTION.createWithContext(self.reader)
 
-    def _suggest_selector(self, builder: SuggestionsBuilder) -> None:
+    async def _suggest_selector(self, builder: SuggestionsBuilder) -> None:
         builder.suggest("@p", Text.translatable("argument.entity.selector.nearestPlayer"))
         builder.suggest("@a", Text.translatable("argument.entity.selector.allPlayers"))
         builder.suggest("@r", Text.translatable("argument.entity.selector.randomPlayer"))
         builder.suggest("@s", Text.translatable("argument.entity.selector.self"))
         builder.suggest("@e", Text.translatable("argument.entity.selector.allEntities"))
+        builder.suggest("@n", Text.translatable("argument.entity.selector.nearestEntity"))
 
-    def suggest_selector(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+    async def suggestSelector(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
         consumer.accept(builder)
         if self.atAllowed:
-            self._suggest_selector(builder)
+            await self._suggest_selector(builder)
 
-        return builder.build()
+        return await builder.build_async()
 
-    def suggest_normal(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
-        suggestionsBuilder = builder.create_offset(self.startCursor)
+    async def suggestNormal(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+        suggestionsBuilder = builder.createOffset(self.startCursor)
         consumer.accept(suggestionsBuilder)
-        return builder.add(suggestionsBuilder).build()
+        return await builder.add(suggestionsBuilder).build_async()
 
-    def suggest_selector_rest(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
-        suggestionsBuilder = builder.create_offset(builder.start - 1)
-        self.suggest_selector(suggestionsBuilder)
+    async def suggestSelectorRest(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+        suggestionsBuilder = builder.createOffset(builder.start - 1)
+        self.suggestSelector(suggestionsBuilder, consumer)
         builder.add(suggestionsBuilder)
         return builder.build()
 
-    def suggest_open(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+    async def suggestOpen(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
         builder.suggest(str("["), "")
-        return builder.build()
+        return await builder.build_async()
 
-    def suggest_option_or_end(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+    async def suggestOptionOrEnd(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
         builder.suggest(str("]"), "")
         EntitySelectorOptions.suggestOptions(self, builder)
-        return builder.build()
+        return await builder.build_async()
 
-    def suggest_option(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+    async def suggestOption(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
         EntitySelectorOptions.suggestOptions(self, builder)
-        return builder.build()
+        return await builder.build_async()
 
-    def suggest_end_next(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+    async def suggestEndNext(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
         builder.suggest(str(","), "")
         builder.suggest(str("]"), "")
-        return builder.build()
+        return await builder.build_async()
 
-    def suggestDefinerNext(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+    async def suggestDefinerNext(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
         builder.suggest(str("="), "")
-        return builder.build()
+        return await builder.build_async()
 
-    def get_reader(self) -> StringReader:
+    def getReader(self) -> StringReader:
         return self.reader
 
-    def set_predicate(self, condition: Predicate["EntitySelectorReader"]):
+    def setPredicate(self, condition: Predicate["EntitySelectorReader"]):
         self.predicate = condition
 
-    def read_negation_character(self) -> bool:
+    def readNegationCharacter(self) -> bool:
         self.reader.skipWhitespace()
         if self.reader.canRead() and self.reader.peek() == "!":
             self.reader.skip()
@@ -514,7 +522,7 @@ class EntitySelectorReader:
         else:
             return False
 
-    def read_tag_character(self) -> bool:
+    def readTagCharacter(self) -> bool:
         self.reader.skipWhitespace()
         if self.reader.canRead() and self.reader.peek() == "#":
             self.reader.skip()
@@ -523,12 +531,12 @@ class EntitySelectorReader:
         else:
             return False
 
-    def set_local_world_only(self):
+    def setLocalWorldOnly(self):
         self.localWorldOnly = True
 
     def read(self) -> EntitySelector:
         self.startCursor = self.reader.getCursor()
-        self.suggestionProvider = self.suggest_selector
+        self.suggestionProvider = self.suggestSelector
         if self.reader.canRead() and self.reader.peek() == "@":
             if not self.atAllowed:
                 raise NOT_ALLOWED_EXCEPTION.createWithContext(self.reader)
@@ -549,7 +557,6 @@ class EntitySelectorReader:
             self.predicates.append(self.rotationPredicate(self.yawRange, Entity.getYaw))
 
         if not self.levelRange.isDummy():
-
             def _pred(entity: Entity):
                 return (
                     False
@@ -623,8 +630,8 @@ class EntitySelectorReader:
 
         return _pred
 
-    def listSuggestions(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
-        return self.suggestionProvider(builder.create_offset(self.reader.getCursor()), consumer)
+    async def listSuggestions(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
+        return await self.suggestionProvider(builder.createOffset(self.reader.getCursor()), consumer)
 
 
 class SelectorHandler:
@@ -692,10 +699,10 @@ class EntitySelectorOptions:
             if selector_option.condition.test(reader):
                 return selector_option.handler
             else:
-                raise INAPPLICABLE_OPTION_EXCEPTION.createWithContext(reader.get_reader(), string)
+                raise INAPPLICABLE_OPTION_EXCEPTION.createWithContext(reader.getReader(), string)
         else:
-            reader.get_reader().setCursor(i)
-            raise UNKNOWN_OPTION_EXCEPTION.createWithContext(reader.get_reader(), string)
+            reader.getReader().setCursor(i)
+            raise UNKNOWN_OPTION_EXCEPTION.createWithContext(reader.getReader(), string)
 
     @staticmethod
     def suggestOptions(reader: EntitySelectorReader, builder: SuggestionsBuilder):
@@ -710,12 +717,12 @@ class EntitySelectorOptions:
 
         class NameOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                i = reader.get_reader().getCursor()
-                bl = reader.read_negation_character()
-                string = reader.get_reader().readString()
+                i = reader.getReader().getCursor()
+                bl = reader.readNegationCharacter()
+                string = reader.getReader().readString()
                 if reader.excludesName and not bl:
-                    reader.get_reader().setCursor(i)
-                    raise INAPPLICABLE_OPTION_EXCEPTION.createWithContext(reader.get_reader(), "name")
+                    reader.getReader().setCursor(i)
+                    raise INAPPLICABLE_OPTION_EXCEPTION.createWithContext(reader.getReader(), "name")
                 else:
                     if bl:
                         reader.excludesName = True
@@ -725,7 +732,7 @@ class EntitySelectorOptions:
                     def _predicate(readerx: Entity) -> bool:
                         return (readerx.getName().getString() == string) != bl
 
-                    reader.set_predicate(_predicate)
+                    reader.setPredicate(_predicate)
 
         self.put_option(
             "name",
@@ -738,16 +745,16 @@ class EntitySelectorOptions:
 
         class DistanceOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                i = reader.get_reader().getCursor()
-                doubleRange = FloatRange.parse(reader.get_reader())
+                i = reader.getReader().getCursor()
+                doubleRange = FloatRange.parse(reader.getReader())
                 if (doubleRange.min is None or doubleRange.min < 0.0) and (
                     doubleRange.max is None or not doubleRange.max < 0.0
                 ):
                     reader.distance = doubleRange
-                    reader.set_local_world_only()
+                    reader.setLocalWorldOnly()
                 else:
-                    reader.get_reader().setCursor(i)
-                    raise NEGATIVE_DISTANCE_EXCEPTION.createWithContext(reader.get_reader())
+                    reader.getReader().setCursor(i)
+                    raise NEGATIVE_DISTANCE_EXCEPTION.createWithContext(reader.getReader())
 
         self.put_option(
             "distance",
@@ -760,14 +767,14 @@ class EntitySelectorOptions:
 
         class LevelOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                i = reader.get_reader().getCursor()
-                intRange = IntRange.parse(reader.get_reader())
+                i = reader.getReader().getCursor()
+                intRange = IntRange.parse(reader.getReader())
                 if (intRange is None or intRange.min >= 1) and (intRange.max is None or intRange.max >= 0):
                     reader.levelRange = intRange
                     reader.includesNonPlayers = False
                 else:
-                    reader.get_reader().setCursor(i)
-                    raise NEGATIVE_LEVEL_EXCEPTION.createWithContext(reader.get_reader())
+                    reader.getReader().setCursor(i)
+                    raise NEGATIVE_LEVEL_EXCEPTION.createWithContext(reader.getReader())
 
         self.put_option(
             "level",
@@ -780,18 +787,18 @@ class EntitySelectorOptions:
 
         class XOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                reader.set_local_world_only()
-                reader.x = reader.get_reader().read_float()
+                reader.setLocalWorldOnly()
+                reader.x = reader.getReader().read_float()
 
         class YOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                reader.set_local_world_only()
-                reader.x = reader.get_reader().read_float()
+                reader.setLocalWorldOnly()
+                reader.y = reader.getReader().read_float()
 
         class ZOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                reader.set_local_world_only()
-                reader.x = reader.get_reader().read_float()
+                reader.setLocalWorldOnly()
+                reader.z = reader.getReader().read_float()
 
         self.put_option(
             "x",
@@ -816,18 +823,18 @@ class EntitySelectorOptions:
 
         class DXOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                reader.set_local_world_only()
-                reader.x = reader.get_reader().read_float()
+                reader.setLocalWorldOnly()
+                reader.dx = reader.getReader().read_float()
 
         class DYOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                reader.set_local_world_only()
-                reader.x = reader.get_reader().read_float()
+                reader.setLocalWorldOnly()
+                reader.dy = reader.getReader().read_float()
 
         class DZOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                reader.set_local_world_only()
-                reader.x = reader.get_reader().read_float()
+                reader.setLocalWorldOnly()
+                reader.dz = reader.getReader().read_float()
 
         self.put_option(
             "dx",
@@ -852,11 +859,11 @@ class EntitySelectorOptions:
 
         class XRotationOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                reader.pitchRange = math.degrees(FloatRange.parse(reader.get_reader()))
+                reader.pitchRange = math.degrees(FloatRange.parse(reader.getReader()))
 
         class YRotationOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                reader.yawRange = math.degrees(FloatRange.parse(reader.get_reader()))
+                reader.yawRange = math.degrees(FloatRange.parse(reader.getReader()))
 
         self.put_option(
             "x_rotation",
@@ -875,11 +882,11 @@ class EntitySelectorOptions:
 
         class LimitOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                i = reader.get_reader().getCursor()
-                j = reader.get_reader().read_int()
+                i = reader.getReader().getCursor()
+                j = reader.getReader().read_int()
                 if j < 1:
-                    reader.get_reader().setCursor(i)
-                    raise TOO_SMALL_LEVEL_EXCEPTION.createWithContext(reader.get_reader())
+                    reader.getReader().setCursor(i)
+                    raise TOO_SMALL_LEVEL_EXCEPTION.createWithContext(reader.getReader())
                 else:
                     reader.limit = j
                     reader.hasLimit = True
@@ -895,8 +902,8 @@ class EntitySelectorOptions:
 
         class SortOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                i = reader.get_reader().getCursor()
-                string = reader.get_reader().readUnquotedString()
+                i = reader.getReader().getCursor()
+                string = reader.getReader().readUnquotedString()
 
                 def _provider(builder, consumer):
                     return CommandSource.suggestMatching(("nearest", "furthest", "random", "arbitrary"), builder)
@@ -915,8 +922,8 @@ class EntitySelectorOptions:
                     reader.sorter = ARBITRARY
                     reader.hasSorter = True
                 else:
-                    reader.get_reader().setCursor(i)
-                    raise IRREVERSIBLE_SORT_EXCEPTION.createWithContext(reader.get_reader(), string)
+                    reader.getReader().setCursor(i)
+                    raise IRREVERSIBLE_SORT_EXCEPTION.createWithContext(reader.getReader(), string)
 
         self.put_option(
             "sort",
@@ -930,7 +937,7 @@ class EntitySelectorOptions:
         class GamemodeOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
                 def _suggest(builder: SuggestionsBuilder, consumer):
-                    string = builder.get_remaining().lower()
+                    string = builder.getRemaining().lower()
                     bl = reader.excludesGameMode
                     bl2 = True
                     if string != "":
@@ -949,17 +956,17 @@ class EntitySelectorOptions:
 
                     return builder.build()
 
-                i = reader.get_reader().getCursor()
-                bl = reader.read_negation_character()
+                i = reader.getReader().getCursor()
+                bl = reader.readNegationCharacter()
                 if reader.excludesGameMode and not bl:
-                    reader.get_reader().setCursor(i)
-                    raise INAPPLICABLE_OPTION_EXCEPTION.createWithContext(reader.get_reader(), "gamemode")
+                    reader.getReader().setCursor(i)
+                    raise INAPPLICABLE_OPTION_EXCEPTION.createWithContext(reader.getReader(), "gamemode")
                 else:
-                    string = reader.get_reader().readUnquotedString()
+                    string = reader.getReader().readUnquotedString()
                     gameMode = next(iter(g for g in GameMode if g == string), None)
                     if gameMode is None:
-                        reader.get_reader().setCursor(i)
-                        raise INVALID_MODE_EXCEPTION.createWithContext(reader.get_reader(), string)
+                        reader.getReader().setCursor(i)
+                        raise INVALID_MODE_EXCEPTION.createWithContext(reader.getReader(), string)
                     else:
 
                         def _predicate(entity: Entity) -> bool:
@@ -985,8 +992,8 @@ class EntitySelectorOptions:
 
         class TeamOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                bl = reader.read_negation_character()
-                string = reader.get_reader().readUnquotedString()
+                bl = reader.readNegationCharacter()
+                string = reader.getReader().readUnquotedString()
 
                 def _predicate(entity: Entity):
                     if not isinstance(entity, LivingEntity):
@@ -996,7 +1003,7 @@ class EntitySelectorOptions:
                         string2 = "" if abstractTeam is None else abstractTeam.get_name()
                         return (string2 == string) != bl
 
-                reader.set_predicate(_predicate)
+                reader.setPredicate(_predicate)
 
                 if bl:
                     reader.excludesTeam = True
@@ -1031,31 +1038,31 @@ class EntitySelectorOptions:
 
                 reader.suggestionProvider = _suggest
 
-                i = reader.get_reader().getCursor()
-                bl = reader.read_negation_character()
+                i = reader.getReader().getCursor()
+                bl = reader.readNegationCharacter()
                 if reader.excludesEntityType and not bl:
-                    reader.get_reader().setCursor(i)
-                    raise INAPPLICABLE_OPTION_EXCEPTION.createWithContext(reader.get_reader(), "type")
+                    reader.getReader().setCursor(i)
+                    raise INAPPLICABLE_OPTION_EXCEPTION.createWithContext(reader.getReader(), "type")
                 else:
                     if bl:
                         reader.excludesEntityType = True
 
-                    if reader.read_tag_character():
+                    if reader.readTagCharacter():
                         tag_key = TagKey.of(
                             RegistryKeys.ENTITY_TYPE,
-                            Identifier.from_command_input(reader.get_reader()),
+                            Identifier.from_command_input(reader.getReader()),
                         )
 
                         def _predicate(entity: Entity) -> bool:
                             return entity.type.isIn(tag_key)
 
-                        reader.set_predicate(_predicate)
+                        reader.setPredicate(_predicate)
                     else:
-                        identifier = Identifier.from_command_input(reader.get_reader())
+                        identifier = Identifier.from_command_input(reader.getReader())
                         entity_type = Registries.ENTITY_TYPE.get(identifier)
                         if entity_type is None:
-                            reader.get_reader().setCursor(i)
-                            return INVALID_TYPE_EXCEPTION.createWithContext(reader.get_reader(), str(identifier))
+                            reader.getReader().setCursor(i)
+                            return INVALID_TYPE_EXCEPTION.createWithContext(reader.getReader(), str(identifier))
 
                         if entity_type == EntityType.PLAYER and not bl:
                             reader.includesNonPlayers = True
@@ -1063,7 +1070,7 @@ class EntitySelectorOptions:
                         def _predicate(entity: Entity) -> bool:
                             return (entity.type == entity_type) != bl
 
-                        reader.set_predicate(_predicate)
+                        reader.setPredicate(_predicate)
                         if not bl:
                             reader.entityType = entity_type
 
@@ -1076,8 +1083,8 @@ class EntitySelectorOptions:
 
         class TagOption(SelectorHandler):
             def handle(self, reader: EntitySelectorReader):
-                bl = reader.read_negation_character()
-                string = reader.get_reader().readUnquotedString()
+                bl = reader.readNegationCharacter()
+                string = reader.getReader().readUnquotedString()
 
                 def _predicate(entity: Entity):
                     if string == "":
@@ -1085,7 +1092,7 @@ class EntitySelectorOptions:
                     else:
                         return (string in entity.commandTags) != bl
 
-                reader.set_predicate(_predicate)
+                reader.setPredicate(_predicate)
 
         self.put_option(
             "tag",

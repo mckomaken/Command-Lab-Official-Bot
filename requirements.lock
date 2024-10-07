@@ -21,6 +21,8 @@ astunparse==1.6.3
     # via import-expression
 attrs==24.2.0
     # via aiohttp
+beartype==0.19.0
+    # via plum-dispatch
 beautifulsoup4==4.12.3
     # via markdownify
 braceexpand==0.1.7
@@ -44,7 +46,11 @@ import-expression==1.1.5
     # via jishaku
 jishaku==2.5.2
 lorem==0.1.1
+markdown-it-py==3.0.0
+    # via rich
 markdownify==0.13.1
+mdurl==0.1.2
+    # via markdown-it-py
 multidict==6.1.0
     # via aiohttp
     # via yarl
@@ -55,14 +61,19 @@ numpy==2.1.1
     # via nbtlib
     # via pyrr
 pillow==10.4.0
+plum-dispatch==2.5.2
 pycparser==2.22
     # via cffi
 pydantic==2.9.2
 pydantic-core==2.23.4
     # via pydantic
 pygit2==1.15.1
+pygments==2.18.0
+    # via rich
 pyrr==0.10.3
 pyyaml==6.0.2
+rich==13.9.2
+    # via plum-dispatch
 six==1.16.0
     # via astunparse
     # via markdownify
@@ -70,6 +81,7 @@ soupsieve==2.6
     # via beautifulsoup4
 tqdm==4.66.5
 typing-extensions==4.12.2
+    # via plum-dispatch
     # via pydantic
     # via pydantic-core
 wheel==0.44.0

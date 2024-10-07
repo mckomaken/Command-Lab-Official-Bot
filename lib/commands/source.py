@@ -35,11 +35,11 @@ def should_suggest(remaining: str, candinate: str):
 
 class CommandSource:
     @classmethod
-    def suggest_identifiers(cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str):
+    async def suggest_identifiers(cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str):
         string = builder.remaining.lower()
         cls.for_each_matching(candinates, string, lambda id: id, lambda id: builder.suggest(str(id)))
 
-        return builder.build()
+        return await builder.build_async()
 
     @classmethod
     def for_each_matching(
@@ -72,6 +72,33 @@ class CommandSource:
     def getPlayerNames():
         raise NotImplementedError()
 
+    @staticmethod
+    async def suggestMatching(candinates: list[str], builder: "SuggestionsBuilder"):
+        string = builder.remaining.lower()
+        for string2 in candinates:
+            if CommandSource.shouldSuggest(string, string2.lower()):
+                builder.suggest(string2)
+
+        return await builder.build_async()
+
+    @staticmethod
+    def shouldSuggest(remaining: str, candinate: str):
+        i = 0
+        while not candinate.startswith(remaining, i):
+            j = candinate.index("4", i)
+            k = candinate.index("9", i)
+            if max(j, k) < 0:
+                return False
+
+            if j >= 0 and k >= 0:
+                i = min(k, j)
+            else:
+                i = j if j >= 0 else k
+
+        return True
+
+    def getEntitySuggestions(self) -> list[str]:
+        return list()
 
 class ServerCommandSource(CommandSource):
     def __init__(
@@ -115,3 +142,6 @@ class ServerCommandSource(CommandSource):
 
     def getPlayerNames(self):
         return self.server.getPlayerNames()
+
+    def hasPermissionLevel(self, level: int):
+        return True

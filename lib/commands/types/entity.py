@@ -1,3 +1,4 @@
+import asyncio
 from typing import Self
 
 from lib.commands.context import CommandContext
@@ -6,7 +7,7 @@ from lib.commands.exceptions import CommandSyntaxException, SimpleCommandExcepti
 from lib.commands.reader import StringReader
 from lib.commands.selector import EntitySelector, EntitySelectorReader
 from lib.commands.source import CommandSource, ServerCommandSource
-from lib.commands.suggestions import SuggestionsBuilder
+from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.types import ArgumentType
 from lib.commands.util.consumer import Consumer
@@ -78,20 +79,22 @@ class EntityArgumentType(ArgumentType[EntitySelector]):
         else:
             return entitySelector
 
-    def listSuggestions[S](self, context: CommandContext[S], builder: SuggestionsBuilder):
-        commandSource: CommandSource = context.get_source()
-        stringReader = StringReader(builder.getInput())
-        stringReader.setCursor(builder.getStart())
-        entitySelectorReader = EntitySelectorReader(stringReader, True)
-        try:
-            entitySelectorReader.read()
-        except CommandSyntaxException as e:
-            print(e)
-            pass
+    async def listSuggestions[S](self, context: CommandContext[S], builder: SuggestionsBuilder):
+        commandSource = context.get_source()
+        if isinstance(commandSource, CommandSource):
+            stringReader = StringReader(builder.getInput())
+            stringReader.setCursor(builder.getStart())
+            entitySelectorReader = EntitySelectorReader(stringReader, True)
+            try:
+                entitySelectorReader.read()
+            except CommandSyntaxException as e:
+                print(e)
 
-        def _consumer1(builderx: SuggestionsBuilder):
-            collection = commandSource.getPlayerNames()
-            # iterable = collection if self.playersOnly else (collection + commandSource.getEntitySuggestions())
-            # CommandSource.suggestMatching(iterable, builderx)
+            def _consumer1(builderx: SuggestionsBuilder):
+                collection = commandSource.getPlayerNames()
+                iterable = collection if self.playersOnly else (collection + commandSource.getEntitySuggestions())
+                asyncio.create_task(CommandSource.suggestMatching(iterable, builderx))
 
-        return entitySelectorReader.listSuggestions(builder, Consumer(_consumer1))
+            return await entitySelectorReader.listSuggestions(builder, Consumer(_consumer1))
+        else:
+            return Suggestions.EMPTY

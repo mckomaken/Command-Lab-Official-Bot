@@ -10,11 +10,9 @@ from lib.commands.suggestions import SuggestionProvider, Suggestions, Suggestion
 from lib.commands.types import ArgumentType
 from lib.commands.util.predicate import Predicate
 
-S = TypeVar("S")
-T = TypeVar("T")
 
 
-class ArgumentCommandNode(Generic[S, T], CommandNode[S]):
+class ArgumentCommandNode[S, T](CommandNode[S]):
     def __init__(
         self,
         name: str,
@@ -32,9 +30,9 @@ class ArgumentCommandNode(Generic[S, T], CommandNode[S]):
         self.customSuggestions = customSuggestions
         self.children = dict()
 
-    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
         if self.customSuggestions is None:
-            return self.type.listSuggestions(context, builder)
+            return await self.type.listSuggestions(context, builder)
         else:
             return self.customSuggestions.getSuggestions(context, builder)
 
@@ -51,3 +49,6 @@ class ArgumentCommandNode(Generic[S, T], CommandNode[S]):
 
     def getCommand(self) -> Command[S]:
         return self.command
+
+    def __str__(self) -> str:
+        return f"argument[name={self.name},type={self.type}]"

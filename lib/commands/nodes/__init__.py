@@ -11,11 +11,7 @@ if TYPE_CHECKING:
     from lib.commands.nodes.literal import LiteralCommandNode
     from lib.commands import Command
 
-
-S = TypeVar("S")
-
-
-class CommandNode(Generic[S]):
+class CommandNode[S]():
     command: "Command[S]"
     children: dict[str, Self]
     literals: dict[str, "LiteralCommandNode[S]"] = dict()
@@ -39,7 +35,7 @@ class CommandNode(Generic[S]):
         self.modifier = modifier
         self.forks = forks
 
-    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
+    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
         raise NotImplementedError()
 
     def getRelevantNodes(self, input: StringReader) -> list["CommandNode[S]"]:

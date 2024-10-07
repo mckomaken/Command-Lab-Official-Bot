@@ -62,9 +62,10 @@ async def load():
 
     async def _rescusive(builder: Optional[LiteralArgumentBuilder], _cmd: dict) -> LiteralArgumentBuilder:
         cmd = await parse_command(_cmd)
-        if isinstance(cmd, LiteralCommandEntry):
+
+        if cmd.type == "literal":
             b = literal(cmd.name)
-        if isinstance(cmd, ArgumentCommandEntry):
+        elif cmd.type == "argument":
             cmdp = cmd.parser
             if cmdp.parser == "brigadier:integer" or cmdp.parser == "minecraft:time":
                 minimum = -2147483648
@@ -110,6 +111,8 @@ async def load():
                 return
 
             b = argument(cmd.name, parser)
+        else:
+            raise Exception("")
 
         for _cmd_c in cmd.children:
             await _rescusive(b, _cmd_c)
@@ -172,7 +175,7 @@ async def main():
                 ),
             )
 
-            opts = dispatcher.getCompletionSuggestions(parsed, None)
+            opts = await dispatcher.getCompletionSuggestions(parsed, None)
 
         except Exception as e:
             if isinstance(e, CommandSyntaxException):
@@ -182,7 +185,7 @@ async def main():
         else:
             print(f"{colorama.Fore.GREEN}エラーなし{colorama.Fore.RESET}")
 
-            for a in opts.get_list():
+            for a in opts.getList():
                 print(
                     f"{colorama.Fore.LIGHTBLACK_EX}{' ' * len(data)}{a.text}{' ' * (30 - len(a.text))}{a.tooltip}{colorama.Fore.RESET}"
                 )

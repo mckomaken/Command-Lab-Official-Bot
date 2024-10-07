@@ -20,6 +20,7 @@ dependencies = [
     "nbtlib>=2.0.4",
     "multipledispatch>=1.0.0",
     "pyrr>=0.10.3",
+    "plum-dispatch>=2.5.2",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

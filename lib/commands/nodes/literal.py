@@ -1,6 +1,7 @@
 from typing import Generic, Self, TypeVar
 
 from lib.commands import Command
+from lib.commands.builder import literal
 from lib.commands.builtin_exceptions import BUILT_IN_EXCEPTIONS
 from lib.commands.context import CommandContext, CommandContextBuilder
 from lib.commands.nodes import CommandNode
@@ -37,8 +38,9 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
 
         if end > -1:
             builder.withNode(self, StringRange(start, end))
-        else:
-            raise BUILT_IN_EXCEPTIONS
+            return
+
+        raise BUILT_IN_EXCEPTIONS.literal_incorrect().createWithContext(reader, self.literal)
 
     def _parse(self, reader: StringReader) -> int:
         start: int = reader.getCursor()
@@ -52,13 +54,13 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
                     reader.setCursor(start)
         return -1
 
-    def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
         if self.literalLowerCase.startswith(builder.remaining.lower()):
-            return builder.suggest(self.literal, "").build()
+            return await builder.suggest(self.literal).build_async()
         else:
-            return Suggestions.EMPTY
+            return Suggestions.empty()
 
-    def is_valid_input(self, input: str):
+    def isValidInput(self, input: str):
         return self._parse(StringReader(input)) > -1
 
     def getName(self) -> str:
