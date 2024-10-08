@@ -1,6 +1,7 @@
-class Optional[T]():
-    value: T
+from lib.util.function import Function
 
+
+class Optional[T]():
     def __init__(self, value: T) -> None:
         self.value = value
 
@@ -22,3 +23,15 @@ class Optional[T]():
 
     def isEmpty(self):
         return self.value is None
+
+    def map[U](self, mapper: Function[T, U]):
+        if self.isEmpty():
+            return self.empty()
+        else:
+            return Optional.of(mapper.apply(self.value))
+
+    def orElse(self, other: T):
+        if self.value is not None:
+            return self.value
+        else:
+            return other

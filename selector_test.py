@@ -167,7 +167,7 @@ async def main():
         if data == "":
             return
 
-        r = StringReader(data.strip())
+        r = StringReader(data.lstrip())
 
         try:
             parsed = dispatcher.parse(
@@ -196,7 +196,7 @@ async def main():
                 traceback.print_exception(e)
         else:
             print(f"{colorama.Fore.GREEN}エラーなし{colorama.Fore.RESET}")
-
+        finally:
             for a in opts.getList():
                 print(
                     f"{colorama.Fore.LIGHTBLACK_EX}{' ' * len(data)}{a.text}{' ' * (30 - len(a.text))}{a.tooltip}{colorama.Fore.RESET}"

@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, Generic, Optional, TypeVar
 
+from lib.commands.item import Item
 from lib.commands.util import Identifier
 
 if TYPE_CHECKING:
@@ -37,4 +38,4 @@ class Registry(Generic[T]):
 
 class Registries:
     ENTITY_TYPE: Registry["EntityType"] = Registry()
-    ITEM = Registry["Item"] = Registry()
+    ITEM: Registry["Item"] = Registry()

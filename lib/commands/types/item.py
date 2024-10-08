@@ -1,6 +1,7 @@
 from lib.commands.context import CommandContext
 from lib.commands.exceptions import DynamicCommandExceptionType, SimpleCommandExceptionType
 from lib.commands.reader import StringReader
+from lib.commands.registry.registry import Registries
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.types import ArgumentType
@@ -23,7 +24,7 @@ EXCLAMATION_MARK = '!'
 
 class ItemStringReader:
     def __init__(self) -> None:
-        self.itemRegistry =
+        self.itemRegistry = Registries.ITEM
 
 
 class ItemArgumentType(ArgumentType[str]):

@@ -78,7 +78,6 @@ class Suggestions:
             texts.add(suggestion.expand(command, range))
 
         sorte = sorted(texts, key=lambda a: a.text.lower())
-        print([v.text for v in sorte])
         return Suggestions(range, sorte)
 
 
@@ -100,7 +99,6 @@ class SuggestionsBuilder:
         return self.start
 
     def suggest(self, text: str, tooltip: str = None) -> Self:
-        print(f"Suggest: {text}")
         if text == self.remaining:
             return self
 
@@ -108,8 +106,8 @@ class SuggestionsBuilder:
         return self
 
     def add(self, other: Self) -> Self:
-        print(f"Add: {other}")
-        [self.result.append(v) for v in other.result]
+        for v in other.result:
+            self.result.append(v)
         return self
 
     def build(self):

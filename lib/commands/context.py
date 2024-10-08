@@ -100,7 +100,6 @@ class CommandContextBuilder[S]():
         return self.source
 
     def findSuggestionContext(self, cursor: int) -> "SuggestionContext[S]":
-        print(f"{self.range}@{cursor}, {[str(n.node) for n in self.nodes]}")
         if self.range.start <= cursor:
             if self.range.end < cursor:
                 if self.child is not None:

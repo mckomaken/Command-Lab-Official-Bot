@@ -385,7 +385,7 @@ class EntitySelectorReader:
                     self.includesNonPlayers = False
                     self.sorter = RANDOM
                     self.setEntityType(EntityType.PLAYER)
-                case "p":
+                case "s":
                     self.limit = 1
                     self.includesNonPlayers = True
                     self.senderOnly = True
@@ -480,10 +480,10 @@ class EntitySelectorReader:
         return await builder.add(suggestionsBuilder).build_async()
 
     async def suggestSelectorRest(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
-        suggestionsBuilder = builder.createOffset(builder.start - 1)
-        self.suggestSelector(suggestionsBuilder, consumer)
+        suggestionsBuilder = builder.createOffset(builder.getStart() - 1)
+        await self.suggestSelector(suggestionsBuilder, consumer)
         builder.add(suggestionsBuilder)
-        return builder.build()
+        return await builder.build_async()
 
     async def suggestOpen(self, builder: SuggestionsBuilder, consumer: Consumer[SuggestionsBuilder]):
         builder.suggest(str("["), "")

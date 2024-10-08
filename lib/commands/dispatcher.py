@@ -59,11 +59,8 @@ class CommandDispatcher:
                     SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start),
                 )
             except CommandSyntaxException as e:
-                print(e)
-            except Exception as e:
-                print(e)
-            else:
-                suggests.append(suggest)
+                raise e
+            suggests.append(suggest)
 
         suggestions: list[Suggestions] = []
         for suggest in suggests:
@@ -95,31 +92,26 @@ class CommandDispatcher:
             context = copy.deepcopy(contextSoFar)
             reader = StringReader(originalReader)
             try:
-                try:
-                    child.parse(reader, context)
-                except RuntimeError as ex:
-                    raise BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(reader, str(ex))
-                except Exception as e:
-                    pass
+                child.parse(reader, context)
 
                 if reader.canRead():
                     if reader.peek() != ARGUMENT_SEPARATOR:
                         raise BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(reader)
             except CommandSyntaxException as ex:
-                # traceback.print_exc(ex)
                 if errors is None:
                     errors = dict()
                 errors[child] = ex
                 reader.setCursor(cursor)
                 continue
+
             context.withCommand(child.getCommand())
             if reader.canRead(2 if child.redirect is None else 1):
                 reader.skip()
                 if child.redirect is not None:
                     childContext = CommandContextBuilder[S](self, source, child.getRedirect(), reader.getCursor())
-                    parse: ParseResults[S] = self.parseNodes(child.redirect, reader, childContext)
+                    parse = self.parseNodes(child.redirect, reader, childContext)
                     context.withChild(parse.context)
-                    return ParseResults[S](context, parse.getReader(), parse.getExceptions())
+                    return ParseResults(context, parse.getReader(), parse.getExceptions())
                 else:
                     parse = self.parseNodes(child, reader, context)
                     if potentials is None:
@@ -133,7 +125,6 @@ class CommandDispatcher:
 
         if potentials is not None:
             if len(potentials) > 1:
-
                 def _cmp(a: ParseResults, b: ParseResults):
                     if not a.getReader().canRead() and b.getReader().canRead():
                         return -1

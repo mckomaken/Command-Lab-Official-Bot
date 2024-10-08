@@ -1,8 +1,11 @@
+from ast import Call
 from typing import Callable, TypeVar
 
-R = TypeVar("R")
-T = TypeVar("T")
-T1 = TypeVar("T1")
 
-Function = Callable[[T], R]
-BiFunction = Callable[[T, T1], R]
+class Function[T1, R](Callable[[T1], R]):
+    def apply(self, arg: T1) -> R:
+        return self(arg)
+
+class BiFunction[T1, T2, R](Callable[[T1, T2], R]):
+    def apply(self, a: T1, b: T2) -> R:
+        return self(a, b)
