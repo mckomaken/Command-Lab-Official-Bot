@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 from lib.commands.suggestions import SuggestionContext
 
+
 class CommandContext[S]():
     source: S
     input: str
@@ -82,6 +83,7 @@ class CommandContextBuilder[S]():
         rootNode: "CommandNode[S]",
         start: int,
     ):
+        self.nodes = list()
         self.rootNode = rootNode
         self.dispatcher = dispatcher
         self.source = source
@@ -94,11 +96,11 @@ class CommandContextBuilder[S]():
         self.source = source
         return self
 
-    def get_source(self) -> S:
+    def getSource(self) -> S:
         return self.source
 
     def findSuggestionContext(self, cursor: int) -> "SuggestionContext[S]":
-        print(f"{self.range}@{cursor}")
+        print(f"{self.range}@{cursor}, {[str(n.node) for n in self.nodes]}")
         if self.range.start <= cursor:
             if self.range.end < cursor:
                 if self.child is not None:

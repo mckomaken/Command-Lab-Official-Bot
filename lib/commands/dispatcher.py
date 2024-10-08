@@ -23,6 +23,7 @@ USAGE_REQUIRED_OPEN = "("
 USAGE_REQUIRED_CLOSE = ")"
 USAGE_OR = "|"
 ARGUMENT_SEPARATOR = " "
+DEBUG = True
 
 
 class CommandDispatcher:
@@ -38,7 +39,6 @@ class CommandDispatcher:
         context = parse.getContext()
 
         nodeBeforeCursor = context.findSuggestionContext(cursor)
-        print(nodeBeforeCursor)
         parent = nodeBeforeCursor.parent
         start = min(nodeBeforeCursor.startPos, cursor)
 
@@ -46,9 +46,10 @@ class CommandDispatcher:
         truncatedInput = fullInput[0:cursor]
         truncatedInputLowerCase = truncatedInput.lower()
         suggests: list[Suggestions] = []
-        print(f"Child={len(parent.getChildren())}, START={start}, TRUNC={truncatedInput}")
-        print(f"C={cursor}, Before={nodeBeforeCursor.startPos},{parent}")
-        print(f"CRange={context.range.start}-{context.range.end}")
+        if DEBUG:
+            print("DEBUG INFORMATION")
+            print(f"In={fullInput} Cursor={cursor}")
+            print(f"Context: ChildCount={len(context.nodes)}")
 
         for node in parent.getChildren():
             suggest = Suggestions.empty()
@@ -81,12 +82,13 @@ class CommandDispatcher:
         originalReader: StringReader,
         contextSoFar: CommandContextBuilder[S],
     ) -> ParseResults:
-        source: S = contextSoFar.get_source()
+        source: S = contextSoFar.getSource()
         errors: dict[CommandNode[S], CommandSyntaxException] = None
         potentials: list[ParseResults[S]] = None
         cursor = originalReader.getCursor()
 
-        for child in node.getRelevantNodes(originalReader):
+        relevant = node.getRelevantNodes(originalReader)
+        for child in relevant:
             if not child.canUse(source):
                 continue
 
@@ -128,7 +130,6 @@ class CommandDispatcher:
                     potentials = list()
                 potentials.append(ParseResults[S](context, reader, dict()))
 
-        print(len(potentials) if potentials is not None else "None")
 
         if potentials is not None:
             if len(potentials) > 1:

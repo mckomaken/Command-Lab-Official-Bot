@@ -37,3 +37,4 @@ class Registry(Generic[T]):
 
 class Registries:
     ENTITY_TYPE: Registry["EntityType"] = Registry()
+    ITEM = Registry["Item"] = Registry()

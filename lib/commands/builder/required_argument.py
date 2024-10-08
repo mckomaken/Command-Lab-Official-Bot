@@ -6,11 +6,7 @@ from lib.commands.suggestions import SuggestionProvider
 from lib.commands.types import ArgumentType
 
 
-S = TypeVar("S")
-T = TypeVar("T")
-
-
-class RequiredArgumentBuilder(ArgumentBuilder[S, "RequiredArgumentBuilder[T]"]):
+class RequiredArgumentBuilder[S, T](ArgumentBuilder[S, "RequiredArgumentBuilder[T]"]):
     name: str
     type: ArgumentType[T]
     suggestionsProvider: SuggestionProvider[S]
@@ -56,8 +52,8 @@ class RequiredArgumentBuilder(ArgumentBuilder[S, "RequiredArgumentBuilder[T]"]):
         return result
 
     def __str__(self) -> str:
-        return f"literal[{self.name}]"
+        return f"argument[{self.name}]"
 
 
-def argument(name: str, type: ArgumentType[T]):
+def argument[T](name: str, type: ArgumentType[T]):
     return RequiredArgumentBuilder(name, type)

@@ -16,6 +16,7 @@ from lib.commands.builder.required_argument import argument
 from lib.commands.dispatcher import CommandDispatcher
 from lib.commands.entity import Entity, EntityType
 from lib.commands.exceptions import CommandSyntaxException
+from lib.commands.nodes import CommandNode
 from lib.commands.output import CommandOutput
 from lib.commands.reader import StringReader
 from lib.commands.server import MinecraftServer
@@ -112,7 +113,7 @@ async def load():
 
             b = argument(cmd.name, parser)
         else:
-            raise Exception("")
+            raise Exception()
 
         for _cmd_c in cmd.children:
             await _rescusive(b, _cmd_c)
@@ -131,9 +132,20 @@ async def load():
         dispatcher.register(data)
         progress.update(1)
 
+async def tree():
+    global dispatcher
+
+    async def _resc(root: CommandNode, depth = 0):
+        print(f"{"-" * depth * 2}> {root.getName()}")
+        for child in root.children.values():
+            await _resc(child, depth + 1)
+
+    for c in dispatcher.root.children.values():
+        await _resc(c)
 
 async def main():
     await load()
+    await tree()
 
     data = ""
     while True:
@@ -155,7 +167,7 @@ async def main():
         if data == "":
             return
 
-        r = StringReader(data)
+        r = StringReader(data.strip())
 
         try:
             parsed = dispatcher.parse(

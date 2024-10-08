@@ -30,7 +30,6 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
         super().__init__(command, requirement, redirect, modifier, forks)
         self.literal = literal
         self.literalLowerCase = literal.lower()
-        self.children = dict()
 
     def parse(self, reader: StringReader, builder: CommandContextBuilder[S] = None):
         start = reader.getCursor()
@@ -68,3 +67,6 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
 
     def getCommand(self) -> Command[S]:
         return self.command
+
+    def __str__(self) -> str:
+        return f"literal[{self.literal}]"
