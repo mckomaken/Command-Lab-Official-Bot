@@ -1,5 +1,5 @@
-from os import error
 from typing import Callable
+
 from plum import dispatch
 
 from lib.commands.util.consumer import Consumer
@@ -9,11 +9,13 @@ from lib.util.function import Function
 from lib.util.optional import Optional
 
 
-class K1():
+class K1:
     pass
+
 
 class App[F, A]():
     pass
+
 
 class DataResult[R]():
     class Mu(K1):
@@ -122,7 +124,6 @@ class DataResult[R]():
 
     def addLifecycle(self, lifecycle: Lifecycle):
         return self.setLifecycle(self.getLifecycle().add(lifecycle))
-
 
     class Success[R](DataResult[R]):
         def __init__(self, value: R, lifecycle: Lifecycle) -> None:
@@ -240,7 +241,9 @@ class DataResult[R]():
             if isinstance(second, DataResult.Success):
                 return DataResult.Error(self.messageSupplier, Optional.of(second.value), combinedLifecycle)
             elif isinstance(second, DataResult.Error):
-                return DataResult.Error(lambda _: DataResult.appendMessages(self.messageSupplier.get(), second.messageSupplier.get()))
+                return DataResult.Error(
+                    lambda _: DataResult.appendMessages(self.messageSupplier.get(), second.messageSupplier.get())
+                )
             else:
                 raise ValueError()
 

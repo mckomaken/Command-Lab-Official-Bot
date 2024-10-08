@@ -2,14 +2,7 @@ import io
 import os
 
 import discord
-from discord import (
-    ButtonStyle,
-    Embed,
-    Interaction,
-    SelectOption,
-    TextStyle,
-    app_commands,
-)
+from discord import ButtonStyle, Embed, Interaction, SelectOption, TextStyle, app_commands
 from discord.ext import commands
 from discord.ui import Button, Modal, Select, TextInput, View, button, select
 from PIL import Image, ImageDraw, ImageFont

@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING, Callable, Optional
 
-
 if TYPE_CHECKING:
     from lib.commands.reader import StringReader
 

@@ -1,5 +1,6 @@
-from enum import Enum
 import re
+from enum import Enum
+
 from multipledispatch import dispatch
 
 from lib.commands.util.direction import Direction

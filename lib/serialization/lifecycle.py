@@ -15,7 +15,7 @@ class Lifecycle:
     def __str__(self) -> str:
         return self.description
 
-    class Depracated():
+    class Depracated:
         def __init__(self, since: int) -> None:
             self.since = since
 

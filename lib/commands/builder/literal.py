@@ -1,7 +1,7 @@
 from typing import TypeVar
+
 from lib.commands.builder.argument import ArgumentBuilder
 from lib.commands.nodes.literal import LiteralCommandNode
-
 
 S = TypeVar("S")
 

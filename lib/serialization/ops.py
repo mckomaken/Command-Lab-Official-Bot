@@ -1,7 +1,9 @@
 from ast import Num
 from typing import overload
+
 from numpy import result_type
 from plum import dispatch
+
 from lib.serialization.data_result import DataResult
 from lib.util.number import Number
 

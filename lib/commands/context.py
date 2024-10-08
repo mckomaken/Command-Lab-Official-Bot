@@ -83,14 +83,16 @@ class CommandContextBuilder[S]():
         rootNode: "CommandNode[S]",
         start: int,
     ):
+        self.arguments = dict()
         self.nodes = list()
         self.rootNode = rootNode
         self.dispatcher = dispatcher
         self.source = source
         self.range = StringRange.at(start)
         self.child = None
+        self.modifier = None
         self.command = None
-        self.forks = None
+        self.forks = False
 
     def withSource(self, source: S) -> Self:
         self.source = source

@@ -122,9 +122,9 @@ class CommandDispatcher:
                     potentials = list()
                 potentials.append(ParseResults[S](context, reader, dict()))
 
-
         if potentials is not None:
             if len(potentials) > 1:
+
                 def _cmp(a: ParseResults, b: ParseResults):
                     if not a.getReader().canRead() and b.getReader().canRead():
                         return -1

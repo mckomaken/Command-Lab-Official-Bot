@@ -347,6 +347,20 @@ class EntitySelectorReader:
         self.reader = reader
         self.atAllowed = atAllowed
 
+        self.excludesName = False
+        self.selectsTeam = False
+        self.hasLimit = False
+        self.hasSorter = False
+        self.selectsGameMode = False
+        self.excludesGameMode = False
+        self.selectsTeam = False
+        self.excludesTeam = False
+        self.entityType = None
+        self.excludesEntityType = False
+        self.selectsScores = False
+        self.selectsAdvancements = False
+        self._usesAt = False
+
     def setEntityType(self, type: EntityType):
         self.entityType = type
 
@@ -540,7 +554,6 @@ class EntitySelectorReader:
         if self.reader.canRead() and self.reader.peek() == "@":
             if not self.atAllowed:
                 raise NOT_ALLOWED_EXCEPTION.createWithContext(self.reader)
-
             self.reader.skip()
             self.readAtVariable()
         else:
@@ -557,6 +570,7 @@ class EntitySelectorReader:
             self.predicates.append(self.rotationPredicate(self.yawRange, Entity.getYaw))
 
         if not self.levelRange.isDummy():
+
             def _pred(entity: Entity):
                 return (
                     False
@@ -706,7 +720,7 @@ class EntitySelectorOptions:
 
     @staticmethod
     def suggestOptions(reader: EntitySelectorReader, builder: SuggestionsBuilder):
-        string = builder.remaining.lower()
+        string = builder.getRemaining().lower()
         self = EntitySelectorOptions()
         for k, v in self.options.items():
             if v.condition.test(reader) and k.lower().startswith(string):

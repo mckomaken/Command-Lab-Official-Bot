@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from lib.commands.nodes.argument import ArgumentCommandNode
     from lib.commands.nodes.literal import LiteralCommandNode
 
+
 class CommandNode[S]():
     command: "Command[S]"
     children: dict[str, Self] = dict()

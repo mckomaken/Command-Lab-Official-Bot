@@ -1,7 +1,7 @@
 from typing import Union
 
 
-class Number():
+class Number:
     def __init__(self, value: Union[int, float]) -> None:
         self.value = value
 

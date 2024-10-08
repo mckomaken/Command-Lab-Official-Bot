@@ -132,16 +132,18 @@ async def load():
         dispatcher.register(data)
         progress.update(1)
 
+
 async def tree():
     global dispatcher
 
-    async def _resc(root: CommandNode, depth = 0):
+    async def _resc(root: CommandNode, depth=0):
         print(f"{"-" * depth * 2}> {root.getName()}")
         for child in root.children.values():
             await _resc(child, depth + 1)
 
     for c in dispatcher.root.children.values():
         await _resc(c)
+
 
 async def main():
     await load()

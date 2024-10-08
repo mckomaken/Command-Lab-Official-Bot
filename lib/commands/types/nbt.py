@@ -1,5 +1,7 @@
 from typing import Any
+
 import nbtlib
+
 from lib.commands.reader import StringReader
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.types import ArgumentType

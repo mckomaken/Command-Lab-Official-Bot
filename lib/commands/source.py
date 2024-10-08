@@ -100,6 +100,7 @@ class CommandSource:
     def getEntitySuggestions(self) -> list[str]:
         return list()
 
+
 class ServerCommandSource(CommandSource):
     def __init__(
         self,

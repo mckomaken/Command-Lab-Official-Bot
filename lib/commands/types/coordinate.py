@@ -4,7 +4,6 @@ from lib.commands.text import Text
 from lib.commands.types import ArgumentType
 from lib.commands.util.math.vec3d import Vec3d
 
-
 MISSING_COORDINATE = SimpleCommandExceptionType(Text.translatable("argument.pos.missing.double"))
 MIXED_COORDINATE_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.pos.mixed"))
 MISSING_BLOCK_POSITION = SimpleCommandExceptionType(Text.translatable("argument.pos.missing.int"))

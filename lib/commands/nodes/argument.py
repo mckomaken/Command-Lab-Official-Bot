@@ -11,7 +11,6 @@ from lib.commands.types import ArgumentType
 from lib.commands.util.predicate import Predicate
 
 
-
 class ArgumentCommandNode[S, T](CommandNode[S]):
     def __init__(
         self,

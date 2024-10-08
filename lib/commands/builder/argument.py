@@ -6,7 +6,6 @@ from lib.commands.nodes.root import RootCommandNode
 from lib.commands.redirect import RedirectModifier
 from lib.commands.util.predicate import Predicate
 
-
 S = TypeVar("S")
 T = TypeVar("T")
 

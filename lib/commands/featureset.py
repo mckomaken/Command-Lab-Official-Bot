@@ -1,7 +1,6 @@
 import re
 from typing import Optional, Type
 
-
 MAX_FEATURE_FLAGS = 64
 
 

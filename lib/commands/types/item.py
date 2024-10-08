@@ -8,18 +8,28 @@ from lib.commands.types import ArgumentType
 from lib.commands.util.consumer import Consumer
 from schemas.data import DataPaths, Items
 
-INVALID_ITEM_ID_EXCEPTION = DynamicCommandExceptionType(lambda id: Text.stringifiedTranslatable("argument.item.id.invalid", [id]))
-UNKNOWN_COMPONENT_EXCEPTION = DynamicCommandExceptionType(lambda id: Text.stringifiedTranslatable("arguments.item.component.unknown", [id]))
+INVALID_ITEM_ID_EXCEPTION = DynamicCommandExceptionType(
+    lambda id: Text.stringifiedTranslatable("argument.item.id.invalid", [id])
+)
+UNKNOWN_COMPONENT_EXCEPTION = DynamicCommandExceptionType(
+    lambda id: Text.stringifiedTranslatable("arguments.item.component.unknown", [id])
+)
 COMPONENT_EXPECTED_EXCEPTION = SimpleCommandExceptionType(Text.translatable("arguments.item.component.expected"))
-REPEATED_COMPONENT_EXCEPTION = DynamicCommandExceptionType(lambda type: Text.stringifiedTranslatable("arguments.item.component.repeated", [type]))
-MALFORMED_ITEM_EXCEPTION = DynamicCommandExceptionType(lambda error: Text.stringifiedTranslatable("arguments.item.malformed", [error]))
-MALFORMED_COMPONENT_EXCEPTION = DynamicCommandExceptionType(lambda type, error: Text.stringifiedTranslatable("arguments.item.component.malformed", [type, error]))
+REPEATED_COMPONENT_EXCEPTION = DynamicCommandExceptionType(
+    lambda type: Text.stringifiedTranslatable("arguments.item.component.repeated", [type])
+)
+MALFORMED_ITEM_EXCEPTION = DynamicCommandExceptionType(
+    lambda error: Text.stringifiedTranslatable("arguments.item.malformed", [error])
+)
+MALFORMED_COMPONENT_EXCEPTION = DynamicCommandExceptionType(
+    lambda type, error: Text.stringifiedTranslatable("arguments.item.component.malformed", [type, error])
+)
 
 OPEN_SQUARE_BRACKET = "["
-CLOSED_SQUARE_BRACKET = ']'
-COMMA = ','
-EQUAL_SIGN = '='
-EXCLAMATION_MARK = '!'
+CLOSED_SQUARE_BRACKET = "]"
+COMMA = ","
+EQUAL_SIGN = "="
+EXCLAMATION_MARK = "!"
 
 
 class ItemStringReader:

@@ -1,5 +1,6 @@
 import math
 from typing import override
+
 from lib.commands.builtin_exceptions import BUILT_IN_EXCEPTIONS
 from lib.commands.context import CommandContext
 from lib.commands.reader import StringReader

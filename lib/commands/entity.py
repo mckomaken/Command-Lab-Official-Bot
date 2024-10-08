@@ -192,6 +192,7 @@ class Entity[T]():
     def getType(self):
         return self.type
 
+
 class EntityType(Enum):
     PLAYER = "player"
 

@@ -1,4 +1,5 @@
 from typing import Iterable, Optional, Self
+
 from lib.commands.util import MAX_INT, MIN_INT
 from lib.commands.util.consumer import Consumer
 from lib.commands.util.direction import Axis, Direction
