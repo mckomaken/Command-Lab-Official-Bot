@@ -2,6 +2,7 @@ from typing import Generic, Self, TypeVar
 
 from lib.commands import Command
 from lib.commands.context import CommandContext, CommandContextBuilder
+from lib.commands.exceptions import CommandSyntaxException
 from lib.commands.nodes import CommandNode
 from lib.commands.parsed_argument import ParsedArgument
 from lib.commands.reader import StringReader
@@ -33,11 +34,14 @@ class ArgumentCommandNode[S, T](CommandNode[S]):
         if self.customSuggestions is None:
             return await self.type.listSuggestions(context, builder)
         else:
-            return self.customSuggestions.getSuggestions(context, builder)
+            return await self.customSuggestions.getSuggestions(context, builder)
 
     def parse(self, reader: StringReader, contextBuilder: CommandContextBuilder[S]):
         start = reader.getCursor()
-        result = self.type.parse(reader)
+        try:
+            result = self.type.parse(reader)
+        except CommandSyntaxException:
+            raise
         parsed = ParsedArgument(start, reader.getCursor(), result)
 
         contextBuilder.withArgument(self.name, parsed)

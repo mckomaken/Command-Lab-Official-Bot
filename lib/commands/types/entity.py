@@ -88,7 +88,7 @@ class EntityArgumentType(ArgumentType[EntitySelector]):
             try:
                 entitySelectorReader.read()
             except CommandSyntaxException as e:
-                raise e
+                pass
 
             def _consumer1(builderx: SuggestionsBuilder):
                 collection = commandSource.getPlayerNames()

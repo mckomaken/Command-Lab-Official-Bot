@@ -74,7 +74,7 @@ class CommandSource:
 
     @staticmethod
     async def suggestMatching(candinates: list[str], builder: "SuggestionsBuilder"):
-        string = builder.remaining.lower()
+        string = builder.getRemaining().lower()
         for string2 in candinates:
             if CommandSource.shouldSuggest(string, string2.lower()):
                 builder.suggest(string2)

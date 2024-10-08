@@ -188,21 +188,20 @@ async def main():
                     print,
                 ),
             )
-
-            opts = await dispatcher.getCompletionSuggestions(parsed, None)
-
         except Exception as e:
-            if isinstance(e, CommandSyntaxException):
+            traceback.print_exception(e)
+
+        if len(parsed.getExceptions().values()) >= 1:
+            for e in parsed.getExceptions().values():
                 print(colorama.Fore.RED + e.get_message() + colorama.Fore.RESET)
-            else:
-                traceback.print_exception(e)
         else:
             print(f"{colorama.Fore.GREEN}エラーなし{colorama.Fore.RESET}")
-        finally:
-            for a in opts.getList():
-                print(
-                    f"{colorama.Fore.LIGHTBLACK_EX}{' ' * len(data)}{a.text}{' ' * (30 - len(a.text))}{a.tooltip}{colorama.Fore.RESET}"
-                )
+
+        opts = await dispatcher.getCompletionSuggestions(parsed, None)
+        for a in opts.getList():
+            print(
+                f"{colorama.Fore.LIGHTBLACK_EX}{' ' * len(data)}{a.text}{' ' * (30 - len(a.text))}{a.tooltip}{colorama.Fore.RESET}"
+            )
 
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ USAGE_REQUIRED_OPEN = "("
 USAGE_REQUIRED_CLOSE = ")"
 USAGE_OR = "|"
 ARGUMENT_SEPARATOR = " "
-DEBUG = True
+DEBUG = False
 
 
 class CommandDispatcher:
@@ -50,6 +50,7 @@ class CommandDispatcher:
             print("DEBUG INFORMATION")
             print(f"In={fullInput} Cursor={cursor}")
             print(f"Context: ChildCount={len(context.nodes)}")
+            print(f"CurrentNode: {next(iter(parent.getChildren()), None)}")
 
         for node in parent.getChildren():
             suggest = Suggestions.empty()
@@ -59,7 +60,7 @@ class CommandDispatcher:
                     SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start),
                 )
             except CommandSyntaxException as e:
-                raise e
+                raise
             suggests.append(suggest)
 
         suggestions: list[Suggestions] = []
@@ -92,7 +93,13 @@ class CommandDispatcher:
             context = copy.deepcopy(contextSoFar)
             reader = StringReader(originalReader)
             try:
-                child.parse(reader, context)
+                try:
+                    child.parse(reader, context)
+                except Exception as e:
+                    if isinstance(e, CommandSyntaxException):
+                        raise e
+                    else:
+                        raise BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(reader, str(e))
 
                 if reader.canRead():
                     if reader.peek() != ARGUMENT_SEPARATOR:

@@ -54,7 +54,6 @@ TOO_MANY_PLAYERS_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argum
 PLAYER_SELECTOR_HAS_ENTITIES_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.player.entities"))
 ENTITY_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.notfound.entity"))
 PLAYER_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.notfound.player"))
-NOT_ALLOWED_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.selector.not_allowed"))
 
 
 def NEAREST(pos: Vec3d, entities: list[Entity]):
@@ -335,7 +334,7 @@ class EntitySelectorReader:
     excludesEntityType: bool = False
     selectsScores: bool = False
     selectsAdvancements: bool = False
-    usesAt: bool = False
+    _usesAt: bool = False
 
     def __init__(self, reader: StringReader, atAllowed: bool = True):
         self.distance = FloatRange.any()
@@ -346,7 +345,11 @@ class EntitySelectorReader:
         self.suggestionProvider = DEFAULT_SUGGESTION_PROVIDER
         self.reader = reader
         self.atAllowed = atAllowed
+        self.predicates = list()
 
+        self.includesNonPlayers = False
+        self.localWorldOnly = False
+        self.senderOnly = False
         self.excludesName = False
         self.selectsTeam = False
         self.hasLimit = False
@@ -628,7 +631,7 @@ class EntitySelectorReader:
             self.playerName,
             self.uuid,
             self.entityType,
-            self.usesAt,
+            self._usesAt,
         )
 
     def rotationPredicate(self, angleRange: FloatRange, entityToAngle: Callable[[Entity], float]) -> Predicate[Entity]:

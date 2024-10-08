@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Generic, Self, TypeVar
 from lib.commands.context import CommandContext, CommandContextBuilder
 from lib.commands.reader import StringReader
 from lib.commands.redirect import RedirectModifier
-from lib.commands.suggestions import SuggestionsBuilder
+from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.util.predicate import Predicate
 
 if TYPE_CHECKING:
@@ -39,7 +39,7 @@ class CommandNode[S]():
         self.modifier = modifier
         self.forks = forks
 
-    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
+    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
         raise NotImplementedError()
 
     def getRelevantNodes(self, input: StringReader) -> list["CommandNode[S]"]:
