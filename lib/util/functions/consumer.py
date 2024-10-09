@@ -1,23 +1,13 @@
 from typing import Callable, Generic, TypeVar
 
-T = TypeVar("T")
-T2 = TypeVar("T2")
-
-
-class Consumer(Generic[T]):
-    def __init__(self, cb: Callable[[T], None]):
-        self.cb = cb
-
+class Consumer[T](Callable[[T], None]):
     def accept(self, v: T):
-        self.cb(v)
+        self(v)
 
 
-class BiConsumer(Generic[T, T2]):
-    def __init__(self, cb: Callable[[T, T2], None]) -> None:
-        self.cb = cb
-
+class BiConsumer[T, T2](Callable[[T, T2], None]):
     def accept(self, v: T, v2: T2):
-        self.cb(v, v2)
+        self(v, v2)
 
 
 class ReturnValueConsumer:

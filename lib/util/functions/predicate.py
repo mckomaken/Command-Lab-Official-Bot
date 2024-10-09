@@ -1,14 +1,8 @@
-from typing import Callable, Generic, TypeVar
+from typing import Callable
 
-T = TypeVar("T")
-
-
-class Predicate(Generic[T]):
-    def __init__(self, condition: Callable[[T], bool]) -> None:
-        self.condition = condition
-
+class Predicate[T](Callable[[T], bool]):
     def test(self, v: T) -> bool:
-        return self.condition(v)
+        return self(v)
 
     def Or(self, value: "Predicate") -> "Predicate":
         def _or(t) -> bool:

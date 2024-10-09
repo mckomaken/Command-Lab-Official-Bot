@@ -6,7 +6,7 @@ from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.types import ArgumentType
 from lib.commands.util.consumer import Consumer
-from schemas.data import DataPaths, Items
+from lib.commands.schemas.data import DataPaths, Items
 
 INVALID_ITEM_ID_EXCEPTION = DynamicCommandExceptionType(
     lambda id: Text.stringifiedTranslatable("argument.item.id.invalid", [id])
@@ -31,6 +31,11 @@ COMMA = ","
 EQUAL_SIGN = "="
 EXCLAMATION_MARK = "!"
 
+
+class ItemResult:
+    def __init__(self) -> None:
+        self.item = registryEntry
+        self.components = componentChanges
 
 class ItemStringReader:
     def __init__(self) -> None:

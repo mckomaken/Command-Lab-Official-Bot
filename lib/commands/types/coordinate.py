@@ -1,3 +1,4 @@
+from plum import dispatch
 from lib.commands.exceptions import SimpleCommandExceptionType
 from lib.commands.reader import StringReader
 from lib.commands.text import Text
@@ -55,6 +56,7 @@ class CoordinateArgument(ArgumentType[Vec3d]):
             return CoordinateArgument(bl, d)
 
     @staticmethod
+    @dispatch
     def isRelative(reader: StringReader):
         if reader.peek() == "~":
             bl = True
@@ -63,3 +65,7 @@ class CoordinateArgument(ArgumentType[Vec3d]):
             bl = False
 
         return bl
+
+    @dispatch
+    def isRelative(self):
+        return self.relative

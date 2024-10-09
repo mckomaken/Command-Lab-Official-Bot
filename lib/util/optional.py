@@ -1,4 +1,5 @@
 from lib.util.function import Function
+from lib.util.functions.consumer import Consumer
 
 
 class Optional[T]():
@@ -23,6 +24,10 @@ class Optional[T]():
 
     def isEmpty(self):
         return self.value is None
+
+    def ifPresent(self, action: Consumer[T]):
+        if self.value is not None:
+            action.accept(self.value)
 
     def map[U](self, mapper: Function[T, U]):
         if self.isEmpty():

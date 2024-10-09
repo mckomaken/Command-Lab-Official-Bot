@@ -32,7 +32,7 @@ from lib.commands.types.string import StringArgumentType
 from lib.commands.util import Vec2f
 from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.world import ServerWorld, World
-from schemas.data import ArgumentCommandEntry, ArgumentParser, DataPaths, LiteralCommandEntry, parse_command
+from lib.commands.schemas.data import ArgumentCommandEntry, ArgumentParser, DataPaths, EntityArgumentModifier, LiteralCommandEntry, parse_command
 
 colorama.init()
 colorama.just_fix_windows_console()
@@ -100,7 +100,17 @@ async def load():
                 parser = DoubleArgumentType(minimum, maximum)
 
             elif cmdp.parser == "minecraft:entity":
-                parser = EntityArgumentType.entity()
+                modifier = EntityArgumentModifier.model_validate(cmdp.modifier)
+                if modifier.type == "entities":
+                    if modifier.amount == "single":
+                        parser = EntityArgumentType.entity()
+                    else:
+                        parser = EntityArgumentType.entities()
+                else:
+                    if modifier.amount == "single":
+                        parser = EntityArgumentType.player()
+                    else:
+                        parser = EntityArgumentType.players()
             elif cmdp.parser == "brigadier:bool":
                 parser = BoolArgumentType.boolean()
             elif cmdp.parser == "minecraft:nbt_compound_tag":
@@ -193,7 +203,7 @@ async def main():
 
         if len(parsed.getExceptions().values()) >= 1:
             for e in parsed.getExceptions().values():
-                print(colorama.Fore.RED + e.get_message() + colorama.Fore.RESET)
+                print(colorama.Fore.RED + e.getMessage() + colorama.Fore.RESET)
         else:
             print(f"{colorama.Fore.GREEN}エラーなし{colorama.Fore.RESET}")
 

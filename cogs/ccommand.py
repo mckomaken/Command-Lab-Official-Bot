@@ -33,7 +33,7 @@ from lib.commands.types.string import StringArgumentType
 from lib.commands.util import Vec2f
 from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.world import ServerWorld, World
-from schemas.data import (
+from lib.commands.schemas.data import (
     ArgumentCommandEntry,
     ArgumentParser,
     CommandEntry,

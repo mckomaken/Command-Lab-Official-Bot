@@ -60,7 +60,7 @@ class CommandContext[S]():
         else:
             raise ValueError("Argument '" + name + "' is defined as " + str(V) + ", not " + str(clazz))
 
-    def get_source(self):
+    def getSource(self):
         return self.source
 
 

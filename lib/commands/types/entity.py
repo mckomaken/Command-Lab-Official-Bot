@@ -80,7 +80,7 @@ class EntityArgumentType(ArgumentType[EntitySelector]):
             return entitySelector
 
     async def listSuggestions[S](self, context: CommandContext[S], builder: SuggestionsBuilder):
-        commandSource = context.get_source()
+        commandSource = context.getSource()
         if isinstance(commandSource, CommandSource):
             stringReader = StringReader(builder.getInput())
             stringReader.setCursor(builder.getStart())

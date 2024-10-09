@@ -1,6 +1,7 @@
 from typing import Iterable
 
-from lib.commands.util.consumer import Consumer
+from lib.util.functions.consumer import Consumer
+
 
 
 class Iterator[E]():

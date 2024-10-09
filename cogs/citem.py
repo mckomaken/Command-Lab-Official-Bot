@@ -11,7 +11,7 @@ from discord.ext import commands
 from PIL import Image
 
 from config import config
-from schemas.data import Blocks, DataPaths, Items
+from lib.commands.schemas.data import Blocks, DataPaths, Items
 from utils.util import create_codeblock
 
 

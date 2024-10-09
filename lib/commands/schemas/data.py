@@ -113,6 +113,10 @@ class ArgumentParser(BaseModel):
     modifier: Optional[dict[str, Any]] = None
     examples: list[str] = []
 
+class EntityArgumentModifier(BaseModel):
+    type: Literal["players", "entities"]
+    amount: Literal["single", "multiple"]
+
 
 class ArgumentCommandEntry(LiteralCommandEntry):
     parser: ArgumentCommandEntryParser

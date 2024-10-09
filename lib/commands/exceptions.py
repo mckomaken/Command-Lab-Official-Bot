@@ -16,7 +16,7 @@ class CommandSyntaxException(Exception):
         self.input = str_input
         self.cursor = cursor
 
-    def get_message(self):
+    def getMessage(self):
         message = self.message.getString()
         context = self.getContext()
         if context is not None:
