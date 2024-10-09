@@ -59,7 +59,7 @@ class DynamicOps[T]():
         raise NotImplementedError()
 
     def mergeToList(self, list: T, values: list[T]) -> DataResult[T]:
-        result = DataResult.success(list)
+        result: DataResult[T] = DataResult.success(list)
 
         for value in values:
             result = result.flatMap(lambda r: self.mergeToList(r, value))
