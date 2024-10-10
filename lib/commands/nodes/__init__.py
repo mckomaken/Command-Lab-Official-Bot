@@ -4,7 +4,7 @@ from lib.commands.context import CommandContext, CommandContextBuilder
 from lib.commands.reader import StringReader
 from lib.commands.redirect import RedirectModifier
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
-from lib.commands.util.predicate import Predicate
+from lib.util.functions.predicate import Predicate
 
 if TYPE_CHECKING:
     from lib.commands import Command
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from lib.commands.nodes.literal import LiteralCommandNode
 
 
-class CommandNode[S]():
+class CommandNode[S]:
     command: "Command[S]"
     children: dict[str, Self] = dict()
     literals: dict[str, "LiteralCommandNode[S]"] = dict()

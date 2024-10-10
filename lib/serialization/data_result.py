@@ -2,10 +2,10 @@ from typing import Callable
 
 from plum import dispatch
 
-from lib.commands.util.consumer import Consumer
-from lib.commands.util.supplier import Supplier
 from lib.serialization.lifecycle import Lifecycle
-from lib.util.function import Function
+from lib.util.functions.consumer import Consumer
+from lib.util.functions.function import Function
+from lib.util.functions.supplier import Supplier
 from lib.util.optional import Optional
 
 
@@ -13,11 +13,11 @@ class K1:
     pass
 
 
-class App[F, A]():
+class App[F, A]:
     pass
 
 
-class DataResult[R]():
+class DataResult[R]:
     class Mu(K1):
         pass
 
@@ -95,7 +95,9 @@ class DataResult[R]():
     def map[T](self, function: Function[R, T]) -> DataResult[T]:
         raise NotImplementedError()
 
-    def mapOrElse[T](self, successFunction: Function[R, T], errorFunction: Function[DataResult.Error[R], T]) -> T:
+    def mapOrElse[
+        T
+    ](self, successFunction: Function[R, T], errorFunction: Function[DataResult.Error[R], T],) -> T:
         raise NotImplementedError()
 
     def ifSuccess(self, ifSuccess: Consumer[R]) -> DataResult[R]:
@@ -159,7 +161,9 @@ class DataResult[R]():
         def map[T](self, function: Function[R, T]) -> DataResult[T]:
             return DataResult.Success(function.apply(self.value), self.lifecycle)
 
-        def mapOrElse[T](self, successFunction: Function[R, T], errorFunction: Function[DataResult.Error[R], T]) -> T:
+        def mapOrElse[
+            T
+        ](self, successFunction: Function[R, T], errorFunction: Function[DataResult.Error[R], T],) -> T:
             return successFunction.apply(self.value)
 
         def ifSuccess(self, ifSuccess: Consumer[R]) -> DataResult[R]:
@@ -185,7 +189,12 @@ class DataResult[R]():
             return f"DataResult.Success[{self.value}]"
 
     class Error[R](DataResult[R]):
-        def __init__(self, messageSupplier: Supplier[str], partialValue: Optional[R], lifecycle: Lifecycle) -> None:
+        def __init__(
+            self,
+            messageSupplier: Supplier[str],
+            partialValue: Optional[R],
+            lifecycle: Lifecycle,
+        ) -> None:
             self.messageSupplier = messageSupplier
             self.partialValue = partialValue
             self.lifecycle = lifecycle

@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Generic, Self, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Self, Type
 
 from lib.commands.parsed_argument import ParsedArgument
 from lib.commands.range import StringRange
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 from lib.commands.suggestions import SuggestionContext
 
 
-class CommandContext[S]():
+class CommandContext[S]:
     source: S
     input: str
     command: "Command[S]"
@@ -64,7 +64,7 @@ class CommandContext[S]():
         return self.source
 
 
-class CommandContextBuilder[S]():
+class CommandContextBuilder[S]:
     arguments: dict[str, ParsedArgument[S, Any]] = dict()
     rootNode: "CommandNode[S]"
     nodes: list["ParsedCommandNode[S]"] = []

@@ -3,8 +3,7 @@ from typing import Iterable
 from lib.util.functions.consumer import Consumer
 
 
-
-class Iterator[E]():
+class Iterator[E]:
     def __init__(self, obj: Iterable[E]) -> None:
         self.iterator = obj
         self.cursor = 0

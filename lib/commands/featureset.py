@@ -1,5 +1,4 @@
-import re
-from typing import Optional, Type
+from typing import Optional
 
 MAX_FEATURE_FLAGS = 64
 

@@ -1,7 +1,7 @@
 from typing import Callable, Optional
 
 
-class Nullable[T]():
+class Nullable[T]:
     def __init__(self, func: Callable[..., T]):
         self._func = func
 

@@ -2,9 +2,7 @@
 name = "command-lab-official-bot"
 version = "0.1.0"
 description = "Add your description here"
-authors = [
-    { name = "ap12-code", email = "ap12@ap12.net" }
-]
+authors = [{ name = "ap12-code", email = "ap12@ap12.net" }]
 dependencies = [
     "discord>=2.3.2",
     "pydantic>=2.9.2",
@@ -37,6 +35,8 @@ dev-dependencies = [
     "isort>=5.13.2",
     "black>=24.8.0",
     "readchar>=4.2.0",
+    "pytest>=8.3.3",
+    "pytest-asyncio>=0.24.0",
 ]
 
 [tool.hatch.metadata]

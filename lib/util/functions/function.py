@@ -1,5 +1,4 @@
-from ast import Call
-from typing import Callable, TypeVar
+from typing import Callable
 
 
 class Function[T1, R](Callable[[T1], R]):

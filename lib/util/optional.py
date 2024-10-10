@@ -1,13 +1,13 @@
-from lib.util.function import Function
 from lib.util.functions.consumer import Consumer
+from lib.util.functions.function import Function
 
 
-class Optional[T]():
+class Optional[T]:
     def __init__(self, value: T) -> None:
         self.value = value
 
     @staticmethod
-    def of[T](value: T) -> Optional[T]:
+    def of[T](value: T) -> "Optional[T]":
         return Optional(value)
 
     @staticmethod

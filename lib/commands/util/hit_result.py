@@ -1,4 +1,3 @@
-import re
 from enum import Enum
 
 from multipledispatch import dispatch
@@ -31,7 +30,14 @@ class BlockHitResult(HitResult):
         self.__init__(False, pos, side, blockPos, insideBlock)
 
     @dispatch(bool, Vec3d, Direction, BlockPos, bool)
-    def __init__(self, missed: bool, pos: Vec3d, side: Direction, blockPos: BlockPos, insideBlock: bool):
+    def __init__(
+        self,
+        missed: bool,
+        pos: Vec3d,
+        side: Direction,
+        blockPos: BlockPos,
+        insideBlock: bool,
+    ):
         super(pos)
         self.missed = missed
         self.side = side

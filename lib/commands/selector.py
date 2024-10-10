@@ -1,14 +1,15 @@
 import math
-from ast import Call
 from random import shuffle
-from typing import Any, Callable, Coroutine, Literal, Optional
+from typing import Any, Callable, Optional
 from uuid import UUID
 
-from pydantic import BaseModel
 
 from lib.commands import util
 from lib.commands.entity import Box, Entity, EntityType, LivingEntity
-from lib.commands.exceptions import DynamicCommandExceptionType, SimpleCommandExceptionType
+from lib.commands.exceptions import (
+    DynamicCommandExceptionType,
+    SimpleCommandExceptionType,
+)
 from lib.commands.featureset import FeatureSet
 from lib.commands.number_range import FloatRange, IntRange
 from lib.commands.player import GameMode, ServerPlayerEntity
@@ -19,13 +20,13 @@ from lib.commands.registry.tag_key import TagKey
 from lib.commands.source import CommandSource, ServerCommandSource
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.text import Text
-from lib.commands.util import Identifier, RangeNumberOrNumber
-from lib.commands.util.consumer import BiConsumer, Consumer
+from lib.commands.util import Identifier
 from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.util.mathhelper import MathHelper
-from lib.commands.util.predicate import Predicate
 from lib.commands.util.type_filter import TypeFilter
 from lib.commands.world import ServerWorld
+from lib.util.functions.consumer import BiConsumer, Consumer
+from lib.util.functions.predicate import Predicate
 
 SELECTOR_PREFIX = "@"
 ARGUMENTS_OPENING = "["
@@ -195,7 +196,11 @@ class EntitySelector:
                 return self.getEntities(vec3d, li)
 
     def appendEntitiesFromWorld(
-        self, entities: list[Entity], world: ServerWorld, box: Optional[Box], predicate: Predicate[Entity]
+        self,
+        entities: list[Entity],
+        world: ServerWorld,
+        box: Optional[Box],
+        predicate: Predicate[Entity],
     ):
         i = self.getAppendLimit()
         if len(entities) < i:

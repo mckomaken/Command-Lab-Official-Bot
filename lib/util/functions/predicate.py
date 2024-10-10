@@ -1,8 +1,12 @@
 from typing import Callable
 
-class Predicate[T](Callable[[T], bool]):
+
+class Predicate[T]:
+    def __init__(self, cb: Callable[[T], bool]) -> None:
+        self._cb = cb
+
     def test(self, v: T) -> bool:
-        return self(v)
+        return self._cb(v)
 
     def Or(self, value: "Predicate") -> "Predicate":
         def _or(t) -> bool:

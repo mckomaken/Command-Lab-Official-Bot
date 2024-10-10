@@ -7,9 +7,9 @@ from pydantic_core import CoreSchema, core_schema
 from lib.commands.exceptions import SimpleCommandExceptionType
 from lib.commands.reader import StringReader
 from lib.commands.text import Text
-from lib.commands.util.consumer import Consumer
-from lib.commands.util.predicate import Predicate
-from lib.commands.util.supplier import Supplier
+from lib.util.functions.consumer import Consumer
+from lib.util.functions.predicate import Predicate
+from lib.util.functions.supplier import Supplier
 
 if TYPE_CHECKING:
     from lib.commands.util.math.block_pos import BlockPos
@@ -183,7 +183,7 @@ class Identifier:
         return f"{self.namespace}:{self.path}"
 
 
-class classprop[T]():
+class classprop[T]:
     def __init__(self, type: type[T], initialValue: T):
         self.type = type
         self.value = initialValue

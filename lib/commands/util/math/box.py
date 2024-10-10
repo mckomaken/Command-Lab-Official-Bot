@@ -39,7 +39,14 @@ class Box:
 
     @staticmethod
     def fromBlockPos(pos: BlockPos):
-        return Box(pos.getX(), pos.getY(), pos.getZ(), (pos.getX() + 1), (pos.getY() + 1), (pos.getZ() + 1))
+        return Box(
+            pos.getX(),
+            pos.getY(),
+            pos.getZ(),
+            (pos.getX() + 1),
+            (pos.getY() + 1),
+            (pos.getZ() + 1),
+        )
 
     @staticmethod
     def fromVec3d2(pos1: Vec3d, pos2: Vec3d):
@@ -201,7 +208,14 @@ class Box:
 
     @dispatch(float, float, float)
     def offset(self, x: float, y: float, z: float):
-        return Box(self.minX + x, self.minY + y, self.minZ + z, self.maxX + x, self.maxY + y, self.maxZ + z)
+        return Box(
+            self.minX + x,
+            self.minY + y,
+            self.minZ + z,
+            self.maxX + x,
+            self.maxY + y,
+            self.maxZ + z,
+        )
 
     @dispatch(BlockPos)
     def offset(self, blockPos: BlockPos):
@@ -495,7 +509,11 @@ class Box:
         )
 
     def getBottomCenter(self):
-        return Vec3d(MathHelper.lerp(0.5, self.minX, self.maxX), self.minY, MathHelper.lerp(0.5, self.minZ, self.maxZ))
+        return Vec3d(
+            MathHelper.lerp(0.5, self.minX, self.maxX),
+            self.minY,
+            MathHelper.lerp(0.5, self.minZ, self.maxZ),
+        )
 
     def getMinPos(self):
         return Vec3d(self.minX, self.minY, self.minZ)

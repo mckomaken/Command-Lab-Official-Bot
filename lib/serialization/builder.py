@@ -10,7 +10,7 @@ from lib.serialization.ops import DynamicOps
 from lib.util.functions.operator import UnaryOperator
 
 
-class RecordBuidler[T]():
+class RecordBuidler[T]:
     @abstractmethod
     def getOps(self) -> DynamicOps[T]:
         pass
@@ -32,10 +32,12 @@ class RecordBuidler[T]():
     @abstractmethod
     def add(self, key: T, value: T) -> RecordBuidler[T]:
         pass
+
     @dispatch
     @abstractmethod
     def add(self, key: T, value: DataResult[T]) -> RecordBuidler[T]:
         pass
+
     @dispatch
     @abstractmethod
     def add(self, key: DataResult[T], value: DataResult[T]) -> RecordBuidler[T]:

@@ -72,7 +72,9 @@ class TranslatableTextContent:
         else:
             raise ValueError("Illegal Argument Exception")
 
+
 LANGUAGE_DATA: dict[str, str] = dict()
+
 
 class Text:
     def __init__(self, text: str):
@@ -106,9 +108,11 @@ class Text:
     def __str__(self) -> str:
         return self.string
 
+
 async def load_language():
     global LANGUAGE_DATA
     async with aiofiles.open("./.tmp/ja_jp.json", mode="rb") as fp:
         LANGUAGE_DATA = json.loads(await fp.read())
+
 
 asyncio.run(load_language())

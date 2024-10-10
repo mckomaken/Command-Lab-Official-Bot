@@ -1,6 +1,10 @@
 from typing import Callable
 
-class Supplier[T](Callable[[], T]):
+
+class Supplier[T]:
+    def __init__(self, cb: Callable[[], T]) -> None:
+        self._cb = cb
+
     @classmethod
     def create(cls, supplier: T) -> "Supplier[T]":
         def _c():
@@ -9,4 +13,4 @@ class Supplier[T](Callable[[], T]):
         cls(_c)
 
     def get(self) -> T:
-        return self()
+        return self._cb()

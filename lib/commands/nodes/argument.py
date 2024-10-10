@@ -1,4 +1,4 @@
-from typing import Generic, Self, TypeVar
+from typing import Self
 
 from lib.commands import Command
 from lib.commands.context import CommandContext, CommandContextBuilder
@@ -9,7 +9,7 @@ from lib.commands.reader import StringReader
 from lib.commands.redirect import RedirectModifier
 from lib.commands.suggestions import SuggestionProvider, Suggestions, SuggestionsBuilder
 from lib.commands.types import ArgumentType
-from lib.commands.util.predicate import Predicate
+from lib.util.functions.predicate import Predicate
 
 
 class ArgumentCommandNode[S, T](CommandNode[S]):

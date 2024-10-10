@@ -1,5 +1,4 @@
 import math
-from typing import Self, overload
 
 from lib.commands.util.direction import Axis, Direction
 from lib.commands.util.math.block_rotation import BlockRotation
@@ -157,7 +156,11 @@ class MutableBlockPos(BlockPos):
         return self.set(unpackLongX(pos), unpackLongY(pos), unpackLongZ(pos))
 
     def set(self, axis: Axis, x: int, y: int, z: int):
-        return self.set(axis.choose(x, y, z, Axis.X), axis.choose(x, y, z, Axis.Y), axis.choose(x, y, z, Axis.Z))
+        return self.set(
+            axis.choose(x, y, z, Axis.X),
+            axis.choose(x, y, z, Axis.Y),
+            axis.choose(x, y, z, Axis.Z),
+        )
 
     def set(self, pos: Vec3i, direction: Direction):
         return self.set(
@@ -170,7 +173,11 @@ class MutableBlockPos(BlockPos):
         return self.set(pos.getX() + x, pos.getY() + y, pos.getZ() + z)
 
     def set(self, vec1: Vec3i, vec2: Vec3i):
-        return self.set(vec1.getX() + vec2.getX(), vec1.getY() + vec2.getY(), vec1.getZ() + vec2.getZ())
+        return self.set(
+            vec1.getX() + vec2.getX(),
+            vec1.getY() + vec2.getY(),
+            vec1.getZ() + vec2.getZ(),
+        )
 
     def move(self, direction: Direction):
         return self.move(direction, 1)

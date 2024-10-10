@@ -1,4 +1,4 @@
-from typing import Self, TypeVar
+from typing import Self
 
 from lib.commands.builder.argument import ArgumentBuilder
 from lib.commands.nodes.argument import ArgumentCommandNode

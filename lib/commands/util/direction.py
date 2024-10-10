@@ -1,7 +1,6 @@
 import math
 from enum import Enum
 from random import Random
-from tkinter import NO
 from typing import Optional, Self
 from xml.dom.minidom import Entity
 

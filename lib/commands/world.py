@@ -8,7 +8,7 @@ from lib.commands.registry.registry_entry import RegistryEntry
 from lib.commands.registry.registry_key import RegistryKey
 from lib.commands.util.math.block_pos import BlockPos
 from lib.commands.util.random import Random
-from lib.commands.util.supplier import Supplier
+from lib.util.functions.supplier import Supplier
 
 
 class Biome:

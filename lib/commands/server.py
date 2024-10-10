@@ -13,7 +13,10 @@ class PlayerManager:
 
     def getPlayer(self, name_or_uuid: Union[str, UUID]) -> Optional[ServerPlayerEntity]:
         if isinstance(name_or_uuid, str):
-            return next(iter([p for p in self.players if p.getName().getString() == name_or_uuid]), None)
+            return next(
+                iter([p for p in self.players if p.getName().getString() == name_or_uuid]),
+                None,
+            )
         elif isinstance(name_or_uuid, UUID):
             return next(iter([p for p in self.players if p.getUUID() == name_or_uuid]), None)
         else:

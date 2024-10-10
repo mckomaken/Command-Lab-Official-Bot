@@ -1,12 +1,11 @@
-from typing import Iterable, Optional, Self
+from typing import Iterable, Optional
 
 from lib.commands.util import MAX_INT, MIN_INT
 from lib.commands.util.consumer import Consumer
-from lib.commands.util.direction import Axis, Direction
+from lib.commands.util.direction import Direction
 from lib.commands.util.iterator import Iterator
 from lib.commands.util.math.block_pos import BlockPos
 from lib.commands.util.math.vec3i import Vec3i
-from lib.commands.util.mathhelper import MathHelper
 
 
 class BlockBox:
@@ -123,7 +122,12 @@ class BlockBox:
         else:
             blockBox = iterator.next()
             blockBox2 = BlockBox(
-                blockBox.minX, blockBox.minY, blockBox.minZ, blockBox.maxX, blockBox.maxY, blockBox.maxZ
+                blockBox.minX,
+                blockBox.minY,
+                blockBox.minZ,
+                blockBox.maxX,
+                blockBox.maxY,
+                blockBox.maxZ,
             )
             iterator.forEachRemaining(blockBox2.encompass)
             return blockBox2
@@ -150,7 +154,14 @@ class BlockBox:
         return self.move(vec.getX(), vec.getY(), vec.getZ())
 
     def offset(self, x: int, y: int, z: int):
-        return BlockBox(self.minX + x, self.minY + y, self.minZ + z, self.maxX + x, self.maxY + y, self.maxZ + z)
+        return BlockBox(
+            self.minX + x,
+            self.minY + y,
+            self.minZ + z,
+            self.maxX + x,
+            self.maxY + y,
+            self.maxZ + z,
+        )
 
     def expand(self, offset: int):
         return self.expand(offset, offset, offset)

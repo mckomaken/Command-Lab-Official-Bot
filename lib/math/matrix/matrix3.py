@@ -95,15 +95,51 @@ class Matrix3:
         return self.mul(right, self)
 
     def mul(self, right: "Matrix3", dest: "Matrix3"):
-        nm00 = Math.fma(self.m00, right.m00(), Math.fma(self.m10, right.m01(), self.m20 * right.m02()))
-        nm01 = Math.fma(self.m01, right.m00(), Math.fma(self.m11, right.m01(), self.m21 * right.m02()))
-        nm02 = Math.fma(self.m02, right.m00(), Math.fma(self.m12, right.m01(), self.m22 * right.m02()))
-        nm10 = Math.fma(self.m00, right.m10(), Math.fma(self.m10, right.m11(), self.m20 * right.m12()))
-        nm11 = Math.fma(self.m01, right.m10(), Math.fma(self.m11, right.m11(), self.m21 * right.m12()))
-        nm12 = Math.fma(self.m02, right.m10(), Math.fma(self.m12, right.m11(), self.m22 * right.m12()))
-        nm20 = Math.fma(self.m00, right.m20(), Math.fma(self.m10, right.m21(), self.m20 * right.m22()))
-        nm21 = Math.fma(self.m01, right.m20(), Math.fma(self.m11, right.m21(), self.m21 * right.m22()))
-        nm22 = Math.fma(self.m02, right.m20(), Math.fma(self.m12, right.m21(), self.m22 * right.m22()))
+        nm00 = Math.fma(
+            self.m00,
+            right.m00(),
+            Math.fma(self.m10, right.m01(), self.m20 * right.m02()),
+        )
+        nm01 = Math.fma(
+            self.m01,
+            right.m00(),
+            Math.fma(self.m11, right.m01(), self.m21 * right.m02()),
+        )
+        nm02 = Math.fma(
+            self.m02,
+            right.m00(),
+            Math.fma(self.m12, right.m01(), self.m22 * right.m02()),
+        )
+        nm10 = Math.fma(
+            self.m00,
+            right.m10(),
+            Math.fma(self.m10, right.m11(), self.m20 * right.m12()),
+        )
+        nm11 = Math.fma(
+            self.m01,
+            right.m10(),
+            Math.fma(self.m11, right.m11(), self.m21 * right.m12()),
+        )
+        nm12 = Math.fma(
+            self.m02,
+            right.m10(),
+            Math.fma(self.m12, right.m11(), self.m22 * right.m12()),
+        )
+        nm20 = Math.fma(
+            self.m00,
+            right.m20(),
+            Math.fma(self.m10, right.m21(), self.m20 * right.m22()),
+        )
+        nm21 = Math.fma(
+            self.m01,
+            right.m20(),
+            Math.fma(self.m11, right.m21(), self.m21 * right.m22()),
+        )
+        nm22 = Math.fma(
+            self.m02,
+            right.m20(),
+            Math.fma(self.m12, right.m21(), self.m22 * right.m22()),
+        )
         dest.m00 = nm00
         dest.m01 = nm01
         dest.m02 = nm02
@@ -192,7 +228,17 @@ class Matrix3:
         return self.transpose(self)
 
     def transpose(self, dest: "Matrix3"):
-        return dest.set(self.m00, self.m10, self.m20, self.m01, self.m11, self.m21, self.m02, self.m12, self.m22)
+        return dest.set(
+            self.m00,
+            self.m10,
+            self.m20,
+            self.m01,
+            self.m11,
+            self.m21,
+            self.m02,
+            self.m12,
+            self.m22,
+        )
 
     def get(self, dest):
         return dest.set(self)

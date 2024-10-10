@@ -78,7 +78,7 @@ class TrackedPosition:
     pass
 
 
-class Entity[T]():
+class Entity[T]:
     age: int
     AIR: TrackedData[int]
     blockPos: BlockPos

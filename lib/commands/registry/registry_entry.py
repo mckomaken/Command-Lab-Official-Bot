@@ -3,8 +3,7 @@ from typing import Generic, TypeVar
 from lib.commands.registry.registry_key import RegistryKey
 from lib.commands.registry.tag_key import TagKey
 from lib.commands.util import Identifier
-
-from ..util.predicate import Predicate
+from lib.util.functions.predicate import Predicate
 
 T = TypeVar("T")
 

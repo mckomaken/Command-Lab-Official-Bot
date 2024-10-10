@@ -184,7 +184,6 @@ class CPackMcMeta(app_commands.Group):
     @app_commands.command(name="datapacks", description="データパックのpack_formatをすべて出力します")
     @app_commands.guild_only()
     async def datapacks(self, interaction: discord.Interaction):
-
         body = []
         i = 0
         for k, v in pack_versions.versions.items():
@@ -207,7 +206,6 @@ class CPackMcMeta(app_commands.Group):
     )
     @app_commands.guild_only()
     async def resourcepacks(self, interaction: discord.Interaction):
-
         body = []
         i = 0
         for k, v in pack_versions.versions.items():

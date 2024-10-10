@@ -36,7 +36,6 @@ class CItem(commands.Cog):
                     blocks = Blocks.model_validate_json(await fp2.read())
                     for item in items.root:
                         if item.name == id.replace("minecraft:", ""):
-
                             is_item = id not in [b.name for b in blocks.root]
                             block = next(
                                 iter([b for b in blocks.root if b.name == item.name]),

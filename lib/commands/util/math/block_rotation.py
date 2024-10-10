@@ -10,7 +10,11 @@ class BlockRotation(Enum):
     NONE = (0, "none", DirectionTransformation.IDENTITY)
     CLOCKWISE_90 = (1, "clockwise_90", DirectionTransformation.ROT_90_Y_NEG)
     CLOCKWISE_180 = (2, "180", DirectionTransformation.ROT_180_FACE_XZ)
-    COUNTERCLOCKWISE_90 = (3, "counterclockwise_90", DirectionTransformation.ROT_90_Y_POS)
+    COUNTERCLOCKWISE_90 = (
+        3,
+        "counterclockwise_90",
+        DirectionTransformation.ROT_90_Y_POS,
+    )
 
     @staticmethod
     def values():

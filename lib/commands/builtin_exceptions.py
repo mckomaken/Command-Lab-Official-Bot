@@ -1,4 +1,8 @@
-from lib.commands.exceptions import DynamicCommandExceptionType, LiteralMessage, SimpleCommandExceptionType
+from lib.commands.exceptions import (
+    DynamicCommandExceptionType,
+    LiteralMessage,
+    SimpleCommandExceptionType,
+)
 
 FLOAT_TOO_SMALL = DynamicCommandExceptionType(
     lambda found, minimum: LiteralMessage(f"Float must not be less than {minimum}, found {found}")

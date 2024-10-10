@@ -2,13 +2,13 @@ from abc import ABCMeta, abstractmethod
 from typing import Any
 from lib.serialization.keyable import Keyable
 from lib.serialization.ops import DynamicOps
-from lib.util.stream import Stream
 
 
 class Compressable(Keyable, metaclass=ABCMeta):
     @abstractmethod
     def compressor[T](self, ops: DynamicOps[T]) -> KeyCompressor[T]:
         pass
+
 
 class CompressorHolder(Compressable):
     def __init__(self) -> None:
@@ -23,7 +23,8 @@ class CompressorHolder(Compressable):
                 return newValue
         return v
 
-class KeyCompressor[T]():
+
+class KeyCompressor[T]:
     def __init__(self, ops: DynamicOps[T], keyList: list[T]) -> None:
         self.ops = ops
         self.compress: dict[T, int] = dict()
@@ -35,6 +36,7 @@ class KeyCompressor[T]():
                 return
             next = len(self.compress)
             self.compress[key] = next
+
             def _k(k: str):
                 self.compressString[k] = next
 

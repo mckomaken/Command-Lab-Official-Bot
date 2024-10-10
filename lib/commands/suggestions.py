@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Generic, Self, TypeVar
+from typing import TYPE_CHECKING, Self
 
 from lib.commands.util import classproperty
 
@@ -126,12 +126,12 @@ class SuggestionsBuilder:
         return self.remaining
 
 
-class SuggestionProvider[S]():
+class SuggestionProvider[S]:
     async def getSuggestions(self, context: "CommandContext[S]", builder: "SuggestionsBuilder"):
         raise NotImplementedError()
 
 
-class SuggestionContext[S]():
+class SuggestionContext[S]:
     parent: "CommandNode[S]"
     startPos: int
 

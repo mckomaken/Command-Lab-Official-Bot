@@ -1,4 +1,4 @@
-class Pair[A, B]():
+class Pair[A, B]:
     def __init__(self, left: A, right: B) -> None:
         self.left = left
         self.right = right

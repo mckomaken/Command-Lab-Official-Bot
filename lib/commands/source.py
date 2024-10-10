@@ -6,9 +6,9 @@ from lib.commands.server import MinecraftServer
 from lib.commands.suggestions import SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.util import Identifier, Vec2f
-from lib.commands.util.consumer import Consumer, ReturnValueConsumer
 from lib.commands.util.math.vec3d import Vec3d
 from lib.commands.world import ServerWorld
+from lib.util.functions.consumer import Consumer, ReturnValueConsumer
 
 T = TypeVar("T")
 

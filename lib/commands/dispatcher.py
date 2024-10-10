@@ -1,6 +1,5 @@
 import copy
 import functools
-import traceback
 from typing import TypeVar
 
 from lib.commands.builder.literal import LiteralArgumentBuilder
@@ -59,7 +58,7 @@ class CommandDispatcher:
                     context.build(truncatedInput),
                     SuggestionsBuilder(truncatedInput, truncatedInputLowerCase, start),
                 )
-            except CommandSyntaxException as e:
+            except CommandSyntaxException:
                 raise
             suggests.append(suggest)
 

@@ -10,7 +10,7 @@ from lib.commands.source import CommandSource, ServerCommandSource
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
 from lib.commands.text import Text
 from lib.commands.types import ArgumentType
-from lib.commands.util.consumer import Consumer
+from lib.util.functions.consumer import Consumer
 
 TOO_MANY_ENTITIES_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.toomany"))
 TOO_MANY_PLAYERS_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.player.toomany"))
@@ -21,7 +21,13 @@ NOT_ALLOWED_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.e
 
 
 class EntityArgumentType(ArgumentType[EntitySelector]):
-    EXAMPLES = ["Player", "0123", "@e", "@e[type=foo]", "dd12be42-52a9-4a91-a8a1-11c01849e498"]
+    EXAMPLES = [
+        "Player",
+        "0123",
+        "@e",
+        "@e[type=foo]",
+        "dd12be42-52a9-4a91-a8a1-11c01849e498",
+    ]
     singleTarget: bool
     playersOnly: bool
 
@@ -87,7 +93,7 @@ class EntityArgumentType(ArgumentType[EntitySelector]):
             entitySelectorReader = EntitySelectorReader(stringReader, True)
             try:
                 entitySelectorReader.read()
-            except CommandSyntaxException as e:
+            except CommandSyntaxException:
                 pass
 
             def _consumer1(builderx: SuggestionsBuilder):

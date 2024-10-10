@@ -1,7 +1,7 @@
 import time
 from typing import Self, overload
 
-from lib.commands.util.supplier import Supplier
+from lib.util.functions.supplier import Supplier
 
 
 def compareAndSet(a, b, c):

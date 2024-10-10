@@ -2,8 +2,8 @@ from enum import Enum
 
 from lib.commands.util.axis_transformation import AxisTransformation
 from lib.commands.util.direction import Axis, Direction
-from lib.commands.util.pair import Pair
 from lib.math.matrix.matrix3 import Matrix3
+from lib.util.functions.pair import Pair
 
 
 class DirectionTransformation(Enum):
@@ -19,12 +19,48 @@ class DirectionTransformation(Enum):
     ROT_120_PNP = ("rot_120_pnp", AxisTransformation.P231, True, True, False)
     ROT_120_PPN = ("rot_120_ppn", AxisTransformation.P231, False, True, True)
     ROT_120_PPP = ("rot_120_ppp", AxisTransformation.P312, False, False, False)
-    ROT_180_EDGE_XY_NEG = ("rot_180_edge_xy_neg", AxisTransformation.P213, True, True, True)
-    ROT_180_EDGE_XY_POS = ("rot_180_edge_xy_pos", AxisTransformation.P213, False, False, True)
-    ROT_180_EDGE_XZ_NEG = ("rot_180_edge_xz_neg", AxisTransformation.P321, True, True, True)
-    ROT_180_EDGE_XZ_POS = ("rot_180_edge_xz_pos", AxisTransformation.P321, False, True, False)
-    ROT_180_EDGE_YZ_NEG = ("rot_180_edge_yz_neg", AxisTransformation.P132, True, True, True)
-    ROT_180_EDGE_YZ_POS = ("rot_180_edge_yz_pos", AxisTransformation.P132, True, False, False)
+    ROT_180_EDGE_XY_NEG = (
+        "rot_180_edge_xy_neg",
+        AxisTransformation.P213,
+        True,
+        True,
+        True,
+    )
+    ROT_180_EDGE_XY_POS = (
+        "rot_180_edge_xy_pos",
+        AxisTransformation.P213,
+        False,
+        False,
+        True,
+    )
+    ROT_180_EDGE_XZ_NEG = (
+        "rot_180_edge_xz_neg",
+        AxisTransformation.P321,
+        True,
+        True,
+        True,
+    )
+    ROT_180_EDGE_XZ_POS = (
+        "rot_180_edge_xz_pos",
+        AxisTransformation.P321,
+        False,
+        True,
+        False,
+    )
+    ROT_180_EDGE_YZ_NEG = (
+        "rot_180_edge_yz_neg",
+        AxisTransformation.P132,
+        True,
+        True,
+        True,
+    )
+    ROT_180_EDGE_YZ_POS = (
+        "rot_180_edge_yz_pos",
+        AxisTransformation.P132,
+        True,
+        False,
+        False,
+    )
     ROT_90_X_NEG = ("rot_90_x_neg", AxisTransformation.P132, False, False, True)
     ROT_90_X_POS = ("rot_90_x_pos", AxisTransformation.P132, False, True, False)
     ROT_90_Y_NEG = ("rot_90_y_neg", AxisTransformation.P321, True, False, False)
@@ -69,9 +105,12 @@ class DirectionTransformation(Enum):
         directionTransformations: list[list[DirectionTransformation]]
         mapping = dict()
         for directionTransformationx in DirectionTransformation.values():
-            mapping[Pair.of(directionTransformationx.axisTransformation, directionTransformationx.getAxisFlips())] = (
-                directionTransformationx
-            )
+            mapping[
+                Pair.of(
+                    directionTransformationx.axisTransformation,
+                    directionTransformationx.getAxisFlips(),
+                )
+            ] = directionTransformationx
 
         for directionTransformation in DirectionTransformation.values():
             for directionTransformation2 in DirectionTransformation.values():
@@ -98,7 +137,14 @@ class DirectionTransformation(Enum):
 
         return map(_map, DirectionTransformation.values())
 
-    def __init__(self, name: str, axisTransformation: AxisTransformation, flipX: bool, flipY: bool, flipZ: bool):
+    def __init__(
+        self,
+        name: str,
+        axisTransformation: AxisTransformation,
+        flipX: bool,
+        flipY: bool,
+        flipZ: bool,
+    ):
         self._name = name
         self.flipX = flipX
         self.flipY = flipY

@@ -1,7 +1,6 @@
 from typing import Generic, Self, TypeVar
 
 from lib.commands import Command
-from lib.commands.builder import literal
 from lib.commands.builtin_exceptions import BUILT_IN_EXCEPTIONS
 from lib.commands.context import CommandContext, CommandContextBuilder
 from lib.commands.nodes import CommandNode
@@ -9,7 +8,7 @@ from lib.commands.range import StringRange
 from lib.commands.reader import StringReader
 from lib.commands.redirect import RedirectModifier
 from lib.commands.suggestions import Suggestions, SuggestionsBuilder
-from lib.commands.util.predicate import Predicate
+from lib.util.functions.predicate import Predicate
 
 S = TypeVar("S")
 

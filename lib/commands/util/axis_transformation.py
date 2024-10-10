@@ -1,6 +1,5 @@
-from enum import Enum, nonmember
+from enum import Enum
 
-from pyrr import Matrix33
 
 from lib.commands.util import Util
 from lib.math.matrix.matrix3 import Matrix3

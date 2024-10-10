@@ -2,7 +2,7 @@ from lib.commands.util.supplier import Supplier
 from lib.serialization.ops import DynamicOps
 
 
-class Keyable():
+class Keyable:
     def keys[T](self, ops: DynamicOps[T]) -> list[T]:
         raise NotImplementedError()
 
