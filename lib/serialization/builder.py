@@ -84,7 +84,9 @@ class RecordBuidler[T]:
     class AbstractBuilder[T, R](RecordBuidler[T]):
         def __init__(self, ops: DynamicOps[T]) -> None:
             self.ops = ops
-            self.builder = DataResult.success(RecordBuidler.AbstractBuilder.initBuilder(), Lifecycle.STABLE)
+            self.builder = DataResult.success(
+                RecordBuidler.AbstractBuilder.initBuilder(), Lifecycle.STABLE
+            )
 
         def getOps(self) -> DynamicOps[T]:
             return self.ops

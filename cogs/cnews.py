@@ -11,7 +11,9 @@ from schemas.patch_note import PatchNote
 from schemas.version_manifest import VersionManifest
 
 JAVA_PATCH_NOTES = "https://launchercontent.mojang.com/javaPatchNotes.json"
-JAVA_VERSION_MANIFESTS = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
+JAVA_VERSION_MANIFESTS = (
+    "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
+)
 SPLIT_LINE = "--------------------------"
 
 
@@ -31,9 +33,14 @@ class CNews(commands.Cog):
                         if entry.version == version:
                             embed = discord.Embed(
                                 title=entry.title,
-                                description=md(entry.body[:4000]) + ("..." if len(entry.body) > 4000 else ""),
+                                description=md(entry.body[:4000])
+                                + ("..." if len(entry.body) > 4000 else ""),
                             )
-                            embed.set_thumbnail(url="https://launchercontent.mojang.com{}".format(entry.image.url))
+                            embed.set_thumbnail(
+                                url="https://launchercontent.mojang.com{}".format(
+                                    entry.image.url
+                                )
+                            )
                             await interaction.followup.send(embed=embed)
                             return
             await interaction.followup.send("バージョンが見つかりませんでした")
@@ -42,7 +49,9 @@ class CNews(commands.Cog):
 
     @app_commands.command(name="creference", description="更新情報を表示します")
     @app_commands.guild_only()
-    async def changelog(self, interaction: discord.Interaction, version: Optional[str] = ""):
+    async def changelog(
+        self, interaction: discord.Interaction, version: Optional[str] = ""
+    ):
         await interaction.response.defer()
         try:
             async with aiohttp.ClientSession() as client:
@@ -94,25 +103,31 @@ class CNews(commands.Cog):
                         )
                         latest_embed.add_field(
                             name="【English Wiki】",
-                            value="https://minecraft.wiki/w/Java_Edition_{}".format(clrv),
+                            value="https://minecraft.wiki/w/Java_Edition_{}".format(
+                                clrv
+                            ),
                             inline=False,
                         )
                         latest_embed.add_field(
                             name="【Japanese Wiki】",
-                            value="https://ja.minecraft.wiki/w/Java_Edition_{}".format(clrv),
+                            value="https://ja.minecraft.wiki/w/Java_Edition_{}".format(
+                                clrv
+                            ),
                             inline=False,
                         )
                     else:
                         if clrv.count(".") >= 1:
                             latest_embed.add_field(
                                 name="【English References】",
-                                value="https://www.minecraft.net/en-us/article/minecraft-java-edition-" + cclrv,
+                                value="https://www.minecraft.net/en-us/article/minecraft-java-edition-"
+                                + cclrv,
                                 inline=False,
                             )
                         else:
                             latest_embed.add_field(
                                 name="【English References】",
-                                value="https://www.minecraft.net/en-us/article/minecraft-snapshot-" + cclrv,
+                                value="https://www.minecraft.net/en-us/article/minecraft-snapshot-"
+                                + cclrv,
                                 inline=False,
                             )
                         latest_embed.add_field(

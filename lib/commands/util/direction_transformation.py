@@ -116,24 +116,33 @@ class DirectionTransformation(Enum):
             for directionTransformation2 in DirectionTransformation.values():
                 booleanList = directionTransformation.getAxisFlips()
                 booleanList2 = directionTransformation2.getAxisFlips()
-                axisTransformation = directionTransformation2.axisTransformation.prepend(
-                    directionTransformation.axisTransformation
+                axisTransformation = (
+                    directionTransformation2.axisTransformation.prepend(
+                        directionTransformation.axisTransformation
+                    )
                 )
                 booleanArrayList = list()
 
                 for i in range(3):
                     booleanArrayList.append(
-                        booleanList[i] ^ booleanList2[directionTransformation.axisTransformation.map(i)]
+                        booleanList[i]
+                        ^ booleanList2[
+                            directionTransformation.axisTransformation.map(i)
+                        ]
                     )
-                directionTransformations[directionTransformation.ordinal()][directionTransformation2.ordinal()] = (
-                    mapping.get(Pair.of(axisTransformation, booleanArrayList))
-                )
+                directionTransformations[directionTransformation.ordinal()][
+                    directionTransformation2.ordinal()
+                ] = mapping.get(Pair.of(axisTransformation, booleanArrayList))
 
     @staticmethod
     @property
     def INVERSES():
         def _map(directionTransformation: DirectionTransformation):
-            return [d for d in directionTransformation.values() if d.prepend(d) == DirectionTransformation.IDENTITY]
+            return [
+                d
+                for d in directionTransformation.values()
+                if d.prepend(d) == DirectionTransformation.IDENTITY
+            ]
 
         return map(_map, DirectionTransformation.values())
 
@@ -150,7 +159,9 @@ class DirectionTransformation(Enum):
         self.flipY = flipY
         self.flipZ = flipZ
         self.axisTransformation = axisTransformation
-        self.matrix = Matrix3().scaling(-1.0 if flipX else 1.0, -1.0 if flipY else 1.0, -1.0 if flipZ else 1.0)
+        self.matrix = Matrix3().scaling(
+            -1.0 if flipX else 1.0, -1.0 if flipY else 1.0, -1.0 if flipZ else 1.0
+        )
         self.matrix.mulSelf(axisTransformation.getMatrix())
 
     def getAxisFlips(self):
@@ -177,7 +188,11 @@ class DirectionTransformation(Enum):
                 axis = direction2.getAxis()
                 axisDirection = direction2.getDirection()
                 axis2 = axiss[self.axisTransformation.map(axis.ordinal())]
-                axisDirection2 = axisDirection.getOpposite() if self.shouldFlipDirection(axis2) else axisDirection
+                axisDirection2 = (
+                    axisDirection.getOpposite()
+                    if self.shouldFlipDirection(axis2)
+                    else axisDirection
+                )
                 direction3 = Direction.fromAxis(axis2, axisDirection2)
                 self.mappings[direction2] = direction3
 

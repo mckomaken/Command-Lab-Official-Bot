@@ -27,10 +27,16 @@ class CTemplate(commands.Cog):
         ):
             try:
                 if "https://discord.com/channels/" in message.content:
-                    link = message.content.split("https://discord.com/channels/")[1].split(" ")[0].split("\n")[0]
+                    link = (
+                        message.content.split("https://discord.com/channels/")[1]
+                        .split(" ")[0]
+                        .split("\n")[0]
+                    )
                 elif "https://canary.discord.com/channels/" in message.content:
                     link = (
-                        message.content.split("https://canary.discord.com/channels/")[1].split(" ")[0].split("\n")[0]
+                        message.content.split("https://canary.discord.com/channels/")[1]
+                        .split(" ")[0]
+                        .split("\n")[0]
                     )
 
                 guild_id, channel_id, message_id = map(int, link.split("/"))
@@ -48,28 +54,38 @@ class CTemplate(commands.Cog):
 
             try:
                 # リンク先のメッセージオブジェクトを取得
-                target_channel = self.bot.get_guild(guild_id).get_channel_or_thread(channel_id)
+                target_channel = self.bot.get_guild(guild_id).get_channel_or_thread(
+                    channel_id
+                )
                 target_message = await target_channel.fetch_message(message_id)
 
                 # リンク先のメッセージオブジェクトから、メッセージの内容、送信者の名前とアイコンなどの情報を取得
                 content = target_message.content
                 author = target_message.author
                 name = author.name
-                icon_url = author.avatar.url if author.avatar else author.default_avatar.url
+                icon_url = (
+                    author.avatar.url if author.avatar else author.default_avatar.url
+                )
                 timestamp = target_message.created_at
-                target_message_link = f"https://discord.com/channels/{guild_id}/{channel_id}/{message_id}"
+                target_message_link = (
+                    f"https://discord.com/channels/{guild_id}/{channel_id}/{message_id}"
+                )
 
                 if content == "":
                     content = "本文なし"
 
                 # Embedオブジェクトを作成
-                embed = discord.Embed(description=content, color=0xFF8000, timestamp=timestamp)
+                embed = discord.Embed(
+                    description=content, color=0xFF8000, timestamp=timestamp
+                )
                 embed.set_author(name=name, icon_url=icon_url)
                 embed.set_footer(text=f"From #{target_message.channel}")
 
                 # 画像添付ファイルがある場合、最初の画像をEmbedに追加
                 if target_message.attachments:
-                    attachment = target_message.attachments[0]  # 最初の添付ファイルを取得
+                    attachment = target_message.attachments[
+                        0
+                    ]  # 最初の添付ファイルを取得
                     if any(
                         attachment.filename.lower().endswith(image_ext)
                         for image_ext in ["png", "jpg", "jpeg", "gif", "webp"]
@@ -85,7 +101,9 @@ class CTemplate(commands.Cog):
                         url=target_message_link,
                     )
                 )
-                delete_button = DeleteButton(label="削除", style=discord.ButtonStyle.gray)
+                delete_button = DeleteButton(
+                    label="削除", style=discord.ButtonStyle.gray
+                )
                 view.add_item(delete_button)
 
                 # EmbedとViewをメッセージとして送信

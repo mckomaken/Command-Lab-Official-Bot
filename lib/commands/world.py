@@ -16,7 +16,9 @@ class Biome:
 
 
 class BiomeStorage:
-    def getBiomeForNoiseGen(biomeX: int, biomeY: int, biomeZ: int) -> RegistryEntry[Biome]:
+    def getBiomeForNoiseGen(
+        biomeX: int, biomeY: int, biomeZ: int
+    ) -> RegistryEntry[Biome]:
         raise NotImplementedError()
 
 

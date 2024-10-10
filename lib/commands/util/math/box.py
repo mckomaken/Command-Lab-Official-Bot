@@ -29,7 +29,9 @@ class Box:
     maxY: float
     maxZ: float
 
-    def __init__(self, x1: float, y1: float, z1: float, x2: float, y2: float, z2: float):
+    def __init__(
+        self, x1: float, y1: float, z1: float, x2: float, y2: float, z2: float
+    ):
         self.minX = min(x1, x2)
         self.minY = min(y1, y2)
         self.minZ = min(z1, z2)
@@ -233,7 +235,9 @@ class Box:
         return self.offset(vec.x, vec.y, vec.z)
 
     def intersects(self, box: "Box"):
-        return self.intersects(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ)
+        return self.intersects(
+            box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ
+        )
 
     def intersects(self, minX, minY, minZ, maxX, maxY, maxZ):
         return (
@@ -262,7 +266,12 @@ class Box:
     @dispatch(float, float, float)
     def contains(self, x, y, z):
         return (
-            x >= self.minX and x < self.maxX and y >= self.minY and y < self.maxY and z >= self.minZ and z < self.maxZ
+            x >= self.minX
+            and x < self.maxX
+            and y >= self.minY
+            and y < self.maxY
+            and z >= self.minZ
+            and z < self.maxZ
         )
 
     def getAverageSideLength(self):
@@ -310,7 +319,9 @@ class Box:
         f = to.z - fro.z
 
         for box in boxes:
-            direction = self.traceCollisionSide(box.offset(pos), fro, ds, direction, d, e, f)
+            direction = self.traceCollisionSide(
+                box.offset(pos), fro, ds, direction, d, e, f
+            )
 
         if direction is None:
             return None

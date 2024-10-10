@@ -1,5 +1,5 @@
 from codecs import Codec
 
 
-class ComponentType[T]():
+class ComponentType[T]:
     pass

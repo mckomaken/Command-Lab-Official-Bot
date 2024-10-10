@@ -16,15 +16,21 @@ INVALID_ITEM_ID_EXCEPTION = DynamicCommandExceptionType(
 UNKNOWN_COMPONENT_EXCEPTION = DynamicCommandExceptionType(
     lambda id: Text.stringifiedTranslatable("arguments.item.component.unknown", [id])
 )
-COMPONENT_EXPECTED_EXCEPTION = SimpleCommandExceptionType(Text.translatable("arguments.item.component.expected"))
+COMPONENT_EXPECTED_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("arguments.item.component.expected")
+)
 REPEATED_COMPONENT_EXCEPTION = DynamicCommandExceptionType(
-    lambda type: Text.stringifiedTranslatable("arguments.item.component.repeated", [type])
+    lambda type: Text.stringifiedTranslatable(
+        "arguments.item.component.repeated", [type]
+    )
 )
 MALFORMED_ITEM_EXCEPTION = DynamicCommandExceptionType(
     lambda error: Text.stringifiedTranslatable("arguments.item.malformed", [error])
 )
 MALFORMED_COMPONENT_EXCEPTION = DynamicCommandExceptionType(
-    lambda type, error: Text.stringifiedTranslatable("arguments.item.component.malformed", [type, error])
+    lambda type, error: Text.stringifiedTranslatable(
+        "arguments.item.component.malformed", [type, error]
+    )
 )
 
 OPEN_SQUARE_BRACKET = "["
@@ -54,14 +60,18 @@ class ItemArgumentType(ArgumentType[str]):
         d = reader.string[start : reader.cursor]
         return d
 
-    async def listSuggestions[S](self, context: CommandContext[S], builder: SuggestionsBuilder):
+    async def listSuggestions[S](
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ):
         return Suggestions.EMPTY
 
     def getExamples(self):
         result = []
         with open("./minecraft_data/data/dataPaths.json") as fp:
             dataPath = DataPaths.model_validate_json(fp.read())
-            with open("./minecraft_data/data/" + dataPath.pc["1.20.4"].items + "/items.json") as fp2:
+            with open(
+                "./minecraft_data/data/" + dataPath.pc["1.20.4"].items + "/items.json"
+            ) as fp2:
                 items = Items.model_validate_json(fp2.read())
                 for item in items.root:
                     result.append(f"minecraft:{item.name}")

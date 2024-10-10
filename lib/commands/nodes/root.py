@@ -22,7 +22,9 @@ class RootCommandNode(CommandNode[S]):
     def isValidInput(self, input: str):
         return False
 
-    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    async def listSuggestions(
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ) -> Suggestions:
         return Suggestions.empty()
 
     def __str__(self) -> str:

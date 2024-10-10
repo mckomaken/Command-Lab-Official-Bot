@@ -39,7 +39,9 @@ class CommandNode[S]:
         self.modifier = modifier
         self.forks = forks
 
-    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    async def listSuggestions(
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ) -> Suggestions:
         raise NotImplementedError()
 
     def getRelevantNodes(self, input: StringReader) -> list["CommandNode[S]"]:
@@ -76,7 +78,9 @@ class CommandNode[S]:
         from lib.commands.nodes.root import RootCommandNode
 
         if isinstance(node, RootCommandNode):
-            raise ValueError("Cannot add a RootCommandNode as a child to any other CommandNode")
+            raise ValueError(
+                "Cannot add a RootCommandNode as a child to any other CommandNode"
+            )
 
         child = self.children.get(node.getName())
         if child is not None:

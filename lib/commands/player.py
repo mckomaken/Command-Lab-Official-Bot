@@ -24,7 +24,9 @@ class GameProfile:
 class PlayerEntity(LivingEntity):
     gameProfile: GameProfile
 
-    def __init__(self, world: World, pos: BlockPos, yaw: float, gameProfile: GameProfile):
+    def __init__(
+        self, world: World, pos: BlockPos, yaw: float, gameProfile: GameProfile
+    ):
         super().__init__(EntityType.PLAYER, world)
         self.world = world
         self.uuid = gameProfile.getId()

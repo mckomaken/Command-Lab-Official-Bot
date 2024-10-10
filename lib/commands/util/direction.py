@@ -52,7 +52,11 @@ class AxisDirection(Enum):
         self.description = description
 
     def getOpposite(self):
-        return AxisDirection.POSITIVE if self == AxisDirection.NEGATIVE else AxisDirection.NEGATIVE
+        return (
+            AxisDirection.POSITIVE
+            if self == AxisDirection.NEGATIVE
+            else AxisDirection.NEGATIVE
+        )
 
     def __str__(self) -> str:
         return self.description
@@ -134,11 +138,19 @@ class Direction(Enum):
     def getLookDirectionForAxis(entity: Entity, axis: Axis) -> Self:
         match axis.ordinal():
             case 0:
-                return Direction.EAST if Direction.EAST.pointsTo(entity.getYaw(1.0)) else Direction.WEST
+                return (
+                    Direction.EAST
+                    if Direction.EAST.pointsTo(entity.getYaw(1.0))
+                    else Direction.WEST
+                )
             case 1:
                 return Direction.UP if entity.getPitch(1.0) < 0.0 else Direction.DOWN
             case 2:
-                return Direction.SOUTH if Direction.SOUTH.pointsTo(entity.getYaw(1.0)) else Direction.NORTH
+                return (
+                    Direction.SOUTH
+                    if Direction.SOUTH.pointsTo(entity.getYaw(1.0))
+                    else Direction.NORTH
+                )
             case _:
                 raise ValueError()
 
@@ -148,20 +160,44 @@ class Direction(Enum):
     def rotateClockwise(self, axis: Axis):
         match axis.ordinal():
             case 0:
-                return self.rotateXClockwise() if self != Direction.WEST and self != Direction.EAST else self
+                return (
+                    self.rotateXClockwise()
+                    if self != Direction.WEST and self != Direction.EAST
+                    else self
+                )
             case 1:
-                return self.rotateYClockwise() if self != Direction.UP and self != Direction.DOWN else self
+                return (
+                    self.rotateYClockwise()
+                    if self != Direction.UP and self != Direction.DOWN
+                    else self
+                )
             case 2:
-                return self.rotateZClockwise() if self != Direction.NORTH and self != Direction.SOUTH else self
+                return (
+                    self.rotateZClockwise()
+                    if self != Direction.NORTH and self != Direction.SOUTH
+                    else self
+                )
 
     def rotateCounterclockwise(self, axis: Axis):
         match axis.ordinal():
             case 0:
-                return self.rotateXCounterclockwise() if self != Direction.WEST and self != Direction.EAST else self
+                return (
+                    self.rotateXCounterclockwise()
+                    if self != Direction.WEST and self != Direction.EAST
+                    else self
+                )
             case 1:
-                return self.rotateYCounterclockwise() if self != Direction.UP and self != Direction.DOWN else self
+                return (
+                    self.rotateYCounterclockwise()
+                    if self != Direction.UP and self != Direction.DOWN
+                    else self
+                )
             case 2:
-                return self.rotateZCounterclockwise() if self != Direction.NORTH and self != Direction.SOUTH else self
+                return (
+                    self.rotateZCounterclockwise()
+                    if self != Direction.NORTH and self != Direction.SOUTH
+                    else self
+                )
 
     def rotateYClockwise(self):
         match self.ordinal():
@@ -299,11 +335,23 @@ class Direction(Enum):
     def fromAxis(axis: Axis, direction: AxisDirection):
         match axis.ordinal():
             case 0:
-                return Direction.EAST if direction == AxisDirection.POSITIVE else Direction.WEST
+                return (
+                    Direction.EAST
+                    if direction == AxisDirection.POSITIVE
+                    else Direction.WEST
+                )
             case 1:
-                return Direction.UP if direction == AxisDirection.POSITIVE else Direction.DOWN
+                return (
+                    Direction.UP
+                    if direction == AxisDirection.POSITIVE
+                    else Direction.DOWN
+                )
             case 2:
-                return Direction.SOUTH if direction == AxisDirection.POSITIVE else Direction.NORTH
+                return (
+                    Direction.SOUTH
+                    if direction == AxisDirection.POSITIVE
+                    else Direction.NORTH
+                )
             case _:
                 raise ValueError()
 
@@ -320,7 +368,11 @@ class Direction(Enum):
         f = -math.inf
 
         for direction2 in Direction:
-            g = x * direction2.vector.getX() + y * direction2.vector.getY() + z * direction2.vector.getZ()
+            g = (
+                x * direction2.vector.getX()
+                + y * direction2.vector.getY()
+                + z * direction2.vector.getZ()
+            )
             if g > f:
                 f = g
                 direction = direction2

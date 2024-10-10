@@ -80,7 +80,9 @@ class StringReader:
             return int(number)
         except Exception:
             self.cursor = start
-            raise BUILT_IN_EXCEPTIONS.reader_invalid_int().createWithContext(self, number)
+            raise BUILT_IN_EXCEPTIONS.reader_invalid_int().createWithContext(
+                self, number
+            )
 
     def read_long(self) -> int:
         return self.read_int()
@@ -98,7 +100,9 @@ class StringReader:
             return float(number)
         except Exception:
             self.cursor = start
-            raise BUILT_IN_EXCEPTIONS.reader_invalid_double().createWithContext(self, number)
+            raise BUILT_IN_EXCEPTIONS.reader_invalid_double().createWithContext(
+                self, number
+            )
 
     def readDouble(self):
         return self.read_float()
@@ -131,7 +135,9 @@ class StringReader:
 
         next = self.peek()
         if self.is_quoted_string_start(next):
-            raise BUILT_IN_EXCEPTIONS.reader_expected_start_of_quote().createWithContext(self)
+            raise BUILT_IN_EXCEPTIONS.reader_expected_start_of_quote().createWithContext(
+                self
+            )
 
         self.skip()
         return self.readStringUntil(next)
@@ -147,7 +153,9 @@ class StringReader:
                     escaped = False
                 else:
                     self.setCursor(self.getCursor() - 1)
-                    raise BUILT_IN_EXCEPTIONS.reader_invalid_escape().createWithContext(self, str(c))
+                    raise BUILT_IN_EXCEPTIONS.reader_invalid_escape().createWithContext(
+                        self, str(c)
+                    )
 
             elif c == SYNTAX_ESCAPE:
                 escaped = True
@@ -181,10 +189,14 @@ class StringReader:
             return False
         else:
             self.cursor = start
-            raise BUILT_IN_EXCEPTIONS.reader_invalid_bool().createWithContext(self, value)
+            raise BUILT_IN_EXCEPTIONS.reader_invalid_bool().createWithContext(
+                self, value
+            )
 
     def expect(self, c):
         if not self.canRead() or self.peek() != c:
-            raise BUILT_IN_EXCEPTIONS.reader_expected_symbol().createWithContext(self, str(c))
+            raise BUILT_IN_EXCEPTIONS.reader_expected_symbol().createWithContext(
+                self, str(c)
+            )
 
         self.skip()

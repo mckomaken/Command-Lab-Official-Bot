@@ -38,7 +38,9 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
             builder.withNode(self, StringRange(start, end))
             return
 
-        raise BUILT_IN_EXCEPTIONS.literal_incorrect().createWithContext(reader, self.literal)
+        raise BUILT_IN_EXCEPTIONS.literal_incorrect().createWithContext(
+            reader, self.literal
+        )
 
     def _parse(self, reader: StringReader) -> int:
         start: int = reader.getCursor()
@@ -52,7 +54,9 @@ class LiteralCommandNode(Generic[S], CommandNode[S]):
                     reader.setCursor(start)
         return -1
 
-    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    async def listSuggestions(
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ) -> Suggestions:
         if self.literalLowerCase.startswith(builder.remaining.lower()):
             return await builder.suggest(self.literal).build_async()
         else:

@@ -12,7 +12,9 @@ class ArgumentType(Generic[T]):
     def parse(self, reader: StringReader) -> T:
         raise NotImplementedError()
 
-    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder):
+    async def listSuggestions(
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ):
         return Suggestions.EMPTY
 
     def getExamples(self) -> list[str]:

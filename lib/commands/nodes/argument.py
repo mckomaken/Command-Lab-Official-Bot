@@ -30,7 +30,9 @@ class ArgumentCommandNode[S, T](CommandNode[S]):
         self.customSuggestions = customSuggestions
         self.children = dict()
 
-    async def listSuggestions(self, context: CommandContext[S], builder: SuggestionsBuilder) -> Suggestions:
+    async def listSuggestions(
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ) -> Suggestions:
         if self.customSuggestions is None:
             return await self.type.listSuggestions(context, builder)
         else:

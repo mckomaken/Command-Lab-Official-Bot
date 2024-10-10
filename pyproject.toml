@@ -39,6 +39,11 @@ dev-dependencies = [
     "pytest-asyncio>=0.24.0",
 ]
 
+[tool.rye.scripts]
+fmt = { chain = ["fmt:isort", "fmt:black"] }
+"fmt:isort" = "isort ."
+"fmt:black" = "black ."
+
 [tool.hatch.metadata]
 allow-direct-references = true
 

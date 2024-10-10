@@ -22,9 +22,13 @@ class AxisTransformation(Enum):
                     _is = list()
 
                     for i in range(3):
-                        _is[i] = axisTransformation.mappings[axisTransformation2.mappings[i]]
+                        _is[i] = axisTransformation.mappings[
+                            axisTransformation2.mappings[i]
+                        ]
 
-                    axisTransformation3 = [x for x in AxisTransformation if x.mappings == _is][0]
+                    axisTransformation3 = [
+                        x for x in AxisTransformation if x.mappings == _is
+                    ][0]
 
                     axisTransformations[axisTransformation.ordinal()][
                         axisTransformation2.ordinal()

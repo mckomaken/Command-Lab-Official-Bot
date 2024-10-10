@@ -29,7 +29,9 @@ class CHelpCog(commands.Cog):
                 cmds.append(cmd)
 
         for i in range(0, len(cmds), 5):
-            emb = discord.Embed(title="ヘルプ", timestamp=datetime.now(), color=0x00AA00)
+            emb = discord.Embed(
+                title="ヘルプ", timestamp=datetime.now(), color=0x00AA00
+            )
             for command in cmds[i : i + 5]:
                 c_name = "/" + command.qualified_name
                 c_desc = create_codeblock(command.description)
@@ -57,7 +59,9 @@ class CHelpCog(commands.Cog):
         pi1JST_time = datetime.now()
         text1 = f"{latency_tick}tick\n{latency_ms}ms"
 
-        ping1_embed = discord.Embed(title="現在のping", description=text1, color=0x400080, timestamp=pi1JST_time)
+        ping1_embed = discord.Embed(
+            title="現在のping", description=text1, color=0x400080, timestamp=pi1JST_time
+        )
 
         if count > 10:
             await interaction.response.send_message(

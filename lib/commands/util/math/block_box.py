@@ -20,7 +20,9 @@ class BlockBox:
     def fromBlockPos(pos: BlockPos):
         BlockBox(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ())
 
-    def __init__(self, minX: int, minY: int, minZ: int, maxX: int, maxY: int, maxZ: int):
+    def __init__(
+        self, minX: int, minY: int, minZ: int, maxX: int, maxY: int, maxZ: int
+    ):
         self.minX = minX
         self.minY = minY
         self.minZ = minZ
@@ -52,7 +54,9 @@ class BlockBox:
         return BlockBox(MIN_INT, MIN_INT, MIN_INT, MAX_INT, MAX_INT, MAX_INT)
 
     @staticmethod
-    def rotated(x, y, z, offsetX, offsetY, offsetZ, sizeX, sizeY, sizeZ, facing: Direction):
+    def rotated(
+        x, y, z, offsetX, offsetY, offsetZ, sizeX, sizeY, sizeZ, facing: Direction
+    ):
         match facing:
             case Direction.SOUTH, _:
                 return BlockBox(
@@ -102,7 +106,12 @@ class BlockBox:
         )
 
     def intersectsXZ(self, minX, minZ, maxX, maxZ):
-        return self.maxX >= minX and self.minX <= maxX and self.maxZ >= minZ and self.minZ <= maxZ
+        return (
+            self.maxX >= minX
+            and self.minX <= maxX
+            and self.maxZ >= minZ
+            and self.minZ <= maxZ
+        )
 
     @staticmethod
     def encompassPositions(positions: list[BlockPos]) -> Optional["BlockBox"]:
@@ -190,7 +199,9 @@ class BlockBox:
         )
 
     def getDimensions(self):
-        return Vec3i(self.maxX - self.minX, self.maxY - self.minY, self.maxZ - self.minZ)
+        return Vec3i(
+            self.maxX - self.minX, self.maxY - self.minY, self.maxZ - self.minZ
+        )
 
     def getBlockCountX(self):
         return self.maxX - self.minX + 1

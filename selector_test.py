@@ -18,7 +18,12 @@ from lib.commands.entity import Entity, EntityType
 from lib.commands.nodes import CommandNode
 from lib.commands.output import CommandOutput
 from lib.commands.reader import StringReader
-from lib.commands.schemas.data import ArgumentParser, DataPaths, EntityArgumentModifier, parse_command
+from lib.commands.schemas.data import (
+    ArgumentParser,
+    DataPaths,
+    EntityArgumentModifier,
+    parse_command,
+)
 from lib.commands.server import MinecraftServer
 from lib.commands.source import ServerCommandSource
 from lib.commands.types.boolean import BoolArgumentType
@@ -39,13 +44,20 @@ colorama.just_fix_windows_console()
 parsers = {}
 dispatcher = CommandDispatcher()
 
+
 async def load():
     global parsers, dispatcher
 
-    async with aiofiles.open("./minecraft_data/data/dataPaths.json", mode="rb") as datap:
-        cmds_path = DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
+    async with aiofiles.open(
+        "./minecraft_data/data/dataPaths.json", mode="rb"
+    ) as datap:
+        cmds_path = (
+            DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
+        )
 
-    async with aiofiles.open("./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb") as fp:
+    async with aiofiles.open(
+        "./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb"
+    ) as fp:
         raw = json.loads(await fp.read())
         cmds: list = raw["root"]["children"]
         _parsers: list = raw["parsers"]
@@ -58,7 +70,9 @@ async def load():
 
         parsers[p.parser] = BaseParser(_parse, p.examples)
 
-    async def _rescusive(builder: Optional[LiteralArgumentBuilder], _cmd: dict) -> LiteralArgumentBuilder:
+    async def _rescusive(
+        builder: Optional[LiteralArgumentBuilder], _cmd: dict
+    ) -> LiteralArgumentBuilder:
         cmd = await parse_command(_cmd)
 
         if cmd.type == "literal":

@@ -35,7 +35,9 @@ async def setup():
 
     logger.info("バージョン情報をダウンロードしています...")
     async with aiohttp.ClientSession() as client:
-        async with client.get("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json") as resp1:
+        async with client.get(
+            "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
+        ) as resp1:
             logger.info("バージョン情報の取得が完了しました。")
             version_manifest = VersionManifest.model_validate(await resp1.json())
             logger.info("-------------------------------------------------")
@@ -65,12 +67,16 @@ async def setup():
                 logger.info("言語ファイルをダウンロードしています...")
                 async with client.get(url=game_package.assetIndex.url) as resp4:
                     asset_index = AssetIndex.model_validate(await resp4.json())
-                    lang_file_hash = asset_index.objects["minecraft/lang/ja_jp.json"].hash
+                    lang_file_hash = asset_index.objects[
+                        "minecraft/lang/ja_jp.json"
+                    ].hash
                     async with client.get(
                         f"https://resources.download.minecraft.net/{lang_file_hash[0:2]}/{lang_file_hash}"
                     ) as resp5:
                         async with aiofiles.open(
-                            os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"),
+                            os.path.join(
+                                os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"
+                            ),
                             mode="wb",
                         ) as fp2:
                             lang_data = await resp5.text()
@@ -79,13 +85,19 @@ async def setup():
                 logger.info("言語ファイルのダウンロードが完了しました!")
 
                 if os.path.exists(path):
-                    hash = hashlib.sha1(await (await aiofiles.open(path, mode="rb")).read()).hexdigest()
+                    hash = hashlib.sha1(
+                        await (await aiofiles.open(path, mode="rb")).read()
+                    ).hexdigest()
 
                     if hash == game_package.downloads.client.sha1:
-                        logger.info("client.jarは既にダウンロードされているため、ダウンロードをスキップします。")
+                        logger.info(
+                            "client.jarは既にダウンロードされているため、ダウンロードをスキップします。"
+                        )
                         return
                     else:
-                        logger.info("client.jarのハッシュがサーバー上と同期されていません! 再ダウンロードを行います。")
+                        logger.info(
+                            "client.jarのハッシュがサーバー上と同期されていません! 再ダウンロードを行います。"
+                        )
 
                 async with client.get(url=game_package.downloads.client.url) as resp3:
                     async with aiofiles.open(path, mode="wb") as fp:

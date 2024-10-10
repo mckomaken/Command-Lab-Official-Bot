@@ -9,7 +9,9 @@ from utils.util import create_codeblock
 
 class CBase64(app_commands.Group):
     def __init__(self, bot: commands.Bot):
-        super().__init__(name="cbase64", description="Base64のエンコード/デコードを行います")
+        super().__init__(
+            name="cbase64", description="Base64のエンコード/デコードを行います"
+        )
         self.bot = bot
 
     @app_commands.command(name="encode", description="Base64のエンコードを行います")

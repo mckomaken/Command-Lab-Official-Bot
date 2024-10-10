@@ -55,7 +55,11 @@ class CKill(commands.Cog):
         if 0 < count <= self.max_count:
             logs: list[str] = []
             for _ in range(count):
-                logs.append(self.generate_death_log(target_name, escape(interaction.user.display_name)))
+                logs.append(
+                    self.generate_death_log(
+                        target_name, escape(interaction.user.display_name)
+                    )
+                )
 
             await interaction.response.send_message(
                 "\n".join(logs).rstrip("\n"),
@@ -78,7 +82,9 @@ class CKill(commands.Cog):
                 for k, v in self.lang_data.items()
                 if "item.minecraft." in k and "_spawn_egg" in k
             ]
-            self.items = [v for k, v in self.lang_data.items() if "item.minecraft." in k]
+            self.items = [
+                v for k, v in self.lang_data.items() if "item.minecraft." in k
+            ]
 
 
 async def setup(bot: commands.Bot):

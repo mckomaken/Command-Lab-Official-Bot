@@ -15,11 +15,17 @@ class Angle:
         self.relative = relative
 
     def getAngle(self, source: ServerCommandSource):
-        return MathHelper.wrapDegrees(self.angle + source.getRotation().y if self.relative else self.angle)
+        return MathHelper.wrapDegrees(
+            self.angle + source.getRotation().y if self.relative else self.angle
+        )
 
 
-INCOMPLETE_ANGLE_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.angle.incomplete"))
-INVALID_ANGLE_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.angle.invalid"))
+INCOMPLETE_ANGLE_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.angle.incomplete")
+)
+INVALID_ANGLE_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.angle.invalid")
+)
 
 
 class AngleArgumentType(ArgumentType[Angle]):
@@ -38,7 +44,11 @@ class AngleArgumentType(ArgumentType[Angle]):
             raise INCOMPLETE_ANGLE_EXCEPTION.createWithContext(reader)
         else:
             bl = CoordinateArgument.isRelative(reader)
-            f = reader.read_float() if reader.canRead() and reader.peek() != " " else 0.0
+            f = (
+                reader.read_float()
+                if reader.canRead() and reader.peek() != " "
+                else 0.0
+            )
             if not isnan(f) and not isfinite(f):
                 return Angle(f, bl)
             else:

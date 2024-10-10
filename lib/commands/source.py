@@ -35,9 +35,13 @@ def should_suggest(remaining: str, candinate: str):
 
 class CommandSource:
     @classmethod
-    async def suggest_identifiers(cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str):
+    async def suggest_identifiers(
+        cls, candinates: list[Identifier], builder: SuggestionsBuilder, prefix: str
+    ):
         string = builder.remaining.lower()
-        cls.for_each_matching(candinates, string, lambda id: id, lambda id: builder.suggest(str(id)))
+        cls.for_each_matching(
+            candinates, string, lambda id: id, lambda id: builder.suggest(str(id))
+        )
 
         return await builder.build_async()
 

@@ -193,16 +193,24 @@ class MutableBlockPos(BlockPos):
         return self.set(self.getX() + dx, self.getY() + dy, self.getZ() + dz)
 
     def move(self, vec: Vec3i):
-        return self.set(self.getX() + vec.getX(), self.getY() + vec.getY(), self.getZ() + vec.getZ())
+        return self.set(
+            self.getX() + vec.getX(), self.getY() + vec.getY(), self.getZ() + vec.getZ()
+        )
 
     def clamp(self, axis: Axis, min: int, max: int):
         match axis:
             case Axis.X:
-                return self.set(MathHelper.clamp(self.getX(), min, max), self.getY(), self.getZ())
+                return self.set(
+                    MathHelper.clamp(self.getX(), min, max), self.getY(), self.getZ()
+                )
             case Axis.Y:
-                return self.set(self.getX(), MathHelper.clamp(self.getY(), min, max), self.getZ())
+                return self.set(
+                    self.getX(), MathHelper.clamp(self.getY(), min, max), self.getZ()
+                )
             case Axis.Z:
-                return self.set(self.getX(), self.getY(), MathHelper.clamp(self.getZ(), min, max))
+                return self.set(
+                    self.getX(), self.getY(), MathHelper.clamp(self.getZ(), min, max)
+                )
 
     def setX(self, i: int):
         self.setX(i)

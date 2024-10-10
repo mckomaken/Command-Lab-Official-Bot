@@ -10,10 +10,14 @@ async def add_or_remove_role(roleId: int, interaction: Interaction):
     role = interaction.guild.get_role(roleId)
     if role in interaction.user.roles:
         await interaction.user.remove_roles(role)
-        await interaction.response.send_message(f"{role.mention} を解除しました", ephemeral=True)
+        await interaction.response.send_message(
+            f"{role.mention} を解除しました", ephemeral=True
+        )
     else:
         await interaction.user.add_roles(role)
-        await interaction.response.send_message(f"{role.mention} を付与しました", ephemeral=True)
+        await interaction.response.send_message(
+            f"{role.mention} を付与しました", ephemeral=True
+        )
 
 
 class CRoleRankButtons(View):  # コマンダーランク
@@ -208,7 +212,9 @@ class CRole(commands.Cog):
             inline=False,
         )
 
-        jebe_embed = discord.Embed(title="JE/BE・機種設定", description="ーーーーーーーーーー", color=0x3AFF11)
+        jebe_embed = discord.Embed(
+            title="JE/BE・機種設定", description="ーーーーーーーーーー", color=0x3AFF11
+        )
         jebe_embed.add_field(
             name="--【@JE(Java)勢】--",
             value="<:JE:892256704123772931>:Java Editionをプレイしてる人はこちら!",
@@ -266,7 +272,9 @@ class CRole(commands.Cog):
             inline=False,
         )
 
-        hoka_embed = discord.Embed(title="その他設定", description="ーーーーーーーーーー", color=0x3AFF11)
+        hoka_embed = discord.Embed(
+            title="その他設定", description="ーーーーーーーーーー", color=0x3AFF11
+        )
         hoka_embed.add_field(
             name="--【@通知ON】--",
             value="🔔:ゲームの勧誘などの通知が行っても大丈夫な方はこちら!",

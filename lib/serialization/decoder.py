@@ -1,9 +1,10 @@
 from lib.serialization.data_result import DataResult
+from lib.serialization.dynamic import Dynamic
 from lib.serialization.ops import DynamicOps
 from lib.util.functions.pair import Pair
 
 
-class Decoder[A]():
+class Decoder[A]:
     def decode[T](self, ops: DynamicOps[T], input: T) -> DataResult[Pair[A, T]]:
         raise NotImplementedError()
 

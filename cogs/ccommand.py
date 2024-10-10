@@ -79,7 +79,9 @@ class Identifier:
         return cont
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> CoreSchema:
+    def __get_pydantic_core_schema__(
+        cls, source_type, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
         return core_schema.no_info_after_validator_function(cls, handler(str))
 
 
@@ -108,7 +110,9 @@ class CCommandInfo(commands.Cog):
 
     @app_commands.command(name="ccommand", description="コマンドの情報を表示します")
     async def ccommand(self, interaction: discord.Interaction, command: str):
-        async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
+        async with aiofiles.open(
+            os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb"
+        ) as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
             if command not in data:
                 await interaction.response.send_message(
@@ -129,12 +133,16 @@ class CCommandInfo(commands.Cog):
             je_embed.set_author(name="Java Edition")
             je_embed.add_field(
                 name="使用法",
-                value=create_codeblock("/" + d.options.je if d.options.je != "-" else f"/{command}"),
+                value=create_codeblock(
+                    "/" + d.options.je if d.options.je != "-" else f"/{command}"
+                ),
                 inline=False,
             )
             je_embed.add_field(
                 name="例",
-                value=create_codeblock(d.exmp.je if d.exmp.je != "-" else f"/{command}"),
+                value=create_codeblock(
+                    d.exmp.je if d.exmp.je != "-" else f"/{command}"
+                ),
                 inline=False,
             )
 
@@ -148,12 +156,16 @@ class CCommandInfo(commands.Cog):
             be_embed.set_author(name="Bedrock Edition")
             be_embed.add_field(
                 name="使用法",
-                value=create_codeblock("/" + d.options.be if d.options.be != "-" else f"/{command}"),
+                value=create_codeblock(
+                    "/" + d.options.be if d.options.be != "-" else f"/{command}"
+                ),
                 inline=False,
             )
             be_embed.add_field(
                 name="例",
-                value=create_codeblock(d.exmp.be if d.exmp.be != "-" else f"/{command}"),
+                value=create_codeblock(
+                    d.exmp.be if d.exmp.be != "-" else f"/{command}"
+                ),
                 inline=False,
             )
 
@@ -164,16 +176,28 @@ class CCommandInfo(commands.Cog):
         await interaction.response.send_message(embed=(je_embed or be_embed), view=view)
 
     @ccommand.autocomplete("command")
-    async def ccommand_autocomplete(self, interaction: discord.Interaction, current: str):
-        async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
+    async def ccommand_autocomplete(
+        self, interaction: discord.Interaction, current: str
+    ):
+        async with aiofiles.open(
+            os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb"
+        ) as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
 
-            return [app_commands.Choice(name=k, value=k) for k in data.keys() if k.startswith(current)][:25]
+            return [
+                app_commands.Choice(name=k, value=k)
+                for k in data.keys()
+                if k.startswith(current)
+            ][:25]
 
-    @app_commands.command(name="crun", description="コマンドの実行結果をシミュレーションします")
+    @app_commands.command(
+        name="crun", description="コマンドの実行結果をシミュレーションします"
+    )
     async def crun(self, interaction: discord.Interaction, command: str):
         result = self.dispatcher.execute(command)
-        embed = discord.Embed(title="コマンド実行", description=create_codeblock(command))
+        embed = discord.Embed(
+            title="コマンド実行", description=create_codeblock(command)
+        )
         embed.add_field(name="結果", value=create_codeblock(result))
 
         await interaction.response.send_message(embed=embed)
@@ -203,15 +227,23 @@ class CCommandInfo(commands.Cog):
                     result.append(node.text)
                 except CommandSyntaxException as e:
                     return [app_commands.Choice(name=e, value=e)]
-            return [app_commands.Choice(name=f"{n} ", value=f"{n} ") for n in result][:25]
+            return [app_commands.Choice(name=f"{n} ", value=f"{n} ") for n in result][
+                :25
+            ]
         except Exception as e:
             traceback.print_exception(e)
 
     async def cog_load(self):
-        async with aiofiles.open("./minecraft_data/data/dataPaths.json", mode="rb") as datap:
-            cmds_path = DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
+        async with aiofiles.open(
+            "./minecraft_data/data/dataPaths.json", mode="rb"
+        ) as datap:
+            cmds_path = (
+                DataPaths.model_validate_json(await datap.read()).pc["1.20.4"].commands
+            )
 
-        async with aiofiles.open("./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb") as fp:
+        async with aiofiles.open(
+            "./minecraft_data/data/" + cmds_path + "/commands.json", mode="rb"
+        ) as fp:
             raw = json.loads(await fp.read())
             cmds: list = raw["root"]["children"]
             parsers: list = raw["parsers"]
@@ -228,13 +260,18 @@ class CCommandInfo(commands.Cog):
 
         self.dispatcher = CommandDispatcher()
 
-        async def _rescusive(builder: Optional[LiteralArgumentBuilder], _cmd: dict) -> LiteralArgumentBuilder:
+        async def _rescusive(
+            builder: Optional[LiteralArgumentBuilder], _cmd: dict
+        ) -> LiteralArgumentBuilder:
             cmd = await parse_command(_cmd)
             if isinstance(cmd, LiteralCommandEntry):
                 b = literal(cmd.name)
             if isinstance(cmd, ArgumentCommandEntry):
                 cmdp = cmd.parser
-                if cmdp.parser == "brigadier:integer" or cmdp.parser == "minecraft:time":
+                if (
+                    cmdp.parser == "brigadier:integer"
+                    or cmdp.parser == "minecraft:time"
+                ):
                     minimum = -2147483648
                     maximum = 2147483647
                     if cmdp.modifier is not None:
@@ -254,7 +291,10 @@ class CCommandInfo(commands.Cog):
                             elif cmdp.modifier["type"] == "word":
                                 parser = StringArgumentType.word()
 
-                elif cmdp.parser == "brigadier:double" or cmdp.parser == "brigadier:float":
+                elif (
+                    cmdp.parser == "brigadier:double"
+                    or cmdp.parser == "brigadier:float"
+                ):
                     minimum = -math.inf
                     maximum = math.inf
                     if cmdp.modifier is not None:

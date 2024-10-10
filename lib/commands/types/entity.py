@@ -12,12 +12,24 @@ from lib.commands.text import Text
 from lib.commands.types import ArgumentType
 from lib.util.functions.consumer import Consumer
 
-TOO_MANY_ENTITIES_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.toomany"))
-TOO_MANY_PLAYERS_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.player.toomany"))
-PLAYER_SELECTOR_HAS_ENTITIES_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.player.entities"))
-ENTITY_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.notfound.entity"))
-PLAYER_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.notfound.player"))
-NOT_ALLOWED_EXCEPTION = SimpleCommandExceptionType(Text.translatable("argument.entity.selector.not_allowed"))
+TOO_MANY_ENTITIES_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.entity.toomany")
+)
+TOO_MANY_PLAYERS_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.player.toomany")
+)
+PLAYER_SELECTOR_HAS_ENTITIES_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.player.entities")
+)
+ENTITY_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.entity.notfound.entity")
+)
+PLAYER_NOT_FOUND_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.entity.notfound.player")
+)
+NOT_ALLOWED_EXCEPTION = SimpleCommandExceptionType(
+    Text.translatable("argument.entity.selector.not_allowed")
+)
 
 
 class EntityArgumentType(ArgumentType[EntitySelector]):
@@ -49,15 +61,21 @@ class EntityArgumentType(ArgumentType[EntitySelector]):
         return EntityArgumentType(False, False)
 
     @staticmethod
-    def getEntities(context: CommandContext[ServerCommandSource], name: str) -> list[Entity]:
+    def getEntities(
+        context: CommandContext[ServerCommandSource], name: str
+    ) -> list[Entity]:
         return []
 
     @staticmethod
-    def getOptionalEntities(context: CommandContext[ServerCommandSource], name: str) -> list[Entity]:
+    def getOptionalEntities(
+        context: CommandContext[ServerCommandSource], name: str
+    ) -> list[Entity]:
         pass
 
     @staticmethod
-    def getOptionalPlayers(context: CommandContext[ServerCommandSource], name: str) -> list[Entity]:
+    def getOptionalPlayers(
+        context: CommandContext[ServerCommandSource], name: str
+    ) -> list[Entity]:
         pass
 
     @staticmethod
@@ -79,13 +97,19 @@ class EntityArgumentType(ArgumentType[EntitySelector]):
             else:
                 reader.setCursor(0)
                 raise TOO_MANY_ENTITIES_EXCEPTION.createWithContext(reader)
-        elif entitySelector.includesNonPlayers and self.playersOnly and not entitySelector.isSenderOnly():
+        elif (
+            entitySelector.includesNonPlayers
+            and self.playersOnly
+            and not entitySelector.isSenderOnly()
+        ):
             reader.setCursor(0)
             raise PLAYER_SELECTOR_HAS_ENTITIES_EXCEPTION.createWithContext(reader)
         else:
             return entitySelector
 
-    async def listSuggestions[S](self, context: CommandContext[S], builder: SuggestionsBuilder):
+    async def listSuggestions[S](
+        self, context: CommandContext[S], builder: SuggestionsBuilder
+    ):
         commandSource = context.getSource()
         if isinstance(commandSource, CommandSource):
             stringReader = StringReader(builder.getInput())
@@ -98,9 +122,15 @@ class EntityArgumentType(ArgumentType[EntitySelector]):
 
             def _consumer1(builderx: SuggestionsBuilder):
                 collection = commandSource.getPlayerNames()
-                iterable = collection if self.playersOnly else (collection + commandSource.getEntitySuggestions())
+                iterable = (
+                    collection
+                    if self.playersOnly
+                    else (collection + commandSource.getEntitySuggestions())
+                )
                 asyncio.create_task(CommandSource.suggestMatching(iterable, builderx))
 
-            return await entitySelectorReader.listSuggestions(builder, Consumer(_consumer1))
+            return await entitySelectorReader.listSuggestions(
+                builder, Consumer(_consumer1)
+            )
         else:
             return Suggestions.EMPTY

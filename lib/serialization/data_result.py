@@ -47,7 +47,9 @@ class DataResult[R]:
 
     @staticmethod
     @dispatch
-    def error[R](message: Supplier[str], partialResult: R, lifecycle: Lifecycle) -> DataResult[R]:
+    def error[R](
+        message: Supplier[str], partialResult: R, lifecycle: Lifecycle
+    ) -> DataResult[R]:
         return
 
     @staticmethod
@@ -95,9 +97,11 @@ class DataResult[R]:
     def map[T](self, function: Function[R, T]) -> DataResult[T]:
         raise NotImplementedError()
 
-    def mapOrElse[
-        T
-    ](self, successFunction: Function[R, T], errorFunction: Function[DataResult.Error[R], T],) -> T:
+    def mapOrElse[T](
+        self,
+        successFunction: Function[R, T],
+        errorFunction: Function[DataResult.Error[R], T],
+    ) -> T:
         raise NotImplementedError()
 
     def ifSuccess(self, ifSuccess: Consumer[R]) -> DataResult[R]:
@@ -161,9 +165,11 @@ class DataResult[R]:
         def map[T](self, function: Function[R, T]) -> DataResult[T]:
             return DataResult.Success(function.apply(self.value), self.lifecycle)
 
-        def mapOrElse[
-            T
-        ](self, successFunction: Function[R, T], errorFunction: Function[DataResult.Error[R], T],) -> T:
+        def mapOrElse[T](
+            self,
+            successFunction: Function[R, T],
+            errorFunction: Function[DataResult.Error[R], T],
+        ) -> T:
             return successFunction.apply(self.value)
 
         def ifSuccess(self, ifSuccess: Consumer[R]) -> DataResult[R]:
@@ -229,9 +235,13 @@ class DataResult[R]:
         def map[T](self, function: Callable[[R], T]) -> DataResult.Error[T]:
             if self.partialValue.isEmpty():
                 return self
-            return DataResult.Error(self.messageSupplier, self.partialValue.map(function), self.lifecycle)
+            return DataResult.Error(
+                self.messageSupplier, self.partialValue.map(function), self.lifecycle
+            )
 
-        def mapOrElse[T](self, successFunction: Function[R, T], errorFunction: Function[R, T]) -> T:
+        def mapOrElse[T](
+            self, successFunction: Function[R, T], errorFunction: Function[R, T]
+        ) -> T:
             return errorFunction.apply(self)
 
         def ifSuccess(self, ifSuccess: Consumer[R]) -> DataResult[R]:
@@ -248,10 +258,14 @@ class DataResult[R]:
             second = function.apply(self.partialValue.get())
             combinedLifecycle = self.lifecycle.add(second.getLifecycle())
             if isinstance(second, DataResult.Success):
-                return DataResult.Error(self.messageSupplier, Optional.of(second.value), combinedLifecycle)
+                return DataResult.Error(
+                    self.messageSupplier, Optional.of(second.value), combinedLifecycle
+                )
             elif isinstance(second, DataResult.Error):
                 return DataResult.Error(
-                    lambda _: DataResult.appendMessages(self.messageSupplier.get(), second.messageSupplier.get())
+                    lambda _: DataResult.appendMessages(
+                        self.messageSupplier.get(), second.messageSupplier.get()
+                    )
                 )
             else:
                 raise ValueError()

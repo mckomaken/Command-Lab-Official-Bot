@@ -18,6 +18,7 @@ from lib.commands.world import ServerWorld, World
 async def test_1():
     await loader.init()
 
+
 @pytest.mark.asyncio
 async def test_2():
     dispatcher = CommandDispatcher()
@@ -34,7 +35,6 @@ async def test_2():
         False,
         print,
     )
-
 
     dispatcher.parse(StringReader("give @s stone"), copy.deepcopy(source))
     dispatcher.parse(StringReader("clear @a"), copy.deepcopy(source))

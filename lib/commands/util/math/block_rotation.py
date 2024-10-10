@@ -23,7 +23,9 @@ class BlockRotation(Enum):
     def ordinal(self):
         return self._ordinal
 
-    def __init__(self, ordinal: int, id: str, directionTransformation: DirectionTransformation):
+    def __init__(
+        self, ordinal: int, id: str, directionTransformation: DirectionTransformation
+    ):
         self._ordinal = ordinal
         self.id = id
         self.directionTransformation = directionTransformation

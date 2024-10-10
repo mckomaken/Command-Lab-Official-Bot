@@ -27,10 +27,14 @@ class CItem(commands.Cog):
             dataPath = DataPaths.model_validate_json(await fp.read())
 
             async with aiofiles.open(
-                "./minecraft_data/data/" + dataPath.pc[config.latest_version].items + "/items.json"
+                "./minecraft_data/data/"
+                + dataPath.pc[config.latest_version].items
+                + "/items.json"
             ) as fp:
                 async with aiofiles.open(
-                    "./minecraft_data/data/" + dataPath.pc[config.latest_version].blocks + "/blocks.json"
+                    "./minecraft_data/data/"
+                    + dataPath.pc[config.latest_version].blocks
+                    + "/blocks.json"
                 ) as fp2:
                     items = Items.model_validate_json(await fp.read())
                     blocks = Blocks.model_validate_json(await fp2.read())
@@ -43,7 +47,9 @@ class CItem(commands.Cog):
                             )
 
                             async with aiofiles.open(
-                                os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"),
+                                os.path.join(
+                                    os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"
+                                ),
                                 mode="rb",
                             ) as lang_fp:
                                 with zipfile.ZipFile(
@@ -55,8 +61,12 @@ class CItem(commands.Cog):
                                     tn = "item" if is_item else "block"
                                     lang_data = json.loads(await lang_fp.read())
                                     lang_text = lang_data[f"{tn}.minecraft.{item.name}"]
-                                    with zipfp.open(f"assets/minecraft/textures/{tn}/{id}.png") as imgfp:
-                                        img = Image.open(imgfp).resize((256, 256), Image.Resampling.NEAREST)
+                                    with zipfp.open(
+                                        f"assets/minecraft/textures/{tn}/{id}.png"
+                                    ) as imgfp:
+                                        img = Image.open(imgfp).resize(
+                                            (256, 256), Image.Resampling.NEAREST
+                                        )
                                         streamimg = io.BytesIO()
                                         img.save(streamimg, "WEBP")
                                         file = discord.File(
@@ -66,7 +76,9 @@ class CItem(commands.Cog):
                                         files = [file]
                                         embed = discord.Embed(
                                             title=lang_text,
-                                            description=create_codeblock("minecraft:" + item.name),
+                                            description=create_codeblock(
+                                                "minecraft:" + item.name
+                                            ),
                                             timestamp=datetime.now(),
                                         )
                                         embed.add_field(
@@ -78,11 +90,15 @@ class CItem(commands.Cog):
                                             if block.boundingBox != "empty":
                                                 embed.add_field(
                                                     name="爆破耐性",
-                                                    value=create_codeblock(block.resistance),
+                                                    value=create_codeblock(
+                                                        block.resistance
+                                                    ),
                                                 )
                                                 embed.add_field(
                                                     name="硬度",
-                                                    value=create_codeblock(block.hardness),
+                                                    value=create_codeblock(
+                                                        block.hardness
+                                                    ),
                                                 )
 
                                             if block.material == "mineable/pickaxe":
@@ -121,15 +137,29 @@ class CItem(commands.Cog):
                                                     value=create_codeblock("素手"),
                                                 )
 
-                                            di_imgs = Image.new("RGBA", (1000, 64), 0x000000FF)
+                                            di_imgs = Image.new(
+                                                "RGBA", (1000, 64), 0x000000FF
+                                            )
                                             for d in block.drops:
                                                 if drop_item := next(
-                                                    iter([di for di in items.root if di.id == d]),
+                                                    iter(
+                                                        [
+                                                            di
+                                                            for di in items.root
+                                                            if di.id == d
+                                                        ]
+                                                    ),
                                                     None,
                                                 ):
-                                                    di_is_item = drop_item.name not in [b.name for b in blocks.root]
+                                                    di_is_item = drop_item.name not in [
+                                                        b.name for b in blocks.root
+                                                    ]
                                                     ci = 8
-                                                    di_typename = "item" if di_is_item else "block"
+                                                    di_typename = (
+                                                        "item"
+                                                        if di_is_item
+                                                        else "block"
+                                                    )
                                                     with zipfp.open(
                                                         f"assets/minecraft/textures/{di_typename}/{drop_item.name}.png"
                                                     ) as imgfp2:
@@ -154,14 +184,22 @@ class CItem(commands.Cog):
                                                 value="",
                                                 inline=False,
                                             )
-                                            embed.set_image(url=f"attachment://{id}_loot.webp")
+                                            embed.set_image(
+                                                url=f"attachment://{id}_loot.webp"
+                                            )
 
-                                        embed.set_thumbnail(url=f"attachment://{id}.webp")
+                                        embed.set_thumbnail(
+                                            url=f"attachment://{id}.webp"
+                                        )
 
-                                        typename_jp = "アイテム" if is_item else "ブロック"
+                                        typename_jp = (
+                                            "アイテム" if is_item else "ブロック"
+                                        )
                                         embed.set_author(name=typename_jp)
 
-                                        await interaction.response.send_message(embed=embed, files=files)
+                                        await interaction.response.send_message(
+                                            embed=embed, files=files
+                                        )
                             return
 
 

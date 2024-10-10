@@ -31,7 +31,9 @@ class CommandDispatcher:
     def __init__(self) -> None:
         self.root = RootCommandNode()
 
-    async def getCompletionSuggestions(self, parse: ParseResults[S], cursor: int = None) -> Suggestions:
+    async def getCompletionSuggestions(
+        self, parse: ParseResults[S], cursor: int = None
+    ) -> Suggestions:
         if cursor is None:
             cursor = parse.getReader().getTotalLength()
 
@@ -98,11 +100,15 @@ class CommandDispatcher:
                     if isinstance(e, CommandSyntaxException):
                         raise e
                     else:
-                        raise BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(reader, str(e))
+                        raise BUILT_IN_EXCEPTIONS.dispatcher_parse_expection().createWithContext(
+                            reader, str(e)
+                        )
 
                 if reader.canRead():
                     if reader.peek() != ARGUMENT_SEPARATOR:
-                        raise BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(reader)
+                        raise BUILT_IN_EXCEPTIONS.dispatcher_expected_argument_separator().createWithContext(
+                            reader
+                        )
             except CommandSyntaxException as ex:
                 if errors is None:
                     errors = dict()
@@ -114,10 +120,14 @@ class CommandDispatcher:
             if reader.canRead(2 if child.redirect is None else 1):
                 reader.skip()
                 if child.redirect is not None:
-                    childContext = CommandContextBuilder[S](self, source, child.getRedirect(), reader.getCursor())
+                    childContext = CommandContextBuilder[S](
+                        self, source, child.getRedirect(), reader.getCursor()
+                    )
                     parse = self.parseNodes(child.redirect, reader, childContext)
                     context.withChild(parse.context)
-                    return ParseResults(context, parse.getReader(), parse.getExceptions())
+                    return ParseResults(
+                        context, parse.getReader(), parse.getExceptions()
+                    )
                 else:
                     parse = self.parseNodes(child, reader, context)
                     if potentials is None:
@@ -145,7 +155,9 @@ class CommandDispatcher:
                 potentials.sort(key=functools.cmp_to_key(_cmp))
             return potentials[0]
 
-        return ParseResults(contextSoFar, originalReader, dict() if errors is None else errors)
+        return ParseResults(
+            contextSoFar, originalReader, dict() if errors is None else errors
+        )
 
     def register(self, command: LiteralArgumentBuilder[S]) -> LiteralCommandNode[S]:
         build = command.build()

@@ -48,11 +48,17 @@ class FeatureSet:
 
     @staticmethod
     def of(feature1: FeatureFlag, *features: FeatureFlag):
-        m = feature1 if len(features) == 0 else FeatureSet.combineMask(feature1.universe, feature1.mask, features)
+        m = (
+            feature1
+            if len(features) == 0
+            else FeatureSet.combineMask(feature1.universe, feature1.mask, features)
+        )
         return FeatureSet(feature1.universe, m)
 
     @staticmethod
-    def combineMask(universe: FeatureUniverse, featuresMask: int, newFeatures: list[FeatureFlag]) -> int:
+    def combineMask(
+        universe: FeatureUniverse, featuresMask: int, newFeatures: list[FeatureFlag]
+    ) -> int:
         for featureFlag in newFeatures:
             if universe != featureFlag.universe:
                 raise TypeError(
@@ -80,7 +86,11 @@ class FeatureSet:
             return (self.featuresMask & ~features.featuresMask) == 0
 
     def intersects(self, features: "FeatureSet"):
-        if self.universe is not None and features.universe is not None and self.universe == features.universe:
+        if (
+            self.universe is not None
+            and features.universe is not None
+            and self.universe == features.universe
+        ):
             return (self.featuresMask & features.featuresMask) != 0
         else:
             return False

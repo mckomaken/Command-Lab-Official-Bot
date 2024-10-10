@@ -26,7 +26,9 @@ class HitResult:
 
 class BlockHitResult(HitResult):
     @dispatch(Vec3d, Direction, BlockPos, bool)
-    def __init__(self, pos: Vec3d, side: Direction, blockPos: BlockPos, insideBlock: bool) -> None:
+    def __init__(
+        self, pos: Vec3d, side: Direction, blockPos: BlockPos, insideBlock: bool
+    ) -> None:
         self.__init__(False, pos, side, blockPos, insideBlock)
 
     @dispatch(bool, Vec3d, Direction, BlockPos, bool)
@@ -45,10 +47,14 @@ class BlockHitResult(HitResult):
         self.insideBlock = insideBlock
 
     def withSide(self, side: Direction):
-        return BlockHitResult(self.missed, self.pos, side, self.blockPos, self.insideBlock)
+        return BlockHitResult(
+            self.missed, self.pos, side, self.blockPos, self.insideBlock
+        )
 
     def withBlockPos(self, blockPos: BlockPos):
-        return BlockHitResult(self.missed, self.pos, self.side, blockPos, self.insideBlock)
+        return BlockHitResult(
+            self.missed, self.pos, self.side, blockPos, self.insideBlock
+        )
 
     @staticmethod
     def createMissed(pos: Vec3d, side: Direction, blockPos: BlockPos):

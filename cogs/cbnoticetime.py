@@ -13,7 +13,9 @@ class CBnoticetime(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="cbnoticetime", description="【運営】再起動後の通知時間設定用")
+    @app_commands.command(
+        name="cbnoticetime", description="【運営】再起動後の通知時間設定用"
+    )
     @app_commands.describe(addminutes="入力分後に通知されます")
     @app_commands.checks.has_role(config.administrater_role_id)
     async def cbnoticetime(self, interaction: discord.Interaction, addminutes: int = 0):
@@ -39,7 +41,9 @@ class CBnoticetime(commands.Cog):
         )
         bump_embed.set_image(url="attachment://bump.png")
 
-        await interaction.response.send_message(f"{addminutes}分後({fScheduledTime}頃)に通知されます")
+        await interaction.response.send_message(
+            f"{addminutes}分後({fScheduledTime}頃)に通知されます"
+        )
         await asyncio.sleep(addminutes * 60)
         await notice_channel.send(embed=bump_embed, file=bump_file)
 
