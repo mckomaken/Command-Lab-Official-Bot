@@ -3,7 +3,10 @@ from typing import overload
 from plum import dispatch
 
 from lib.serialization.data_result import DataResult
+from lib.util.functions.consumer import BiConsumer, Consumer
+from lib.util.functions.pair import Pair
 from lib.util.number import Number
+from lib.util.stream import Stream
 
 
 class DynamicOps[T]:
@@ -65,3 +68,32 @@ class DynamicOps[T]:
 
     def mergeToMap(self, map: T, key: T, value: T):
         raise NotImplementedError()
+
+    def getStream(self, var1: T) -> DataResult[Stream[T]]:
+        raise NotImplementedError()
+
+    def getList(self, input: T) -> DataResult[Consumer[Consumer[T]]]:
+        def _(s: Stream[T]):
+            assert s is not None
+            return s.forEach
+
+        return self.getStream(input).map(_)
+
+    def createList(self, var1: Stream[T]) -> T:
+        raise NotImplementedError()
+
+    def compressMaps(self) -> bool:
+        return False
+
+    def getMapValues(self, var1: T) -> DataResult[Stream[Pair[T, T]]]:
+        raise NotImplementedError()
+
+    def getMap(self, input: T) -> DataResult[Consumer[BiConsumer[T, T]]]:
+        def _(s: Stream[Pair[T, T]]):
+            def __(c: BiConsumer[T, T]):
+                for p in s:
+                    c.accept(p.getLeft(), p.getRight())
+
+            return __
+
+        return self.getMapValues(input).map(_)

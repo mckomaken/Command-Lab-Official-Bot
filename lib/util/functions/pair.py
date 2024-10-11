@@ -16,5 +16,5 @@ class Pair[A, B]:
         self.right = right
 
     @staticmethod
-    def of(left: A, right: B):
+    def of[_A, _B](left: _A, right: _B):
         return Pair(left, right)

@@ -7,7 +7,6 @@
 #   all-features: false
 #   with-sources: false
 #   generate-hashes: false
-#   universal: false
 
 aiofiles==24.1.0
 aiohappyeyeballs==2.4.3
@@ -41,6 +40,7 @@ colorama==0.4.6
 discord==2.3.2
 discord-py==2.4.0
     # via discord
+fixedint==0.2.0
 flake8==7.0.0
     # via pyproject-flake8
 frozenlist==1.4.1
