@@ -3,7 +3,7 @@ from enum import Enum
 from lib.commands.util.axis_transformation import AxisTransformation
 from lib.commands.util.direction import Axis, Direction
 from lib.math.matrix.matrix3 import Matrix3
-from lib.util.functions.pair import Pair
+from lib.util.pair import Pair
 
 
 class DirectionTransformation(Enum):

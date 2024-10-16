@@ -1,13 +1,14 @@
 from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING
+
 from plum import dispatch
 
 from lib.serialization.data_result import DataResult
 from lib.serialization.ops import DynamicOps
 from lib.util.functions.function import Function
-from lib.util.functions.pair import Pair
 from lib.util.number import Number
 from lib.util.optional import Optional
+from lib.util.pair import Pair
 
 if TYPE_CHECKING:
     from lib.serialization.decoder import Decoder

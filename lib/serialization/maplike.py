@@ -1,5 +1,6 @@
 from plum import dispatch
-from lib.util.functions.pair import Pair
+
+from lib.util.pair import Pair
 
 
 class MapLike[T]:

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from lib.util.functions.consumer import Consumer
 from lib.util.functions.function import Function
 
@@ -7,7 +9,7 @@ class Optional[T]:
         self.value = value
 
     @staticmethod
-    def of[T](value: T) -> "Optional[T]":
+    def of[_T](value: _T) -> Optional[_T]:
         return Optional(value)
 
     @staticmethod

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Callable
 
 
@@ -5,12 +7,12 @@ class Supplier[T]:
     def __init__(self, cb: Callable[[], T]) -> None:
         self._cb = cb
 
-    @classmethod
-    def create(cls, supplier: T) -> "Supplier[T]":
-        def _c():
+    @staticmethod
+    def create[_T](supplier: _T) -> Supplier[_T]:
+        def _c() -> _T:
             return supplier
 
-        cls(_c)
+        return Supplier(_c)
 
     def get(self) -> T:
         return self._cb()

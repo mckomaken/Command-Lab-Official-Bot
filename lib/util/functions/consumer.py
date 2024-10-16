@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Callable
 
 
@@ -15,6 +17,36 @@ class BiConsumer[T, T2]:
 
     def accept(self, v: T, v2: T2):
         self._cb(v, v2)
+
+
+class IntConsumer:
+    def __init__(self, cb: Callable[[int], None]) -> None:
+        self._cb = cb
+
+    def accept(self, v: int):
+        self._cb(v)
+
+    def andThen(self, after: IntConsumer) -> IntConsumer:
+        def _(t: int):
+            self.accept(t)
+            after.accept(t)
+
+        return IntConsumer(_)
+
+
+class FloatConsumer:
+    def __init__(self, cb: Callable[[float], None]) -> None:
+        self._cb = cb
+
+    def accept(self, v: float):
+        self._cb(v)
+
+    def andThen(self, after: FloatConsumer) -> FloatConsumer:
+        def _(t: float):
+            self.accept(t)
+            after.accept(t)
+
+        return FloatConsumer(_)
 
 
 class ReturnValueConsumer:

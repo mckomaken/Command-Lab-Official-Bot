@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
-from fixedint import Int16, Int64, Int8, UInt16, UInt8
+
+from fixedint import Int8, Int16, Int64, UInt8, UInt16
 
 
 class DataInput(metaclass=ABCMeta):
@@ -8,7 +9,7 @@ class DataInput(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def skipBytes(n: int) -> int:
+    def skipBytes(self, n: int) -> int:
         pass
 
     @abstractmethod

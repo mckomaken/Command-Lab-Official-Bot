@@ -1,1 +1,2 @@
 class DataComponentTypes:
+    pass

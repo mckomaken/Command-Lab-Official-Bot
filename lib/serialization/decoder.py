@@ -1,7 +1,9 @@
 from __future__ import annotations
+
 from abc import ABCMeta, abstractmethod
 
 from plum import dispatch
+
 from lib.serialization.compressor import CompressorHolder, KeyCompressor
 from lib.serialization.data_result import DataResult
 from lib.serialization.dynamic import Dynamic
@@ -10,7 +12,7 @@ from lib.serialization.lifecycle import Lifecycle
 from lib.serialization.maplike import MapLike
 from lib.serialization.ops import DynamicOps
 from lib.util.functions.function import Function
-from lib.util.functions.pair import Pair
+from lib.util.pair import Pair
 
 
 class MapDecoder[A](Keyable, mataclass=ABCMeta):
@@ -123,6 +125,24 @@ class MapDecoder[A](Keyable, mataclass=ABCMeta):
             pass
 
 
+class FieldDecoder[A](MapDecoder.Implementation[A]):
+    name: str
+    elementCodec: Decoder[A]
+
+    def __init__(self, name: str, elementCodec: Decoder[A]) -> None:
+        self.name = name
+        self.elementCodec = elementCodec
+
+    def decode[T](self, ops: DynamicOps[T], input: MapLike[T]) -> DataResult[A]:
+        value = input.get(self.name)
+        if value is None:
+            return DataResult.error(lambda: f"No key {self.name} in {input}")
+        return self.elementCodec.parse(ops, value)
+
+    def keys[T](self, ops: DynamicOps[T]) -> list[T]:
+        return
+
+
 class Decoder[A]:
     def decode[T](self, ops: DynamicOps[T], input: T) -> DataResult[Pair[A, T]]:
         raise NotImplementedError()
@@ -131,4 +151,7 @@ class Decoder[A]:
         return self.decode(ops, input).map(lambda p: p.getLeft())
 
     def decodeDynamic[T](self, input: Dynamic[T]) -> DataResult[Pair[A, T]]:
-        return
+        return self.decode(input.getOps(), input.getValue())
+
+    def parseDynamic[T](self, input: Dynamic[T]) -> DataResult[A]:
+        return self.decodeDynamic(input).map(lambda p: p.getLeft())

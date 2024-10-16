@@ -32,3 +32,10 @@ class Math:
     @staticmethod
     def fma(a: float, b: float, c: float):
         return a * b + c
+
+    @staticmethod
+    def floorMod(x: int, y: int):
+        r = x % y
+        if (x ^ y) < 0 and r != 0:
+            return r + y
+        return r

@@ -4,8 +4,8 @@ from plum import dispatch
 
 from lib.serialization.data_result import DataResult
 from lib.util.functions.consumer import BiConsumer, Consumer
-from lib.util.functions.pair import Pair
 from lib.util.number import Number
+from lib.util.pair import Pair
 from lib.util.stream import Stream
 
 
