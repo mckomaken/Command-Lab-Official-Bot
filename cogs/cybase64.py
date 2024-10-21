@@ -56,4 +56,4 @@ class CYbase64(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(CYbase64(bot))
-    bot.add_view(UrlView())
+    bot.add_view(UrlView(bot))
