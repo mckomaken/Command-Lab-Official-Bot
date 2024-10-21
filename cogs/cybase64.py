@@ -34,8 +34,8 @@ class CYbase64(commands.Cog):
     @app_commands.command(name="cybase64", description="y談用のBase64変換です")
     @app_commands.describe(text="送信したい内容を書いてください")
     async def cybase64(self, interaction: discord.Interaction, text: str):
-        send_channel = await self.bot.fetch_channel(config.y_channel.channel_id)
-        admin_channel = await self.bot.fetch_channel(config.y_channel.admin_channel_id)
+        send_channel = await self.bot.fetch_channel(config.y_channel)
+        admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
         yembed = discord.Embed(
             color=0xd51ebe,
             title=interaction.user.display_name,

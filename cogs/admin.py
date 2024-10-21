@@ -17,6 +17,14 @@ DESCRIPTIONS = [
     "# v2.xにアップデートされました",
 ]
 
+LOTTERY_DESCRIPTION = """
+Discord Nitro 1ヶ月分を1名にプレゼント
+参加条件 : このサーバーに参加していること・下のボタンを押すこと
+任意条件 : 春菊のチャンネルとうろk((((殴殴
+-# 冗談です(笑)
+締め切り : "
+"""
+
 
 class CNoticeConfirm(discord.ui.View):
     def __init__(self, embed: discord.Embed):
@@ -29,6 +37,18 @@ class CNoticeConfirm(discord.ui.View):
         await interaction.channel.send(embed=self.embed)
 
 
+class LOttery(discord.ui.View):  # 抽選コマンド
+    def __init__(self, bot: commands.Bot):
+        super().__init__(timeout=None)
+        self.bot = bot
+
+    @discord.ui.button(label="応募")
+    async def pressedLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
+        send_channel = await self.bot.fetch_channel(config.lottery_channel)
+        await send_channel.send(f"応募者 : {interaction.user.display_name}\n```{interaction.user.id}```")
+        await interaction.response.send_message("応募されました。抽選開始までお待ちください。", ephemeral=True)
+
+
 class CAdminCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -39,6 +59,7 @@ class CAdminCog(commands.Cog):
         choice=[
             app_commands.Choice(name="高校おめ", value="cl1"),
             app_commands.Choice(name="大学おめ", value="cl2"),
+            app_commands.Choice(name="プレゼント企画", value="cl3"),
         ]
     )
     @app_commands.checks.has_role(config.administrater_role_id)
@@ -52,6 +73,15 @@ class CAdminCog(commands.Cog):
         elif choice.value == "cl2":
             await interaction.response.send_message(
                 embed=discord.Embed(title="大学合格おめでとうございます!!", color=0x2B9788)
+            )
+        elif choice.value == "cl3":
+            await interaction.response.send_message(
+                embed=discord.Embed(
+                    title="1500人到達プレゼント企画!!",
+                    description=LOTTERY_DESCRIPTION,
+                    color=0x2B9788
+                ),
+                view=LOttery()
             )
 
     @app_commands.command(name="cn", description="【運営】各種お知らせ用")

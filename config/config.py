@@ -28,7 +28,9 @@ class Config(BaseModel):
     owner_ids: list[int] = []
     prefix: Optional[str] = "cm!"
     question_channels: list[int] = []
-    y_channel: YChannel
+    y_channel: int
+    cmdbot_log: int
+    lottery_channel: int
 
 # -----------------------------------------------------------
 
