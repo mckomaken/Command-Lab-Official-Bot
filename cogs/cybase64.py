@@ -12,7 +12,7 @@ class UrlView(discord.ui.View):
         super().__init__(timeout=None)
         self.text = text
 
-    @discord.ui.button(label="送信内容を見る", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="送信内容を見る", style=discord.ButtonStyle.red, custom_id="ydan")
     async def convert_title(
         self, interaction: discord.Interaction, item: discord.ui.Item
     ):
@@ -56,3 +56,4 @@ class CYbase64(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(CYbase64(bot))
+    bot.add_view(UrlView())

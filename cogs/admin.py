@@ -81,7 +81,7 @@ class CAdminCog(commands.Cog):
                     description=LOTTERY_DESCRIPTION,
                     color=0x2B9788
                 ),
-                view=LOttery()
+                view=LOttery(self.bot)
             )
 
     @app_commands.command(name="cn", description="【運営】各種お知らせ用")
