@@ -124,7 +124,7 @@ class CommandLabBot(commands.Bot):
             async def on_ready():
                 start_embed = discord.Embed(
                     title="BOTが起動しました！",
-                    description="BOT has been started!",
+                    description="BOT has been started!\n# プレゼント企画が開始されました",
                     color=0xFFD700,
                     timestamp=datetime.now(),
                 )
