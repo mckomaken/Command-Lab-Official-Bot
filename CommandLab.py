@@ -10,7 +10,7 @@ import discord
 import yaml
 from discord import app_commands
 from discord.abc import User
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 from config.config import config
 from utils.setup import setup, setup_mcdata
@@ -124,7 +124,7 @@ class CommandLabBot(commands.Bot):
             async def on_ready():
                 start_embed = discord.Embed(
                     title="BOTが起動しました！",
-                    description="BOT has been started!\n# プレゼント企画が開始されました",
+                    description="BOT has been started!",
                     color=0xFFD700,
                     timestamp=datetime.now(),
                 )
