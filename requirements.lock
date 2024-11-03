@@ -48,6 +48,7 @@ markdownify==0.13.1
 multidict==6.1.0
     # via aiohttp
     # via yarl
+pillow==11.0.0
 propcache==0.2.0
     # via yarl
 pycparser==2.22
