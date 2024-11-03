@@ -11,9 +11,10 @@ class CMee6level(commands.Cog):
     async def on_message(self, message: discord.Message):
         if "mee6level" in message.content:
             if message.channel.id in [config.mee6.botch]:  # 非公開mee6-level通知チャンネル
-                userid = message.content.split(",")[1]  # userid表示
-                username = message.content.split(",")[2]  # user名表示
-                level = message.content.split(",")[3]  # レベル
+                userid = int(message.content.split(",")[1])  # userid表示
+                username = str(message.content.split(",")[2])  # user名表示
+                level = int(message.content.split(",")[3])  # レベル
+                print(f"id{userid},name{username},lv{level}")
                 if (level % 50 == 0):
                     text = "# "
                 elif (level % 10 == 0):
