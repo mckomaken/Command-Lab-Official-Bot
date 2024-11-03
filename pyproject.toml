@@ -40,7 +40,7 @@ fmt = { chain = ["fmt:isort", "fmt:black"] }
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/command_lab_official_bot"]
+packages = ["."]
 
 [tool.isort]
 profile = "black"
