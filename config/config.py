@@ -17,6 +17,12 @@ class YChannel(BaseModel):
     admin_channel_id: int
 
 
+class MEe6(BaseModel):
+    botch: int
+    levelup: int
+    levelupnoticeoff: int
+
+
 class Config(BaseModel):
     token: str
     guild_id: int
@@ -31,6 +37,7 @@ class Config(BaseModel):
     y_channel: int
     cmdbot_log: int
     lottery_channel: int
+    mee6: MEe6
 
 # -----------------------------------------------------------
 
