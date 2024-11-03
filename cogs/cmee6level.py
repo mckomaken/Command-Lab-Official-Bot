@@ -9,7 +9,7 @@ class CMee6level(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
-        if "mee6level" in message.content.startswith:
+        if "mee6level" in message.content:
             if message.channel.id in [config.mee6.botch]:  # 非公開mee6-level通知チャンネル
                 userid = message.content.split(",")[1]  # userid表示
                 username = message.content.split(",")[2]  # user名表示
