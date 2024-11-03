@@ -40,7 +40,6 @@ class CItem(commands.Cog):
                     blocks = Blocks.model_validate_json(await fp2.read())
                     for item in items.root:
                         if item.name == id.replace("minecraft:", ""):
-
                             is_item = id not in [b.name for b in blocks.root]
                             block = next(
                                 iter([b for b in blocks.root if b.name == item.name]),
@@ -48,10 +47,16 @@ class CItem(commands.Cog):
                             )
 
                             async with aiofiles.open(
-                                os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"), mode="rb"
+                                os.path.join(
+                                    os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"
+                                ),
+                                mode="rb",
                             ) as lang_fp:
                                 with zipfile.ZipFile(
-                                    os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), f"client_{config.latest_version}.jar")
+                                    os.path.join(
+                                        os.getenv("TMP_DIRECTORY", "./.tmp"),
+                                        f"client_{config.latest_version}.jar",
+                                    )
                                 ) as zipfp:
                                     tn = "item" if is_item else "block"
                                     lang_data = json.loads(await lang_fp.read())
@@ -175,7 +180,9 @@ class CItem(commands.Cog):
                                             )
                                             files.append(file2)
                                             embed.add_field(
-                                                name="ドロップアイテム", value="", inline=False
+                                                name="ドロップアイテム",
+                                                value="",
+                                                inline=False,
                                             )
                                             embed.set_image(
                                                 url=f"attachment://{id}_loot.webp"
@@ -185,7 +192,9 @@ class CItem(commands.Cog):
                                             url=f"attachment://{id}.webp"
                                         )
 
-                                        typename_jp = "アイテム" if is_item else "ブロック"
+                                        typename_jp = (
+                                            "アイテム" if is_item else "ブロック"
+                                        )
                                         embed.set_author(name=typename_jp)
 
                                         await interaction.response.send_message(

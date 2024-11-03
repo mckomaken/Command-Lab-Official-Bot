@@ -41,30 +41,37 @@ class ConvertView(discord.ui.View):
 class CUnicode(app_commands.Group):
     def __init__(self, bot: commands.Bot):
         super().__init__(
-            name="cunicode", description="UNICODEエスケープシーケンスのエンコード/デコードをします。"
+            name="cunicode",
+            description="UNICODEエスケープシーケンスのエンコード/デコードをします。",
         )
         self.bot = bot
 
-    @app_commands.command(name="encode", description="UNICODEエスケープシーケンスのエンコードをします。")
+    @app_commands.command(
+        name="encode", description="UNICODEエスケープシーケンスのエンコードをします。"
+    )
     @app_commands.describe(text="エンコードする文字列")
     @app_commands.guild_only()
     async def unicode_encode(self, interaction: discord.Interaction, text: str):
         data = text.encode("unicode-escape").decode()
 
         embed = discord.Embed(
-            title="Unicodeエスケープシーケンス変換 - エンコード", description=create_codeblock(data)
+            title="Unicodeエスケープシーケンス変換 - エンコード",
+            description=create_codeblock(data),
         )
 
         await interaction.response.send_message(embed=embed, view=ConvertView(data))
 
-    @app_commands.command(name="decode", description="UNICODEエスケープシーケンスのデコードをします。")
+    @app_commands.command(
+        name="decode", description="UNICODEエスケープシーケンスのデコードをします。"
+    )
     @app_commands.describe(text="デコードする文字列")
     @app_commands.guild_only()
     async def unicode_decode(self, interaction: discord.Interaction, text: str):
         data = text.encode().decode("unicode-escape")
 
         embed = discord.Embed(
-            title="Unicodeエスケープシーケンス変換 - デコード", description=create_codeblock(data)
+            title="Unicodeエスケープシーケンス変換 - デコード",
+            description=create_codeblock(data),
         )
 
         await interaction.response.send_message(embed=embed)

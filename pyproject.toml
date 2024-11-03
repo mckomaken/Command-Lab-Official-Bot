@@ -1,0 +1,54 @@
+[project]
+name = "command-lab-official-bot"
+version = "0.1.0"
+description = "コマ研BOT"
+authors = [{ name = "ap12", email = "ap12@ap12.net" }]
+dependencies = [
+    "discord>=2.3.2",
+    "pydantic>=2.9.2",
+    "jishaku>=2.6.0",
+    "markdownify>=0.13.1",
+    "aiohttp>=3.10.10",
+    "aiofiles>=24.1.0",
+    "tqdm>=4.66.6",
+    "pygit2>=1.16.0",
+    "pyyaml>=6.0.2",
+    "lorem>=0.1.1",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+virtual = true
+dev-dependencies = [
+    "black>=24.10.0",
+    "isort>=5.13.2",
+    "pyproject-flake8>=7.0.0",
+]
+
+[tool.rye.scripts]
+fmt = { chain = ["fmt:isort", "fmt:black"] }
+"fmt:isort" = "isort ."
+"fmt:black" = "black ."
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/command_lab_official_bot"]
+
+[tool.isort]
+profile = "black"
+line_length = 119
+
+[tool.flake8]
+extend-ignore = "E203"
+max-line-length = 119
+
+[tool.black]
+line-length = 119

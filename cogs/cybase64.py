@@ -12,17 +12,14 @@ class UrlView(discord.ui.View):
         super().__init__(timeout=None)
         self.text = text
 
-    @discord.ui.button(label="送信内容を見る", style=discord.ButtonStyle.red, custom_id="ydan")
+    @discord.ui.button(
+        label="送信内容を見る", style=discord.ButtonStyle.red, custom_id="ydan"
+    )
     async def convert_title(
         self, interaction: discord.Interaction, item: discord.ui.Item
     ):
         await interaction.response.send_message(
-            embed=create_embed(
-                title="送信内容",
-                description=(
-                    f"{self.text}"
-                )
-            ),
+            embed=create_embed(title="送信内容", description=(f"{self.text}")),
             ephemeral=True,
         )
 
@@ -37,21 +34,23 @@ class CYbase64(commands.Cog):
         send_channel = await self.bot.fetch_channel(config.y_channel)
         admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
         yembed = discord.Embed(
-            color=0xd51ebe,
+            color=0xD51EBE,
             title=interaction.user.display_name,
             description=create_codeblock(base64.b64encode(text.encode()).decode()),
         )
         admin_embed = discord.Embed(
-            color=0xd51ebe,
+            color=0xD51EBE,
             title=interaction.user.display_name,
-            description=f"y談送信内容\n{text}"
+            description=f"y談送信内容\n{text}",
         )
         if interaction.channel == send_channel:
             await interaction.response.send_message("送信しました", ephemeral=True)
             await send_channel.send(embed=yembed, view=UrlView(text))
             await admin_channel.send(embed=admin_embed)
         else:
-            await interaction.response.send_message("チャンネル違うよ！", ephemeral=True)
+            await interaction.response.send_message(
+                "チャンネル違うよ！", ephemeral=True
+            )
 
 
 async def setup(bot: commands.Bot):

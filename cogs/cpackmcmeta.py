@@ -92,15 +92,6 @@ DP_ALL_VERSIONS = [
     "24w12a",
     "24w13a",
 ]
-# !============更新すること============
-LATEST_RELEASE_VERSION = "1.20.4"
-LATEST_RELEASE_RP = "22"
-LATEST_RELEASE_DP = "26"
-# !============更新すること============
-LATEST_SS_VERISON = "24w13a"
-LATEST_SS_VERISON_RP = "31"
-LATEST_SS_VERISON_DP = "37"
-# !============更新すること============
 
 
 class PackMcmetaV(BaseModel):
@@ -112,7 +103,6 @@ class PackMcmeta(BaseModel):
     pack: PackMcmetaV
 
 
-@app_commands.guild_only()
 class CPackMcMeta(app_commands.Group):
     def __init__(self, bot: commands.Bot):
         super().__init__(name="cpack-mcmeta")
@@ -120,7 +110,9 @@ class CPackMcMeta(app_commands.Group):
         self.v_cache: dict[str, VersionData] = None
         self.v_cache_time: datetime = datetime.now()
 
-    @app_commands.command(name="latest", description="最新バージョンのformatを出力します")
+    @app_commands.command(
+        name="latest", description="最新バージョンのformatを出力します"
+    )
     @app_commands.guild_only()
     async def latest(self, interaction: discord.Interaction):
         async with aiohttp.ClientSession() as client:
@@ -132,14 +124,16 @@ class CPackMcMeta(app_commands.Group):
                     title="Latest Version pack_format", color=discord.Color.yellow()
                 )
                 await interaction.response.defer()
-                if self.v_cache is None or datetime.now() >= self.v_cache_time + timedelta(
-                    hours=1
+                if (
+                    self.v_cache is None
+                    or datetime.now() >= self.v_cache_time + timedelta(hours=1)
                 ):
                     versions: dict[str, VersionData] = {}
 
                     for ver in version_manifest.versions:
                         if (
-                            ver.id == version_manifest.latest.release or ver.id == version_manifest.latest.snapshot
+                            ver.id == version_manifest.latest.release
+                            or ver.id == version_manifest.latest.snapshot
                         ):
                             async with client.get(ver.url) as resp2:
                                 game_package = GamePackage.model_validate(
@@ -207,10 +201,11 @@ class CPackMcMeta(app_commands.Group):
 
     # ----------------------------------------------------------------
 
-    @app_commands.command(name="datapacks", description="データパックのpack_formatをすべて出力します")
+    @app_commands.command(
+        name="datapacks", description="データパックのpack_formatをすべて出力します"
+    )
     @app_commands.guild_only()
     async def datapacks(self, interaction: discord.Interaction):
-
         body = []
         i = 0
         for k, v in pack_versions.versions.items():
@@ -218,7 +213,9 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.dp, DP_ALL_VERSIONS[i], k))
                 i += 1
 
-        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/dp.png"), filename="dp.png")
+        file = discord.File(
+            os.path.join(os.getenv("BASE_DIR", "."), "assets/dp.png"), filename="dp.png"
+        )
 
         embed = discord.Embed(title="データパックバージョン一覧")
         embed.set_image(url="attachment://dp.png")
@@ -228,11 +225,11 @@ class CPackMcMeta(app_commands.Group):
     # ----------------------------------------------------------------
 
     @app_commands.command(
-        name="resourcepacks", description="リソースパックのpack_formatをすべて出力します"
+        name="resourcepacks",
+        description="リソースパックのpack_formatをすべて出力します",
     )
     @app_commands.guild_only()
     async def resourcepacks(self, interaction: discord.Interaction):
-
         body = []
         i = 0
         for k, v in pack_versions.versions.items():
@@ -240,7 +237,9 @@ class CPackMcMeta(app_commands.Group):
                 body.append((v.rp, RP_ALL_VERSIONS[i], k))
                 i += 1
 
-        file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/rp.png"), filename="rp.png")
+        file = discord.File(
+            os.path.join(os.getenv("BASE_DIR", "."), "assets/rp.png"), filename="rp.png"
+        )
 
         embed = discord.Embed(title="リソースパックバージョン一覧")
         embed.set_image(url="attachment://rp.png")
@@ -264,15 +263,23 @@ class CPackMcMeta(app_commands.Group):
                 ver1 = [int(n) for n in k.split("-")[1].split(".")]
 
                 if ver0[1] <= ver[1] <= ver1[1] and ver0[2] <= ver[2] <= ver1[2]:
-                    embed.add_field(name="リソースパックバージョン", value=f"```{v.rp}```")
-                    embed.add_field(name="データパックバージョン", value=f"```{v.dp}```")
+                    embed.add_field(
+                        name="リソースパックバージョン", value=f"```{v.rp}```"
+                    )
+                    embed.add_field(
+                        name="データパックバージョン", value=f"```{v.dp}```"
+                    )
                     await interaction.response.send_message(embed=embed)
 
                     return
             else:
                 if version == k:
-                    embed.add_field(name="リソースパックバージョン", value=f"```{v.rp}```")
-                    embed.add_field(name="データパックバージョン", value=f"```{v.dp}```")
+                    embed.add_field(
+                        name="リソースパックバージョン", value=f"```{v.rp}```"
+                    )
+                    embed.add_field(
+                        name="データパックバージョン", value=f"```{v.dp}```"
+                    )
                     await interaction.response.send_message(embed=embed)
 
                     return
@@ -298,7 +305,9 @@ class CPackMcMeta(app_commands.Group):
                 if version == k:
                     return v
 
-    @app_commands.command(name="generate-dp", description="データパックのpack.mcmetaを生成します")
+    @app_commands.command(
+        name="generate-dp", description="データパックのpack.mcmetaを生成します"
+    )
     @app_commands.guild_only()
     async def generate_dp(
         self, interaction: discord.Interaction, description: str, version: str
@@ -326,7 +335,9 @@ class CPackMcMeta(app_commands.Group):
 
         await interaction.response.send_message(embed=embed, file=file, ephemeral=True)
 
-    @app_commands.command(name="generate-rp", description="リソースパックのpack.mcmetaを生成します")
+    @app_commands.command(
+        name="generate-rp", description="リソースパックのpack.mcmetaを生成します"
+    )
     @app_commands.guild_only()
     async def generate_rp(
         self, interaction: discord.Interaction, description: str, version: str
