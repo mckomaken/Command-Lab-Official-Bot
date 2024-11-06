@@ -45,7 +45,10 @@ class BumpNofiticationCog(commands.Cog):
         now = datetime.now()
 
         if last < now and not self.bump_data.notified:
-            bump_file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/bump.png"), filename="bump.png")
+            bump_file = discord.File(
+                os.path.join(os.getenv("BASE_DIR", "."), "assets/bump.png"),
+                filename="bump.png",
+            )
 
             bump_embed = discord.Embed(
                 title="BUMPの時間だよ(^O^)／",
@@ -62,24 +65,37 @@ class BumpNofiticationCog(commands.Cog):
             self.bump_data.notified = True
 
     async def cog_load(self):
-        if not os.path.exists(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png")):
-            open(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"), mode="w").write(BumpData().model_dump_json())
+        if not os.path.exists(
+            os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png")
+        ):
+            open(
+                os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"),
+                mode="w",
+            ).write(BumpData().model_dump_json())
 
         self.bump_data = BumpData.model_validate_json(
-            open(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"), mode="rb").read()
+            open(
+                os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"),
+                mode="rb",
+            ).read()
         )
 
         self.bump_check_task.start()
 
     async def cog_unload(self):
         self.bump_check_task.cancel()
-        open(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"), mode="w").write(self.bump_data.model_dump_json())
+        open(
+            os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"),
+            mode="w",
+        ).write(self.bump_data.model_dump_json())
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
         if message.channel.id == config.bump.channel_id:
             if message.content.startswith("!d bump"):
-                await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
+                await message.channel.send(
+                    "そのコマンドは<t:1648767600:F>にサ終しました(笑)"
+                )
 
             elif message.content.startswith("/bump"):
                 await message.channel.send(

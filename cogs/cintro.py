@@ -23,7 +23,8 @@ class IntroView(View):
         member = await interaction.guild.fetch_member(member_id)
         if member is None:
             await interaction.followup.send(
-                "削除したよ\n送り主が既にサーバーにいなかったから誰でも消せるようになってるよ", ephemeral=True
+                "削除したよ\n送り主が既にサーバーにいなかったから誰でも消せるようになってるよ",
+                ephemeral=True,
             )
             await interaction.message.delete()
         elif member_id == interaction.user.id:

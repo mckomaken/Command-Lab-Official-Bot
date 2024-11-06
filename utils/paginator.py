@@ -39,7 +39,6 @@ class EmbedPaginator(discord.ui.View):
         AllowExtInput: bool = False,
         ephemeral: bool = False,
     ) -> None:
-
         self.PreviousButton = PreviousButton
         self.NextButton = NextButton
         self.PageCounterStyle = PageCounterStyle
@@ -59,7 +58,6 @@ class EmbedPaginator(discord.ui.View):
     async def start(
         self, ctx: discord.Interaction | commands.Context, pages: list[discord.Embed]
     ):
-
         if isinstance(ctx, discord.Interaction):
             ctx = await commands.Context.from_interaction(ctx)
 
