@@ -25,11 +25,11 @@ class CMee6level(commands.Cog):
                     text = ""
                 mee6_channel = await self.bot.fetch_channel(config.mee6.levelup)  # 新たに作るmee6通知チャンネル
                 levelupnoticeoff = message.guild.get_role(config.mee6.levelupnoticeoff)
-                if levelupnoticeoff not in message.author.roles: # mee6levelup無効化ロールを持っているかどうか
+                if levelupnoticeoff not in message.author.roles:  # mee6levelup無効化ロールを持っているかどうか
                     await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}")
                 else:
                     await mee6_channel.send(f"{text}/xp reached {username} level {level}")
-                    
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(CMee6level(bot))
