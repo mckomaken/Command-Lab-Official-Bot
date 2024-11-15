@@ -3,14 +3,15 @@ import discord
 from discord import app_commands
 import random
 
-anydot=[
+anydot = [
     "...",
     "....",
-    ".....", 
-    "......", 
-    ".......", 
+    ".....",
+    "......",
+    ".......",
     "........"
 ]
+
 
 class CRandom(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -20,7 +21,7 @@ class CRandom(commands.Cog):
     @app_commands.describe(
         mode="value : 自分にのみ表示・roll : 全体に表示",
         range="送信したい内容を書いてください"
-        )
+    )
     @app_commands.choices(
         mode=[
             app_commands.Choice(name="roll", value="mroll"),
@@ -28,7 +29,7 @@ class CRandom(commands.Cog):
         ]
     )
     async def cybase64(
-        self, interaction: discord.Interaction, mode: app_commands.Choice[str], range : str
+        self, interaction: discord.Interaction, mode: app_commands.Choice[str], range: str
     ):
         if anydot in range:
             await interaction.response.send_message("rangeで使うドットの数は2個です\n(例 : ..-10(-10以下)・10..(10以上))・1..30(1以上30以下)")
@@ -37,24 +38,24 @@ class CRandom(commands.Cog):
 
         target = '..'
         idx = s.find(target)
-        r = s[idx+1:]  # スライスで半角空白文字のインデックス＋1以降を抽出
+        r = s[idx + 1:]  # スライスで半角空白文字のインデックス＋1以降を抽出
 
         print(r)  # 05:30
         text = range
         str1 = ".."
-        aaa = text[c+1:] if (c := text.find(str1)) != -1 and text.startswith(str1) else ""
+        aaa = text[c + 1:] if (c := text.find(str1)) != -1 and text.startswith(str1) else ""
         bbb = text[:c] if (c := text.rfind(str1)) != -1 and text.endswith(str1) else ""
         ccc = text[:c] if (c := text.rfind(str1)) != -1 else ""
-        ddd = text[c+len(str1):] if (c := text.find(str1)) != -1 else ""
+        ddd = text[c + len(str1):] if (c := text.find(str1)) != -1 else ""
 
         if range.content.startswith("aaa"):
             number = random.randint(-2147483647, 2147483648)
             startnum = 1
             stopnum = 10
-
+            abcd = aaa + bbb + ccc + ddd
 
         if mode.value == "mroll":
-            await interaction.response.send_message(f"{interaction.user.display_name}は{number}を引きました ( 値の範囲は{startnum}から{stopnum} )", ephemeral=False)
+            await interaction.response.send_message(f"{interaction.user.display_name}は{number}{abcd}を引きました ( 値の範囲は{startnum}から{stopnum} )", ephemeral=False)
         if mode.value == "mvalue":
             await interaction.response.send_message(f"乱数 : {number}", ephemeral=True)
 
