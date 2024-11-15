@@ -24,7 +24,16 @@ class CRadix(commands.Cog):
             # 入力値をintとして解釈
             original_value = int(value, 0)
             # n進数に変換
-            converted_value = f"{original_value:b}" if target_base == 2 else f"{original_value:x}" if target_base == 16 else format(original_value, f"0{target_base}")
+            if target_base in [2, 8, 16]:
+                converted_value = {16:hex, 8:oct, 2:bin}[target_base](original_value)
+            else:
+                digits = "0123456789abcdefghijklmnopqrstuvwxyz"
+                converted_value = ""
+                num = abs(original_value)
+                while num:
+                    converted_value = digits[num % target_base] + converted_value
+                    num //= target_base
+                converted_value = '-' + converted_value if original_value < 0 else '0' if original_value == 0 else converted_value
         except ValueError:
             error_embed = discord.Embed(
                 color=0xFF0000,
