@@ -10,7 +10,7 @@ class CRadix(commands.Cog):
 
     @app_commands.command(name="cradix", description="入力した数値を2~16進数に変換します")
     @app_commands.describe(num="進数変換したい数字を入れてください")
-    async def cybase64(self, interaction: discord.Interaction, num: int):
+    async def cradix(self, interaction: discord.Interaction, num: int):
         absnum = abs(num)
         DESCRIPTION = f"""
 ```
