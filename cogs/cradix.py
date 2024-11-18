@@ -80,16 +80,22 @@ class CRadix(commands.Cog):
             description=DESCRIPTION1,
             color=0x58619A
         )
+        radix_embed1.set_footer(text=f"Send by {interaction.user.mention}")
+
         radix_embed2 = discord.Embed(
             title="進数変換",
             description=DESCRIPTION2,
             color=0x58619A
         )
+        radix_embed2.set_footer(text=f"Send by {interaction.user.mention}")
+
         radix_embed3 = discord.Embed(
             title="進数変換",
             description=DESCRIPTION3,
             color=0x58619A
         )
+        radix_embed3.set_footer(text=f"Send by {interaction.user.mention}")
+
         if mode == "cradix2":
             await interaction.response.send_message(embed=radix_embed2)
         elif mode == "cradix3":
