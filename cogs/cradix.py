@@ -67,12 +67,12 @@ class CRadix(commands.Cog):
 28進数 : {np.base_repr(absnum, 28)}
 29進数 : {np.base_repr(absnum, 29)}
 30進数 : {np.base_repr(absnum, 30)}
-30進数 : {np.base_repr(absnum, 31)}
-30進数 : {np.base_repr(absnum, 32)}
-30進数 : {np.base_repr(absnum, 33)}
-30進数 : {np.base_repr(absnum, 34)}
-30進数 : {np.base_repr(absnum, 35)}
-30進数 : {np.base_repr(absnum, 36)}
+31進数 : {np.base_repr(absnum, 31)}
+32進数 : {np.base_repr(absnum, 32)}
+33進数 : {np.base_repr(absnum, 33)}
+34進数 : {np.base_repr(absnum, 34)}
+35進数 : {np.base_repr(absnum, 35)}
+36進数 : {np.base_repr(absnum, 36)}
 ```
 """
         radix_embed1 = discord.Embed(
