@@ -29,6 +29,7 @@ class CRadix(commands.Cog):
 10進数 : {np.base_repr(absnum, 10)}
 16進数 : {np.base_repr(absnum, 16)}
 ```
+Send by {interaction.user.mention}
 """
         DESCRIPTION2 = f"""
 ```
@@ -49,6 +50,7 @@ class CRadix(commands.Cog):
 15進数 : {np.base_repr(absnum, 15)}
 16進数 : {np.base_repr(absnum, 16)}
 ```
+Send by {interaction.user.mention}
 """
         DESCRIPTION3 = f"""
 ```
@@ -74,27 +76,25 @@ class CRadix(commands.Cog):
 35進数 : {np.base_repr(absnum, 35)}
 36進数 : {np.base_repr(absnum, 36)}
 ```
+Send by {interaction.user.mention}
 """
         radix_embed1 = discord.Embed(
             title="進数変換",
             description=DESCRIPTION1,
             color=0x58619A
         )
-        radix_embed1.set_footer(text=f"Send by {interaction.user.mention}")
 
         radix_embed2 = discord.Embed(
             title="進数変換",
             description=DESCRIPTION2,
             color=0x58619A
         )
-        radix_embed2.set_footer(text=f"Send by {interaction.user.mention}")
 
         radix_embed3 = discord.Embed(
             title="進数変換",
             description=DESCRIPTION3,
             color=0x58619A
         )
-        radix_embed3.set_footer(text=f"Send by {interaction.user.mention}")
 
         if mode == "cradix2":
             await interaction.response.send_message(embed=radix_embed2)
