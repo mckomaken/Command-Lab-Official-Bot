@@ -36,6 +36,7 @@ class CYbase64(commands.Cog):
     async def cybase64(self, interaction: discord.Interaction, url: str, text: str = None):
         send_channel = await self.bot.fetch_channel(config.y_channel)
         admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
+        text = text.replace("\\n", "\n")
         yembed = discord.Embed(
             color=0xd51ebe,
             title=interaction.user.display_name,
