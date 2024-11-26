@@ -3,6 +3,8 @@ import logging
 import discord
 from discord.ext import commands
 
+from config.config import config
+
 logger = logging.getLogger(__name__)
 
 
@@ -43,7 +45,7 @@ class CTemplate(commands.Cog):
                 return
 
             # 宣伝チャンネルを除外
-            if channel_id in [775004819004981258]:
+            if channel_id in [config.advertisement_channnel_id] and message.channel.category.id == config.admin_category_id:
                 return
 
             try:

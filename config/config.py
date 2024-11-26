@@ -38,6 +38,8 @@ class Config(BaseModel):
     cmdbot_log: int
     lottery_channel: int
     mee6: MEe6
+    advertisement_channnel_id: int
+    admin_category_id: int
 
 # -----------------------------------------------------------
 
