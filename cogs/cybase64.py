@@ -38,6 +38,8 @@ class CYbase64(commands.Cog):
         admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
         if text is not None:
             text = text.replace("\\n", "\n")
+        else:
+            text = "追記文章なし"
         yembed = discord.Embed(
             color=0xd51ebe,
             title=interaction.user.display_name,
