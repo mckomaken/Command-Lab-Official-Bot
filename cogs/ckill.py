@@ -19,7 +19,7 @@ class CKill(commands.Cog):
         self.bot = bot
 
         # 最大数設定
-        self.max_count = 10
+        self.max_count = 5
 
     def generate_death_log(self, victim: Optional[str], player: str) -> str:
         death_logs = self.death_logs
