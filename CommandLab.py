@@ -8,6 +8,7 @@ import os
 import aiofiles
 import discord
 import yaml
+import random
 from discord import app_commands
 from discord.abc import User
 from discord.ext import commands
@@ -48,6 +49,17 @@ ORUVANORUVAN = """ஒருவன் ஒருவன் முதலாளி
 பூப்பறிக்க கோடரி எதற்கு
 பொன்னோ பொருளோ போர்க்களம் எதற்கு
 ஆசை துறந்தால் அகிலம் உனக்கு
+"""
+
+
+GABU = """
+**　　**Λ＿Λ　　＼＼
+　 （　・∀・）　　　|　|　ｶﾞｯ
+　と　　　　）　 　 |　|
+　　 Ｙ　/ノ　　　 人
+　　　 /　）　 　 < 　>_Λ∩
+　 ＿/し'　／／. Ｖ｀Д´）/
+　（＿フ彡　　　　　 　　/　←>>1
 """
 
 
@@ -147,7 +159,11 @@ class CommandLabBot(commands.Bot):
                         return
 
                     elif message.content.startswith("ぬるぽ"):
-                        await message.channel.send("ｶﾞﾌﾞｯ")
+                        num = random.random()
+                        if num < 0.95:
+                            await message.channel.send("ｶﾞﾌﾞｯ")
+                        else:
+                            await message.channel.send(GABU)
 
                     elif message.content.startswith("!d bump"):
                         await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
