@@ -40,6 +40,7 @@ class Config(BaseModel):
     mee6: MEe6
     advertisement_channnel_id: int
     admin_category_id: int
+    botcommand_channel_id: int
 
 # -----------------------------------------------------------
 

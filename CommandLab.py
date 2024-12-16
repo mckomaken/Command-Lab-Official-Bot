@@ -154,7 +154,7 @@ class CommandLabBot(commands.Bot):
                     if message.author.id in client.owner_ids or []:
                         await client.process_commands(message)
 
-                if message.channel.id == 965095619838488576:
+                if message.channel.id == config.botcommand_channel_id:
                     if message.author.bot:
                         return
 
