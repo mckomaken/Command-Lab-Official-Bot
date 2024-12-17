@@ -160,8 +160,15 @@ class CommandLabBot(commands.Bot):
 
                     elif message.content.startswith("ぬるぽ"):
                         num = random.random()
+                        if num < 0.9:
+                            await message.channel.send("ｶﾞｯ")
+                        else:
+                            await message.channel.send(GABU)
+
+                    elif message.content.startswith("NullPointerException"):
+                        num = random.random()
                         if num < 0.95:
-                            await message.channel.send("ｶﾞﾌﾞｯ")
+                            await message.channel.send("ｶﾞｯ")
                         else:
                             await message.channel.send(GABU)
 
