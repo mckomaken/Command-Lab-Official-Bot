@@ -42,7 +42,7 @@ class CKill(commands.Cog):
     async def ckill(
         self, interaction: discord.Interaction,
         target: Optional[Member] = None,
-        count: Optional[int] = 1
+        count: Optional[app_commands.Range[int, 1, 5]] = 1
     ):
         target_name = None
         if target:
@@ -63,7 +63,7 @@ class CKill(commands.Cog):
             )
         else:
             await interaction.response.send_message(
-                f"countには{self.max_count}以下の自然数を入れてね(^^♪\n自然数がわからない人はこのサーバーから追放するね(^^♪♪♪",
+                "このメッセージが表示されることは無いはず...え？",
                 ephemeral=True
             )
 
