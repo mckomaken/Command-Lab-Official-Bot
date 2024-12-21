@@ -40,7 +40,7 @@ STATUSES = [
 ]
 
 
-ORUVANORUVAN = """@silent
+ORUVANORUVAN = """
 ஒருவன் ஒருவன் முதலாளி
 உலகில் மற்றவன் தொழிலாளி
 விதியை நினைப்பவன் ஏமாளி
@@ -53,7 +53,7 @@ ORUVANORUVAN = """@silent
 """
 
 
-GABU = """@silent
+GABU = """
 **　　**Λ＿Λ　　＼＼
 　 （　・∀・）　　　|　|　ｶﾞｯ
 　と　　　　）　 　 |　|
@@ -162,19 +162,19 @@ class CommandLabBot(commands.Bot):
                     elif message.content.startswith("ぬるぽ"):
                         num = random.random()
                         if num < 0.95:  # あとで0.9に数値変更すること
-                            await message.channel.send("@silent ｶﾞｯ")
+                            await message.channel.send("ｶﾞｯ", silent=True)
                         else:
-                            await message.channel.send(GABU)
+                            await message.channel.send(GABU, silent=True)
 
                     # elif message.content.startswith("NullPointerException"):
                         # num = random.random()
                         # if num < 0.95:
-                            # await message.channel.send("@silent ｶﾞｯ")
+                            # await message.channel.send("ｶﾞｯ, silent=True")
                         # else:
-                            # await message.channel.send(GABU)
+                            # await message.channel.send(GABU, silent=True)
 
                     elif message.content.startswith("!d bump"):
-                        await message.channel.send("@silent そのコマンドは<t:1648767600:F>にサ終しました(笑)")
+                        await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)", silent=True)
 
                     elif message.content.startswith("/bump"):
                         await message.channel.send(
@@ -182,15 +182,15 @@ class CommandLabBot(commands.Bot):
                                 title="BUMPを実行出来てないよ!!",
                                 color=0x00BFFF,
                                 timestamp=datetime.now(),
-                            )
+                            ), silent=True
                         )
 
                     elif message.content.startswith("oruvanoruvan"):
-                        await message.channel.send(ORUVANORUVAN)
+                        await message.channel.send(ORUVANORUVAN, silent=True)
 
                 if client.user in message.mentions and message.reference is None:
                     await message.channel.send(
-                        f"@silent {message.author.mention}呼んだ？\nわからないことがあったら【</help:1218483030247604265>】を実行してね"
+                        f"{message.author.mention}呼んだ？\nわからないことがあったら【</help:1218483030247604265>】を実行してね", silent=True
                     )
 
             @client.tree.error
