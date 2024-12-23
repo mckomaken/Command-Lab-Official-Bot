@@ -8,7 +8,6 @@ import os
 import aiofiles
 import discord
 import yaml
-import random
 from discord import app_commands
 from discord.abc import User
 from discord.ext import commands
@@ -38,30 +37,6 @@ STATUSES = [
     ("YouTube", "watching", 100),
     ("Spotify", "listening", 100),
 ]
-
-
-ORUVANORUVAN = """
-ஒருவன் ஒருவன் முதலாளி
-உலகில் மற்றவன் தொழிலாளி
-விதியை நினைப்பவன் ஏமாளி
-அதை வென்று முடிப்பவன் அறிவாளி
-
-பூமியை வெல்ல ஆயுதம் எதற்கு
-பூப்பறிக்க கோடரி எதற்கு
-பொன்னோ பொருளோ போர்க்களம் எதற்கு
-ஆசை துறந்தால் அகிலம் உனக்கு
-"""
-
-
-GABU = """
-**　　**Λ＿Λ　　＼＼
-　 （　・∀・）　　　|　|　ｶﾞｯ
-　と　　　　）　 　 |　|
-　　 Ｙ　/ノ　　　 人
-　　　 /　）　 　 < 　>_Λ∩
-　 ＿/し'　／／. Ｖ｀Д´）/
-　（＿フ彡　　　　　 　　/　←>>1
-"""
 
 
 class CommandLabBot(commands.Bot):
@@ -154,39 +129,6 @@ class CommandLabBot(commands.Bot):
                 if not message.author.bot:
                     if message.author.id in client.owner_ids or []:
                         await client.process_commands(message)
-
-                if message.channel.id == config.botcommand_channel_id:
-                    if message.author.bot:
-                        return
-
-                    elif message.content.startswith("ぬるぽ"):
-                        num = random.random()
-                        if num < 0.95:  # あとで0.9に数値変更すること
-                            await message.channel.send("ｶﾞｯ", silent=True)
-                        else:
-                            await message.channel.send(GABU, silent=True)
-
-                    # elif message.content.startswith("NullPointerException"):
-                        # num = random.random()
-                        # if num < 0.95:
-                            # await message.channel.send("ｶﾞｯ, silent=True")
-                        # else:
-                            # await message.channel.send(GABU, silent=True)
-
-                    elif message.content.startswith("!d bump"):
-                        await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)", silent=True)
-
-                    elif message.content.startswith("/bump"):
-                        await message.channel.send(
-                            embed=discord.Embed(
-                                title="BUMPを実行出来てないよ!!",
-                                color=0x00BFFF,
-                                timestamp=datetime.now(),
-                            ), silent=True
-                        )
-
-                    elif message.content.startswith("oruvanoruvan"):
-                        await message.channel.send(ORUVANORUVAN, silent=True)
 
                 if client.user in message.mentions and message.reference is None:
                     await message.channel.send(
