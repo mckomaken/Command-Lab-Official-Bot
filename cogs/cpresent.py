@@ -107,4 +107,4 @@ class CPresent(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(CPresent(bot))
-    bot.add_view(LOttery)
+    bot.add_view(LOttery())
