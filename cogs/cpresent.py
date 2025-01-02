@@ -102,7 +102,7 @@ class CPresent(commands.Cog):
                 timestamp=datetime.now()
             )
             await interaction.response.send_message("送信しました", ephemeral=True)
-            await interaction.response.send_message(embed=otosidama_embed)
+            await interaction.channel.send(embed=otosidama_embed)
             await interaction.channel.send(view=LOttery(self.bot))
 
 
