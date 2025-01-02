@@ -10,9 +10,8 @@ from config.config import config
 
 
 class LOttery(discord.ui.View):  # 抽選コマンド
-    def __init__(self, bot: commands.Bot):
+    def __init__(self):
         super().__init__(timeout=None)
-        self.bot = bot
 
     @discord.ui.button(label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present")
     async def pressedLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
