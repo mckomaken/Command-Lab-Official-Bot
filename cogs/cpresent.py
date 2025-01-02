@@ -46,7 +46,7 @@ class CPresent(commands.Cog):
     @app_commands.checks.has_role(config.administrater_role_id)
     async def cmisc(
         self, interaction: discord.Interaction, choice: app_commands.Choice[str],
-        ninnzuu: int, kikann: str, daimei: str = None, tanni: int = 0):
+        ninnzuu: int, kikann: int, daimei: str = None, tanni: int = 0):
 
         kaisibi = datetime.now()
         syuuryoubi = datetime.now() + timedelta(days=kikann)
