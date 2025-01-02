@@ -28,7 +28,7 @@ class LOttery(discord.ui.View):  # 抽選コマンド
             await interaction.message.delete()
         else:
             await interaction.response.send_message("権限ないで・次押したら無効にするからね（#^ω^）", ephemeral=True)
-            await send_channel.send(f"-# ◆削除序ボタン押した人:{interaction.user.id}")
+            await send_channel.send(f"-# ◆削除ボタン押した人:{interaction.user.id}")
 
 class CPresent(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -101,6 +101,7 @@ class CPresent(commands.Cog):
                 color=0x2B9788,
                 timestamp=datetime.now()
             )
+            await interaction.response.send_message("送信しました", ephemeral=True)
             await interaction.response.send_message(embed=otosidama_embed)
             await interaction.channel.send(view=LOttery(self.bot))
 
