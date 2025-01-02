@@ -101,7 +101,8 @@ class CPresent(commands.Cog):
                 color=0x2B9788,
                 timestamp=datetime.now()
             )
-            await interaction.response.send_message(embed=otosidama_embed, view=LOttery(self.bot))
+            await interaction.response.send_message(embed=otosidama_embed)
+            await interaction.response.send_message(view=LOttery(self.bot))
 
 
 
