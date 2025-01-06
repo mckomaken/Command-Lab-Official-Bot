@@ -21,6 +21,22 @@ class MEe6(BaseModel):
     botch: int
     levelup: int
     levelupnoticeoff: int
+    five_5: int
+    ten_10: int
+    fifteen_15: int
+    twenty_20: int
+    twenty_25: int
+    twenty_30: int
+    twenty_35: int
+    twenty_40: int
+    twenty_45: int
+    twenty_50: int
+    twenty_60: int
+    twenty_70: int
+    twenty_80: int
+    twenty_90: int
+    twenty_100: int
+
 
 
 class Config(BaseModel):
