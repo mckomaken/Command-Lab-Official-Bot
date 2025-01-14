@@ -9,3 +9,7 @@ pygit2
 pyyaml
 brigadier.py
 lorem
+audioop-lts
+numpy
+pillow
+requests
