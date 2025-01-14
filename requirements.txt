@@ -11,3 +11,4 @@ brigadier.py
 lorem
 audioop-lts
 numpy
+pillow
