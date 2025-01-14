@@ -1,10 +1,9 @@
 from discord.ext import commands
 from datetime import datetime, timedelta
-from discord import ButtonStyle, Interaction, app_commands
+from discord import ButtonStyle, app_commands
 
 import discord
-from discord import app_commands
-from discord.ext import commands
+
 
 from config.config import config
 
@@ -17,9 +16,13 @@ class LOttery(discord.ui.View):  # 抽選コマンド
     @discord.ui.button(label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present")
     async def pressedLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
         send_channel = await self.bot.fetch_channel(config.lottery_channel)
-        await send_channel.send(f"応募者 : <@{interaction.user.id}> / {interaction.user.display_name}")
-        await interaction.response.send_message("応募されました。抽選開始までお待ちください。", ephemeral=True)
-    
+        mee6role_5 = interaction.guild.get_role(config.mee6.five_5)
+        if mee6role_5 not in interaction.user.roles:
+            await interaction.response.send_message("MEE6レベルが5Lvになっていないため応募できません\nサーバーで雑談をしたり、コマンドの質問をすればレベルが上がって行きます\nまたMEE6レベルが5Lvになった時にボタンを押しに来てください！！", ephemeral=True)
+        else:
+            await send_channel.send(f"応募者 : <@{interaction.user.id}> / {interaction.user.display_name}")
+            await interaction.response.send_message("応募されました。抽選開始までお待ちください。", ephemeral=True)
+
     @discord.ui.button(label="企画終了", style=ButtonStyle.red, custom_id="delevent")
     async def pressedDeleventButton(self, interaction: discord.Interaction, button: discord.ui.button):
         role = interaction.guild.get_role(config.administrater_role_id)
@@ -27,8 +30,9 @@ class LOttery(discord.ui.View):  # 抽選コマンド
         if role in interaction.user.roles:
             await interaction.message.delete()
         else:
-            await interaction.response.send_message("権限ないで・次押したら無効にするからね（#^ω^）", ephemeral=True)
+            await interaction.response.send_message("権限ないで", ephemeral=True)
             await send_channel.send(f"-# ◆削除ボタン押した人: <@{interaction.user.id}> / {interaction.user.id}")
+
 
 class CPresent(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -36,10 +40,10 @@ class CPresent(commands.Cog):
 
     @app_commands.command(name="cpresent", description="【運営】present企画")
     @app_commands.describe(
-        choice="選択肢", 
+        choice="選択肢",
         daimei="○○プレゼント企画!(お年玉の時は適当に入力(表示されません))",
         tanni="単位(○○円・○○ヶ月)", ninnzuu="当選人数", kikann="応募期間(日数入力)"
-        )
+    )
     @app_commands.choices(
         choice=[
             app_commands.Choice(name="Nitro", value="pe1"),
@@ -50,16 +54,12 @@ class CPresent(commands.Cog):
         ]
     )
     @app_commands.checks.has_role(config.administrater_role_id)
-
-    async def cmisc(
-        self, interaction: discord.Interaction, choice: app_commands.Choice[str],
-        daimei: str, ninnzuu: int, kikann: int, tanni: int = 0):
+    async def cpresent(self, interaction: discord.Interaction, choice: app_commands.Choice[str], daimei: str, ninnzuu: int, kikann: int, tanni: int = 0):
 
         syuuryoubi = datetime.now() + timedelta(days=kikann)
         fsyuuryoubi = syuuryoubi.strftime(" %Y/%m/%d ")
         tyuusennbi = syuuryoubi + timedelta(days=1)
         ftyuusennbi = tyuusennbi.strftime(" %Y/%m/%d ")
-        mee6role_5 = interaction.guild.get_role(config.mee6.five_5)
 
         NITRO_DESCRIPTION = f"""
 ### Discord Nitro {tanni}ヶ月分を{ninnzuu}名にプレゼント
@@ -136,15 +136,12 @@ class CPresent(commands.Cog):
 【締め切り】{fsyuuryoubi} 23:59
 【当選発表】{ftyuusennbi} 00:00からVCにて発表
 """
-        
-        if mee6role_5 not in interaction.user.roles:
-             await interaction.response.send_message("送信しました", ephemeral=True)
 
         if choice.value == "pe1":
             if tanni == 0:
-                await interaction.response.send_message("tanni引数入れ忘れてるよ！\n[Discord Nitro {tanni}ヶ月分を{ninnzuu}名にプレゼント]", ephemeral=True)
+                await interaction.response.send_message("tanni引数入れ忘れてるよ!\n[Discord Nitro {tanni}ヶ月分を{ninnzuu}名にプレゼント]", ephemeral=True)
             else:
-                nitro_embed=discord.Embed(
+                nitro_embed = discord.Embed(
                     title=f"{daimei}プレゼント企画!!",
                     description=NITRO_DESCRIPTION,
                     color=0x2B9788,
@@ -156,9 +153,9 @@ class CPresent(commands.Cog):
 
         elif choice.value == "pe2":
             if tanni == 0:
-                await interaction.response.send_message("tanni引数入れ忘れてるよ！\n[アマゾンギフト券 {tanni}円分を{ninnzuu}名にプレゼント]", ephemeral=True)
+                await interaction.response.send_message("tanni引数入れ忘れてるよ!\n[アマゾンギフト券 {tanni}円分を{ninnzuu}名にプレゼント]", ephemeral=True)
             else:
-                amagihu_embed=discord.Embed(
+                amagihu_embed = discord.Embed(
                     title=f"{daimei}プレゼント企画!!",
                     description=AMAGIHU_DESCRIPTION,
                     color=0x2B9788,
@@ -169,7 +166,7 @@ class CPresent(commands.Cog):
                 await interaction.channel.send(view=LOttery(self.bot))
 
         elif choice.value == "pe3":
-            abatadeko_embed=discord.Embed(
+            abatadeko_embed = discord.Embed(
                 title=f"{daimei}プレゼント企画!!",
                 description=ABATADEKO_DESCRIPTION,
                 color=0x2B9788,
@@ -178,9 +175,9 @@ class CPresent(commands.Cog):
             await interaction.response.send_message("送信しました", ephemeral=True)
             await interaction.channel.send(embed=abatadeko_embed)
             await interaction.channel.send(view=LOttery(self.bot))
-        
+
         elif choice.value == "pe4":
-            profeffect_embed=discord.Embed(
+            profeffect_embed = discord.Embed(
                 title=f"{daimei}プレゼント企画!!",
                 description=PROFEFFECT_DESCRIPTION,
                 color=0x2B9788,
@@ -191,7 +188,7 @@ class CPresent(commands.Cog):
             await interaction.channel.send(view=LOttery(self.bot))
 
         elif choice.value == "pe5":
-            otosidama_embed=discord.Embed(
+            otosidama_embed = discord.Embed(
                 title=f"{datetime.now().year}年-新年お年玉企画",
                 description=OTOSIDAMA_DESCRIPTION,
                 color=0x2B9788,
@@ -200,7 +197,6 @@ class CPresent(commands.Cog):
             await interaction.response.send_message("送信しました", ephemeral=True)
             await interaction.channel.send(embed=otosidama_embed)
             await interaction.channel.send(view=LOttery(self.bot))
-
 
 
 async def setup(bot: commands.Bot):

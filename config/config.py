@@ -25,18 +25,17 @@ class Mee6(BaseModel):
     ten_10: Optional[int] = 0
     fifteen_15: Optional[int] = 0
     twenty_20: Optional[int] = 0
-    twenty_25: Optional[int] = 0
-    twenty_30: Optional[int] = 0
-    twenty_35: Optional[int] = 0
-    twenty_40: Optional[int] = 0
-    twenty_45: Optional[int] = 0
-    twenty_50: Optional[int] = 0
-    twenty_60: Optional[int] = 0
-    twenty_70: Optional[int] = 0
-    twenty_80: Optional[int] = 0
-    twenty_90: Optional[int] = 0
-    twenty_100: Optional[int] = 0
-
+    twentyfive_25: Optional[int] = 0
+    thirty_30: Optional[int] = 0
+    thirtyfive_35: Optional[int] = 0
+    forty_40: Optional[int] = 0
+    fortyfive_45: Optional[int] = 0
+    fifty_50: Optional[int] = 0
+    sixty_60: Optional[int] = 0
+    seventy_70: Optional[int] = 0
+    eighty_80: Optional[int] = 0
+    ninety_90: Optional[int] = 0
+    onehundred_100: Optional[int] = 0
 
 
 class Config(BaseModel):
