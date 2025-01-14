@@ -10,3 +10,4 @@ pyyaml
 brigadier.py
 lorem
 audioop-lts
+numpy
