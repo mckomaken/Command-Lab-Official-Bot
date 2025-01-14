@@ -12,3 +12,4 @@ lorem
 audioop-lts
 numpy
 pillow
+requests
