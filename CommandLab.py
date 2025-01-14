@@ -71,7 +71,7 @@ class CommandLabBot(commands.Bot):
 
         await self.change_presence(activity=activity)
         self.status_index += 1
-        if self.status_index > len(STATUSES):
+        if self.status_index >= len(STATUSES):
             self.status_index = 0
         await asyncio.sleep(interval)
         asyncio.create_task(self.change_status())
