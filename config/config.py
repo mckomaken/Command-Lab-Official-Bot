@@ -17,7 +17,7 @@ class YChannel(BaseModel):
     admin_channel_id: int
 
 
-class MEe6(BaseModel):
+class Mee6(BaseModel):
     botch: int
     levelup: int
     levelupnoticeoff: int
@@ -53,7 +53,7 @@ class Config(BaseModel):
     y_channel: int
     cmdbot_log: int
     lottery_channel: int
-    mee6: MEe6
+    mee6: Mee6
     advertisement_channnel_id: int
     admin_category_id: int
     botcommand_channel_id: int
