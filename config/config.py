@@ -21,21 +21,21 @@ class MEe6(BaseModel):
     botch: int
     levelup: int
     levelupnoticeoff: int
-    five_5: int
-    ten_10: int
-    fifteen_15: int
-    twenty_20: int
-    twenty_25: int
-    twenty_30: int
-    twenty_35: int
-    twenty_40: int
-    twenty_45: int
-    twenty_50: int
-    twenty_60: int
-    twenty_70: int
-    twenty_80: int
-    twenty_90: int
-    twenty_100: int
+    five_5: Optional[int] = 0
+    ten_10: Optional[int] = 0
+    fifteen_15: Optional[int] = 0
+    twenty_20: Optional[int] = 0
+    twenty_25: Optional[int] = 0
+    twenty_30: Optional[int] = 0
+    twenty_35: Optional[int] = 0
+    twenty_40: Optional[int] = 0
+    twenty_45: Optional[int] = 0
+    twenty_50: Optional[int] = 0
+    twenty_60: Optional[int] = 0
+    twenty_70: Optional[int] = 0
+    twenty_80: Optional[int] = 0
+    twenty_90: Optional[int] = 0
+    twenty_100: Optional[int] = 0
 
 
 
