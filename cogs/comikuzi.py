@@ -11,31 +11,31 @@ async def omikuzi1(interaction: Interaction):
     num = random.randint(1, 1000)
     if num >= 900:
         om1_1_embed = discord.Embed(
-            description="-# おみくじ結果\n# 大吉",
+            description="おみくじ結果\n# 大吉",
             color=0xffff00
         )
         await interaction.response.send_message(embed=om1_1_embed)
     elif num >= 730:
         om1_2_embed = discord.Embed(
-            description="-# おみくじ結果\n# 吉",
+            description="おみくじ結果\n# 吉",
             color=0xffff00
         )
         await interaction.response.send_message(embed=om1_2_embed)
     elif num >= 380:
         om1_3_embed = discord.Embed(
-            description="-# おみくじ結果\n# 中吉",
+            description="おみくじ結果\n# 中吉",
             color=0xffff00
         )
         await interaction.response.send_message(embed=om1_3_embed)
     elif num >= 260:
         om1_4_embed = discord.Embed(
-            description="-# おみくじ結果\n# 小吉",
+            description="おみくじ結果\n# 小吉",
             color=0xffff00
         )
         await interaction.response.send_message(embed=om1_4_embed)
     else:
         om1_5_embed = discord.Embed(
-            description="-# おみくじ結果\n# 末吉",
+            description="おみくじ結果\n# 末吉",
             color=0xffff00
         )
         await interaction.response.send_message(embed=om1_5_embed)
@@ -45,43 +45,43 @@ async def omikuzi2(interaction: Interaction):
     num = random.randint(1, 1000)
     if num >= 930:
         om2_1_embed = discord.Embed(
-            description="-# おみくじ結果\n# 大吉",
+            description="おみくじ結果\n# 大吉",
             color=0x00ffff
         )
         await interaction.response.send_message(embed=om2_1_embed)
     elif num >= 790:
         om2_2_embed = discord.Embed(
-            description="-# おみくじ結果\n# 吉",
+            description="おみくじ結果\n# 吉",
             color=0x00ffff
         )
         await interaction.response.send_message(embed=om2_2_embed)
     elif num >= 470:
         om2_3_embed = discord.Embed(
-            description="-# おみくじ結果\n# 中吉",
+            description="おみくじ結果\n# 中吉",
             color=0x00ffff
         )
         await interaction.response.send_message(embed=om2_3_embed)
     elif num >= 380:
         om2_4_embed = discord.Embed(
-            description="-# おみくじ結果\n# 小吉",
+            description="おみくじ結果\n# 小吉",
             color=0x00ffff
         )
         await interaction.response.send_message(embed=om2_4_embed)
     elif num >= 150:
         om2_5_embed = discord.Embed(
-            description="-# おみくじ結果\n# 末吉",
+            description="おみくじ結果\n# 末吉",
             color=0x00ffff
         )
         await interaction.response.send_message(embed=om2_5_embed)
     elif num >= 50:
         om2_6_embed = discord.Embed(
-            description="-# おみくじ結果\n# 半凶",
+            description="おみくじ結果\n# 半凶",
             color=0x00ffff
         )
         await interaction.response.send_message(embed=om2_6_embed)
     else:
         om2_7_embed = discord.Embed(
-            description="-# おみくじ結果\n# 凶",
+            description="おみくじ結果\n# 凶",
             color=0x00ffff
         )
         await interaction.response.send_message(embed=om2_7_embed)
