@@ -5,7 +5,6 @@ tmp/
 CMTK.txt
 _StartBot
 minecraft_data/
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
