@@ -95,9 +95,9 @@ class COmikuzi(commands.Cog):
     @app_commands.describe(choice="選択肢", help="【初期値(未記入) : False】True : helpが表示されます ・ False : おみくじがひけます")
     @app_commands.choices(
         choice=[
-            app_commands.Choice(name="Nitro", value="om1"),
-            app_commands.Choice(name="アマゾンギフト券", value="om2"),
-            app_commands.Choice(name="アバターデコレーション", value="om3")
+            app_commands.Choice(name="太宰府天満宮バージョン", value="om1"),
+            app_commands.Choice(name="北野天満宮バージョン", value="om2"),
+            app_commands.Choice(name="オリジナルバージョン", value="om3")
         ]
     )
     async def cpresent(self, interaction: discord.Interaction, choice: Optional[str] = None, help: Optional[bool] = False):
