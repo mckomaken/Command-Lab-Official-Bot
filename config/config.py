@@ -21,6 +21,7 @@ class Mee6(BaseModel):
     botch: int
     levelup: int
     levelupnoticeoff: int
+    senndennkenn: int
     five_5: Optional[int] = 0
     ten_10: Optional[int] = 0
     fifteen_15: Optional[int] = 0
