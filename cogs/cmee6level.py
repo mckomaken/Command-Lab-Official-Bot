@@ -14,7 +14,7 @@ class CMee6level(commands.Cog):
                 userid = int(message.content.split(",")[1])  # userid表示
                 username = str(message.content.split(",")[2])  # user名表示
                 level = int(message.content.split(",")[3])  # レベル
-                print(f"id{userid},name{username},lv{level}")
+                print(f"id:{userid}, name:{username}, lv:{level}")
                 if (level % 50 == 0):
                     text = "# "
                 elif (level % 10 == 0):
@@ -25,18 +25,22 @@ class CMee6level(commands.Cog):
                     text = ""
                 mee6_channel = await self.bot.fetch_channel(config.mee6.levelup)  # 新たに作るmee6通知チャンネル
                 levelupnoticeoff = message.guild.get_role(config.mee6.levelupnoticeoff)
-                senndennkenn = message.guild.get_role(config.mee6.senndennkenn)
+                # senndennkenn = message.guild.get_role(config.mee6.senndennkenn)
                 lvupuser = await message.guild.fetch_member(userid)
                 if levelupnoticeoff not in lvupuser.roles:
-                    # if levelupnoticeoff not in message.author.roles:  # mee6levelup無効化ロールを持っているかどうか
                     if level == 1:
                         await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}\n-# メンション通知がうるさいと感じたら<#892255648295841842>で`MEE6レベル無効化`ロールを付けてね")
-                    elif level >= 5 and senndennkenn not in lvupuser.roles:
-                        await lvupuser.add_roles(senndennkenn)
-                        await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}s")
+                    # elif level >= 5 and senndennkenn not in lvupuser.roles:
+                    # await lvupuser.add_roles(senndennkenn)
+                    # await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}")
                     else:
                         await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}")
                 else:
+                    # if level >= 5 and senndennkenn not in lvupuser.roles:
+                    # await lvupuser.add_roles(senndennkenn)
+                    # await mee6_channel.send(f"{text}/xp reached `{username}` level {level}")
+                    # else:
+                    # await mee6_channel.send(f"{text}/xp reached `{username}` level {level}")
                     await mee6_channel.send(f"{text}/xp reached `{username}` level {level}")
 
 
