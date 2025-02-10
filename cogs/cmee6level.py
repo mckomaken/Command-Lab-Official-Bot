@@ -31,7 +31,7 @@ class CMee6level(commands.Cog):
                     # if levelupnoticeoff not in message.author.roles:  # mee6levelup無効化ロールを持っているかどうか
                     if level == 1:
                         await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}\n-# メンション通知がうるさいと感じたら<#892255648295841842>で`MEE6レベル無効化`ロールを付けてね")
-                    elif level <= 5 and senndennkenn not in lvupuser.roles:
+                    elif level >= 5 and senndennkenn not in lvupuser.roles:
                         await lvupuser.add_roles(senndennkenn)
                         await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}s")
                     else:
