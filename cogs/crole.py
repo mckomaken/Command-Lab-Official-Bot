@@ -8,16 +8,20 @@ from config.config import config
 
 async def add_or_remove_role(roleId: int, interaction: Interaction):
     role = interaction.guild.get_role(roleId)
+    roleremove_embed = discord.Embed(
+        description=f"{role.mention}を解除しました",
+        color=0x7cfc00
+    )
+    rolegive_embed = discord.Embed(
+        description=f"{role.mention}を付与しました",
+        color=0xff6347
+    )
     if role in interaction.user.roles:
         await interaction.user.remove_roles(role)
-        await interaction.response.send_message(
-            f"{role.mention} を解除しました", ephemeral=True
-        )
+        await interaction.response.send_message(embed=roleremove_embed, ephemeral=True)
     else:
         await interaction.user.add_roles(role)
-        await interaction.response.send_message(
-            f"{role.mention} を付与しました", ephemeral=True
-        )
+        await interaction.response.send_message(embed=rolegive_embed, ephemeral=True)
 
 
 class CRoleRankButtons(View):  # コマンダーランク
@@ -90,17 +94,16 @@ class CRoleAdButtons(View):  # 宣伝関連 & 質問メンション
         label="宣伝し隊", style=ButtonStyle.green, emoji="📝", row=0, custom_id="ads-sender"
     )
     async def pressedSen1(self, interaction: Interaction, button: Button):
-        await add_or_remove_role(808617738180231178, interaction)
-
-    @button(
-        label="宣伝ウェルカム",
-        style=ButtonStyle.blurple,
-        emoji="📩",
-        row=0,
-        custom_id="ads-welcome",
-    )
-    async def pressedSen2(self, interaction: Interaction, button: Button):
-        await add_or_remove_role(808618017247330324, interaction)
+        senndennkenn = interaction.guild.get_role(config.mee6.senndennkenn)
+        sen1_embed = discord.Embed(
+            description=f"{senndennkenn.mention}を持っていないため付与出来ませんでした",
+            color=0xff0000
+        )
+        sen1_embed.add_field(name="`＠宣伝権(仮)ロール付与条件`", value="サーバー加入後1日以上経過 & MEE6レベル5以上")
+        if senndennkenn in interaction.user.roles:
+            await add_or_remove_role(808617738180231178, interaction)
+        else:
+            await interaction.response.send_message(embed=sen1_embed, ephemeral=True)
 
     @button(
         label="DM質問OK",
@@ -263,13 +266,13 @@ class CRole(commands.Cog):
         await interaction.response.send_message("実行されました", ephemeral=True)
         await interaction.channel.send(embed=role_embed)
         await interaction.channel.send(embed=com_embed)
-        await interaction.channel.send(view=CRoleRankButtons())
         await interaction.channel.send(embed=jebe_embed)
-        await interaction.channel.send(view=CRoleJEBEButtons())
         await interaction.channel.send(embed=sen_embed)
-        await interaction.channel.send(view=CRoleAdButtons())
         await interaction.channel.send(embed=hoka_embed)
-        await interaction.channel.send(view=CRoleOtherButtons())
+        await interaction.channel.send("コマンダーランク設定", view=CRoleRankButtons())
+        await interaction.channel.send("JE/BE・機種設定", view=CRoleJEBEButtons())
+        await interaction.channel.send("宣伝・質問受付設定", view=CRoleAdButtons())
+        await interaction.channel.send("その他設定", view=CRoleOtherButtons())
 
 
 async def setup(bot: commands.Bot):
