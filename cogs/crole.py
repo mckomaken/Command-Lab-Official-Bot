@@ -33,7 +33,7 @@ class CRoleRankButtons(View):  # コマンダーランク
 
     @button(label="駆け出し", style=ButtonStyle.gray, emoji="🇦", custom_id="start-dash")
     async def pressedCom1(self, interaction: Interaction, button: Button):
-        await add_or_remove_role(965084663855063040, interaction)
+        await add_or_remove_role(self, 965084663855063040, interaction)
 
     @button(label="初級", style=ButtonStyle.blurple, emoji="🇧", custom_id="beginner")
     async def pressedCom2(self, interaction: Interaction, button: Button):
