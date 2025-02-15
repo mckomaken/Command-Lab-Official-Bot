@@ -262,17 +262,19 @@ class CRole(commands.Cog):
             value="⤴️:DisboardによるBUMP通知が邪魔だと思った方はこちら!\n(このロールがつくと、<#965098244193542154>が見れなくなります)",
             inline=False,
         )
+        file_komakenimg1 = discord.File("assets/komakenimage1.png", filename="komakenimage1.png")
 
         await interaction.response.send_message("実行されました", ephemeral=True)
         await interaction.channel.send(embed=role_embed)
         await interaction.channel.send(embed=com_embed)
-        await interaction.channel.send(embed=jebe_embed)
-        await interaction.channel.send(embed=sen_embed)
-        await interaction.channel.send(embed=hoka_embed)
         await interaction.channel.send("コマンダーランク設定", view=CRoleRankButtons())
+        await interaction.channel.send(embed=jebe_embed)
         await interaction.channel.send("JE/BE・機種設定", view=CRoleJEBEButtons())
+        await interaction.channel.send(embed=sen_embed)
         await interaction.channel.send("宣伝・質問受付設定", view=CRoleAdButtons())
+        await interaction.channel.send(embed=hoka_embed)
         await interaction.channel.send("その他設定", view=CRoleOtherButtons())
+        await interaction.channel.send(file=file_komakenimg1)
 
 
 async def setup(bot: commands.Bot):
