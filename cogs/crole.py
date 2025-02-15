@@ -6,8 +6,9 @@ from discord.ui import Button, View, button
 from config.config import config
 
 
-async def add_or_remove_role(roleId: int, interaction: Interaction):
+async def add_or_remove_role(self, roleId: int, interaction: Interaction):
     role = interaction.guild.get_role(roleId)
+    admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
     roleremove_embed = discord.Embed(
         description=f"{role.mention}を解除しました",
         color=0x7cfc00
@@ -19,9 +20,11 @@ async def add_or_remove_role(roleId: int, interaction: Interaction):
     if role in interaction.user.roles:
         await interaction.user.remove_roles(role)
         await interaction.response.send_message(embed=roleremove_embed, ephemeral=True)
+        await admin_channel.send(f"|- {interaction.user.mention}の{role.mention}を解除しました", silent=True)
     else:
         await interaction.user.add_roles(role)
         await interaction.response.send_message(embed=rolegive_embed, ephemeral=True)
+        await admin_channel.send(f"|+ {interaction.user.mention}の{role.mention}を付与しました", silent=True)
 
 
 class CRoleRankButtons(View):  # コマンダーランク
@@ -267,13 +270,13 @@ class CRole(commands.Cog):
         await interaction.response.send_message("実行されました", ephemeral=True)
         await interaction.channel.send(embed=role_embed)
         await interaction.channel.send(embed=com_embed)
-        await interaction.channel.send("コマンダーランク設定", view=CRoleRankButtons())
+        await interaction.channel.send(view=CRoleRankButtons())
         await interaction.channel.send(embed=jebe_embed)
-        await interaction.channel.send("JE/BE・機種設定", view=CRoleJEBEButtons())
+        await interaction.channel.send(view=CRoleJEBEButtons())
         await interaction.channel.send(embed=sen_embed)
-        await interaction.channel.send("宣伝・質問受付設定", view=CRoleAdButtons())
+        await interaction.channel.send(view=CRoleAdButtons())
         await interaction.channel.send(embed=hoka_embed)
-        await interaction.channel.send("その他設定", view=CRoleOtherButtons())
+        await interaction.channel.send(view=CRoleOtherButtons())
         await interaction.channel.send(file=file_komakenimg1)
 
 
