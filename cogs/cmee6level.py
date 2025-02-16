@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
 from config.config import config
+from datetime import datetime, timedelta
 
 
 class CMee6level(commands.Cog):
@@ -25,23 +26,23 @@ class CMee6level(commands.Cog):
                     text = ""
                 mee6_channel = await self.bot.fetch_channel(config.mee6.levelup)  # 新たに作るmee6通知チャンネル
                 levelupnoticeoff = message.guild.get_role(config.mee6.levelupnoticeoff)
-                # senndennkenn = message.guild.get_role(config.mee6.senndennkenn)
+                senndennkenn = message.guild.get_role(config.mee6.senndennkenn)
+                hanabira = message.guild.get_role(config.mee6.hanabira)
                 lvupuser = await message.guild.fetch_member(userid)
-                if levelupnoticeoff not in lvupuser.roles:
-                    if level == 1:
-                        await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}\n-# メンション通知がうるさいと感じたら<#892255648295841842>で`MEE6レベル無効化`ロールを付けてね")
-                    # elif level >= 5 and senndennkenn not in lvupuser.roles:
-                    # await lvupuser.add_roles(senndennkenn)
-                    # await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}")
-                    else:
-                        await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}")
-                else:
-                    # if level >= 5 and senndennkenn not in lvupuser.roles:
-                    # await lvupuser.add_roles(senndennkenn)
-                    # await mee6_channel.send(f"{text}/xp reached `{username}` level {level}")
-                    # else:
-                    # await mee6_channel.send(f"{text}/xp reached `{username}` level {level}")
-                    await mee6_channel.send(f"{text}/xp reached `{username}` level {level}")
+                jointime = int(datetime.now().timestamp() - lvupuser.joined_at.timestamp())
+                admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
+                jointime1day = lvupuser.joined_at + timedelta(days=1)
+
+                if level == 1 and levelupnoticeoff not in lvupuser.roles:
+                    await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}\n-# メンション通知がうるさいと感じたら<#892255648295841842>で`MEE6レベル無効化`ロールを付けてね")
+                elif level >= 5:
+                    if senndennkenn not in lvupuser.roles and hanabira not in lvupuser.roles:
+                        if jointime >= 86400:
+                            await lvupuser.add_roles(senndennkenn)
+                        else:
+                            await admin_channel.send(f"<@{userid}>：宣伝権(仮)ロールを{jointime1day}に付与してください")
+                userdisp = f"`{username}`" if levelupnoticeoff in lvupuser.roles else f"<@{userid}>"
+                await mee6_channel.send(f"{text}/xp reached {userdisp} level {level}")
 
 
 async def setup(bot: commands.Bot):

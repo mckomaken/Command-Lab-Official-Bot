@@ -22,6 +22,7 @@ class Mee6(BaseModel):
     levelup: int
     levelupnoticeoff: int
     senndennkenn: int
+    hanabira: int
     five_5: Optional[int] = 0
     ten_10: Optional[int] = 0
     fifteen_15: Optional[int] = 0
