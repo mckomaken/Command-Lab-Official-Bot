@@ -6,9 +6,9 @@ from discord.ui import Button, View, button
 from config.config import config
 
 
-async def add_or_remove_role(self, roleId: int, interaction: Interaction):
+async def add_or_remove_role(roleId: int, interaction: Interaction):
     role = interaction.guild.get_role(roleId)
-    admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
+    admin_channel = await interaction.guild.fetch_channel(config.cmdbot_log)
     roleremove_embed = discord.Embed(
         description=f"{role.mention}を解除しました",
         color=0x7cfc00
@@ -33,7 +33,7 @@ class CRoleRankButtons(View):  # コマンダーランク
 
     @button(label="駆け出し", style=ButtonStyle.gray, emoji="🇦", custom_id="start-dash")
     async def pressedCom1(self, interaction: Interaction, button: Button):
-        await add_or_remove_role(self, 965084663855063040, interaction)
+        await add_or_remove_role(965084663855063040, interaction)
 
     @button(label="初級", style=ButtonStyle.blurple, emoji="🇧", custom_id="beginner")
     async def pressedCom2(self, interaction: Interaction, button: Button):
