@@ -35,6 +35,7 @@ class CMee6level(commands.Cog):
 
                 if level == 1 and levelupnoticeoff not in lvupuser.roles:
                     await mee6_channel.send(f"{text}/xp reached <@{userid}> level {level}\n-# メンション通知がうるさいと感じたら<#892255648295841842>で`MEE6レベル無効化`ロールを付けてね")
+                    return
                 elif level >= 5:
                     if senndennkenn not in lvupuser.roles and hanabira not in lvupuser.roles:
                         if jointime >= 86400:
