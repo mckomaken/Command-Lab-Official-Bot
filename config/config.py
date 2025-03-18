@@ -4,7 +4,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-latest_version = "1.21.1"
+latest_version = "1.21.4"
 
 
 class BumpNofitication(BaseModel):
@@ -40,6 +40,14 @@ class Mee6(BaseModel):
     onehundred_100: Optional[int] = 0
 
 
+class Roles(BaseModel):
+    kakedasi: int
+    syokyuu: int
+    tyuukyuu: int
+    zyoukyuu: int
+    hanabira: int
+
+
 class Config(BaseModel):
     token: str
     guild_id: int
@@ -55,9 +63,11 @@ class Config(BaseModel):
     cmdbot_log: int
     lottery_channel: int
     mee6: Mee6
+    roles: Roles
     advertisement_channnel_id: int
     admin_category_id: int
     botcommand_channel_id: int
+    role_set_ch: int
 
 # -----------------------------------------------------------
 
