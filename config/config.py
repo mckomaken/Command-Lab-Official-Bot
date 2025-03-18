@@ -45,7 +45,11 @@ class Roles(BaseModel):
     syokyuu: int
     tyuukyuu: int
     zyoukyuu: int
-    hanabira: int
+    jezei: int
+    bezei: int
+    personalcomputer: int
+    smartphone: int
+    gamemachine: int
 
 
 class Config(BaseModel):
