@@ -30,16 +30,16 @@ class Cmdbotlevel(commands.Cog):
         send = False
 
         if kake not in message.author.roles and syo not in message.author.roles and tyuu not in message.author.roles and zyou not in message.author.roles:
-            comlank = f"> {kake.mention}/{syo.mention}/{tyuu.mention}/{zyou.mention}のうち1つ"
+            comlank = f"> {kake.mention}/{syo.mention}/{tyuu.mention}/{zyou.mention}のうち1つ\n"
             send = True
         if je not in message.author.roles and be not in message.author.roles:
-            jebe = f"> {je.mention}/{be.mention}のうち1つ"
+            jebe = f"> {je.mention}/{be.mention}のうち1つ\n"
             send = True
         if pc not in message.author.roles and sumaho not in message.author.roles and gameki not in message.author.roles:
-            kisyu = f"> {pc.mention}/{sumaho.mention}/{gameki.mention}のうち1つ"
+            kisyu = f"> {pc.mention}/{sumaho.mention}/{gameki.mention}のうち1つ\n"
             send = True
         if send is True:
-            await message.reply(f"以下のロールが付いていません\n{comlank}\n{jebe}\n{kisyu}\n<#{config.role_set_ch}>でロールを付けてきてください", silent=True, delete_after=10)
+            await message.reply(f"以下のロールが付いていません\n{comlank}{jebe}{kisyu}<#{config.role_set_ch}>でロールを付けてきてください", silent=True, delete_after=10)
         else:
             return
 
