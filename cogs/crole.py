@@ -175,7 +175,7 @@ class CRole(commands.Cog):
             color=0x3AFF11,
         )
         com_embed = discord.Embed(
-            title="コマンダーランク設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【必須】コマンダーランク設定", description="ーーーーーーーーーー", color=0x3AFF11
         )
         com_embed.add_field(
             name="--【@駆け出しコマンダー】--", value="🇦:興味を持っている/これから勉強を始める方はこちら!", inline=False
@@ -197,7 +197,7 @@ class CRole(commands.Cog):
         )
 
         jebe_embed = discord.Embed(
-            title="JE/BE・機種設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【必須】JE/BE・機種設定", description="ーーーーーーーーーー", color=0x3AFF11
         )
         jebe_embed.add_field(
             name="--【@JE(Java)勢】--",
@@ -222,13 +222,10 @@ class CRole(commands.Cog):
         )
 
         sen_embed = discord.Embed(
-            title="宣伝・質問受付設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【任意】宣伝・質問受付設定", description="ーーーーーーーーーー", color=0x3AFF11
         )
         sen_embed.add_field(
             name="--【@宣伝し隊】--", value="📝:宣伝したい人はこのロールを付けて宣伝してください!", inline=False
-        )
-        sen_embed.add_field(
-            name="--【@宣伝ウェルカム】--", value="📩:宣伝はしないけど宣伝チャンネルを見たい人はこちら!", inline=False
         )
         sen_embed.add_field(
             name="--【@DM質問OK】--", value="📮:DMでの質問対応をしてもいいよという方はこちら!", inline=False
@@ -245,14 +242,14 @@ class CRole(commands.Cog):
         )
 
         hoka_embed = discord.Embed(
-            title="その他設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【任意】その他設定", description="ーーーーーーーーーー", color=0x3AFF11
         )
         hoka_embed.add_field(
             name="--【@通知ON】--", value="🔔:ゲームの勧誘などの通知が行っても大丈夫な方はこちら!", inline=False
         )
         hoka_embed.add_field(
             name="--【@MEE6レベル無効化】--",
-            value="🔏:MEEE6による、レベリング機能がいらないと思った方はこちら!",
+            value="🔏:MEEE6による、レベリング機能の通知がいらないと思った方はこちら!",
             inline=False,
         )
         hoka_embed.add_field(
