@@ -1,8 +1,5 @@
 import discord
 from discord.ext import commands
-from database import User, session
-import random
-import math
 from config.config import config
 
 
