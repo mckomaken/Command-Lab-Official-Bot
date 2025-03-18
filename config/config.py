@@ -72,6 +72,7 @@ class Config(BaseModel):
     admin_category_id: int
     botcommand_channel_id: int
     role_set_ch: int
+    ninnsyouch: int
 
 # -----------------------------------------------------------
 

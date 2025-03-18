@@ -12,6 +12,8 @@ class Cmdbotlevel(commands.Cog):
 
         if message.author.bot:
             return
+        if message.channel.id == config.ninnsyouch:
+            return
         kake = message.guild.get_role(config.roles.kakedasi)
         syo = message.guild.get_role(config.roles.syokyuu)
         tyuu = message.guild.get_role(config.roles.tyuukyuu)
