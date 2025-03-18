@@ -16,7 +16,7 @@ class Cmdbotlevel(commands.Cog):
         syo = message.guild.get_role(config.roles.syokyuu)
         tyuu = message.guild.get_role(config.roles.tyuukyuu)
         zyou = message.guild.get_role(config.roles.zyoukyuu)
-        if kake not in message.author.roles or syo not in message.author.roles or tyuu not in message.author.roles or zyou not in message.author.roles:
+        if kake not in message.author.roles and syo not in message.author.roles and tyuu not in message.author.roles and zyou not in message.author.roles:
             await message.reply(f"{kake.mention}/{syo.mention}/{tyuu.mention}/{zyou.mention}>のうちのどれかがついていません\n<#{config.role_set_ch}>でロールを付けてきてください", silent=True, delete_after=15)
 
 
