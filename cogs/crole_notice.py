@@ -39,7 +39,7 @@ class Cmdbotlevel(commands.Cog):
             kisyu = f"> {pc.mention}/{sumaho.mention}/{gameki.mention}のうち1つ\n"
             send = True
         if send is True:
-            await message.reply(f"以下のロールが付いていません\n{comlank}{jebe}{kisyu}<#{config.role_set_ch}>でロールを付けてきてください", silent=True, delete_after=10)
+            await message.reply(f"以下のロールが付いていません\n{comlank}{jebe}{kisyu}<#{config.role_set_ch}>でロールを付けてきてください", silent=True, delete_after=10, allowed_mentions=discord.AllowedMentions(roles=False))
         else:
             return
 
