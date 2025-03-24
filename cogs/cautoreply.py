@@ -55,18 +55,18 @@ class CAutoreply(commands.Cog):
                     await message.channel.send("ｶﾞﾌﾞｯ", silent=True)
                 else:
                     await message.channel.send(GABU, silent=True)
-            elif message.content.startswith("あけおめ"):
-                num = random.random()
-                if num < 0.6:
-                    await message.channel.send("ことよろ", silent=True)
-                else:
-                    await message.channel.send("今年もよろしくお願いいたします！", silent=True)
-            elif message.content.startswith("あけましておめでとうございます"):
-                num = random.random()
-                if num < 0.4:
-                    await message.channel.send("ことよろ", silent=True)
-                else:
-                    await message.channel.send("今年もよろしくお願いいたします！", silent=True)
+            # elif message.content.startswith("あけおめ"):
+            #     num = random.random()
+            #     if num < 0.6:
+            #         await message.channel.send("ことよろ", silent=True)
+            #     else:
+            #         await message.channel.send("今年もよろしくお願いいたします！", silent=True)
+            # elif message.content.startswith("あけましておめでとうございます"):
+            #     num = random.random()
+            #     if num < 0.4:
+            #         await message.channel.send("ことよろ", silent=True)
+            #     else:
+            #         await message.channel.send("今年もよろしくお願いいたします！", silent=True)
 
             elif message.content.startswith("!d bump"):
                 await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)", silent=True)
