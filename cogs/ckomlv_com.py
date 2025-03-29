@@ -19,7 +19,7 @@ class Cmdbotlevelcom(commands.Cog):
             else:
                 level_embed = discord.Embed(
                     title=f"{interaction.user.display_name}のレベル",
-                    description=f"```py\nレベル: {userdb.level} lv\n経験値: {userdb.exp} exp\n{userdb.level + 1}lvまであと {10000 - userdb.exp} exp\n```",
+                    description=f"```go\nレベル: {userdb.level} lv\n経験値: {userdb.exp} exp\n{userdb.level + 1}lvまであと {10000 - userdb.exp} exp\n```",
                     color=0x6fb7ff
                 )
                 level_embed.add_field(name="総獲得経験値量", value=f"```py\n{userdb.alladdexp} exp\n```", inline=True)
@@ -35,7 +35,7 @@ class Cmdbotlevelcom(commands.Cog):
             else:
                 level_embed = discord.Embed(
                     title=f"{target.display_name}のレベル",
-                    description=f"```py\nレベル: {targetdb.level} lv\n経験値: {targetdb.exp} exp\n{targetdb.level + 1}lvまであと {10000 - targetdb.exp} exp\n```",
+                    description=f"```go\nレベル: {targetdb.level} lv\n経験値: {targetdb.exp} exp\n{targetdb.level + 1}lvまであと {10000 - targetdb.exp} exp\n```",
                     color=0x6fb7ff
                 )
                 level_embed.add_field(name="総獲得経験値量", value=f"```py\n{targetdb.alladdexp} exp\n```", inline=True)
