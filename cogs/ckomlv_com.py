@@ -2,7 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from database import User, session
-from config import config
+from config.config import config
 
 
 class Cmdbotlevelcom(commands.Cog):

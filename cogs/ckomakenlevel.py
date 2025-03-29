@@ -3,7 +3,7 @@ from discord.ext import commands, tasks
 from database import User, session
 import random
 import math
-from config import config
+from config.config import config
 from datetime import datetime
 
 

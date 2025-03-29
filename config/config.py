@@ -73,6 +73,9 @@ class Config(BaseModel):
     botcommand_channel_id: int
     role_set_ch: int
     ninnsyouch: int
+    selfintroductionch: int
+    anotherch: int
+    freechat: int
 
 # -----------------------------------------------------------
 
