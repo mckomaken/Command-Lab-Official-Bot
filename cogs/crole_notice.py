@@ -3,7 +3,7 @@ from discord.ext import commands
 from config.config import config
 
 
-class Cmdbotlevel(commands.Cog):
+class Rolenotice(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
@@ -45,4 +45,4 @@ class Cmdbotlevel(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(Cmdbotlevel(bot))
+    await bot.add_cog(Rolenotice(bot))
