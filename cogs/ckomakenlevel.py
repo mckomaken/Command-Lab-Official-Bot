@@ -30,7 +30,8 @@ class Cmdbotlevel(commands.Cog):
         userdb = session.query(User).filter_by(userid=message.author.id).first()
         if message.author.bot:
             return
-        elif userdb.noxp is True:
+
+        if userdb.noxp is True and userdb:
             return
         elif message.content.startswith("ぬるぽ"):
             return
