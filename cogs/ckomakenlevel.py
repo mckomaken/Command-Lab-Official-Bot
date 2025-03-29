@@ -28,6 +28,13 @@ class Cmdbotlevel(commands.Cog):
     async def on_message(self, message: discord.Message):
 
         userdb = session.query(User).filter_by(userid=message.author.id).first()
+
+        if not userdb and not message.author.bot:
+            userdb = User(userid=message.author.id, username=message.author.name)
+            session.add(userdb)
+            session.commit()
+            return
+
         if message.author.bot:
             return
 
@@ -42,12 +49,6 @@ class Cmdbotlevel(commands.Cog):
         elif message.content.startswith("/bump"):
             return
         elif message.content.startswith("oruvanoruvan"):
-            return
-
-        if not userdb:
-            userdb = User(userid=message.author.id, username=message.author.name)
-            session.add(userdb)
-            session.commit()
             return
 
         start = 75 - math.floor(userdb.level / 10)
