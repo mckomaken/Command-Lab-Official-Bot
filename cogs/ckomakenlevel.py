@@ -121,8 +121,6 @@ class Cmdbotlevel(commands.Cog):
                 userdb.exp -= 10000
         session.commit()
 
-        print(f"{userdb.exp}")
-
     @commands.Cog.listener("on_message_delete")
     async def on_message_delete(self, message: discord.Message):
         deluserdb = session.query(User).filter_by(userid=message.author.id).first()
