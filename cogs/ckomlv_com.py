@@ -104,10 +104,10 @@ class Cmdbotlevelcom(commands.Cog):
             newdb = User(userid=target.id, username=target.name)
             session.add(newdb)
             session.commit()
-            await interaction.response.send_message(f"{target.mention}のデータベースがまだなかったため只今生成しました\nもう一度コマンドを実行してください")
+            await interaction.response.send_message(f"{target.mention}のデータベースがまだなかったため只今生成しました\nもう一度コマンドを実行してください", silent=True)
             return
         if level == 0 and experience == 0 and choice.value != "stop":
-            await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください")
+            await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
             return
 
         match choice.value:
@@ -136,7 +136,7 @@ class Cmdbotlevelcom(commands.Cog):
                 await interaction.response.send_message(f"{target.mention}の{level}Lv{experience}exp分をはく奪しました", silent=True)
             case "set":
                 if experience >= 10000:
-                    await interaction.response.send_message("`experience`が10000以上のため、設定できません")
+                    await interaction.response.send_message("`experience`が10000以上のため、設定できません", silent=True)
                     return
                 setuserdb.exp = experience
                 setuserdb.level = level
