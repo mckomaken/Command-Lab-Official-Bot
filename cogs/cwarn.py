@@ -13,13 +13,13 @@ class Cwarn(commands.Cog):
     @app_commands.describe(choice="選択肢", target="警告する人", reason="理由", number="違反番号(1~5)")
     @app_commands.choices(
         choice=[
-            app_commands.Choice(value="add", name="加点"),
+            app_commands.Choice(value="add", name="加点(理由引数必須)"),
             app_commands.Choice(value="remove", name="減点(指定番号の違反を削除)"),
             app_commands.Choice(value="edit", name="編集(指定番号の違反を編集/変更前に一覧で確認してください)"),
             app_commands.Choice(value="list", name="一覧表示")
         ]
     )
-    async def cwarn(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, reason: str, number: int = 0):
+    async def cwarn(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, reason: str = "", number: int = 0):
         warnuserdb = session.query(User).filter_by(userid=target.id).first()
 
         if interaction.guild.get_role(config.administrater_role_id) not in interaction.user.roles:
@@ -96,8 +96,8 @@ class Cwarn(commands.Cog):
                 await interaction.response.send_message(f"{target.mention}のNo.{number}の違反を編集しました\nNo.{number}・旧理由:{oldreason}\n↓\nNo.{number}・新理由:{reason}", silent=True)
             case "list":
                 warnlistembed = discord.Embed(
-                    title=f"{target.name}の違反一覧",
-                    description=f"```\n## 合計違反点数 : {warnuserdb.warnpt}\nNo1 : {warnuserdb.warnreason1}\nNo2 : {warnuserdb.warnreason2}\nNo3 : {warnuserdb.warnreason3}\nNo4 : {warnuserdb.warnreason4}\nNo5 : {warnuserdb.warnreason5}\n```",
+                    title=f"{target.display_name}の違反一覧",
+                    description=f"## 合計違反点数 : {warnuserdb.warnpt}\n```\nNo1 : {warnuserdb.warnreason1}\nNo2 : {warnuserdb.warnreason2}\nNo3 : {warnuserdb.warnreason3}\nNo4 : {warnuserdb.warnreason4}\nNo5 : {warnuserdb.warnreason5}\n```",
                     color=0xFF0000,
                 )
                 await interaction.response.send_message(embed=warnlistembed, silent=True)
@@ -110,10 +110,10 @@ class Cwarn(commands.Cog):
             return
         warnlistembed = discord.Embed(
             title=f"{interaction.user.display_name}の違反一覧",
-            description=f"```\n## 合計違反点数 : {warnuserdb.warnpt}\nNo1 : {warnuserdb.warnreason1}\nNo2 : {warnuserdb.warnreason2}\nNo3 : {warnuserdb.warnreason3}\nNo4 : {warnuserdb.warnreason4}\nNo5 : {warnuserdb.warnreason5}\n```",
+            description=f"## 合計違反点数 : {warnuserdb.warnpt}\n```\nNo1 : {warnuserdb.warnreason1}\nNo2 : {warnuserdb.warnreason2}\nNo3 : {warnuserdb.warnreason3}\nNo4 : {warnuserdb.warnreason4}\nNo5 : {warnuserdb.warnreason5}\n```",
             color=0xFF0000,
         )
-        await interaction.response.send_message(embed=warnlistembed, silent=True)
+        await interaction.response.send_message(embed=warnlistembed, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
