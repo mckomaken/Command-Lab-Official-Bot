@@ -35,16 +35,16 @@ class Cwarn(commands.Cog):
         match choice.value:
             case "add":
                 warnuserdb.warnpt += 1
-                if warnuserdb.warnreason1 == "":
+                if warnuserdb.warnreason1 is None:
                     warnuserdb.warnreason1 = reason
                     num = 1
-                elif warnuserdb.warnreason2 == "":
+                elif warnuserdb.warnreason2 is None:
                     warnuserdb.warnreason2 = reason
                     num = 2
-                elif warnuserdb.warnreason3 == "":
+                elif warnuserdb.warnreason3 is None:
                     warnuserdb.warnreason3 = reason
                     num = 3
-                elif warnuserdb.warnreason4 == "":
+                elif warnuserdb.warnreason4 is None:
                     warnuserdb.warnreason4 = reason
                     num = 4
                 else:
