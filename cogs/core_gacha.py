@@ -90,12 +90,12 @@ async def coregacha(interaction: Interaction):
     elif num >= 18069:
         og6_embed = discord.Embed(
             title="ガチャ結果",
-            description="# 銅",
+            description=f"# 銅\n\nNo.{num:06}\n(確率:37.152%)",
             color=0xff9b37
         )
         og6_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og6_embed.add_field(name="【銅】", value=f"No.{num:06} / (確率:37.152%)")
-        og6_embed.set_footer(text="ダイヤ>金>ラピス>RS>鉄>銅>石炭")
+        # og6_embed.add_field(name="【銅】", value=f"No.{num:06} / (確率:37.152%)")
+        og6_embed.set_footer(text="本日残り回数: {nokori}回")
         file6 = discord.File("assets/ore_gacha/Copper_Ingot.png", filename="Copper_Ingot.png")
         og6_embed.set_thumbnail(url="attachment://Copper_Ingot.png")
         await interaction.response.send_message(embed=og6_embed, file=file6)
