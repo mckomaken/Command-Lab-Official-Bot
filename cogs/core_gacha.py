@@ -90,7 +90,7 @@ async def coregacha(interaction: Interaction):
     elif num >= 18069:
         og6_embed = discord.Embed(
             title="ガチャ結果",
-            description=f"# 銅\n\nNo.{num:06}\n(確率:37.152%)",
+            description=f"# 銅\n\nNo.{num:06}\n確率: 37.152%\n経験値: +20 XP",
             color=0xff9b37
         )
         og6_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
