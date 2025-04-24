@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands, tasks
-from database import User, session
+from database import User, session, Oregacha, session2
 import random
 import math
 from config.config import config
@@ -11,11 +11,15 @@ from datetime import datetime
 async def loop():
     now = datetime.now()
     results = session.query(User).all()
+    results2 = session2.query(Oregacha).all()
     if now.hour == 0 and now.minute == 0:
         for i in results:
             i.dailylogin = False
             i.dailygivexp = False
         session.commit()
+        for i2 in results2:
+            i2.dailygacha = 0
+        session2.commit()
         print("リセット完了")
 loop.start()
 

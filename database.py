@@ -66,6 +66,82 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
+DATABASE_URL2 = 'sqlite:///ore_gacha.db'  # データベースの種類と名前をここで指定できます
+engine2 = create_engine(DATABASE_URL2)  # データベースエンジンを作成
+Base2 = declarative_base()            # データベースの親クラスを作成
+
+
+class Oregacha(Base2):
+    __tablename__ = 'usersgacha'
+    no = Column(Integer, primary_key=True)
+    userid = Column(Integer)
+    username = Column(String)
+    allcount = Column(Integer, default=0)
+
+    netheritei = Column(Integer, default=0)
+    netherites = Column(Integer, default=0)
+    lapis = Column(Integer, default=0)
+    diamond = Column(Integer, default=0)
+    gold = Column(Integer, default=0)
+    redstone = Column(Integer, default=0)
+    emerald = Column(Integer, default=0)
+    iron = Column(Integer, default=0)
+    copper = Column(Integer, default=0)
+    quartz = Column(Integer, default=0)
+    coal = Column(Integer, default=0)
+    breaking_pickaxe = Column(Integer, default=0)
+    broken_pickaxe = Column(Integer, default=0)
+    death = Column(Integer, default=0)
+
+    beacon = Column(Integer, default=0)
+    netheriteb = Column(Integer, default=0)
+    lapisb = Column(Integer, default=0)
+    diamondb = Column(Integer, default=0)
+    goldb = Column(Integer, default=0)
+    redstoneb = Column(Integer, default=0)
+    emeraldb = Column(Integer, default=0)
+    ironb = Column(Integer, default=0)
+    copperb = Column(Integer, default=0)
+    quartzb = Column(Integer, default=0)
+    coalb = Column(Integer, default=0)
+    broken_pickaxe9 = Column(Integer, default=0)
+    death9 = Column(Integer, default=0)
+    unkownworld = Column(Integer, default=0)
+
+    dailygacha = Column(Integer, default=0)
+
+    ogstr1 = Column(String)
+    ogstr2 = Column(String)
+    ogstr3 = Column(String)
+    ogstr4 = Column(String)
+    ogstr5 = Column(String)
+    ogint1 = Column(Integer, default=0)
+    ogint2 = Column(Integer, default=0)
+    ogint3 = Column(Integer, default=0)
+    ogint4 = Column(Integer, default=0)
+    ogint5 = Column(Integer, default=0)
+    ogint6 = Column(Integer, default=0)
+    ogint7 = Column(Integer, default=0)
+    ogint8 = Column(Integer, default=0)
+    ogint9 = Column(Integer, default=0)
+    ogint10 = Column(Integer, default=0)
+    ogbool1 = Column(Boolean, default=False)
+    ogbool2 = Column(Boolean, default=False)
+    ogbool3 = Column(Boolean, default=False)
+    ogbool4 = Column(Boolean, default=False)
+    ogbool5 = Column(Boolean, default=False)
+    ogbool6 = Column(Boolean, default=False)
+    ogbool7 = Column(Boolean, default=False)
+    ogbool8 = Column(Boolean, default=False)
+    ogbool9 = Column(Boolean, default=False)
+    ogbool10 = Column(Boolean, default=False)
+
+
+Base2.metadata.create_all(engine2)
+Session2 = sessionmaker(bind=engine2)
+session2 = Session2()
+
+
 class Sqltest1(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
