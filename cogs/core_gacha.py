@@ -359,7 +359,7 @@ async def coregacha9(interaction: Interaction):
         og1_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ビーコン\n-# ** **\nNo.{num:06}\n確率: 0.011%\n経験値: +20000 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og1_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og1_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -380,7 +380,7 @@ async def coregacha9(interaction: Interaction):
         og2_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ネザライトブロック\n-# ** **\nNo.{num:06}\n確率: 0.055%\n経験値: +10000 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og2_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og2_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -401,7 +401,7 @@ async def coregacha9(interaction: Interaction):
         og3_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ラピスラズリブロック\n-# ** **\nNo.{num:06}\n確率: 3.886%\n経験値: +1440 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og3_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og3_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -425,7 +425,7 @@ async def coregacha9(interaction: Interaction):
         og4_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ダイヤモンドブロック\n-# ** **\nNo.{num:06}\n確率: 3.895%\n経験値: +1395 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og4_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og4_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -449,7 +449,7 @@ async def coregacha9(interaction: Interaction):
         og5_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# 金インゴットブロック\n-# ** **\nNo.{num:06}\n確率: 4.139%\n経験値: +1170 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og5_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og5_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -473,7 +473,7 @@ async def coregacha9(interaction: Interaction):
         og6_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# レッドストーンブロック\n-# ** **\nNo.{num:06}\n確率: 5.625%\n経験値: +990 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og6_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og6_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -497,7 +497,7 @@ async def coregacha9(interaction: Interaction):
         og7_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# エメラルドブロック\n-# ** **\nNo.{num:06}\n確率: 9.122%\n経験値: +810 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og7_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og7_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -521,7 +521,7 @@ async def coregacha9(interaction: Interaction):
         og8_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# 鉄ブロック\n-# ** **\nNo.{num:06}\n確率: 11.561%\n経験値: +675 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og8_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og8_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -545,7 +545,7 @@ async def coregacha9(interaction: Interaction):
         og9_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# 銅ブロック\n-# ** **\nNo.{num:06}\n確率: 24.149%\n経験値: +270 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og9_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og9_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -569,7 +569,7 @@ async def coregacha9(interaction: Interaction):
         og10_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ネザークオーツブロック\n-# ** **\nNo.{num:06}\n確率: 14.961%\n経験値: +200 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og10_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og10_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -593,7 +593,7 @@ async def coregacha9(interaction: Interaction):
         og11_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# 石炭ブロック\n-# ** **\nNo.{num:06}\n確率: 11.745%\n経験値: +630 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og11_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og11_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -617,7 +617,7 @@ async def coregacha9(interaction: Interaction):
         og12_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# 壊れたツルハシ\n-# ** **\nNo.{num:06}\n確率: 9.894%\n経験値: -900 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og12_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og12_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -641,7 +641,7 @@ async def coregacha9(interaction: Interaction):
         og13_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# 死亡\n-# ** **\nNo.{num:06}\n確率: 0.952%\n経験値: -3600 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og13_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og13_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
@@ -665,7 +665,7 @@ async def coregacha9(interaction: Interaction):
         og14_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ワールドデータ破損\n-# ** **\nNo.{num:06}\n確率: 0.005%\n経験値: -10000 XP",
-            color=0xff9b37
+            color=0x87ff37
         )
         og14_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         og14_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
