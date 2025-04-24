@@ -10,7 +10,7 @@ async def coregacha(interaction: Interaction):
     num = random.randint(1, 100000)
     xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
     ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
-    alldb = session2.query(Oregacha).filter_by(userid="100").first()
+    alldb = session2.query(Oregacha).filter_by(userid="101").first()
 
     if num >= 99990:
         og1_embed = discord.Embed(
@@ -353,7 +353,7 @@ async def coregacha9(interaction: Interaction):
     num = random.randint(1, 100000)
     xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
     ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
-    alldb = session2.query(Oregacha).filter_by(userid="100").first()
+    alldb = session2.query(Oregacha).filter_by(userid="101").first()
 
     if num >= 99990:
         og1_embed = discord.Embed(
@@ -716,11 +716,11 @@ class COregacha(commands.Cog):
             session2.commit()
             await coregacha(interaction)
 
-    @app_commands.command(name="core", description="鉱石ガチャ登録")
-    async def coregachatouroku(self, interaction: discord.Interaction):
-        session2.add(Oregacha(userid=101, username="合計"))
-        session2.commit()
-        await interaction.response.send_message("合計データを登録しました", ephemeral=True)
+    # @app_commands.command(name="core", description="鉱石ガチャ登録")
+    # async def coregachatouroku(self, interaction: discord.Interaction):
+    #     session2.add(Oregacha(userid=101, username="合計"))
+    #     session2.commit()
+    #     await interaction.response.send_message("合計データを登録しました", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
