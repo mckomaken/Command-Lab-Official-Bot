@@ -735,7 +735,7 @@ class COregacha(commands.Cog):
             await interaction.response.send_message("あなたは経験値システムが無効化されてるからガチャ回せないよ!!", ephemeral=True)
             return
         if gachadb.dailygacha >= 10:
-            await interaction.response.send_message("本日のガチャ回数が上限に達しました\nまた明日回してね(^^♪\n-# 00:00:00～00:01:00に更新されます", ephemeral=True)
+            await interaction.response.send_message(f"本日のガチャ回数が上限に達しました\nまた明日回してね(^^♪\n-# 00:00:00～00:01:00に更新されます\n本日の収支は{gachadb.ogint1}XPでした", ephemeral=True)
             return
         if datetime.day == 9 or datetime.day == 19 or datetime.day == 29:
             gachadb.dailygacha += 1
