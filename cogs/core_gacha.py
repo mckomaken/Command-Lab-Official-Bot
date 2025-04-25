@@ -5,6 +5,8 @@ import discord
 from database import User, session, Oregacha, session2
 import random
 
+# ogint1 : cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)
+
 
 async def coregacha(interaction: Interaction):
     num = random.randint(1, 100000)
@@ -19,7 +21,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og1_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og1_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og1_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 1720}XP")
         file1 = discord.File("assets/ore_gacha/netherite_ingot.png", filename="netherite_ingot.png")
         og1_embed.set_thumbnail(url="attachment://netherite_ingot.png")
         await interaction.response.send_message(embed=og1_embed, file=file1, silent=True)
@@ -33,6 +35,7 @@ async def coregacha(interaction: Interaction):
         ogdb.netheritei += 1
         alldb.allcount += 1
         alldb.netheritei += 1
+        ogdb.ogint1 += 1720
         session2.commit()
         return
 
@@ -43,7 +46,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og2_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og2_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og2_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 300}XP")
         file2 = discord.File("assets/ore_gacha/netherite_scrap.png", filename="netherite_scrap.png")
         og2_embed.set_thumbnail(url="attachment://netherite_scrap.png")
         await interaction.response.send_message(embed=og2_embed, file=file2, silent=True)
@@ -57,6 +60,7 @@ async def coregacha(interaction: Interaction):
         ogdb.netherites += 1
         alldb.allcount += 1
         alldb.netherites += 1
+        ogdb.ogint1 += 300
         session2.commit()
         return
 
@@ -67,7 +71,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og3_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og3_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og3_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 160}XP")
         file3 = discord.File("assets/ore_gacha/lapis_lazuli.png", filename="lapis_lazuli.png")
         og3_embed.set_thumbnail(url="attachment://lapis_lazuli.png")
         await interaction.response.send_message(embed=og3_embed, file=file3, silent=True)
@@ -81,6 +85,7 @@ async def coregacha(interaction: Interaction):
         ogdb.lapis += 1
         alldb.allcount += 1
         alldb.lapis += 1
+        ogdb.ogint1 += 160
         session2.commit()
         return
 
@@ -91,7 +96,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og4_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og4_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og4_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 155}XP")
         file4 = discord.File("assets/ore_gacha/diamond.png", filename="diamond.png")
         og4_embed.set_thumbnail(url="attachment://diamond.png")
         await interaction.response.send_message(embed=og4_embed, file=file4, silent=True)
@@ -105,6 +110,7 @@ async def coregacha(interaction: Interaction):
         ogdb.diamond += 1
         alldb.allcount += 1
         alldb.diamond += 1
+        ogdb.ogint1 += 155
         session2.commit()
         return
 
@@ -115,7 +121,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og5_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og5_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og5_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 130}XP")
         file5 = discord.File("assets/ore_gacha/gold_ingot.png", filename="gold_ingot.png")
         og5_embed.set_thumbnail(url="attachment://gold_ingot.png")
         await interaction.response.send_message(embed=og5_embed, file=file5, silent=True)
@@ -129,6 +135,7 @@ async def coregacha(interaction: Interaction):
         ogdb.gold += 1
         alldb.allcount += 1
         alldb.gold += 1
+        ogdb.ogint1 += 130
         session2.commit()
         return
 
@@ -139,7 +146,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og6_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og6_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og6_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 110}XP")
         file6 = discord.File("assets/ore_gacha/redstone_dust.png", filename="redstone_dust.png")
         og6_embed.set_thumbnail(url="attachment://redstone_dust.png")
         await interaction.response.send_message(embed=og6_embed, file=file6, silent=True)
@@ -153,6 +160,7 @@ async def coregacha(interaction: Interaction):
         ogdb.redstone += 1
         alldb.allcount += 1
         alldb.redstone += 1
+        ogdb.ogint1 += 110
         session2.commit()
         return
 
@@ -163,7 +171,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og7_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og7_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og7_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 90}XP")
         file7 = discord.File("assets/ore_gacha/emerald.png", filename="emerald.png")
         og7_embed.set_thumbnail(url="attachment://emerald.png")
         await interaction.response.send_message(embed=og7_embed, file=file7, silent=True)
@@ -177,6 +185,7 @@ async def coregacha(interaction: Interaction):
         ogdb.emerald += 1
         alldb.allcount += 1
         alldb.emerald += 1
+        ogdb.ogint1 += 90
         session2.commit()
         return
 
@@ -187,7 +196,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og8_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og8_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og8_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 75}XP")
         file8 = discord.File("assets/ore_gacha/iron_ingot.png", filename="iron_ingot.png")
         og8_embed.set_thumbnail(url="attachment://iron_ingot.png")
         await interaction.response.send_message(embed=og8_embed, file=file8, silent=True)
@@ -201,6 +210,7 @@ async def coregacha(interaction: Interaction):
         ogdb.iron += 1
         alldb.allcount += 1
         alldb.iron += 1
+        ogdb.ogint1 += 75
         session2.commit()
         return
 
@@ -211,7 +221,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og9_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og9_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og9_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 30}XP")
         file9 = discord.File("assets/ore_gacha/copper_ingot.png", filename="copper_ingot.png")
         og9_embed.set_thumbnail(url="attachment://copper_ingot.png")
         await interaction.response.send_message(embed=og9_embed, file=file9, silent=True)
@@ -225,6 +235,7 @@ async def coregacha(interaction: Interaction):
         ogdb.copper += 1
         alldb.allcount += 1
         alldb.copper += 1
+        ogdb.ogint1 += 30
         session2.commit()
         return
 
@@ -235,7 +246,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og10_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og10_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og10_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 50}XP")
         file10 = discord.File("assets/ore_gacha/nether_quartz.png", filename="nether_quartz.png")
         og10_embed.set_thumbnail(url="attachment://nether_quartz.png")
         await interaction.response.send_message(embed=og10_embed, file=file10, silent=True)
@@ -249,6 +260,7 @@ async def coregacha(interaction: Interaction):
         ogdb.quartz += 1
         alldb.allcount += 1
         alldb.quartz += 1
+        ogdb.ogint1 += 50
         session2.commit()
         return
 
@@ -259,7 +271,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og11_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og11_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og11_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 70}XP")
         file11 = discord.File("assets/ore_gacha/coal.png", filename="coal.png")
         og11_embed.set_thumbnail(url="attachment://coal.png")
         await interaction.response.send_message(embed=og11_embed, file=file11, silent=True)
@@ -273,6 +285,7 @@ async def coregacha(interaction: Interaction):
         ogdb.coal += 1
         alldb.allcount += 1
         alldb.coal += 1
+        ogdb.ogint1 += 70
         session2.commit()
         return
 
@@ -283,7 +296,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og12_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og12_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og12_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 100}XP")
         file12 = discord.File("assets/ore_gacha/breaking_pickaxe.png", filename="breaking_pickaxe.png")
         og12_embed.set_thumbnail(url="attachment://breaking_pickaxe.png")
         await interaction.response.send_message(embed=og12_embed, file=file12, silent=True)
@@ -297,6 +310,7 @@ async def coregacha(interaction: Interaction):
         ogdb.breaking_pickaxe += 1
         alldb.allcount += 1
         alldb.breaking_pickaxe += 1
+        ogdb.ogint1 -= 100
         session2.commit()
         return
 
@@ -307,7 +321,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og13_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og13_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og13_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 400}XP")
         file13 = discord.File("assets/ore_gacha/broken_pickaxe.png", filename="broken_pickaxe.png")
         og13_embed.set_thumbnail(url="attachment://broken_pickaxe.png")
         await interaction.response.send_message(embed=og13_embed, file=file13, silent=True)
@@ -321,6 +335,7 @@ async def coregacha(interaction: Interaction):
         ogdb.broken_pickaxe += 1
         alldb.allcount += 1
         alldb.broken_pickaxe += 1
+        ogdb.ogint1 -= 400
         session2.commit()
         return
 
@@ -331,7 +346,7 @@ async def coregacha(interaction: Interaction):
             color=0xff9b37
         )
         og14_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og14_embed.set_footer(text=f"本日残り回数: {10 - ogdb.dailygacha}回")
+        og14_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 1111}XP")
         file14 = discord.File("assets/ore_gacha/death.png", filename="death.png")
         og14_embed.set_thumbnail(url="attachment://death.png")
         await interaction.response.send_message(embed=og14_embed, file=file14, silent=True)
@@ -345,6 +360,7 @@ async def coregacha(interaction: Interaction):
         ogdb.death += 1
         alldb.allcount += 1
         alldb.death += 1
+        ogdb.ogint1 -= 1111
         session2.commit()
         return
 

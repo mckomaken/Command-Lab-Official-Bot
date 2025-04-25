@@ -115,7 +115,7 @@ class Oregacha(Base2):
     ogstr3 = Column(String)
     ogstr4 = Column(String)
     ogstr5 = Column(String)
-    ogint1 = Column(Integer, default=0)
+    ogint1 = Column(Integer, default=0)  # cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)
     ogint2 = Column(Integer, default=0)
     ogint3 = Column(Integer, default=0)
     ogint4 = Column(Integer, default=0)
