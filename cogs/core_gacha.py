@@ -92,16 +92,16 @@ async def coregacha(interaction: Interaction):
     elif num >= 87223:
         og4_embed = discord.Embed(
             title="ガチャ結果",
-            description=f"# ダイヤモンド\n-# ** **\nNo.{num:06}\n確率: 5.895%\n経験値: +175 XP",
+            description=f"# ダイヤモンド\n-# ** **\nNo.{num:06}\n確率: 5.895%\n経験値: +250 XP",
             color=0xff9b37
         )
         og4_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og4_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 175}XP")
+        og4_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 250}XP")
         file4 = discord.File("assets/ore_gacha/diamond.png", filename="diamond.png")
         og4_embed.set_thumbnail(url="attachment://diamond.png")
         await interaction.response.send_message(embed=og4_embed, file=file4, silent=True)
-        xpdb.exp += 175
-        xpdb.alladdexp += 175
+        xpdb.exp += 250
+        xpdb.alladdexp += 250
         if xpdb.exp >= 10000:
             xpdb.level += 1
             xpdb.exp -= 10000
@@ -110,7 +110,7 @@ async def coregacha(interaction: Interaction):
         ogdb.diamond += 1
         alldb.allcount += 1
         alldb.diamond += 1
-        ogdb.ogint1 += 175
+        ogdb.ogint1 += 250
         session2.commit()
         return
 
@@ -292,16 +292,16 @@ async def coregacha(interaction: Interaction):
     elif num >= 958:
         og12_embed = discord.Embed(
             title="ガチャ結果",
-            description=f"# 壊れかけのツルハシ\n-# ** **\nNo.{num:06}\n確率: 7.894%\n経験値: -111 XP",
+            description=f"# 壊れかけのツルハシ\n-# ** **\nNo.{num:06}\n確率: 7.894%\n経験値: -100 XP",
             color=0xff9b37
         )
         og12_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og12_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 111}XP")
+        og12_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 100}XP")
         file12 = discord.File("assets/ore_gacha/breaking_pickaxe.png", filename="breaking_pickaxe.png")
         og12_embed.set_thumbnail(url="attachment://breaking_pickaxe.png")
         await interaction.response.send_message(embed=og12_embed, file=file12, silent=True)
-        xpdb.exp -= 111
-        xpdb.allremoveexp += 111
+        xpdb.exp -= 100
+        xpdb.allremoveexp += 100
         if xpdb.exp < 0:
             xpdb.level -= 1
             xpdb.exp += 10000
@@ -310,23 +310,23 @@ async def coregacha(interaction: Interaction):
         ogdb.breaking_pickaxe += 1
         alldb.allcount += 1
         alldb.breaking_pickaxe += 1
-        ogdb.ogint1 -= 111
+        ogdb.ogint1 -= 100
         session2.commit()
         return
 
     elif num >= 6:
         og13_embed = discord.Embed(
             title="ガチャ結果",
-            description=f"# 壊れたツルハシ\n-# ** **\nNo.{num:06}\n確率: 0.952%\n経験値: -444 XP",
+            description=f"# 壊れたツルハシ\n-# ** **\nNo.{num:06}\n確率: 0.952%\n経験値: -400 XP",
             color=0xff9b37
         )
         og13_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og13_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 444}XP")
+        og13_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 400}XP")
         file13 = discord.File("assets/ore_gacha/broken_pickaxe.png", filename="broken_pickaxe.png")
         og13_embed.set_thumbnail(url="attachment://broken_pickaxe.png")
         await interaction.response.send_message(embed=og13_embed, file=file13, silent=True)
-        xpdb.exp -= 444
-        xpdb.allremoveexp += 444
+        xpdb.exp -= 400
+        xpdb.allremoveexp += 400
         if xpdb.exp < 0:
             xpdb.level -= 1
             xpdb.exp += 10000
@@ -335,7 +335,7 @@ async def coregacha(interaction: Interaction):
         ogdb.broken_pickaxe += 1
         alldb.allcount += 1
         alldb.broken_pickaxe += 1
-        ogdb.ogint1 -= 444
+        ogdb.ogint1 -= 400
         session2.commit()
         return
 
@@ -443,16 +443,16 @@ async def coregacha9(interaction: Interaction):
     elif num >= 87223:
         og4_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
-            description=f"# ダイヤモンドブロック\n-# ** **\nNo.{num:06}\n確率: 5.895%\n経験値: +1575 XP",
+            description=f"# ダイヤモンドブロック\n-# ** **\nNo.{num:06}\n確率: 5.895%\n経験値: +2250 XP",
             color=0x87ff37
         )
         og4_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og4_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 1575}XP")
+        og4_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 2250}XP")
         file4 = discord.File("assets/ore_gacha/Block_of_Diamond.png", filename="Block_of_Diamond.png")
         og4_embed.set_thumbnail(url="attachment://Block_of_Diamond.png")
         await interaction.response.send_message(embed=og4_embed, file=file4, silent=True)
-        xpdb.exp += 1575
-        xpdb.alladdexp += 1575
+        xpdb.exp += 2250
+        xpdb.alladdexp += 2250
         if xpdb.exp >= 10000:
             xpdb.level += 1
             xpdb.exp -= 10000
@@ -461,7 +461,7 @@ async def coregacha9(interaction: Interaction):
         ogdb.diamondb += 1
         alldb.allcount += 1
         alldb.diamondb += 1
-        ogdb.ogint1 += 1575
+        ogdb.ogint1 += 2250
         session2.commit()
         return
 
