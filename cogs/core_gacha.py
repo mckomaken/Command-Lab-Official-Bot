@@ -737,7 +737,8 @@ class COregacha(commands.Cog):
         if gachadb.dailygacha >= 10:
             await interaction.response.send_message(f"本日のガチャ回数が上限に達しました\nまた明日回してね(^^♪\n-# 00:00:00～00:01:00に更新されます\n本日の収支は{gachadb.ogint1}XPでした", ephemeral=True)
             return
-        if datetime.day == 9 or datetime.day == 19 or datetime.day == 29:
+        now = datetime.now()
+        if now.day == 9 or now.day == 19 or now.day == 29:
             gachadb.dailygacha += 1
             session2.commit()
             await coregacha9(interaction)
