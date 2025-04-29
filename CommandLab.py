@@ -131,6 +131,8 @@ class CommandLabBot(commands.Bot):
                         await client.process_commands(message)
 
                 if client.user in message.mentions and message.reference is None:
+                    if message.author.bot:
+                        return
                     await message.channel.send(
                         f"{message.author.mention}呼んだ？\nわからないことがあったら【</help:1218483030247604265>】を実行してね", silent=True
                     )
