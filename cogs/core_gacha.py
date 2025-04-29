@@ -42,7 +42,7 @@ async def coregacha(interaction: Interaction):
     elif num >= 99304:
         og2_embed = discord.Embed(
             title="ガチャ結果",
-            description=f"# ネザライトの欠片\n-# ** **\nNo.{num:06}\n確率: 0.911%\n経験値: +400 XP",
+            description=f"# ネザライトの欠片\n-# ** **\nNo.{num:06}\n確率: 0.611%\n経験値: +400 XP",
             color=0xff9b37
         )
         og2_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
@@ -67,7 +67,7 @@ async def coregacha(interaction: Interaction):
     elif num >= 93318:
         og3_embed = discord.Embed(
             title="ガチャ結果",
-            description=f"# ラピスラズリ\n-# ** **\nNo.{num:06}\n確率: 5.886%\n経験値: +180 XP",
+            description=f"# ラピスラズリ\n-# ** **\nNo.{num:06}\n確率: 5.986%\n経験値: +180 XP",
             color=0xff9b37
         )
         og3_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
@@ -117,7 +117,7 @@ async def coregacha(interaction: Interaction):
     elif num >= 81084:
         og5_embed = discord.Embed(
             title="ガチャ結果",
-            description=f"# 金インゴット\n-# ** **\nNo.{num:06}\n確率: 6.139%\n経験値: +150 XP",
+            description=f"# 金インゴット\n-# ** **\nNo.{num:06}\n確率: 6.339%\n経験値: +150 XP",
             color=0xff9b37
         )
         og5_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
@@ -396,7 +396,7 @@ async def coregacha9(interaction: Interaction):
     elif num >= 99304:
         og2_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
-            description=f"# ネザライトブロック\n-# ** **\nNo.{num:06}\n確率: 0.911%\n経験値: +20000 XP",
+            description=f"# ネザライトブロック\n-# ** **\nNo.{num:06}\n確率: 0.611%\n経験値: +20000 XP",
             color=0x87ff37
         )
         og2_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
@@ -418,7 +418,7 @@ async def coregacha9(interaction: Interaction):
     elif num >= 93318:
         og3_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
-            description=f"# ラピスラズリブロック\n-# ** **\nNo.{num:06}\n確率: 5.886%\n経験値: +1620 XP",
+            description=f"# ラピスラズリブロック\n-# ** **\nNo.{num:06}\n確率: 5.986%\n経験値: +1620 XP",
             color=0x87ff37
         )
         og3_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
@@ -468,7 +468,7 @@ async def coregacha9(interaction: Interaction):
     elif num >= 81084:
         og5_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
-            description=f"# 金インゴットブロック\n-# ** **\nNo.{num:06}\n確率: 6.139%\n経験値: +1350 XP",
+            description=f"# 金インゴットブロック\n-# ** **\nNo.{num:06}\n確率: 6.339%\n経験値: +1350 XP",
             color=0x87ff37
         )
         og5_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
