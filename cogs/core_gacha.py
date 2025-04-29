@@ -7,30 +7,148 @@ import random
 
 # ogint1 : cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)
 
+# numの最大値
+seed_max = 100000
+# レベルアップに必要な経験値
+required_xp = 10000
+
+# 通常ガチャのルートテーブル
+root_table = [
+    {
+        "seed_start":100000,
+        "japanese":"ネザライトインゴット",
+        "filename":"netherite_ingot",
+        "xp":2200
+    },
+    {
+        "seed_start":99914,
+        "japanese":"ネザライトの欠片",
+        "filename":"netherite_scrap",
+        "xp":400
+    },
+    {
+        "seed_start":99003,
+        "japanese":"ラピスラズリ",
+        "filename":"rapis_lazuli",
+        "xp":180
+    },
+    {
+        "seed_start":93117,
+        "japanese":"ダイヤモンド",
+        "filename":"diamond",
+        "xp":250
+    },
+    {
+        "seed_start":87222,
+        "japanese":"金のインゴット",
+        "filename":"gold_ingot",
+        "xp":150
+    },
+    {
+        "seed_start":81083,
+        "japanese":"レッドストーン",
+        "filename":"redstone",
+        "xp":130
+    },
+    {
+        "seed_start":73458,
+        "japanese":"エメラルド",
+        "filename":"emerald",
+        "xp":100
+    },
+    {
+        "seed_start":62867,
+        "japanese":"鉄のインゴット",
+        "filename":"iron_ingot",
+        "xp":85
+    },
+    {
+        "seed_start":51306,
+        "japanese":"銅のインゴット",
+        "filename":"copper_ingot",
+        "xp":40
+    },
+    {
+        "seed_start":35157,
+        "japanese":"ネザークォーツ",
+        "filename":"nether_quartz",
+        "xp":55
+    },
+    {
+        "seed_start":20596,
+        "japanese":"石炭",
+        "filename":"coal",
+        "xp":80
+    },
+    {
+        "seed_start":8851,
+        "japanese":"壊れかけのツルハシ",
+        "filename":"breaking_pickaxe",
+        "xp":-100
+    },
+    {
+        "seed_start":957,
+        "japanese":"壊れたツルハシ",
+        "filename":"broken_pickaxe",
+        "xp":-400
+    },
+    {
+        "seed_start":5,
+        "japanese":"死亡",
+        "filename":"death",
+        "xp":-1111
+    },
+]
 
 async def coregacha(interaction: Interaction):
-    num = random.randint(1, 100000)
+    num = random.randint(1, seed_max) # ←これを便宜上「seed」と呼ぶことがある
     xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
     ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
     alldb = session2.query(Oregacha).filter_by(userid="101").first()
 
-    if num >= 99915:
-        og1_embed = discord.Embed(
+    def send_embed(description, xp, filename):
+        embed = discord.Embed(
             title="ガチャ結果",
-            description=f"# ネザライトインゴット\n-# ** **\nNo.{num:06}\n確率: 0.086%\n経験値: 2200 XP",
+            description=description,
             color=0xff9b37
         )
-        og1_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og1_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 2200}XP")
-        file1 = discord.File("assets/ore_gacha/netherite_ingot.png", filename="netherite_ingot.png")
-        og1_embed.set_thumbnail(url="attachment://netherite_ingot.png")
-        await interaction.response.send_message(embed=og1_embed, file=file1, silent=True)
-        xpdb.exp += 2200
-        xpdb.alladdexp += 2200
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
+        embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
+        embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + xp}XP")
+        file = discord.File(f"assets/ore_gacha/{filename}.png", filename=f"{filename}.png")
+        embed.set_thumbnail(url=f"attachment://{filename}.png")
+        return embed, file
+
+    for i, item in enumerate(root_table):
+        if item["seed_start"] >= num:
+
+            seed_start = item["seed_start"]
+            xp = item["xp"]
+            
+            if i == len(root_table)-1: # もし「死亡」なら
+                probability = seed_start/seed_max
+            else: # そうでないなら、次のitemとのseed_startの差を取って確率を求める
+                probability = (seed_start - root_table[i+1]["seed_start"])/seed_max
+
+            # ガチャ結果送信
+            embed, file = send_embed(
+            f"# {item["japanese"]}\n-# ** **\nNo.{num:06}\n確率: {round(probability)}%\n経験値: {item["xp"]} XP",
+            xp,
+            item["filename"]
+            )
+            await interaction.response.send_message(embed=embed, file=file, silent=True)
+
+            # 経験値等処理
+            xpdb.exp += xp
+            xpdb.alladdexp += xp
+            if xpdb.exp >= required_xp: # レベルアップ
+                xpdb.level += 1
+                xpdb.exp -= required_xp
+            session.commit()
+
+            return
+
+
+    if num >= 99915:
         ogdb.allcount += 1
         ogdb.netheritei += 1
         alldb.allcount += 1
@@ -40,22 +158,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 99004:
-        og2_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# ネザライトの欠片\n-# ** **\nNo.{num:06}\n確率: 0.911%\n経験値: +400 XP",
-            color=0xff9b37
-        )
-        og2_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og2_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 400}XP")
-        file2 = discord.File("assets/ore_gacha/netherite_scrap.png", filename="netherite_scrap.png")
-        og2_embed.set_thumbnail(url="attachment://netherite_scrap.png")
-        await interaction.response.send_message(embed=og2_embed, file=file2, silent=True)
-        xpdb.exp += 400
-        xpdb.alladdexp += 400
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.netherites += 1
         alldb.allcount += 1
@@ -65,22 +167,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 93118:
-        og3_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# ラピスラズリ\n-# ** **\nNo.{num:06}\n確率: 5.886%\n経験値: +180 XP",
-            color=0xff9b37
-        )
-        og3_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og3_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 180}XP")
-        file3 = discord.File("assets/ore_gacha/lapis_lazuli.png", filename="lapis_lazuli.png")
-        og3_embed.set_thumbnail(url="attachment://lapis_lazuli.png")
-        await interaction.response.send_message(embed=og3_embed, file=file3, silent=True)
-        xpdb.exp += 180
-        xpdb.alladdexp += 180
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.lapis += 1
         alldb.allcount += 1
@@ -90,22 +176,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 87223:
-        og4_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# ダイヤモンド\n-# ** **\nNo.{num:06}\n確率: 5.895%\n経験値: +250 XP",
-            color=0xff9b37
-        )
-        og4_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og4_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 250}XP")
-        file4 = discord.File("assets/ore_gacha/diamond.png", filename="diamond.png")
-        og4_embed.set_thumbnail(url="attachment://diamond.png")
-        await interaction.response.send_message(embed=og4_embed, file=file4, silent=True)
-        xpdb.exp += 250
-        xpdb.alladdexp += 250
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.diamond += 1
         alldb.allcount += 1
@@ -115,22 +185,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 81084:
-        og5_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# 金インゴット\n-# ** **\nNo.{num:06}\n確率: 6.139%\n経験値: +150 XP",
-            color=0xff9b37
-        )
-        og5_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og5_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 150}XP")
-        file5 = discord.File("assets/ore_gacha/gold_ingot.png", filename="gold_ingot.png")
-        og5_embed.set_thumbnail(url="attachment://gold_ingot.png")
-        await interaction.response.send_message(embed=og5_embed, file=file5, silent=True)
-        xpdb.exp += 150
-        xpdb.alladdexp += 150
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.gold += 1
         alldb.allcount += 1
@@ -140,22 +194,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 73459:
-        og6_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# レッドストーン\n-# ** **\nNo.{num:06}\n確率: 7.625%\n経験値: +130 XP",
-            color=0xff9b37
-        )
-        og6_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og6_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 130}XP")
-        file6 = discord.File("assets/ore_gacha/redstone_dust.png", filename="redstone_dust.png")
-        og6_embed.set_thumbnail(url="attachment://redstone_dust.png")
-        await interaction.response.send_message(embed=og6_embed, file=file6, silent=True)
-        xpdb.exp += 130
-        xpdb.alladdexp += 130
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.redstone += 1
         alldb.allcount += 1
@@ -165,22 +203,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 62868:
-        og7_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# エメラルド\n-# ** **\nNo.{num:06}\n確率: 10.591%\n経験値: +100 XP",
-            color=0xff9b37
-        )
-        og7_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og7_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 100}XP")
-        file7 = discord.File("assets/ore_gacha/emerald.png", filename="emerald.png")
-        og7_embed.set_thumbnail(url="attachment://emerald.png")
-        await interaction.response.send_message(embed=og7_embed, file=file7, silent=True)
-        xpdb.exp += 100
-        xpdb.alladdexp += 100
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.emerald += 1
         alldb.allcount += 1
@@ -190,22 +212,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 51307:
-        og8_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# 鉄インゴット\n-# ** **\nNo.{num:06}\n確率: 11.561%\n経験値: +85 XP",
-            color=0xff9b37
-        )
-        og8_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og8_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 85}XP")
-        file8 = discord.File("assets/ore_gacha/iron_ingot.png", filename="iron_ingot.png")
-        og8_embed.set_thumbnail(url="attachment://iron_ingot.png")
-        await interaction.response.send_message(embed=og8_embed, file=file8, silent=True)
-        xpdb.exp += 85
-        xpdb.alladdexp += 85
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.iron += 1
         alldb.allcount += 1
@@ -215,22 +221,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 35158:
-        og9_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# 銅インゴット\n-# ** **\nNo.{num:06}\n確率: 16.149%\n経験値: +40 XP",
-            color=0xff9b37
-        )
-        og9_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og9_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 40}XP")
-        file9 = discord.File("assets/ore_gacha/copper_ingot.png", filename="copper_ingot.png")
-        og9_embed.set_thumbnail(url="attachment://copper_ingot.png")
-        await interaction.response.send_message(embed=og9_embed, file=file9, silent=True)
-        xpdb.exp += 40
-        xpdb.alladdexp += 40
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.copper += 1
         alldb.allcount += 1
@@ -240,22 +230,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 20597:
-        og10_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# ネザークオーツ\n-# ** **\nNo.{num:06}\n確率: 14.561%\n経験値: +55 XP",
-            color=0xff9b37
-        )
-        og10_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og10_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 55}XP")
-        file10 = discord.File("assets/ore_gacha/nether_quartz.png", filename="nether_quartz.png")
-        og10_embed.set_thumbnail(url="attachment://nether_quartz.png")
-        await interaction.response.send_message(embed=og10_embed, file=file10, silent=True)
-        xpdb.exp += 55
-        xpdb.alladdexp += 55
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.quartz += 1
         alldb.allcount += 1
@@ -265,22 +239,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 8852:
-        og11_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# 石炭\n-# ** **\nNo.{num:06}\n確率: 11.745%\n経験値: +80 XP",
-            color=0xff9b37
-        )
-        og11_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og11_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + 80}XP")
-        file11 = discord.File("assets/ore_gacha/coal.png", filename="coal.png")
-        og11_embed.set_thumbnail(url="attachment://coal.png")
-        await interaction.response.send_message(embed=og11_embed, file=file11, silent=True)
-        xpdb.exp += 80
-        xpdb.alladdexp += 80
-        if xpdb.exp >= 10000:
-            xpdb.level += 1
-            xpdb.exp -= 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.coal += 1
         alldb.allcount += 1
@@ -290,22 +248,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 958:
-        og12_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# 壊れかけのツルハシ\n-# ** **\nNo.{num:06}\n確率: 7.894%\n経験値: -100 XP",
-            color=0xff9b37
-        )
-        og12_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og12_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 100}XP")
-        file12 = discord.File("assets/ore_gacha/breaking_pickaxe.png", filename="breaking_pickaxe.png")
-        og12_embed.set_thumbnail(url="attachment://breaking_pickaxe.png")
-        await interaction.response.send_message(embed=og12_embed, file=file12, silent=True)
-        xpdb.exp -= 100
-        xpdb.allremoveexp += 100
-        if xpdb.exp < 0:
-            xpdb.level -= 1
-            xpdb.exp += 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.breaking_pickaxe += 1
         alldb.allcount += 1
@@ -315,22 +257,6 @@ async def coregacha(interaction: Interaction):
         return
 
     elif num >= 6:
-        og13_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# 壊れたツルハシ\n-# ** **\nNo.{num:06}\n確率: 0.952%\n経験値: -400 XP",
-            color=0xff9b37
-        )
-        og13_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og13_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 400}XP")
-        file13 = discord.File("assets/ore_gacha/broken_pickaxe.png", filename="broken_pickaxe.png")
-        og13_embed.set_thumbnail(url="attachment://broken_pickaxe.png")
-        await interaction.response.send_message(embed=og13_embed, file=file13, silent=True)
-        xpdb.exp -= 400
-        xpdb.allremoveexp += 400
-        if xpdb.exp < 0:
-            xpdb.level -= 1
-            xpdb.exp += 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.broken_pickaxe += 1
         alldb.allcount += 1
@@ -340,22 +266,6 @@ async def coregacha(interaction: Interaction):
         return
 
     else:
-        og14_embed = discord.Embed(
-            title="ガチャ結果",
-            description=f"# 死亡\n-# ** **\nNo.{num:06}\n確率: 0.005%\n経験値: -1111 XP",
-            color=0xff9b37
-        )
-        og14_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
-        og14_embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 - 1111}XP")
-        file14 = discord.File("assets/ore_gacha/death.png", filename="death.png")
-        og14_embed.set_thumbnail(url="attachment://death.png")
-        await interaction.response.send_message(embed=og14_embed, file=file14, silent=True)
-        xpdb.exp -= 1111
-        xpdb.allremoveexp += 1111
-        if xpdb.exp < 0:
-            xpdb.level -= 1
-            xpdb.exp += 10000
-        session.commit()
         ogdb.allcount += 1
         ogdb.death += 1
         alldb.allcount += 1
