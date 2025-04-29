@@ -39,7 +39,7 @@ async def coregacha(interaction: Interaction):
         session2.commit()
         return
 
-    elif num >= 99004:
+    elif num >= 99304:
         og2_embed = discord.Embed(
             title="ガチャ結果",
             description=f"# ネザライトの欠片\n-# ** **\nNo.{num:06}\n確率: 0.911%\n経験値: +400 XP",
@@ -64,7 +64,7 @@ async def coregacha(interaction: Interaction):
         session2.commit()
         return
 
-    elif num >= 93118:
+    elif num >= 93318:
         og3_embed = discord.Embed(
             title="ガチャ結果",
             description=f"# ラピスラズリ\n-# ** **\nNo.{num:06}\n確率: 5.886%\n経験値: +180 XP",
@@ -89,7 +89,7 @@ async def coregacha(interaction: Interaction):
         session2.commit()
         return
 
-    elif num >= 87223:
+    elif num >= 87423:
         og4_embed = discord.Embed(
             title="ガチャ結果",
             description=f"# ダイヤモンド\n-# ** **\nNo.{num:06}\n確率: 5.895%\n経験値: +250 XP",
@@ -393,7 +393,7 @@ async def coregacha9(interaction: Interaction):
         session2.commit()
         return
 
-    elif num >= 99004:
+    elif num >= 99304:
         og2_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ネザライトブロック\n-# ** **\nNo.{num:06}\n確率: 0.911%\n経験値: +20000 XP",
@@ -415,7 +415,7 @@ async def coregacha9(interaction: Interaction):
         session2.commit()
         return
 
-    elif num >= 93118:
+    elif num >= 93318:
         og3_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ラピスラズリブロック\n-# ** **\nNo.{num:06}\n確率: 5.886%\n経験値: +1620 XP",
@@ -440,7 +440,7 @@ async def coregacha9(interaction: Interaction):
         session2.commit()
         return
 
-    elif num >= 87223:
+    elif num >= 87423:
         og4_embed = discord.Embed(
             title="【約9倍デー】ガチャ結果",
             description=f"# ダイヤモンドブロック\n-# ** **\nNo.{num:06}\n確率: 5.895%\n経験値: +2250 XP",
@@ -738,7 +738,7 @@ class COregacha(commands.Cog):
             await interaction.response.send_message(f"本日のガチャ回数が上限に達しました\nまた明日回してね(^^♪\n-# 00:00:00～00:01:00に更新されます\n本日の収支は{gachadb.ogint1}XPでした", ephemeral=True)
             return
         now = datetime.now()
-        if now.day == 9 or now.day == 19 or now.day == 29:
+        if now.day == 9:
             gachadb.dailygacha += 1
             session2.commit()
             await coregacha9(interaction)
