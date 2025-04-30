@@ -48,7 +48,7 @@ class CRoleRankButtons(View):  # コマンダーランク
         await add_or_remove_role(965084145644601344, interaction)
 
 
-class CRoleJEBEButtons(View):  # JE or BE & 遊んでる機種
+class CRoleJEBEButtons(View):  # JE or BE
     def __init__(self):
         super().__init__(timeout=None)
 
@@ -71,6 +71,11 @@ class CRoleJEBEButtons(View):  # JE or BE & 遊んでる機種
     )
     async def pressedJebe2(self, interaction: Interaction, button: Button):
         await add_or_remove_role(744471657061548223, interaction)
+
+
+class CRolekisyuButtons(View):  # 遊んでる機種
+    def __init__(self):
+        super().__init__(timeout=None)
 
     @button(label="PC", style=ButtonStyle.gray, emoji="🖥️", row=1, custom_id="computer")
     async def pressedJebe3(self, interaction: Interaction, button: Button):
@@ -197,7 +202,7 @@ class CRole(commands.Cog):
         )
 
         jebe_embed = discord.Embed(
-            title="【必須】JE/BE・機種設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【必須】JE or BE", description="ーーーーーーーーーー", color=0x3AFF11
         )
         jebe_embed.add_field(
             name="--【@JE(Java)勢】--",
@@ -209,13 +214,17 @@ class CRole(commands.Cog):
             value="<:BE:892256680509861929>:Bedrock Editionをプレイしてる人はこちら!",
             inline=False,
         )
-        jebe_embed.add_field(
+
+        kisyu_embed = discord.Embed(
+            title="【必須】機種設定", description="ーーーーーーーーーー", color=0x3AFF11
+        )
+        kisyu_embed.add_field(
             name="--【@PC】--", value="🖥️:パソコンを使ってプレイしてる人はこちら !", inline=False
         )
-        jebe_embed.add_field(
+        kisyu_embed.add_field(
             name="--【@スマホ】--", value="📱:スマートフォンを使ってプレイしてる人はこちら!", inline=False
         )
-        jebe_embed.add_field(
+        kisyu_embed.add_field(
             name="--【@家庭用ゲーム機】--",
             value="🎮:家庭用ゲーム機(Switch,PS4,PS5,etc.)を使ってプレイしてる人はこちら!",
             inline=False,
@@ -248,7 +257,7 @@ class CRole(commands.Cog):
             name="--【@通知ON】--", value="🔔:ゲームの勧誘などの通知が行っても大丈夫な方はこちら!", inline=False
         )
         hoka_embed.add_field(
-            name="--【@MEE6レベル無効化】--",
+            name="--【@MEE6レベル通知無効化】--",
             value="🔏:MEEE6による、レベリング機能の通知がいらないと思った方はこちら!",
             inline=False,
         )
@@ -270,6 +279,8 @@ class CRole(commands.Cog):
         await interaction.channel.send(view=CRoleRankButtons())
         await interaction.channel.send(embed=jebe_embed)
         await interaction.channel.send(view=CRoleJEBEButtons())
+        await interaction.channel.send(embed=kisyu_embed)
+        await interaction.channel.send(view=CRolekisyuButtons())
         await interaction.channel.send(embed=sen_embed)
         await interaction.channel.send(view=CRoleAdButtons())
         await interaction.channel.send(embed=hoka_embed)
