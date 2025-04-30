@@ -54,8 +54,6 @@ class Cmdbotlevelcom(commands.Cog):
                     description=f"```go\nレベル: {targetdb.level} lv\n経験値: {targetdb.exp} exp\n{targetdb.level + 1}lvまであと {10000 - targetdb.exp} exp\n```",
                     color=0x6fb7ff
                 )
-                level_embed.add_field(name="総獲得経験値量", value=f"```py\n{targetdb.alladdexp} exp\n```", inline=True)
-                level_embed.add_field(name="総損失経験値量", value=f"```py\n{targetdb.allremoveexp} exp\n```", inline=True)
                 level_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
                 await interaction.response.send_message(embed=level_embed)
                 targetdb.allexp = (targetdb.level * 10000) + targetdb.exp
@@ -107,11 +105,13 @@ class Cmdbotlevelcom(commands.Cog):
             app_commands.Choice(value="add", name="加算"),
             app_commands.Choice(value="remove", name="減算"),
             app_commands.Choice(value="set", name="設定"),
-            app_commands.Choice(value="stop", name="権限停止")
+            app_commands.Choice(value="stop", name="権限停止"),
+            app_commands.Choice(value="list", name="詳細表示")
         ]
     )
     async def setleveling(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, level: int = 0, experience: int = 0):
         setuserdb = session.query(User).filter_by(userid=target.id).first()
+        gachadb = session2.query(Oregacha).filter_by(userid=target.id).first()
 
         if interaction.guild.get_role(config.administrater_role_id) not in interaction.user.roles:
             await interaction.response.send_message("権限ないよ！", ephemeral=True)
@@ -167,6 +167,25 @@ class Cmdbotlevelcom(commands.Cog):
                     setuserdb.noxp = False
                     session.commit()
                     await interaction.response.send_message(f"{target.mention}のレベルシステムを有効化しました", silent=True)
+            case "list":
+                level_embed = discord.Embed(
+                    title=f"{target.display_name}のレベル",
+                    description=f"```go\nレベル: {setuserdb.level} lv\n経験値: {setuserdb.exp} exp\n{setuserdb.level + 1}lvまであと {10000 - setuserdb.exp} exp\n```",
+                    color=0x6fb7ff
+                )
+                gachaplus1 = gachadb.netheritei * 2200 + gachadb.netherites * 400 + gachadb.lapis * 180 + gachadb.diamond * 250 + gachadb.gold * 150 + gachadb.redstone * 130
+                gachaplus2 = gachadb.emerald * 100 + gachadb.iron * 85 + gachadb.copper * 40 + gachadb.quartz * 55 + gachadb.coal * 80
+                gachaminus = gachadb.breaking_pickaxe * 100 + gachadb.broken_pickaxe * 400 + gachadb.death * 1111
+                gachaplus91 = gachadb.beacon * 30000 + gachadb.netheriteb * 20000 + gachadb.lapisb * 1620 + gachadb.diamondb * 2250 + gachadb.goldb * 1350 + gachadb.redstoneb * 1170
+                gachaplus92 = gachadb.emeraldb * 900 + gachadb.ironb * 765 + gachadb.copperb * 360 + gachadb.quartzb * 220 + gachadb.coalb * 720
+                gachaminus9 = gachadb.broken_pickaxe9 * 1000 + gachadb.death9 * 4000 + gachadb.unkownworld * 10000
+                level_embed.add_field(name="総獲得経験値量", value=f"```go\n{setuserdb.alladdexp} exp\n```", inline=True)
+                level_embed.add_field(name="総損失経験値量", value=f"```go\n{setuserdb.allremoveexp} exp\n```", inline=True)
+                level_embed.add_field(name="通常ガチャ総獲得経験値量", value=f"```go\n{gachaplus1 + gachaplus2} exp\n```", inline=True)
+                level_embed.add_field(name="通常ガチャ総損失経験値量", value=f"```go\n{gachaminus} exp\n```", inline=True)
+                level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
+                level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
+                await interaction.response.send_message(embed=level_embed)
 
 
 async def setup(bot: commands.Bot):
