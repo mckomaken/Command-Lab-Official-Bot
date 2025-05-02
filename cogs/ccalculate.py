@@ -222,7 +222,7 @@ buttons = [
     discord.ui.Button(label="4", row=2, custom_id="c4"),
     discord.ui.Button(label="5", row=2, custom_id="c5"),
     discord.ui.Button(label="6", row=2, custom_id="c6"),
-    discord.ui.Button(label="*", row=2, custom_id="cmul"),
+    discord.ui.Button(label="×", row=2, custom_id="cmul"),
     discord.ui.Button(label="^", row=2, custom_id="cbeki"),
     discord.ui.Button(label="1", row=3, custom_id="c1"),
     discord.ui.Button(label="2", row=3, custom_id="c2"),
@@ -266,57 +266,60 @@ class CCalculate(commands.Cog):
     # ボタンを押されたときの処理
     @commands.Cog.listener()
     async def on_interaction(self, interaction: discord.Interaction):
-        custom_id = interaction.data["custom_id"]
-        button_id = {
-            "cto": "->",
-            "citem": "個",
-            "cst": "st",
-            "clc": "lc",
-            "c7": "7",
-            "c8": "8",
-            "c9": "9",
-            "cdiv": "/",
-            "cstart": "(",
-            "c4": "4",
-            "c5": "5",
-            "c6": "6",
-            "cmul": "*",
-            "cend": ")",
-            "c1": "1",
-            "c2": "2",
-            "c3": "3",
-            "csub": "-",
-            "c0": "0",
-            "cdot": ".",
-            "cadd": "+",
-            "cbeki": "^"
-        }
-        embed = interaction.message.embeds[0]
-        embed.title = ""
-        text = embed.description.replace("```", "")
-        if custom_id in button_id.keys():  # 文字入力キーの場合
-            if text == "0":
-                text = f"```{button_id[custom_id]}```"
-            else:
-                text = f"```{text}{button_id[custom_id]}```"
-            embed.description = text
+        try:
+            custom_id = interaction.data["custom_id"]
+            button_id = {
+                "cto": "->",
+                "citem": "個",
+                "cst": "st",
+                "clc": "lc",
+                "c7": "7",
+                "c8": "8",
+                "c9": "9",
+                "cdiv": "/",
+                "cstart": "(",
+                "c4": "4",
+                "c5": "5",
+                "c6": "6",
+                "cmul": "*",
+                "cend": ")",
+                "c1": "1",
+                "c2": "2",
+                "c3": "3",
+                "csub": "-",
+                "c0": "0",
+                "cdot": ".",
+                "cadd": "+",
+                "cbeki": "^"
+            }
+            embed = interaction.message.embeds[0]
+            embed.title = ""
+            text = embed.description.replace("```", "")
+            if custom_id in button_id.keys():  # 文字入力キーの場合
+                if text == "0":
+                    text = f"```{button_id[custom_id]}```"
+                else:
+                    text = f"```{text}{button_id[custom_id]}```"
+                embed.description = text
 
-        elif custom_id == "cequal":  # 計算実行
-            try:
-                embed.description = f"```{calculate(text)}```"
-            except CalculateError as e:
+            elif custom_id == "cequal":  # 計算実行
+                try:
+                    embed.description = f"```{calculate(text)}```"
+                except CalculateError as e:
+                    embed.description = "```0```"
+                    embed.title = e.args[0]
+
+            elif custom_id == "cc":  # リセット
                 embed.description = "```0```"
-                embed.title = e.args[0]
 
-        elif custom_id == "cc":  # リセット
-            embed.description = "```0```"
-
-        elif custom_id == "cdel":  # 1文字消去
-            text = f"```{text[:-1]}```"
-            if text == "``````":
-                text = "```0```"
-            embed.description = text
-        await interaction.response.edit_message(embed=embed, view=view)
+            elif custom_id == "cdel":  # 1文字消去
+                text = f"```{text[:-1]}```"
+                if text == "``````":
+                    text = "```0```"
+                embed.description = text
+            await interaction.response.edit_message(embed=embed, view=view)
+        except KeyError:
+            pass
 
     @ccalculate.error
     async def raise_error(self, ctx, error):
