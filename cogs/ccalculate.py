@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Member, app_commands, Color
+from discord import app_commands, Color
 import discord
 import math
 
@@ -53,12 +53,7 @@ tashihiki = {
 
 
 keywords = (
-    list(const.keys())
-    + list(func1.keys())
-    + list(func2.keys())
-    + list(kakewari.keys())
-    + list(tashihiki.keys())
-    + ["^", "(", ")", "->"]
+    list(const.keys()) + list(func1.keys()) + list(func2.keys()) + list(kakewari.keys()) + list(tashihiki.keys()) + ["^", "(", ")", "->"]
 )
 keywords.sort(reverse=True, key=len)
 
@@ -74,7 +69,7 @@ def calculate(text):
             end = 0
             no_keywords_left = False
             while True:
-                while not keyword in text[start:end]:
+                while keyword not in text[start:end]:
                     if end == len(text):  # もうないから次のkeywordいこう
                         no_keywords_left = True
                         break
@@ -87,12 +82,7 @@ def calculate(text):
                         for i in range(
                             len(separate) - 1
                         ):  # separateする前に、今separateしようとしたところが既にseparateされた文字列の一部でないか確認する
-                            if (
-                                sorted(separate)[i] <= start
-                                and end <= sorted(separate)[i + 1]
-                                and text[sorted(separate)[i] : sorted(separate)[i + 1]]
-                                in keywords
-                            ):
+                            if (sorted(separate)[i] <= start and end <= sorted(separate)[i + 1] and text[sorted(separate)[i]: sorted(separate)[i + 1]] in keywords):
                                 stop_separate = True
                                 break
                         if not stop_separate:
@@ -123,7 +113,7 @@ def calculate(text):
                     if i == len(eles):
                         raise CalculateError("カッコが閉じられていません！")
                 end = i
-                result = cal_core(eles[start + 1 : end])
+                result = cal_core(eles[start + 1: end])
                 for _ in range(end - start + 1):
                     eles.pop(start)
                 eles.insert(start, result)
@@ -134,7 +124,9 @@ def calculate(text):
             # floatに変換できるものはしておく
             try:
                 eles[i] = float(eles[i])
-            except:
+            except TypeError:
+                pass
+            except ValueError:
                 pass
 
             # 定数を数へ変換
@@ -148,14 +140,14 @@ def calculate(text):
             if eles[i] in func1.keys():
                 try:
                     x = eles.pop(i + 1)
-                except:
+                except IndexError:
                     raise CalculateError(f"{eles[i]}の引数指定が無効です！")
                 eles[i] = func1[eles[i]](x)
             if eles[i] in func2.keys():
                 try:
                     x = eles.pop(i + 1)
                     y = eles.pop(i + 1)
-                except:
+                except IndexError:
                     raise CalculateError(f"{eles[i]}の引数指定が無効です！")
                 eles[i] = func2[eles[i]](x, y)
 
@@ -167,8 +159,8 @@ def calculate(text):
                 try:
                     y = eles.pop(i + 1)
                     x = eles.pop(i - 1)
-                except:
-                    raise CalculateError(f"累乗の形式が無効です！")
+                except IndexError:
+                    raise CalculateError("累乗の形式が無効です！")
                 i -= 1
                 eles[i] = x**y
 
@@ -181,8 +173,8 @@ def calculate(text):
                     try:
                         y = eles.pop(i + 1)
                         x = eles.pop(i - 1)
-                    except:
-                        raise CalculateError(f"{eles[i-1]}の引数指定が無効です！")
+                    except IndexError:
+                        raise CalculateError(f"{eles[i - 1]}の引数指定が無効です！")
                     i -= 1
                     eles[i] = dic[eles[i]](x, y)
 
@@ -192,19 +184,19 @@ def calculate(text):
         i = -1
         while i < len(eles) - 1:
             i += 1
-            if isinstance(eles[i], float) and i < len(eles) - 1:
-                if isinstance(eles[i + 1], float):
+            if type(eles[i]) in {float, int} and i < len(eles) - 1:
+                if type(eles[i + 1]) in {float, int}:
                     x = eles.pop(i + 1)
                     eles[i] *= x
 
         try:
             bin_op(kakewari)  # 乗法除法系
         except ZeroDivisionError:
-            raise CalculateError(f"ゼロ除算が発生しました！")
+            raise CalculateError("ゼロ除算が発生しました！")
         bin_op(tashihiki)  # 加法減法系
 
         if len(eles) != 1:
-            raise CalculateError(f"エラーが発生しました！")
+            raise CalculateError("エラーが発生しました！")
 
         return eles[0]
 
@@ -236,7 +228,7 @@ buttons = [
     discord.ui.Button(label="2", row=3, custom_id="c2"),
     discord.ui.Button(label="3", row=3, custom_id="c3"),
     discord.ui.Button(label="-", row=3, custom_id="csub"),
-    discord.ui.Button(label="del",row=3,custom_id="cdel"),
+    discord.ui.Button(label="del", row=3, custom_id="cdel"),
     discord.ui.Button(label="0", row=4, custom_id="c0"),
     discord.ui.Button(label=".", row=4, custom_id="cdot"),
     discord.ui.Button(label="=", row=4, custom_id="cequal", style=discord.ButtonStyle.primary),
@@ -247,7 +239,7 @@ for button in buttons:
     view.add_item(button)
 
 
-#本体
+# 本体
 class CCalculate(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -297,34 +289,34 @@ class CCalculate(commands.Cog):
             "c0": "0",
             "cdot": ".",
             "cadd": "+",
-            "cbeki":"^"
+            "cbeki": "^"
         }
         embed = interaction.message.embeds[0]
         embed.title = ""
-        text = embed.description.replace("```","")
-        if custom_id in button_id.keys(): #文字入力キーの場合
+        text = embed.description.replace("```", "")
+        if custom_id in button_id.keys():  # 文字入力キーの場合
             if text == "0":
                 text = f"```{button_id[custom_id]}```"
             else:
                 text = f"```{text}{button_id[custom_id]}```"
             embed.description = text
 
-        elif custom_id == "cequal": #計算実行
+        elif custom_id == "cequal":  # 計算実行
             try:
                 embed.description = f"```{calculate(text)}```"
             except CalculateError as e:
                 embed.description = "```0```"
                 embed.title = e.args[0]
 
-        elif custom_id == "cc": #リセット
+        elif custom_id == "cc":  # リセット
             embed.description = "```0```"
 
-        elif custom_id == "cdel": #1文字消去
+        elif custom_id == "cdel":  # 1文字消去
             text = f"```{text[:-1]}```"
             if text == "``````":
                 text = "```0```"
             embed.description = text
-        await interaction.response.edit_message(embed=embed,view=view)
+        await interaction.response.edit_message(embed=embed, view=view)
 
     @ccalculate.error
     async def raise_error(self, ctx, error):
