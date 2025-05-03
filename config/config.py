@@ -76,6 +76,7 @@ class Config(BaseModel):
     selfintroductionch: int
     anotherch: int
     freechat: int
+    listench: int
 
 # -----------------------------------------------------------
 

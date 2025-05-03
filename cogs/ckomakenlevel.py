@@ -56,6 +56,9 @@ class Cmdbotlevel(commands.Cog):
         elif message.content.startswith("oruvanoruvan"):
             return
 
+        if message.channel.id == config.listench:
+            return
+
         start = 75 - math.floor(userdb.level / 10)
         end = 125 + math.floor(userdb.level / 10)
         exp_per_message = random.randint(start, end)
@@ -141,6 +144,9 @@ class Cmdbotlevel(commands.Cog):
         elif message.content.startswith("/bump"):
             return
         elif message.content.startswith("oruvanoruvan"):
+            return
+
+        if message.channel.id == config.listench:
             return
 
         if not deluserdb:
