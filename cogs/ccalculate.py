@@ -318,7 +318,7 @@ class CCalculate(commands.Cog):
                     text = "```0```"
                 embed.description = text
             await interaction.response.edit_message(embed=embed, view=view)
-        except KeyError:
+        except KeyError, IndexError:
             pass
 
     @ccalculate.error
