@@ -292,5 +292,6 @@ async def setup(bot: commands.Bot):
     await bot.add_cog(CRole(bot))
     bot.add_view(CRoleRankButtons())
     bot.add_view(CRoleJEBEButtons())
+    bot.add_view(CRolekisyuButtons())
     bot.add_view(CRoleAdButtons())
     bot.add_view(CRoleOtherButtons())
