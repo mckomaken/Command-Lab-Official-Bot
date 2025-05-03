@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 from config.config import config
 from datetime import datetime, timedelta
+from database import User, session
 
 
 class CMee6level(commands.Cog):
@@ -44,6 +45,9 @@ class CMee6level(commands.Cog):
                             await admin_channel.send(f"<@{userid}>：宣伝権(仮)ロールを{jointime1day}に付与してください")
                 userdisp = f"`{username}`" if levelupnoticeoff in lvupuser.roles else f"<@{userid}>"
                 await mee6_channel.send(f"{text}/xp reached {userdisp} level {level}")
+                userdb = session.query(User).filter_by(userid=userid).first()
+                userdb.mee6level = level
+                session.commit()
 
 
 async def setup(bot: commands.Bot):
