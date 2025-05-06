@@ -57,6 +57,29 @@ class Cmdbotlevel(commands.Cog):
             return
 
         if message.channel.id == config.listench:
+            exp_per_message = random.randint(25, 75)
+            userdb.chatcount += 1
+            userdb.alladdexp += exp_per_message
+            userdb.exp += exp_per_message
+
+            if userdb.exp >= 10000:
+                userdb.level += 1
+                userdb.exp -= 10000
+
+            session.commit()
+            return
+
+        elif message.channel.category_id == config.admin_category_id:
+            exp_per_message = random.randint(50, 100)
+            userdb.chatcount += 1
+            userdb.alladdexp += exp_per_message
+            userdb.exp += exp_per_message
+
+            if userdb.exp >= 10000:
+                userdb.level += 1
+                userdb.exp -= 10000
+
+            session.commit()
             return
 
         start = 75 - math.floor(userdb.level / 10)
