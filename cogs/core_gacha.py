@@ -111,7 +111,7 @@ class COregacha(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="core-gacha2", description="鉱石ガチャコマンド")
+    @app_commands.command(name="core-gacha", description="鉱石ガチャコマンド")
     async def coregachacom(self, interaction: discord.Interaction):
         userdb = session.query(User).filter_by(userid=interaction.user.id).first()
         gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
