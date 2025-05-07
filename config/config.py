@@ -77,6 +77,7 @@ class Config(BaseModel):
     anotherch: int
     freechat: int
     listench: int
+    syunngikuid: int
 
 # -----------------------------------------------------------
 

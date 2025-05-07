@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from database import User, session, Oregacha, session2
 from config.config import config
+import random
 
 
 class Cmdbotlevelcom(commands.Cog):
@@ -22,7 +23,7 @@ class Cmdbotlevelcom(commands.Cog):
                     description=f"```go\nレベル: {userdb.level} lv\n経験値: {userdb.exp} exp\n{userdb.level + 1}lvまであと {10000 - userdb.exp} exp\n```",
                     color=0x6fb7ff
                 )
-                level_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
+                level_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
                 if more_info is True:
                     gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
                     if not gachadb:
@@ -49,13 +50,17 @@ class Cmdbotlevelcom(commands.Cog):
             targetdb = session.query(User).filter_by(userid=target.id).first()
             if not targetdb:
                 await interaction.response.send_message(f"`{target.display_name}`はまだ経験値を獲得していません\n### 喋らせよう!!!!!(笑)")
+                return
+            elif targetdb.noxp is True or target.id == config.syunngikuid:
+                await interaction.response.send_message(f"`{target.display_name}`の経験値量は確認できません", ephemeral=True)
+                return
             else:
                 level_embed = discord.Embed(
                     title=f"{target.display_name}のレベル",
                     description=f"```go\nレベル: {targetdb.level} lv\n経験値: {targetdb.exp} exp\n{targetdb.level + 1}lvまであと {10000 - targetdb.exp} exp\n```",
                     color=0x6fb7ff
                 )
-                level_embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
+                level_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
                 await interaction.response.send_message(embed=level_embed)
                 targetdb.allexp = (targetdb.level * 10000) + targetdb.exp
                 session.commit()
@@ -70,6 +75,9 @@ class Cmdbotlevelcom(commands.Cog):
             return
         if 0 >= givexp or givexp >= 5000:
             await interaction.response.send_message("引数:givexpは1以上4999以下を指定してください", ephemeral=True)
+            return
+        if targetdb.noxp is True or givedb.noxp is True:
+            await interaction.response.send_message(f"`{target.display_name}`に経験値を与えることはできません", ephemeral=True)
             return
         if not givedb:
             await interaction.response.send_message(f"{interaction.user.mention}のデータがないため、そもそも与える経験値がありません\n喋ろう!!!!", silent=True)
@@ -123,7 +131,7 @@ class Cmdbotlevelcom(commands.Cog):
             session.commit()
             await interaction.response.send_message(f"{target.mention}のデータベースがまだなかったため只今生成しました\nもう一度コマンドを実行してください", silent=True)
             return
-        if level == 0 and experience == 0 and choice.value != "stop":
+        if level == 0 and experience == 0 and choice.value != "stop" and choice.value != "list":
             await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
             return
 
