@@ -131,9 +131,10 @@ class Cmdbotlevelcom(commands.Cog):
             session.commit()
             await interaction.response.send_message(f"{target.mention}のデータベースがまだなかったため只今生成しました\nもう一度コマンドを実行してください", silent=True)
             return
-        if level == 0 and experience == 0 and choice.value != "stop" and choice.value != "list":
-            await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
-            return
+        if level == 0 and experience == 0:
+            if choice.value != "stop" or choice.value != "list":
+                await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
+                return
 
         match choice.value:
             case "add":
