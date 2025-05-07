@@ -23,10 +23,10 @@ async def coregacha(interaction: Interaction):
             xp = int(item["level"]) * 10000 + int(item["xp"])
             embed = discord.Embed(
                 title="ガチャ結果",
-                description=f"# {item["japanese"]}\n-# ** **\nNo.{num:06}\n確率: {item["percent"]}%\n経験値: {xp} XP",
+                description=f"# {item["japanese"]}\n-# ** **\nNo.{num:06}\n確率: {item["percent"]}\n経験値: {xp} XP",
                 color=0xff9b37
             )
-            embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
+            embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
             embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + xp}XP")
             file1 = discord.File(f"assets/ore_gacha/{item["filename"]}.png", filename=f"{item["filename"]}.png")
             embed.set_thumbnail(url=f"attachment://{item["filename"]}.png")
@@ -68,10 +68,10 @@ async def coregacha9(interaction: Interaction):
             xp = int(item["level"]) * 10000 + int(item["xp"])
             embed = discord.Embed(
                 title="ガチャ結果",
-                description=f"# {item["japanese"]}\n-# ** **\nNo.{num:06}\n確率: {item["percent"]}%\n経験値: {xp} XP",
+                description=f"# {item["japanese"]}\n-# ** **\nNo.{num:06}\n確率: {item["percent"]}\n経験値: {xp} XP",
                 color=0xff9b37
             )
-            embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
+            embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
             embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + xp}XP")
             file1 = discord.File(f"assets/ore_gacha/{item["filename"]}.png", filename=f"{item["filename"]}.png")
             embed.set_thumbnail(url=f"attachment://{item["filename"]}.png")
