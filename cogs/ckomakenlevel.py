@@ -55,44 +55,57 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.content.startswith("oruvanoruvan"):
             return
+        # elif message.content.startswith("<:") and message.content.endswith(">"):
+        #     return
+        # elif len(message.content) <= 5:
+        #     return
 
-        if message.channel.id == config.listench:
-            exp_per_message = random.randint(25, 75)
+        if message.channel.id == config.listenchs:
+            return
+        elif message.channel.category_id == config.admin_category_id:
+            start = 50 - math.floor(userdb.level / 10)
+            if start < 0:
+                start = 0
+            end = 100 + math.floor(userdb.level / 10)
+            exp_per_message = random.randint(start, end)
             userdb.chatcount += 1
             userdb.alladdexp += exp_per_message
             userdb.exp += exp_per_message
-
             if userdb.exp >= 10000:
                 userdb.level += 1
                 userdb.exp -= 10000
-
             session.commit()
             return
-
-        elif message.channel.category_id == config.admin_category_id:
-            exp_per_message = random.randint(50, 100)
+        elif message.channel.id == config.question_channels:
+            start = 100 - math.floor(userdb.level / 10)
+            if start < 0:
+                start = 0
+            end = 150 + math.floor(userdb.level / 10)
+            exp_per_message = random.randint(start, end)
             userdb.chatcount += 1
             userdb.alladdexp += exp_per_message
             userdb.exp += exp_per_message
-
+            if userdb.question is False:
+                userdb.question = True
+                userdb.alladdexp += 200
+                userdb.exp += 200
             if userdb.exp >= 10000:
                 userdb.level += 1
                 userdb.exp -= 10000
-
             session.commit()
             return
 
         start = 75 - math.floor(userdb.level / 10)
+        if start < 0:
+            start = 0
         end = 125 + math.floor(userdb.level / 10)
         exp_per_message = random.randint(start, end)
         userdb.chatcount += 1
         userdb.alladdexp += exp_per_message
         userdb.exp += exp_per_message
-
         if userdb.exp >= 10000:
             userdb.level += 1
             userdb.exp -= 10000
-
         session.commit()
 
         if message.channel.id == config.selfintroductionch:  # 書き換えること
@@ -100,46 +113,19 @@ class Cmdbotlevel(commands.Cog):
                 userdb.selfintro = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-
-                if userdb.exp >= 10000:
-                    userdb.level += 1
-                    userdb.exp -= 10000
-
-        elif message.channel.id == config.question_channels:
-            if userdb.question is False:
-                userdb.question = True
-                userdb.alladdexp += 200
-                userdb.exp += 200
-
-                if userdb.exp >= 10000:
-                    userdb.level += 1
-                    userdb.exp -= 10000
-
         elif message.channel.id == config.freechat:  # 書き換えること
             if userdb.freechat is False:
                 userdb.freechat = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-
-                if userdb.exp >= 10000:
-                    userdb.level += 1
-                    userdb.exp -= 10000
-
         elif message.channel.id == config.anotherch:  # 書き換えること
             if userdb.anotherch is False:
                 userdb.anotherch = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-
-                if userdb.exp >= 10000:
-                    userdb.level += 1
-                    userdb.exp -= 10000
-        session.commit()
-
         if userdb.dailylogin is False:
             userdb.dailylogin = True
             userdb.dailylogincount += 1
-
             if (userdb.dailylogincount % 10 == 0):
                 userdb.alladdexp += 300
                 userdb.exp += 300
@@ -147,9 +133,9 @@ class Cmdbotlevel(commands.Cog):
                 userdb.alladdexp += 100
                 userdb.exp += 100
 
-            if userdb.exp >= 10000:
-                userdb.level += 1
-                userdb.exp -= 10000
+        if userdb.exp >= 10000:
+            userdb.level += 1
+            userdb.exp -= 10000
         session.commit()
 
     @commands.Cog.listener("on_message_delete")
@@ -168,8 +154,14 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.content.startswith("oruvanoruvan"):
             return
+        # elif message.content.startswith("<:") and message.content.endswith(">"):
+        #     return
+        # elif len(message.content) <= 5:
+        #     return
 
-        if message.channel.id == config.listench:
+        if message.channel.id == config.listenchs:
+            return
+        elif message.channel.category_id == config.admin_category_id:
             return
 
         if not deluserdb:

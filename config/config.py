@@ -4,7 +4,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-latest_version = "1.21.4"
+latest_version = "1.21.5"
 
 
 class BumpNofitication(BaseModel):
@@ -78,6 +78,7 @@ class Config(BaseModel):
     freechat: int
     listench: int
     syunngikuid: int
+    listenchs: list[int] = []
 
 # -----------------------------------------------------------
 
