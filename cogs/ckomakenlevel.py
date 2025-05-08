@@ -60,7 +60,7 @@ class Cmdbotlevel(commands.Cog):
         # elif len(message.content) <= 5:
         #     return
 
-        if message.channel.id == config.listenchs:
+        if message.channel.id == config.listench:
             return
         elif message.channel.category_id == config.admin_category_id:
             start = 50 - math.floor(userdb.level / 10)
@@ -159,7 +159,7 @@ class Cmdbotlevel(commands.Cog):
         # elif len(message.content) <= 5:
         #     return
 
-        if message.channel.id == config.listenchs:
+        if message.channel.id == config.listench:
             return
         elif message.channel.category_id == config.admin_category_id:
             return
