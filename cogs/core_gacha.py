@@ -61,7 +61,7 @@ async def coregacha9(interaction: Interaction):
     alldb = session2.query(Oregacha).filter_by(userid="101").first()
     with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
         jsonfile = json.load(f)
-        data = jsonfile["gacha1"]
+        data = jsonfile["gacha2"]
 
     for i, item in enumerate(data):
         if num >= item["seed_start"]:
