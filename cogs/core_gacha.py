@@ -7,6 +7,7 @@ import random
 import json
 
 # ogint1 : cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)
+# ogstr1 : cog.core_gacha.py使用中(１日のガチャによる結果表示)
 
 
 async def coregacha(interaction: Interaction):
@@ -30,6 +31,7 @@ async def coregacha(interaction: Interaction):
             embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + xp}XP")
             file1 = discord.File(f"assets/ore_gacha/{item["filename"]}.png", filename=f"{item["filename"]}.png")
             embed.set_thumbnail(url=f"attachment://{item["filename"]}.png")
+            embed.add_field(name="本日のガチャ結果", value=f"{ogdb.ogstr1 + item["emoji"]}")
             await interaction.response.send_message(embed=embed, file=file1, silent=True)
 
             # 経験値等処理
@@ -47,6 +49,7 @@ async def coregacha(interaction: Interaction):
             session.commit()
             ogdb.allcount += 1
             exec(f"ogdb.{item["database"]} += 1")
+            ogdb.ogstr1 += item["emoji"]
             ogdb.ogint1 += xp
             alldb.allcount += 1
             exec(f"alldb.{item["database"]} += 1")
@@ -75,6 +78,7 @@ async def coregacha9(interaction: Interaction):
             embed.set_footer(text=f"本日残り: {10 - ogdb.dailygacha}回 / 今日の収支: {ogdb.ogint1 + xp}XP")
             file1 = discord.File(f"assets/ore_gacha/{item["filename"]}.png", filename=f"{item["filename"]}.png")
             embed.set_thumbnail(url=f"attachment://{item["filename"]}.png")
+            embed.add_field(name="本日のガチャ結果", value=f"{ogdb.ogstr1 + item["emoji"]}")
             await interaction.response.send_message(embed=embed, file=file1, silent=True)
 
             # 経験値等処理
@@ -100,6 +104,7 @@ async def coregacha9(interaction: Interaction):
                 session.commit()
             ogdb.allcount += 1
             exec(f"ogdb.{item["database"]} += 1")
+            ogdb.ogstr1 += item["emoji"]
             ogdb.ogint1 += xp
             alldb.allcount += 1
             exec(f"alldb.{item["database"]} += 1")
