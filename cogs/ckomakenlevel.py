@@ -20,6 +20,7 @@ async def loop():
         for i2 in results2:
             i2.dailygacha = 0
             i2.ogint1 = 0
+            i2.ogstr1 = ""
         session2.commit()
         print("リセット完了")
 loop.start()

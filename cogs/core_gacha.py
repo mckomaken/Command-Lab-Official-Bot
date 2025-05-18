@@ -126,7 +126,7 @@ class COregacha(commands.Cog):
             await interaction.response.send_message("経験値データベースにユーザーを登録しました\nもう一度実行してください(1日あたりの実行回数は減りません)\nなお、まだ一度もガチャをしていない人は次の実行でガチャデータベースにユーザー登録されます", ephemeral=True)
             return
         if not gachadb:
-            session2.add(Oregacha(userid=interaction.user.id, username=interaction.user.name))
+            session2.add(Oregacha(userid=interaction.user.id, username=interaction.user.name, ogstr1=""))
             session2.commit()
             await interaction.response.send_message("ガチャデータベースにユーザーを登録しました\nもう一度実行してください(1日あたりの実行回数は減りません)\n次でガチャが回せるはずです", ephemeral=True)
             return
