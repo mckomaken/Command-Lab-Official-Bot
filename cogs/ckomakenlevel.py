@@ -72,11 +72,6 @@ class Cmdbotlevel(commands.Cog):
             userdb.chatcount += 1
             userdb.alladdexp += exp_per_message
             userdb.exp += exp_per_message
-            if userdb.exp >= 10000:
-                userdb.level += 1
-                userdb.exp -= 10000
-            session.commit()
-            return
         elif message.channel.id == config.question_channels:
             start = 100 - math.floor(userdb.level / 10)
             if start < 0:
@@ -86,27 +81,15 @@ class Cmdbotlevel(commands.Cog):
             userdb.chatcount += 1
             userdb.alladdexp += exp_per_message
             userdb.exp += exp_per_message
-            if userdb.question is False:
-                userdb.question = True
-                userdb.alladdexp += 200
-                userdb.exp += 200
-            if userdb.exp >= 10000:
-                userdb.level += 1
-                userdb.exp -= 10000
-            session.commit()
-            return
-
-        start = 75 - math.floor(userdb.level / 10)
-        if start < 0:
-            start = 0
-        end = 125 + math.floor(userdb.level / 10)
-        exp_per_message = random.randint(start, end)
-        userdb.chatcount += 1
-        userdb.alladdexp += exp_per_message
-        userdb.exp += exp_per_message
-        if userdb.exp >= 10000:
-            userdb.level += 1
-            userdb.exp -= 10000
+        else:
+            start = 75 - math.floor(userdb.level / 10)
+            if start < 0:
+                start = 0
+            end = 125 + math.floor(userdb.level / 10)
+            exp_per_message = random.randint(start, end)
+            userdb.chatcount += 1
+            userdb.alladdexp += exp_per_message
+            userdb.exp += exp_per_message
         session.commit()
 
         if message.channel.id == config.selfintroductionch:  # 書き換えること
@@ -124,6 +107,13 @@ class Cmdbotlevel(commands.Cog):
                 userdb.anotherch = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
+        elif message.channel.id == config.question_channels:
+            if userdb.question is False:
+                userdb.question = True
+                userdb.alladdexp += 200
+                userdb.exp += 200
+        session.commit()
+
         if userdb.dailylogin is False:
             userdb.dailylogin = True
             userdb.dailylogincount += 1
@@ -133,6 +123,7 @@ class Cmdbotlevel(commands.Cog):
             else:
                 userdb.alladdexp += 100
                 userdb.exp += 100
+        session.commit()
 
         if userdb.exp >= 10000:
             userdb.level += 1
@@ -165,10 +156,6 @@ class Cmdbotlevel(commands.Cog):
         elif message.channel.category_id == config.admin_category_id:
             return
 
-        if not deluserdb:
-            userdb = User(userid=message.author.id, username=message.author.name)
-            session.add(userdb)
-            session.commit()
             return
         deluserdb.chatcount -= 1
         deluserdb.allremoveexp += exp_per_delmsg
