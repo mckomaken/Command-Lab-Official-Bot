@@ -13,3 +13,4 @@ audioop-lts
 numpy
 pillow
 requests
+googletrans
