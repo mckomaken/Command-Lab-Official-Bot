@@ -130,16 +130,16 @@ class CTranslate(commands.Cog):
 
         try:
             if language is None:
-                if textlang.lang == "ja":
+                if textlang == "ja":
                     translationsource = "ja"
                     translationtarget = "en"
                     translated_text = await translator.translate(text, src="ja", dest="en")
                 else:
-                    translationsource = textlang.lang
+                    translationsource = textlang
                     translationtarget = "ja"
                     translated_text = await translator.translate(text, dest="ja")
             else:
-                translationsource = textlang.lang
+                translationsource = textlang
                 translationtarget = language
                 translated_text = await translator.translate(text, dest=language)
 
