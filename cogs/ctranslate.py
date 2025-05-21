@@ -126,20 +126,20 @@ class CTranslate(commands.Cog):
     async def ctranslate(self, interaction: discord.Interaction, text: str, language: str = None):
         await interaction.response.defer(thinking=True)
         translator = Translator()
-        textlang = translator.detect(text)
+        textlang = translator.detect(text).lang
 
         try:
             if language is None:
-                if textlang.lang == "ja":
+                if textlang == "ja":
                     translationsource = "ja"
                     translationtarget = "en"
                     translated_text = await translator.translate(text, src="ja", dest="en")
                 else:
-                    translationsource = textlang.lang
+                    translationsource = textlang
                     translationtarget = "ja"
                     translated_text = await translator.translate(text, dest="ja")
             else:
-                translationsource = textlang.lang
+                translationsource = textlang
                 translationtarget = language
                 translated_text = await translator.translate(text, dest=language)
 
