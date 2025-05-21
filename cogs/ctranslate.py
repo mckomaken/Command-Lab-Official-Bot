@@ -145,7 +145,7 @@ class CTranslate(commands.Cog):
 
             translated_embed = discord.Embed(
                 title="翻訳結果",
-                description=f"【翻訳元(translation source)/{translationsource}】\n```{text}```\n↓\n【翻訳先(translation target)/{translationtarget}】\n```{translated_text.text}```",
+                description=f"【翻訳元(translation source)/{translationsource}】\n```{text}```\n【翻訳先(translation target)/{translationtarget}】\n```{translated_text.text}```",
                 color=0x00ff00
             )
             translated_embed.set_footer(text="Translated by Google Translate")
