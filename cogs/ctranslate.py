@@ -11,7 +11,7 @@ class CTranslate(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="ctranslate", description="各言語に翻訳できます")
-    @app_commands.describe(text="翻訳したい文章(Text-to-be-translated)", language="翻訳先言語-2文字(Language-to-be-translated-2-alphabets)")
+    @app_commands.describe(text="翻訳したい文章(Text-to-be-translated)", language="翻訳先言語(translation-target-language)")
     @app_commands.choices(
         language=[
             app_commands.Choice(value="af", name="af : afrikaans / アフリカーンス語"),
