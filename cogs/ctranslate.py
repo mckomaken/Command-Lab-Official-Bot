@@ -273,7 +273,7 @@ class CTranslate(commands.Cog):
 
     @ctranslate.autocomplete("language")
     async def translate_language(self, interaction: discord.Interaction, current: str):
-        return [app_commands.Choice(name=n, value=n) for n in LANGUAGES[:25] if current.lower() in n.lower()]
+        return [app_commands.Choice(name=n, value=n) for n in LANGUAGES if current.lower() in n.lower()]
 
 
 async def setup(bot: commands.Bot):
