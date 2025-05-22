@@ -249,7 +249,7 @@ class CTranslate(commands.Cog):
                     translationtarget = "ja"
                     translated_text = await translator.translate(text, dest="ja")
             else:
-                langcode = str(language(" ")[0])
+                langcode = language(" ")[0]
                 translationsource = textlang.lang
                 translationtarget = langcode
                 translated_text = await translator.translate(text, dest=langcode)
