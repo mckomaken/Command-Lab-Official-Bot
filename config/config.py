@@ -50,6 +50,7 @@ class Roles(BaseModel):
     personalcomputer: int
     smartphone: int
     gamemachine: int
+    serverbooster: int
 
 
 class Config(BaseModel):
