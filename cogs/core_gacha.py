@@ -112,6 +112,58 @@ async def coregacha9(interaction: Interaction):
             return
 
 
+async def coregacha10ren(interaction: Interaction):
+    xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
+    ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
+    alldb = session2.query(Oregacha).filter_by(userid="101").first()
+    numberlist = []
+    explist = []
+    emojilist = []
+    jpnamelist = []
+    countlist = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
+        jsonfile = json.load(f)
+        data = jsonfile["gacha1"]
+
+    for count in range(10):
+        num = random.randint(1, 100000)
+        for i, item in enumerate(data):
+            if num >= item["seed_start"]:
+                numberlist.append(num)
+                explist.append(int(item["level"]) * 10000 + int(item["xp"]))
+                emojilist.append(item["emoji"])
+                jpnamelist.append(item["japanese"])
+                exec(f"ogdb.{item['database']} += 1")
+                alldb.allcount += 1
+                exec(f"alldb.{item['database']} += 1")
+                ogdb.allcount += 1
+                session2.commit()
+                break
+    sumxp = sum(explist)
+    ogdb.ogint1 += sumxp
+    ogdb.ogstr1 += "".join(emojilist)
+    xpdb.exp += sumxp
+    if xpdb.exp >= 10000:  # レベルアップ
+        xpdb.level += 1
+        xpdb.exp -= 10000
+    if xpdb.exp < 0:
+        xpdb.level -= 1
+        xpdb.exp += 10000
+    session.commit()
+    session2.commit()
+    desc = "\n".join([f"`{count:02}` {emoji} No.{num:06} {jpname} 経験値: {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
+
+    embed = discord.Embed(
+        title="ガチャ結果【10連】",
+        description=desc,
+        color=0xff9b37
+    )
+    embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+    embed.set_footer(text=f"本日残り: 0回 / 今日の収支: {sumxp}XP")
+
+    await interaction.response.send_message(embed=embed, silent=True)
+
+
 class COregacha(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -131,7 +183,7 @@ class COregacha(commands.Cog):
             await interaction.response.send_message("ガチャデータベースにユーザーを登録しました\nもう一度実行してください(1日あたりの実行回数は減りません)\n次でガチャが回せるはずです", ephemeral=True)
             return
         if userdb.noxp is True:
-            await interaction.response.send_message("あなたは経験値システムが無効化されてるからガチャ回せません", ephemeral=True)
+            await interaction.response.send_message("あなたは経験値システムが無効化されてるからガチャを回せません", ephemeral=True)
             return
         if gachadb.dailygacha >= 10:
             await interaction.response.send_message(f"本日のガチャ回数が上限に達しました\nまた明日回してね(^^♪\n-# 00:00:00～00:01:00に更新されます\n本日の収支は{gachadb.ogint1}XPでした", ephemeral=True)
@@ -151,6 +203,31 @@ class COregacha(commands.Cog):
     #     session2.add(Oregacha(userid=101, username="合計"))
     #     session2.commit()
     #     await interaction.response.send_message("合計データを登録しました", ephemeral=True)
+
+    @app_commands.command(name="core-gacha-10", description="鉱石ガチャコマンド【10連】")
+    async def coregacha10renncom(self, interaction: discord.Interaction):
+        userdb = session.query(User).filter_by(userid=interaction.user.id).first()
+        gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
+        if not userdb:
+            session.add(User(userid=interaction.user.id, username=interaction.user.name))
+            session.commit()
+            await interaction.response.send_message("経験値データベースにユーザーを登録しました\nもう一度実行してください(1日あたりの実行回数は減りません)\nなお、まだ一度もガチャをしていない人は次の実行でガチャデータベースにユーザー登録されます", ephemeral=True)
+        elif not gachadb:
+            session2.add(Oregacha(userid=interaction.user.id, username=interaction.user.name, ogstr1=""))
+            session2.commit()
+            await interaction.response.send_message("ガチャデータベースにユーザーを登録しました\nもう一度実行してください(1日あたりの実行回数は減りません)\n次でガチャが回せるはずです", ephemeral=True)
+        elif userdb.noxp is True:
+            await interaction.response.send_message("あなたは経験値システムが無効化されてるからガチャを回せません", ephemeral=True)
+        elif gachadb.dailygacha > 0:
+            await interaction.response.send_message(f"本日既に{gachadb.dailygacha}回ガチャを回しているため、10連は回せません\n本日の収支は{gachadb.ogint1}XPでした", ephemeral=True)
+        else:
+            now = datetime.now()
+            if now.day != 9:
+                gachadb.dailygacha += 10
+                session2.commit()
+                await coregacha10ren(interaction)
+            else:
+                await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
