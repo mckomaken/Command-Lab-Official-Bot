@@ -80,14 +80,14 @@ class CPresent(commands.Cog):
         tyuusennbi = syuuryoubi + timedelta(days=1)
         ftyuusennbi = tyuusennbi.strftime(" %Y/%m/%d ")
 
-        str_amagif = "",
-        str_nitro = "",
-        str_abata_prof = "",
-        str_pripe = "",
-        str_mcmd10000xp = "",
-        str_mcmd5000xp = "",
-        str_mcmd2500xp = "",
-        str_mcmd1000xp = "",
+        str_amagif = ""
+        str_nitro = ""
+        str_abata_prof = ""
+        str_pripe = ""
+        str_mcmd10000xp = ""
+        str_mcmd5000xp = ""
+        str_mcmd2500xp = ""
+        str_mcmd1000xp = ""
 
         if amagif > 0:
             str_amagif = f"> `{amagif}名` : Amazonギフト券 500円分\n"
