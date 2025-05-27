@@ -136,6 +136,16 @@ class CPresent(commands.Cog):
         await interaction.channel.send(embed=present_embed)
         await interaction.channel.send(view=LOttery(self.bot))
 
+    @app_commands.command(name="cpresent-reset", description="【運営】present企画-リセットコマンド")
+    @app_commands.checks.has_role(config.administrater_role_id)
+    async def cpresentreset(self, interaction: discord.Interaction):
+        results = session.query(User).all()
+        for i in results:
+            i.bool1 = False  # 応募済みをリセット
+        session.commit()
+        print("リセット完了")
+        await interaction.response.send_message("リセットしました", ephemeral=True)
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(CPresent(bot))
