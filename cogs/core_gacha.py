@@ -151,7 +151,7 @@ async def coregacha10ren(interaction: Interaction):
         xpdb.exp += 10000
     session.commit()
     session2.commit()
-    desc = "\n".join([f"`{count:02}` {emoji} No.{num:06} {jpname} 経験値: {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
+    desc = "\n".join([f"`{count:02}` {emoji} No.{num:06} {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
 
     embed = discord.Embed(
         title="ガチャ結果【10連】",
