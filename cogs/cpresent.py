@@ -21,13 +21,13 @@ class LOttery(discord.ui.View):  # 抽選コマンド
             userdb = User(userid=interaction.user.id, username=interaction.user.name)
             session.add(userdb)
             session.commit()
-            await interaction.response.send_message("応募条件\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            await interaction.response.send_message("【応募条件】\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: 0・レベル: 0\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
             return
         elif oubouser.noxp is True:
             await interaction.response.send_message("あなたには参加資格がありません", ephemeral=True)
             return
         elif oubouser.chatcount < 50 and oubouser.level < 3:
-            await interaction.response.send_message("応募条件\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            await interaction.response.send_message(f"【応募条件】\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: {oubouser.chatcount}・レベル: {oubouser.level}\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
             return
         elif oubouser.bool1 is True:
             await interaction.response.send_message("すでに応募済みです。抽選開始までお待ちください。", ephemeral=True)
