@@ -49,7 +49,7 @@ class User(Base):
     int8 = Column(Integer, default=0)
     int9 = Column(Integer, default=0)
     int10 = Column(Integer, default=0)
-    bool1 = Column(Boolean, default=False)
+    bool1 = Column(Boolean, default=False)  # bool1 : cog.cpresent.py使用中(プレゼント企画参加済みかどうか)
     bool2 = Column(Boolean, default=False)
     bool3 = Column(Boolean, default=False)
     bool4 = Column(Boolean, default=False)

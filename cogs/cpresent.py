@@ -1,11 +1,11 @@
 from discord.ext import commands
 from datetime import datetime, timedelta
 from discord import ButtonStyle, app_commands
-
+from database import User, session
 import discord
-
-
 from config.config import config
+
+# bool1 : cog.cpresent.py使用中(プレゼント企画参加済みかどうか)
 
 
 class LOttery(discord.ui.View):  # 抽選コマンド
@@ -16,11 +16,32 @@ class LOttery(discord.ui.View):  # 抽選コマンド
     @discord.ui.button(label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present")
     async def pressedLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
         send_channel = await self.bot.fetch_channel(config.lottery_channel)
-        mee6role_5 = interaction.guild.get_role(config.mee6.five_5)
-        if mee6role_5 not in interaction.user.roles:
-            await interaction.response.send_message("MEE6レベルが5Lvになっていないため応募できません\nサーバーで雑談をしたり、コマンドの質問をすればレベルが上がって行きます\nまたMEE6レベルが5Lvになった時にボタンを押しに来てください！！", ephemeral=True)
+        oubouser = session.query(User).filter_by(userid=interaction.user.id).first()
+        if oubouser is None:
+            userdb = User(userid=interaction.user.id, username=interaction.user.name)
+            session.add(userdb)
+            session.commit()
+            await interaction.response.send_message("応募条件\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            return
+        elif oubouser.noxp is True:
+            await interaction.response.send_message("あなたには参加資格がありません", ephemeral=True)
+            return
+        elif oubouser.chatcount < 50 and oubouser.level < 3:
+            await interaction.response.send_message("応募条件\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            return
+        elif oubouser.bool1 is True:
+            await interaction.response.send_message("すでに応募済みです。抽選開始までお待ちください。", ephemeral=True)
+            await send_channel.send(f"-# 〇２回以上押した人: <@{interaction.user.id}>")
+            return
         else:
             await send_channel.send(f"応募者 : <@{interaction.user.id}> / {interaction.user.display_name}")
+            oubouser.bool1 = True  # 応募済み
+            oubouser.exp += 100  # 応募したら100経験値追加
+            oubouser.alladdexp += 100
+            if oubouser.exp >= 10000:
+                oubouser.level += 1
+                oubouser.exp -= 10000
+            session.commit()
             await interaction.response.send_message("応募されました。抽選開始までお待ちください。", ephemeral=True)
 
     @discord.ui.button(label="企画終了", style=ButtonStyle.red, custom_id="delevent")
@@ -31,7 +52,7 @@ class LOttery(discord.ui.View):  # 抽選コマンド
             await interaction.message.delete()
         else:
             await interaction.response.send_message("権限ないで", ephemeral=True)
-            await send_channel.send(f"-# ◆削除ボタン押した人: <@{interaction.user.id}> / {interaction.user.id}")
+            await send_channel.send(f"-# ◆削除ボタン押した人: <@{interaction.user.id}>")
 
 
 class CPresent(commands.Cog):
@@ -41,162 +62,80 @@ class CPresent(commands.Cog):
     @app_commands.command(name="cpresent", description="【運営】present企画")
     @app_commands.describe(
         choice="選択肢",
-        daimei="○○プレゼント企画!(お年玉の時は適当に入力(表示されません))",
-        tanni="単位(○○円・○○ヶ月)", ninnzuu="当選人数", kikann="応募期間(日数入力)"
-    )
-    @app_commands.choices(
-        choice=[
-            app_commands.Choice(name="Nitro", value="pe1"),
-            app_commands.Choice(name="アマゾンギフト券", value="pe2"),
-            app_commands.Choice(name="アバターデコレーション", value="pe3"),
-            app_commands.Choice(name="プロフィールエフェクト", value="pe4"),
-            app_commands.Choice(name="お年玉企画", value="pe5"),
-        ]
+        ptitle="〇周年プレゼント企画!/〇人プレゼント企画!/〇年-新年お年玉企画",
+        kikann="応募期間(日数入力)",
+        amagif="アマギフ500円分をプレゼントする人数(初期値0)",
+        nitro="Nitro1ヶ月分をプレゼントする人数(初期値0)",
+        abata_prof="アバターデコレーションorプロフィールエフェクトをプレゼントする人数(初期値0)",
+        pripe="コンビニで買えるプリペイドカード系をプレゼントする人数(初期値0)",
+        mcmd10000xp="mcmd-level 10000XPをプレゼントする人数(初期値0)",
+        mcmd5000xp="mcmd-level 5000XPをプレゼントする人数(初期値0)",
+        mcmd2500xp="mcmd-level 2500XPをプレゼントする人数(初期値0)",
+        mcmd1000xp="mcmd-level 1000XPをプレゼントする人数(初期値0)",
     )
     @app_commands.checks.has_role(config.administrater_role_id)
-    async def cpresent(self, interaction: discord.Interaction, choice: app_commands.Choice[str], daimei: str, ninnzuu: int, kikann: int, tanni: int = 0):
+    async def cpresent(self, interaction: discord.Interaction, ptitle: str, kikann: int, amagif: int = 0, nitro: int = 0, abata_prof: int = 0, pripe: int = 0, mcmd10000xp: int = 0, mcmd5000xp: int = 0, mcmd2500xp: int = 0, mcmd1000xp: int = 0):
 
         syuuryoubi = datetime.now() + timedelta(days=kikann)
         fsyuuryoubi = syuuryoubi.strftime(" %Y/%m/%d ")
         tyuusennbi = syuuryoubi + timedelta(days=1)
         ftyuusennbi = tyuusennbi.strftime(" %Y/%m/%d ")
 
-        NITRO_DESCRIPTION = f"""
-### Discord Nitro {tanni}ヶ月分を{ninnzuu}名にプレゼント
-【参加条件】
-このサーバーに参加していること・下のボタンを押すこと
-出来ればサーバーブーストはコマ研でやってね
--# 春菊のチャンネルとうろk((((殴殴
+        str_amagif = "",
+        str_nitro = "",
+        str_abata_prof = "",
+        str_pripe = "",
+        str_mcmd10000xp = "",
+        str_mcmd5000xp = "",
+        str_mcmd2500xp = "",
+        str_mcmd1000xp = "",
+
+        if amagif > 0:
+            str_amagif = f"> `{amagif}名` : Amazonギフト券 500円分\n"
+        if nitro > 0:
+            str_nitro = f"> `{nitro}名` : Discord Nitro 1ヶ月分\n"
+        if abata_prof > 0:
+            str_abata_prof = f"> `{abata_prof}名` : アバターデコレーションorプロフィールエフェクト(790円のもののみ)\n"
+        if pripe > 0:
+            str_pripe = f"> `{pripe}名` : コンビニで買えるプリペイドカード系\n"
+        if mcmd10000xp > 0:
+            str_mcmd10000xp = f"> `{mcmd10000xp}名` : mcmd-level 10000XP\n"
+        if mcmd5000xp > 0:
+            str_mcmd5000xp = f"> `{mcmd5000xp}名` : mcmd-level 5000XP\n"
+        if mcmd2500xp > 0:
+            str_mcmd2500xp = f"> `{mcmd2500xp}名` : mcmd-level 2500XP\n"
+        if mcmd1000xp > 0:
+            str_mcmd1000xp = f"> `{mcmd1000xp}名` : mcmd-level 1000XP\n"
+
+        PRESENT_DESCRIPTION = f"""
+【応募条件】
+1: このサーバーに参加していること
+2: 以下のいずれかを満たしていること
+> 50チャット以上
+> コマ研レベル(mcmd-level) 3Lv以上
+3: 下のボタンを押すこと
+-# 4: 春菊のチャンネルとうろk((((殴殴
 -# 冗談です(笑)してくれたらうれしいけどw
+
+【景品内容】
+{str_amagif}{str_nitro}{str_abata_prof}{str_pripe}{str_mcmd10000xp}{str_mcmd5000xp}{str_mcmd2500xp}{str_mcmd1000xp}
 【注意事項】
-2回以上の応募/企画終了ボタンのクリック(タップ)・2アカウント以上の応募
+2アカウント以上の応募・ボタンの連打
 →その回の全アカウントでの応募権はく奪
 -# あまりにひどい/しつこい場合は今後一切の参加を認めない場合があります
 
 【締め切り】{fsyuuryoubi} 23:59
 【当選発表】{ftyuusennbi} 00:00からVCにて発表
 """
-
-        AMAGIHU_DESCRIPTION = f"""
-### アマゾンギフト券 {tanni}円分を{ninnzuu}名にプレゼント
-【参加条件】
-このサーバーに参加していること・下のボタンを押すこと
--# 春菊のチャンネルとうろk((((殴殴
--# 冗談です(笑)してくれたらうれしいけどw
-【注意事項】
-2回以上の応募/企画終了ボタンのクリック(タップ)・2アカウント以上の応募
-→その回の全アカウントでの応募権はく奪
--# あまりにひどい/しつこい場合は今後一切の参加を認めない場合があります
-
-【締め切り】{fsyuuryoubi} 23:59
-【当選発表】{ftyuusennbi} 00:00からVCにて発表
-"""
-
-        ABATADEKO_DESCRIPTION = f"""
-### アバターデコレーションを{ninnzuu}名にプレゼント
-【参加条件】
-このサーバーに参加していること・下のボタンを押すこと
--# 春菊のチャンネルとうろk((((殴殴
--# 冗談です(笑)してくれたらうれしいけどw
-【注意事項】
-2回以上の応募/企画終了ボタンのクリック(タップ)・2アカウント以上の応募
-→その回の全アカウントでの応募権はく奪
--# あまりにひどい/しつこい場合は今後一切の参加を認めない場合があります
-
-【締め切り】{fsyuuryoubi} 23:59
-【当選発表】{ftyuusennbi} 00:00からVCにて発表
-"""
-
-        PROFEFFECT_DESCRIPTION = f"""
-### プロフィールエフェクトを{ninnzuu}名にプレゼント
-【参加条件】
-このサーバーに参加していること・下のボタンを押すこと
--# 春菊のチャンネルとうろk((((殴殴
--# 冗談です(笑)してくれたらうれしいけどw
-【注意事項】
-2回以上の応募/企画終了ボタンのクリック(タップ)・2アカウント以上の応募
-→その回の全アカウントでの応募権はく奪
--# あまりにひどい/しつこい場合は今後一切の参加を認めない場合があります
-
-【締め切り】{fsyuuryoubi} 23:59
-【当選発表】{ftyuusennbi} 00:00からVCにて発表
-"""
-
-        OTOSIDAMA_DESCRIPTION = f"""
-### Amazonギフト券500円分を{ninnzuu}名にプレゼント
-【参加条件】
-このサーバーに参加していること・下のボタンを押すこと
--# 春菊のチャンネルとうろk((((殴殴
--# 冗談です(笑)してくれたらうれしいけどw
-【注意事項】
-2回以上の応募/企画終了ボタンのクリック(タップ)・2アカウント以上の応募
-→その回の全アカウントでの応募権はく奪
--# あまりにひどい/しつこい場合は今後一切の参加を認めない場合があります
-
-【締め切り】{fsyuuryoubi} 23:59
-【当選発表】{ftyuusennbi} 00:00からVCにて発表
-"""
-
-        if choice.value == "pe1":
-            if tanni == 0:
-                await interaction.response.send_message("tanni引数入れ忘れてるよ!\n[Discord Nitro {tanni}ヶ月分を{ninnzuu}名にプレゼント]", ephemeral=True)
-            else:
-                nitro_embed = discord.Embed(
-                    title=f"{daimei}プレゼント企画!!",
-                    description=NITRO_DESCRIPTION,
-                    color=0x2B9788,
-                    timestamp=datetime.now()
-                )
-                await interaction.response.send_message("送信しました", ephemeral=True)
-                await interaction.channel.send(embed=nitro_embed)
-                await interaction.channel.send(view=LOttery(self.bot))
-
-        elif choice.value == "pe2":
-            if tanni == 0:
-                await interaction.response.send_message("tanni引数入れ忘れてるよ!\n[アマゾンギフト券 {tanni}円分を{ninnzuu}名にプレゼント]", ephemeral=True)
-            else:
-                amagihu_embed = discord.Embed(
-                    title=f"{daimei}プレゼント企画!!",
-                    description=AMAGIHU_DESCRIPTION,
-                    color=0x2B9788,
-                    timestamp=datetime.now()
-                )
-                await interaction.response.send_message("送信しました", ephemeral=True)
-                await interaction.channel.send(embed=amagihu_embed)
-                await interaction.channel.send(view=LOttery(self.bot))
-
-        elif choice.value == "pe3":
-            abatadeko_embed = discord.Embed(
-                title=f"{daimei}プレゼント企画!!",
-                description=ABATADEKO_DESCRIPTION,
-                color=0x2B9788,
-                timestamp=datetime.now()
-            )
-            await interaction.response.send_message("送信しました", ephemeral=True)
-            await interaction.channel.send(embed=abatadeko_embed)
-            await interaction.channel.send(view=LOttery(self.bot))
-
-        elif choice.value == "pe4":
-            profeffect_embed = discord.Embed(
-                title=f"{daimei}プレゼント企画!!",
-                description=PROFEFFECT_DESCRIPTION,
-                color=0x2B9788,
-                timestamp=datetime.now()
-            )
-            await interaction.response.send_message("送信しました", ephemeral=True)
-            await interaction.channel.send(embed=profeffect_embed)
-            await interaction.channel.send(view=LOttery(self.bot))
-
-        elif choice.value == "pe5":
-            otosidama_embed = discord.Embed(
-                title=f"{datetime.now().year}年-新年お年玉企画",
-                description=OTOSIDAMA_DESCRIPTION,
-                color=0x2B9788,
-                timestamp=datetime.now()
-            )
-            await interaction.response.send_message("送信しました", ephemeral=True)
-            await interaction.channel.send(embed=otosidama_embed)
-            await interaction.channel.send(view=LOttery(self.bot))
+        present_embed = discord.Embed(
+            title=ptitle,
+            description=PRESENT_DESCRIPTION,
+            color=0x2B9788,
+            timestamp=datetime.now()
+        )
+        await interaction.response.send_message("送信しました", ephemeral=True)
+        await interaction.channel.send(embed=present_embed)
+        await interaction.channel.send(view=LOttery(self.bot))
 
 
 async def setup(bot: commands.Bot):
