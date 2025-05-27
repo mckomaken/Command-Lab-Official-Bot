@@ -61,7 +61,6 @@ class CPresent(commands.Cog):
 
     @app_commands.command(name="cpresent", description="【運営】present企画")
     @app_commands.describe(
-        choice="選択肢",
         ptitle="〇周年プレゼント企画!/〇人プレゼント企画!/〇年-新年お年玉企画",
         kikann="応募期間(日数入力)",
         amagif="アマギフ500円分をプレゼントする人数(初期値0)",
