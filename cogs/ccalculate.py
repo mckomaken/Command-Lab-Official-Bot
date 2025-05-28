@@ -254,7 +254,7 @@ class CCalculate(commands.Cog):
 
         else:
             try:
-                await interaction.response.send_message(calculate(text), ephemeral=True)
+                await interaction.response.send_message(calculate(text), ephemeral=False)
             except CalculateError as e:
                 embed = discord.Embed(
                     color=Color.red(),
