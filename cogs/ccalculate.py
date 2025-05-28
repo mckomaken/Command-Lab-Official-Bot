@@ -261,6 +261,7 @@ class CCalculate(commands.Cog):
                     title="エラー",
                     description=f"{e.args[0]}：`{text}`",
                 )
+                embed.set_footer(text="計算機")
                 await interaction.response.send_message(embed=embed)
 
     # ボタンを押されたときの処理
@@ -295,6 +296,8 @@ class CCalculate(commands.Cog):
             embed = interaction.message.embeds[0]
             embed.title = ""
             text = embed.description.replace("```", "")
+            if embed.footer.text != "計算機":
+                return
             if custom_id in button_id.keys():  # 文字入力キーの場合
                 if text == "0":
                     text = f"```{button_id[custom_id]}```"
