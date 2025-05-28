@@ -34,7 +34,6 @@ class Cmdbotlevel(commands.Cog):
     async def on_message(self, message: discord.Message):
 
         userdb = session.query(User).filter_by(userid=message.author.id).first()
-        server_booster = message.guild.get_role(config.roles.serverbooster)
 
         if not userdb and not message.author.bot:
             userdb = User(userid=message.author.id, username=message.author.name)
@@ -115,6 +114,7 @@ class Cmdbotlevel(commands.Cog):
                 userdb.exp += 200
         session.commit()
 
+        server_booster = message.guild.get_role(config.roles.serverbooster)
         if server_booster in message.author.roles:
             userdb.exp += 10
             userdb.alladdexp += 10
@@ -140,7 +140,6 @@ class Cmdbotlevel(commands.Cog):
     async def on_message_delete(self, message: discord.Message):
 
         deluserdb = session.query(User).filter_by(userid=message.author.id).first()
-        server_booster = message.guild.get_role(config.roles.serverbooster)
 
         exp_per_delmsg = random.randint(75, 100)
         if message.author.bot:
@@ -169,6 +168,7 @@ class Cmdbotlevel(commands.Cog):
         deluserdb.allremoveexp += exp_per_delmsg
         deluserdb.exp -= exp_per_delmsg
 
+        server_booster = message.guild.get_role(config.roles.serverbooster)
         if server_booster in message.author.roles:
             deluserdb.exp -= 10
             deluserdb.allremoveexp += 10
