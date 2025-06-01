@@ -299,7 +299,6 @@ class CCalculate(commands.Cog):
             embed = interaction.message.embeds[0]
             embed.title = ""
             text = embed.description.replace("```", "")
-            print(text)
             if embed.footer.text != "計算機":
                 return
             if custom_id in button_id.keys():  # 文字入力キーの場合
