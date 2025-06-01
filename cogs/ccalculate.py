@@ -265,7 +265,7 @@ class CCalculate(commands.Cog):
                 embed.color = Color.red()
                 embed.title = "エラー"
                 embed.description = f"{e.args[0]}：`{text}`"
-                await interaction.channel.send(embed=embed)
+                await interaction.response.send_message(embed=embed)
 
     # ボタンを押されたときの処理
     @commands.Cog.listener()
