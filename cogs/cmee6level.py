@@ -52,7 +52,11 @@ class CMee6level(commands.Cog):
                 userid = int(message.content.split(",")[1])  # userid表示
                 username = str(message.content.split(",")[2])  # user名表示
                 level = int(message.content.split(",")[3])  # レベル
-                if (level % 500 == 0):
+                if userid == config.syunngikuid:
+                    return
+                elif level <= 0:
+                    return
+                elif (level % 500 == 0):
                     text = "# "
                 elif (level % 100 == 0):
                     text = "## "
