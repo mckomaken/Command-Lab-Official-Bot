@@ -80,6 +80,8 @@ class Config(BaseModel):
     listench: int
     syunngikuid: int
     listenchs: list[int] = []
+    voicech: int
+    voice256ch: int
 
 # -----------------------------------------------------------
 

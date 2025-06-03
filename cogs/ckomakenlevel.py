@@ -63,6 +63,10 @@ class Cmdbotlevel(commands.Cog):
 
         if message.channel.id == config.listench:
             return
+        elif message.channel.id == config.voicech:
+            return
+        elif message.channel.id == config.voice256ch:
+            return
         elif message.channel.category_id == config.admin_category_id:
             start = 50 - math.floor(userdb.level / 10)
             if start < 0:
@@ -134,6 +138,7 @@ class Cmdbotlevel(commands.Cog):
         if userdb.exp >= 10000:
             userdb.level += 1
             userdb.exp -= 10000
+            await message.channel.send(f"{message.author.mention}さん、レベルアップしました！\n現在のレベル: {userdb.level}\n現在の経験値: {userdb.exp}/10000")
         session.commit()
 
     @commands.Cog.listener("on_message_delete")
