@@ -250,6 +250,7 @@ class CCalculate(commands.Cog):
 
         if text == "":
             embed = discord.Embed(color=Color.blue(), title="", description="```0```")
+            embed.set_footer(text="計算機")
             await interaction.channel.send(embed=embed, view=view)
 
         else:
@@ -261,7 +262,6 @@ class CCalculate(commands.Cog):
                     title="エラー",
                     description=f"{e.args[0]}：`{text}`",
                 )
-                embed.set_footer(text="計算機")
                 await interaction.response.send_message(embed=embed)
 
     # ボタンを押されたときの処理
