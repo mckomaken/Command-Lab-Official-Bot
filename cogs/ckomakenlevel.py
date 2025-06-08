@@ -34,7 +34,6 @@ class Cmdbotlevel(commands.Cog):
     async def on_message(self, message: discord.Message):
 
         userdb = session.query(User).filter_by(userid=message.author.id).first()
-        mee6_channel = await self.bot.fetch_channel(config.mee6.botch)
 
         if not userdb and not message.author.bot:
             userdb = User(userid=message.author.id, username=message.author.name)
@@ -140,6 +139,7 @@ class Cmdbotlevel(commands.Cog):
             userdb.level += 1
             userdb.exp -= 10000
             session.commit()
+            mee6_channel = await self.bot.fetch_channel(config.mee6.botch)
             await mee6_channel.send(f"mcmdlevel,{message.author.id},{message.author.name},{userdb.level}")
 
     @commands.Cog.listener("on_message_delete")
