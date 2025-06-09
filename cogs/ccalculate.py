@@ -58,6 +58,9 @@ keywords = (
 keywords.sort(reverse=True, key=len)
 
 
+calc_marks = ["+", "-", "*", "/", "^", "st", "lc", "個"]
+
+
 # 計算
 def calculate(text):
 
@@ -248,20 +251,20 @@ class CCalculate(commands.Cog):
     @app_commands.describe(text="数式(空の場合電卓が表示されます)")
     async def ccalculate(self, interaction: discord.Interaction, text: str = ""):
 
+        embed = discord.Embed(color=Color.blue(), title="", description="```0```")
+        embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.display_avatar)
+        embed.set_footer(text="計算機")
+
         if text == "":
-            embed = discord.Embed(color=Color.blue(), title="", description="```0```")
-            embed.set_footer(text="計算機")
             await interaction.channel.send(embed=embed, view=view)
 
         else:
             try:
                 await interaction.response.send_message(calculate(text), ephemeral=False)
             except CalculateError as e:
-                embed = discord.Embed(
-                    color=Color.red(),
-                    title="エラー",
-                    description=f"{e.args[0]}：`{text}`",
-                )
+                embed.color = Color.red()
+                embed.title = "エラー"
+                embed.description = f"{e.args[0]}：`{text}`"
                 await interaction.response.send_message(embed=embed)
 
     # ボタンを押されたときの処理
@@ -306,17 +309,32 @@ class CCalculate(commands.Cog):
                 embed.description = text
 
             elif custom_id == "cequal":  # 計算実行
+                formula = text
+                isOnlyEq = True  # 何もないときに = をすると勝手に改行するため、クソ読みにくくなるためこれで検知
+                if "\n" in formula:  # 二行目以降の式を計算するかを調べる
+                    formula_list = formula.split("\n")
+                    formula = formula_list[-1]
+                    formula = formula.replace("=", "")
+
+                if any(keyword in formula for keyword in calc_marks): # 四則演算系があったらきちんと計算するように
+                    isOnlyEq = False
+
                 try:
-                    embed.description = f"```{calculate(text)}```"
+                    if isOnlyEq:
+                        embed.description = f"```{text}```"
+                    else:
+                        embed.description = f"```\n{text}\n={calculate(formula)}```"
                 except CalculateError as e:
-                    embed.description = "```0```"
                     embed.title = e.args[0]
 
             elif custom_id == "cc":  # リセット
                 embed.description = "```0```"
 
             elif custom_id == "cdel":  # 1文字消去
-                text = f"```{text[:-1]}```"
+                if text[-2] == "=": # 答えを消す場合は改行ごとさよならさせる
+                    text = f"```{text[:-3]}```"
+                else:
+                    text = f"```{text[:-1]}```"
                 if text == "``````":
                     text = "```0```"
                 embed.description = text
