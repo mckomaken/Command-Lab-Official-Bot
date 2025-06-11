@@ -64,8 +64,6 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.content.startswith("https://tenor.com/view/"):
             return
-        elif message.content.startswith("<:") and message.content.endswith(">"):
-            return
         elif len(combined_ptn.sub('', message.content).strip()) <= 5:
             return
         elif re.match(r'(.)\1+', message.content):
@@ -165,8 +163,6 @@ class Cmdbotlevel(commands.Cog):
         elif message.content.startswith("oruvanoruvan"):
             return
         elif message.content.startswith("https://tenor.com/view/"):
-            return
-        elif message.content.startswith("<:") and message.content.endswith(">"):
             return
         elif len(combined_ptn.sub('', message.content).strip()) <= 5:
             return
