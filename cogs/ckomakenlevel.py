@@ -66,7 +66,7 @@ class Cmdbotlevel(commands.Cog):
             return
         elif len(combined_ptn.sub('', message.content).strip()) <= 5:
             return
-        elif re.match(r'(.)\1+', message.content):
+        elif re.match(r'^(.+)\1+$', message.content):
             return
 
         if message.channel.id == config.listench:
@@ -166,7 +166,7 @@ class Cmdbotlevel(commands.Cog):
             return
         elif len(combined_ptn.sub('', message.content).strip()) <= 5:
             return
-        elif re.match(r'(.)\1+', message.content):
+        elif re.match(r'^(.+)\1+$', message.content):
             return
 
         if message.channel.id == config.listench:
