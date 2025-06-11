@@ -79,31 +79,19 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.channel.category_id == config.admin_category_id:
             start = 50 - math.floor(userdb.level / 10)
-            if start < 0:
-                start = 0
             end = 100 + math.floor(userdb.level / 10)
-            exp_per_message = random.randint(start, end)
-            userdb.chatcount += 1
-            userdb.alladdexp += exp_per_message
-            userdb.exp += exp_per_message
         elif message.channel.id == config.question_channels:
             start = 100 - math.floor(userdb.level / 10)
-            if start < 0:
-                start = 0
             end = 150 + math.floor(userdb.level / 10)
-            exp_per_message = random.randint(start, end)
-            userdb.chatcount += 1
-            userdb.alladdexp += exp_per_message
-            userdb.exp += exp_per_message
         else:
             start = 75 - math.floor(userdb.level / 10)
-            if start < 0:
-                start = 0
             end = 125 + math.floor(userdb.level / 10)
-            exp_per_message = random.randint(start, end)
-            userdb.chatcount += 1
-            userdb.alladdexp += exp_per_message
-            userdb.exp += exp_per_message
+        if start < 0:
+            start = 0
+        exp_per_message = random.randint(start, end)
+        userdb.chatcount += 1
+        userdb.alladdexp += exp_per_message
+        userdb.exp += exp_per_message
         session.commit()
 
         if message.channel.id == config.selfintroductionch:  # 書き換えること
