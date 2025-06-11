@@ -130,21 +130,22 @@ class CTranslate(commands.Cog):
             if language is None:
                 if textlang.lang == "ja":
                     translationsource = "ja"
-                    translationtarget = "en"
+                    translationtarget = "English/英語"
                     translated_text = await translator.translate(text, src="ja", dest="en")
                 else:
                     translationsource = textlang.lang
-                    translationtarget = "ja"
+                    translationtarget = "Japanese/日本語"
                     translated_text = await translator.translate(text, dest="ja")
             else:
                 langcode = str(language.split(" ")[0])
+                langname = f"({str(language.split(" ")[3])}/{str(language.split(" ")[5])})"
                 translationsource = textlang.lang
-                translationtarget = langcode
+                translationtarget = langname
                 translated_text = await translator.translate(text, dest=langcode)
 
             translated_embed = discord.Embed(
                 title="翻訳結果",
-                description=f"【翻訳元(translation source)/{translationsource}】\n```{text}```\n【翻訳先(translation target)/{translationtarget}】\n```{translated_text.text}```",
+                description=f"【翻訳元(translation source)/{translationsource}】\n```{text}```\n【翻訳先(translation target)】\n{translationtarget}\n```{translated_text.text}```",
                 color=0x00ff00
             )
             translated_embed.set_footer(text="Translated by Google Translate")
