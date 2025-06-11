@@ -77,19 +77,6 @@ class BumpNofiticationCog(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
-        if message.channel.id == config.bump.channel_id:
-            if message.content.startswith("!d bump"):
-                await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)")
-
-            elif message.content.startswith("/bump"):
-                await message.channel.send(
-                    embed=discord.Embed(
-                        title="BUMPを実行出来てないよ!!",
-                        color=0x00BFFF,
-                        timestamp=datetime.now(),
-                    )
-                )
-
         if message.author.id == config.bump.disboard_id:
             embeds = message.embeds
 
@@ -137,13 +124,13 @@ class BumpNofiticationCog(commands.Cog):
 
                     if message.channel.id != config.bump.channel_id:
                         await notice_channel.send(
-                            "＼(^o^)／", embed=another_channel_bump_notice_embed
+                            "＼(^o^)／", embed=another_channel_bump_notice_embed, silent=True
                         )
-                        await message.channel.send(
-                            embed=caution_another_channel_bump_notice_embed
+                        await message.reply(
+                            embed=caution_another_channel_bump_notice_embed, silent=True
                         )
                     else:
-                        await message.channel.send(embed=bump_notice_embed)
+                        await message.channel.send(embed=bump_notice_embed, silent=True)
 
                     self.bump_data.last_timestamp = datetime.now().timestamp()
                     self.bump_data.notified = False
