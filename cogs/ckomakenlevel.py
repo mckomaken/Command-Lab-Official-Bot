@@ -5,6 +5,7 @@ import random
 import math
 from config.config import config
 from datetime import datetime
+import re
 
 
 @tasks.loop(seconds=60)
@@ -44,6 +45,11 @@ class Cmdbotlevel(commands.Cog):
         if message.author.bot:
             return
 
+        emoji_ptn = r'<a?:\w+:\d+>'
+        unicode_emoji_ptn = r'[\U0001F900-\U0001FFFF]'
+        mention_ptn = r'<@\d+>'
+        combined_ptn = re.compile(f'(?:{emoji_ptn}|{unicode_emoji_ptn}|{mention_ptn})')
+
         if userdb.noxp is True and userdb:
             return
         elif message.content.startswith("ぬるぽ"):
@@ -56,10 +62,14 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.content.startswith("oruvanoruvan"):
             return
-        # elif message.content.startswith("<:") and message.content.endswith(">"):
-        #     return
-        # elif len(message.content) <= 5:
-        #     return
+        elif message.content.startswith("https://tenor.com/view/"):
+            return
+        elif message.content.startswith("<:") and message.content.endswith(">"):
+            return
+        elif len(combined_ptn.sub('', message.content).strip()) <= 5:
+            return
+        elif re.match(r'(.)\1+', message.content):
+            return
 
         if message.channel.id == config.listench:
             return
@@ -150,7 +160,13 @@ class Cmdbotlevel(commands.Cog):
         exp_per_delmsg = random.randint(75, 100)
         if message.author.bot:
             return
-        elif message.content.startswith("ぬるぽ"):
+
+        emoji_ptn = r'<a?:\w+:\d+>'
+        unicode_emoji_ptn = r'[\U0001F900-\U0001FFFF]'
+        mention_ptn = r'<@\d+>'
+        combined_ptn = re.compile(f'(?:{emoji_ptn}|{unicode_emoji_ptn}|{mention_ptn})')
+
+        if message.content.startswith("ぬるぽ"):
             return
         elif message.content.startswith("NullPointerException"):
             return
@@ -160,10 +176,14 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.content.startswith("oruvanoruvan"):
             return
-        # elif message.content.startswith("<:") and message.content.endswith(">"):
-        #     return
-        # elif len(message.content) <= 5:
-        #     return
+        elif message.content.startswith("https://tenor.com/view/"):
+            return
+        elif message.content.startswith("<:") and message.content.endswith(">"):
+            return
+        elif len(combined_ptn.sub('', message.content).strip()) <= 5:
+            return
+        elif re.match(r'(.)\1+', message.content):
+            return
 
         if message.channel.id == config.listench:
             return

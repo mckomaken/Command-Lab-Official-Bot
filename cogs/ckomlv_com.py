@@ -16,7 +16,7 @@ class Cmdbotlevelcom(commands.Cog):
         if target is None:
             userdb = session.query(User).filter_by(userid=interaction.user.id).first()
             if not userdb:
-                await interaction.response.send_message("あなたはまだ経験値を獲得していません\n### 喋ろう!!!!!")
+                await interaction.response.send_message("あなたはまだ経験値を獲得していません\n### 喋ろう!!!!!", silent=True)
             else:
                 level_embed = discord.Embed(
                     title=f"{interaction.user.display_name}のレベル",
@@ -43,13 +43,13 @@ class Cmdbotlevelcom(commands.Cog):
                         level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
                         level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
                 level_embed.add_field(name="MEE6レベル", value=f"```go\n{userdb.mee6level} Level\n```", inline=True)
-                await interaction.response.send_message(embed=level_embed)
+                await interaction.response.send_message(embed=level_embed, silent=True)
                 userdb.allexp = (userdb.level * 10000) + userdb.exp
                 session.commit()
         else:
             targetdb = session.query(User).filter_by(userid=target.id).first()
             if not targetdb:
-                await interaction.response.send_message(f"`{target.display_name}`はまだ経験値を獲得していません\n### 喋らせよう!!!!!(笑)")
+                await interaction.response.send_message(f"`{target.display_name}`はまだ経験値を獲得していません\n### 喋らせよう!!!!!(笑)", silent=True)
                 return
             elif targetdb.noxp is True or target.id == config.syunngikuid:
                 await interaction.response.send_message(f"`{target.display_name}`の経験値量は確認できません", ephemeral=True)
@@ -61,7 +61,7 @@ class Cmdbotlevelcom(commands.Cog):
                     color=0x6fb7ff
                 )
                 level_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
-                await interaction.response.send_message(embed=level_embed)
+                await interaction.response.send_message(embed=level_embed, silent=True)
                 targetdb.allexp = (targetdb.level * 10000) + targetdb.exp
                 session.commit()
 
