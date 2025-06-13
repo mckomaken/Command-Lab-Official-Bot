@@ -14,7 +14,7 @@ class CHelpCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="chelp", description="このBotができること一覧")
+    @app_commands.command(name="chelp-all", description="このBotができること一覧")
     @app_commands.guild_only()
     async def chelp(self, interaction: discord.Interaction):
         embeds: list[discord.Embed] = []
