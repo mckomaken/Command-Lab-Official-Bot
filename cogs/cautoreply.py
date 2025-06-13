@@ -28,6 +28,7 @@ GABU = """
 　（＿フ彡　　　　　 　　/　←>>1
 """
 
+
 # ダイスロール判定関数
 def parse_and_evaluate(expression: str):
     expression = expression.replace(" ", "")
@@ -52,7 +53,7 @@ def parse_and_evaluate(expression: str):
                 breakdown.append(str(val))
 
         return total, breakdown
-    
+
     # 不等式を検出
     match = re.match(r'(.+?)(<=|>=|==|!=|<|>)(.+)', expression)
     if match:
@@ -76,8 +77,6 @@ def parse_and_evaluate(expression: str):
             'result': total,
             'breakdown': breakdown
         }
-
-
 
 
 class CAutoreply(commands.Cog):
@@ -137,16 +136,17 @@ class CAutoreply(commands.Cog):
 
             try:
                 result = parse_and_evaluate(message.content)
-                result["breakdown"] = map(lambda x: x.replace(" ",""), result["breakdown"])
-                embed = discord.Embed()
-                if result["type"] == "roll": #成否判定なし
-                    embed.color = 0x808080
-                    embed.description = f"{"+".join(result["breakdown"])} = {result["result"]}"
-                if result["type"] == "comparison": #成否判定あり
-                    embed.color = 0x456cba if result["success"] else 0xba4545
-                    embed.description = f"{"+".join(result["breakdown"])} = {result["result"]} {result["operator"]} {result["target"]} : {"成功" if result["success"] else "失敗"}"
-                await message.reply(embed=embed)
-            except: pass # ダイスロールでなかった
+            except ValueError:
+                pass  # ダイスロールでなかった
+            result["breakdown"] = map(lambda x: x.replace(" ", ""), result["breakdown"])
+            embed = discord.Embed()
+            if result["type"] == "roll":  # 成否判定なし
+                embed.color = 0x808080
+                embed.description = f"{"+".join(result["breakdown"])} = {result["result"]}"
+            if result["type"] == "comparison":  # 成否判定あり
+                embed.color = 0x456cba if result["success"] else 0xba4545
+                embed.description = f"{"+".join(result["breakdown"])} = {result["result"]} {result["operator"]} {result["target"]} : {"成功" if result["success"] else "失敗"}"
+            await message.reply(embed=embed)
 
 
 async def setup(bot: commands.Bot):
