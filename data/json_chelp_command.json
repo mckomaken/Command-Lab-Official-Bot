@@ -2,7 +2,7 @@
     "chelp-all" : {
         "admin": false,
         "description": "全コマンドの簡単な説明を表示します",
-        "cmdid": "1218483030247604265",
+        "cmdid": "1383117112628871198",
         "args": [],
         "syntax": "",
         "example": "",
@@ -10,15 +10,15 @@
     },
 
     "chelp" : {
-        "admin": true,
+        "admin": false,
         "description": "このコマンドです\n各コマンドの詳細な説明を表示します",
-        "cmdid": "",
+        "cmdid": "1218483030247604265",
         "args": [
             "必須引数1: command",
             "知りたいコマンド名を入力してください"
         ],
-        "syntax": "",
-        "example": "",
+        "syntax": "/chelp <command>",
+        "example": "/chelp command:chelp-all",
         "commentout": "現chelpコマンド"
     }
 }
