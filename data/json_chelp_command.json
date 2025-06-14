@@ -1,7 +1,7 @@
 {
     "chelp-all" : {
         "admin": false,
-        "description": "全コマンドの簡単な説明を表示します",
+        "description": "コマ研Botの全コマンドの簡単な説明を表示します",
         "cmdid": "1383117112628871198",
         "args": [],
         "syntax": "",
@@ -11,7 +11,7 @@
 
     "chelp" : {
         "admin": false,
-        "description": "このコマンドです\n各コマンドの詳細な説明を表示します",
+        "description": "このコマンドです\nコマ研Botの各コマンドの詳細な説明を表示します",
         "cmdid": "1218483030247604265",
         "args": [
             "必須引数1: command",
@@ -20,5 +20,149 @@
         "syntax": "/chelp <command>",
         "example": "/chelp command:chelp-all",
         "commentout": "現chelpコマンド"
+    },
+
+    "cbase64 decode" : {
+        "admin": false,
+        "description": "base64のデコードを行います",
+        "cmdid": "1222054833427714052",
+        "args": [
+            "必須引数1: text",
+            "デコードしたい文字を入力してください"
+        ],
+        "syntax": "/cbase64 decode <text>",
+        "example": "/cbase64 decode text:44OG44K544OI",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cbase64 encode" : {
+        "admin": false,
+        "description": "base64のエンコードを行います",
+        "cmdid": "1222054833427714052",
+        "args": [
+            "必須引数1: text",
+            "エンコードしたい文字を入力してください"
+        ],
+        "syntax": "/cbase64 encode <text>",
+        "example": "/cbase64 encode text:テスト",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cbnoticetime" : {
+        "admin": true,
+        "description": "BUMP通知がバグった時に手動で通知時間を設定するためのコマンド",
+        "cmdid": "1227657161690316894",
+        "args": [
+            "必須引数1: addminutes",
+            "〇分後に通知されます"
+        ],
+        "syntax": "/cbnoticetime <addminutes>",
+        "example": "/cbnoticetime addminutes:10",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ccalculate" : {
+        "admin": false,
+        "description": "電卓を表示/入力値の計算を行います",
+        "cmdid": "1367890439205552131",
+        "args": [
+            "任意引数1: text",
+            "入力した数式を計算します(未入力の場合は電卓が表示されます)"
+        ],
+        "syntax": "/ccalculate [<text>]",
+        "example": "/ccalculate text:12345679*5*9",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ccolor preview" : {
+        "admin": false,
+        "description": "入力したカラーコードのプレビューを表示します",
+        "cmdid": "1222110131911790624",
+        "args": [
+            "必須引数1: color",
+            "表示させたいカラーコードを入力してください"
+        ],
+        "syntax": "/ccolor preview <color>",
+        "example": "/ccolor preview color:#00ae00",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ccolor random" : {
+        "admin": false,
+        "description": "ランダムでカラーコードを出力します\nつまり色ガチャです",
+        "cmdid": "1222110131911790624",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ccommand" : {
+        "admin": false,
+        "description": "入力した**マイクラ内**のコマンド情報を表示します\nコマンドによってはJE/BEの説明を送信後に選択できます",
+        "cmdid": "1222618892292325523",
+        "args": [
+            "必須引数1: command",
+            "知りたい**マイクラ内**のコマンド名を入力してください"
+        ],
+        "syntax": "/ccommand <command>",
+        "example": "/ccommand command:give",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cgivexp" : {
+        "admin": false,
+        "description": "1日1回コマ研レベルの経験値を他人に譲渡できます",
+        "cmdid": "1355590013680746638",
+        "args": [
+            "必須引数1: target",
+            "経験値をあげたい人を指定してください",
+            "必須引数2: givexp",
+            "付与する経験値量を1~4999の間で指定してください"
+        ],
+        "syntax": "/cgivexp <target> <givexp>",
+        "example": "/cgivexp target:@コマ研Bot givexp:1000",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "citem" : {
+        "admin": false,
+        "description": "アイテムやブロックの情報を表示します\n只今壊れています(笑)",
+        "cmdid": "1222618892292325522",
+        "args": [
+            "必須引数1: id",
+            "アイテムIDやブロックIDを入力してください"
+        ],
+        "syntax": "/citem <id>",
+        "example": "/citem id:diamond_block",
+        "commentout": "#00ff00←見つけやすくするためだけのカラーコード ぶっ壊れてるなうｗ"
+    },
+
+    "citemnum-change" : {
+        "admin": false,
+        "description": "アイテム数⇔スタック数等の変換を行います\n選択し実行した後にフォームにて変換したい数値を入力してください",
+        "cmdid": "1366647073365299210",
+        "args": [
+            "必須引数1: choice",
+            "「アイテム数→スタック数等」・「スタック数等→アイテム数」のどちらかを選んでください"
+        ],
+        "syntax": "/citemnum-change <choice>",
+        "example": "/citemnum-change choice:アイテム数→スタック数等(10000i→2LC+1c+21st+16i)",
+        "commentout": "12個目のコマンド"
+    },
+
+    "テンプレート" : {
+        "admin": false,
+        "description": "説明",
+        "cmdid": "111111111111",
+        "args": [
+            "必須引数1: 引数名",
+            "説明",
+            "必須引数2: 引数名",
+            "説明"
+        ],
+        "syntax": "/chelp <command> [<command>]",
+        "example": "/chelp command:chelp-all",
+        "commentout": "ただのコメントアウト用"
     }
 }

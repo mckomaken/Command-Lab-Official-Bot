@@ -7,6 +7,16 @@ import json
 COMMANDS = [
     "chelp",
     "chelp-all",
+    "cbase64 decode",
+    "cbase64 encode",
+    "cbnoticetime",
+    "ccalculate",
+    "ccolor preview",
+    "ccolor random",
+    "ccommand",
+    "cgivexp",
+    "citem",
+    "citemnum-change",
 ]
 
 
@@ -36,7 +46,7 @@ class CHelp_com(commands.Cog):
         syntax = f"### 【構文】\n{cmdname["syntax"]}" if cmdname["syntax"] != "" else ""
         example = f"### 【例文】\n{cmdname["example"]}" if cmdname["example"] != "" else ""
         EMBEDDESC = f"""
-## </{command}:{cmdid}> {admintf}
+# </{command}:{cmdid}> {admintf}
 {description}{args}
 {syntax}
 {example}
