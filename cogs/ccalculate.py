@@ -316,7 +316,7 @@ class CCalculate(commands.Cog):
                     formula = formula_list[-1]
                     formula = formula.replace("=", "")
 
-                if any(keyword in formula for keyword in calc_marks): # 四則演算系があったらきちんと計算するように
+                if any(keyword in formula for keyword in calc_marks):  # 四則演算系があったらきちんと計算するように
                     isOnlyEq = False
 
                 try:
@@ -331,7 +331,7 @@ class CCalculate(commands.Cog):
                 embed.description = "```0```"
 
             elif custom_id == "cdel":  # 1文字消去
-                if text[-2] == "=": # 答えを消す場合は改行ごとさよならさせる
+                if text[-2] == "=":  # 答えを消す場合は改行ごとさよならさせる
                     text = f"```{text[:-3]}```"
                 else:
                     text = f"```{text[:-1]}```"
