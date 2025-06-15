@@ -151,6 +151,481 @@
         "commentout": "12個目のコマンド"
     },
 
+    "ckill" : {
+        "admin": false,
+        "description": "いろんな死亡ログを生成できます",
+        "cmdid": "1290194974402416641",
+        "args": [
+            "任意引数1: target",
+            "死亡ログ内で死亡させたい人を指定できます",
+            "任意引数2: count",
+            "1~5の間で死亡ログの生成数を指定できます(未入力の場合は1)"
+        ],
+        "syntax": "/ckill [<target>] [<count>]",
+        "example": "/ckill target:@コマ研Bot count:3",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "clevel" : {
+        "admin": false,
+        "description": "コマ研レベルの確認ができます\n`/clevel`のみで自分のレベルを確認できます",
+        "cmdid": "1355590013680746637",
+        "args": [
+            "任意引数1: target",
+            "他人のレベルを確認したいときに指定してください",
+            "任意引数2: more_info",
+            "自分のレベル詳細情報を確認したいときに指定してください"
+        ],
+        "syntax": "/clevel [<target>] [<more_info>]",
+        "example": "/clevel target:@コマ研Bot more_info:True",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cmanifest" : {
+        "admin": false,
+        "description": "manifest.jsonを作成します\nコマンド実行後、フォームにて必要な情報を入力してください",
+        "cmdid": "1222054833427714051",
+        "args": [
+            "必須引数1: type",
+            "生成したいmanifestの種類を選択してください"
+        ],
+        "syntax": "/cmanifest <type>",
+        "example": "/cmanifest type:data",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cmisc" : {
+        "admin": true,
+        "description": "古の適当に使うための試験コマンドです\nもういらんからこのコマンド消そうかな.....w",
+        "cmdid": "1222054833427714048",
+        "args": [
+            "必須引数1: choice",
+            "実行したいものを選択してください"
+        ],
+        "syntax": "/cmisc <choice>",
+        "example": "/cmisc choice:プレゼント企画",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cn" : {
+        "admin": true,
+        "description": "運営用のお知らせコマンドです",
+        "cmdid": "1222618025832878101",
+        "args": [
+            "任意引数1: title",
+            "Embedのタイトルを入力してください",
+            "任意引数2: description",
+            "Embedの説明を入力してください",
+            "任意引数3: sub_title",
+            "add_fieldのタイトルを入力してください",
+            "任意引数4: sub_description",
+            "add_fieldの説明を入力してください"
+        ],
+        "syntax": "/cn [<title>] [<description>] [<sub_title>] [<sub_description>]",
+        "example": "/cn title:タイトル description:説明文 sub_title:サブタイトル sub_description:サブ説明文",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cnews" : {
+        "admin": false,
+        "description": "マイクラの更新情報を表示します\n只今壊れています(笑)",
+        "cmdid": "1222110131911790625",
+        "args": [
+            "必須引数1: version",
+            "説明"
+        ],
+        "syntax": "/cnews <version>",
+        "example": "/cnews version:1.21.5",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "comikuzi" : {
+        "admin": false,
+        "description": "おみくじを引くことができます\n引数なしでランダムで引けます",
+        "cmdid": "1338205493776351302",
+        "args": [
+            "任意引数1: choice",
+            "2種類あるおみくじのどちらかを選択できます",
+            "任意引数2: help",
+            "help:Trueで吉凶や各確率を確認できます"
+        ],
+        "syntax": "/comikuzi [<choice>] [<help>]",
+        "example": "/comikuzi choice:太宰府天満宮バージョン help:True",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "core-gacha" : {
+        "admin": false,
+        "description": "無料単発鉱石ガチャです\n1日10回まで無料でガチャれます",
+        "cmdid": "1369329589746143332",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "core-gacha-10" : {
+        "admin": false,
+        "description": "無料10連鉱石ガチャです\n1日1回まで無料でガチャれます",
+        "cmdid": "1376939275395793067",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cpack-mcmeta datapacks" : {
+        "admin": false,
+        "description": "データパックのpack_format一覧を表示します",
+        "cmdid": "1219610266841518150",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cpack-mcmeta generate-dp" : {
+        "admin": false,
+        "description": "データパックのpack.mcmetaを生成します",
+        "cmdid": "1219610266841518150",
+        "args": [
+            "必須引数1: description",
+            "pack.mcmeta内のdescriptionを入力してください",
+            "必須引数2: version",
+            "生成したいバージョンを指定してください"
+        ],
+        "syntax": "/cpack-mcmeta generate-dp <description> <version>",
+        "example": "/cpack-mcmeta generate-dp description:デタパの説明文 version:1.21.5",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cpack-mcmeta generate-rp" : {
+        "admin": false,
+        "description": "リソースパックのpack.mcmetaを生成します",
+        "cmdid": "1219610266841518150",
+        "args": [
+            "必須引数1: description",
+            "pack.mcmeta内のdescriptionを入力してください",
+            "必須引数2: version",
+            "生成したいバージョンを指定してください"
+        ],
+        "syntax": "/cpack-mcmeta generate-rp <description> <version>",
+        "example": "/cpack-mcmeta generate-rp description:リソパの説明文 version:1.21.5",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cpack-mcmeta latest" : {
+        "admin": false,
+        "description": "最新リリースバージョン/最新スナップショットバージョンのpack_formatを表示します",
+        "cmdid": "1219610266841518150",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cpack-mcmeta resourcepacks" : {
+        "admin": false,
+        "description": "データパックのpack_format一覧を表示します",
+        "cmdid": "121961026684151815",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cpack-mcmeta search" : {
+        "admin": false,
+        "description": "説明",
+        "cmdid": "111111111111",
+        "args": [
+            "必須引数1: version",
+            "検索したいバージョンを入力してください"
+        ],
+        "syntax": "/cpack-mcmeta search <version>",
+        "example": "/cpack-mcmeta search version:1.21.5",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cping" : {
+        "admin": false,
+        "description": "コマ研Botのping値を表示します",
+        "cmdid": "111111111111",
+        "args": [
+            "任意引数1: count",
+            "実行回数を1~10の間で指定できます(未入力の場合は1)",
+            "任意引数2: t_or_f",
+            "Falseにすると送信間隔が1秒になります(未入力(True)の場合は3分おき)"
+        ],
+        "syntax": "/cping [<count>] [<t_or_f>]",
+        "example": "/cping count:3 t_or_f:False",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cpresent" : {
+        "admin": true,
+        "description": "プレゼント企画時に実行するコマンド",
+        "cmdid": "1324408686289879132",
+        "args": [
+            "必須引数1: ptitle",
+            "〇周年/人プレゼント企画・〇年-新年お年玉企画",
+            "必須引数2: kikan",
+            "開催期間を入力",
+            "任意引数1: amagif",
+            "アマギフ500円分の当選者数を入力",
+            "任意引数2: nitro",
+            "Nitro1ヶ月分の当選者数を入力",
+            "任意引数3: abata_prof",
+            "アバターデコレーション/プロフィールエフェクトの当選者数を入力",
+            "任意引数4: pripe",
+            "コンビニで買えるプリペイドカードの当選者数を入力",
+            "任意引数5: mcmd10000xp",
+            "コマ研レベル10000xpの当選者数を入力",
+            "任意引数6: mcmd5000xp",
+            "コマ研レベル5000xpの当選者数を入力",
+            "任意引数7: mcmd2500xp",
+            "コマ研レベル2500xpの当選者数を入力",
+            "任意引数8: mcmd1000xp",
+            "コマ研レベル1000xpの当選者数を入力"
+        ],
+        "syntax": "/cpresent <ptitle> <kikan> [<amagif>] [<nitro>] [<abata_prof>] [<pripe>] [<mcmd10000xp>] [<mcmd5000xp>] [<mcmd2500xp>] [<mcmd1000xp>]",
+        "example": "/cpresent ptitle:2000人プレゼント企画 kikan:3 amagif:1 nitro:1 abata_prof:1 pripe:1 mcmd10000xp:1 mcmd5000xp:1 mcmd2500xp:1 mcmd1000xp:1",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cpresent-reset" : {
+        "admin": true,
+        "description": "プレゼント企画終了時にリセットするためのコマンド",
+        "cmdid": "1376939275395793068",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cradix" : {
+        "admin": false,
+        "description": "入力した数値を2~16進数に変換します",
+        "cmdid": "1307018483917131838",
+        "args": [
+            "必須引数1: num",
+            "変換したい数値を入力してください",
+            "任意引数1: mode",
+            "どのモードで変換したいかを選択してください(初期設定: 2,4,8,10,16進数に変換)"
+        ],
+        "syntax": "/chelp <command> [<command>]",
+        "example": "/chelp command:chelp-all",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "creference" : {
+        "admin": false,
+        "description": "マイクラの更新情報を表示します\n只今壊れています(笑)",
+        "cmdid": "1222618025832878102",
+        "args": [
+            "任意引数1: version",
+            "更新情報を取得したいバージョンを指定してください"
+        ],
+        "syntax": "/chelp [<version>]",
+        "example": "/chelp version:1.21.5",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "creload" : {
+        "admin": true,
+        "description": "多分cogを再読み込みさせるためのコマンド",
+        "cmdid": "1222054833427714054",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "crole" : {
+        "admin": true,
+        "description": "ロール付与のボタンを出現させるコマンド",
+        "cmdid": "1232732815049883709",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "csetleveling" : {
+        "admin": true,
+        "description": "参加者のコマ研レベルの加算/減算/設定/停止/詳細表示コマンド",
+        "cmdid": "1355590014213292203",
+        "args": [
+            "必須引数1: choice",
+            "加算/減算/設定/停止/詳細表示のどれかを選ぶ",
+            "必須引数2: target",
+            "対象者を指定",
+            "任意引数1: level",
+            "レベルを入力",
+            "任意引数2: experience",
+            "経験値量を入力"
+        ],
+        "syntax": "/chelp <choice> <target> [<level>] [<experience>]",
+        "example": "/chelp choice:加算 target:@コマ研Bot level:1 experience:10",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ctellraw" : {
+        "admin": false,
+        "description": "tellrawコマンドを作成します",
+        "cmdid": "1222618892292325519",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ctemperature" : {
+        "admin": false,
+        "description": "摂氏(℃)を華氏(℉)とケルビン(K)に変換します",
+        "cmdid": "1252256568913690664",
+        "args": [
+            "必須引数1: c",
+            "変換したい摂氏(℃)を入力してください"
+        ],
+        "syntax": "/chelp <c>",
+        "example": "/chelp c:100",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ctick" : {
+        "admin": false,
+        "description": "入力した時間をtickに変換してくれます",
+        "cmdid": "1222618892292325521",
+        "args": [
+            "任意引数1: year",
+            "変換したい年数を入力してください(未入力:0)",
+            "任意引数2: month",
+            "変換したい月数を入力してください(未入力:0)",
+            "任意引数3: week",
+            "変換したい週数を入力してください(未入力:0)",
+            "任意引数4: day",
+            "変換したい日数を入力してください(未入力:0)",
+            "任意引数5: hour",
+            "変換したい時間数を入力してください(未入力:0)",
+            "任意引数6: minute",
+            "変換したい分数を入力してください(未入力:0)",
+            "任意引数7: second",
+            "変換したい秒数を入力してください(未入力:0)"
+        ],
+        "syntax": "/chelp [<year>] [<month>] [<week>] [<day>] [<hour>] [<minute>] [<second>]",
+        "example": "/chelp year:1 month:1 week:1 day:1 hour:1 minute:1 second:1",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ctitle" : {
+        "admin": false,
+        "description": "titleコマンドを生成します",
+        "cmdid": "1222618892292325520",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "ctranslate" : {
+        "admin": false,
+        "description": "入力した文章を各言語に翻訳できます(Can be translated into any language)\n日本語を入力すると英語に、英語を入力すると日本語に、各言語で入力すると日本語に変換してくれます\n日本語以外の言語に翻訳したい場合はlanguage引数を指定してください",
+        "cmdid": "1374768489918763119",
+        "args": [
+            "必須引数1: text",
+            "翻訳したい文章を入力してください",
+            "任意引数1: language",
+            "翻訳先の言語を指定してください(未入力の場合は自動判別)"
+        ],
+        "syntax": "/chelp <text> [<language>]",
+        "example": "/chelp text:翻訳したい文章 language:ko : korean / 韓国語",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cunicode decode" : {
+        "admin": false,
+        "description": "入力したUnicode文字列を変換します",
+        "cmdid": "1222054833427714053",
+        "args": [
+            "必須引数1: text",
+            "変換したい文字を入力してください"
+        ],
+        "syntax": "/cunicode decode <text>",
+        "example": "/cunicode decode text:\u30c6\u30b9\u30c8",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cunicode encode" : {
+        "admin": false,
+        "description": "入力した文字をUnicodeに変換します",
+        "cmdid": "1222054833427714053",
+        "args": [
+            "必須引数1: text",
+            "変換したい文字を入力してください"
+        ],
+        "syntax": "/cunicode encode <text>",
+        "example": "/cunicode encode text:テスト",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cuuid" : {
+        "admin": false,
+        "description": "1~25個のUUIDを生成します",
+        "cmdid": "1219287181907197973",
+        "args": [
+            "任意引数1: count",
+            "生成したいUUIDの数を入力してください(未入力:2個)"
+        ],
+        "syntax": "/cuuid [<count>]",
+        "example": "/cuuid count:5",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cwarn" : {
+        "admin": true,
+        "description": "Discordサーバー内の違反点数設定コマンド",
+        "cmdid": "1361703862779515091",
+        "args": [
+            "必須引数1: choice",
+            "加算/削除/編集/一覧のどれかを選ぶ",
+            "必須引数2: target",
+            "警告する人を指定",
+            "任意引数1: reason",
+            "加算/編集時に理由を記入",
+            "任意引数2: number",
+            "編集.削除時に番号を指定"
+        ],
+        "syntax": "/cwarn <choice> <target> [<reason>] [<number>]",
+        "example": "/cwarn choice:編集 target:@コマ研Bot reason:理由を記入 number:1",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cwarn-list" : {
+        "admin": false,
+        "description": "Discordサーバー内での自分の警告状況を確認できるコマンドです",
+        "cmdid": "1361703862779515092",
+        "args": [],
+        "syntax": "",
+        "example": "",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "cybase64" : {
+        "admin": false,
+        "description": "<#892062687557738548>でのみ実行できるコマンド\nURL等を送る時はこれを使ってbase64に変換してください",
+        "cmdid": "1288088569314803755",
+        "args": [
+            "必須引数1: url",
+            "変換して送ったほうがいいURLや文言を入力してください",
+            "任意引数1: text",
+            "上記URLに対してのコメントを入力してください(変換されません)"
+        ],
+        "syntax": "/chelp <url> [<text>]",
+        "example": "/chelp url:テスト :text:これいいよね",
+        "commentout": "ただのコメントアウト用"
+    },
+
     "テンプレート" : {
         "admin": false,
         "description": "説明",

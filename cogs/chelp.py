@@ -1,7 +1,6 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
-# import random
 import json
 
 COMMANDS = [
@@ -17,6 +16,40 @@ COMMANDS = [
     "cgivexp",
     "citem",
     "citemnum-change",
+    "ckill",
+    "clevel",
+    "cmanifest",
+    "cmisc",
+    "cn",
+    "cnews",
+    "comikuzi",
+    "core-gacha",
+    "core-gacha-10",
+    "cpack-mcmeta datapacks",
+    "cpack-mcmeta generate-dp",
+    "cpack-mcmeta generate-rp",
+    "cpack-mcmeta latest",
+    "cpack-mcmeta resourcepacks",
+    "cpack-mcmeta search",
+    "cping",
+    "cpresent",
+    "cpresent-reset",
+    "cradix",
+    "creference",
+    "creload",
+    "crole",
+    "csetleveling",
+    "ctellraw",
+    "ctemperature",
+    "ctick",
+    "ctitle",
+    "ctranslate",
+    "cunicode decode",
+    "cunicode encode",
+    "cuuid",
+    "cwarn",
+    "cwarn-list",
+    "cybase64"
 ]
 
 
