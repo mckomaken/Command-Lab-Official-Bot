@@ -413,8 +413,8 @@
             "任意引数1: mode",
             "どのモードで変換したいかを選択してください(初期設定: 2,4,8,10,16進数に変換)"
         ],
-        "syntax": "/chelp <command> [<command>]",
-        "example": "/chelp command:chelp-all",
+        "syntax": "/cradix <command> [<command>]",
+        "example": "/cradix command:chelp-all",
         "commentout": "ただのコメントアウト用"
     },
 
@@ -426,8 +426,8 @@
             "任意引数1: version",
             "更新情報を取得したいバージョンを指定してください"
         ],
-        "syntax": "/chelp [<version>]",
-        "example": "/chelp version:1.21.5",
+        "syntax": "/creference [<version>]",
+        "example": "/creference version:1.21.5",
         "commentout": "ただのコメントアウト用"
     },
 
@@ -465,8 +465,8 @@
             "任意引数2: experience",
             "経験値量を入力"
         ],
-        "syntax": "/chelp <choice> <target> [<level>] [<experience>]",
-        "example": "/chelp choice:加算 target:@コマ研Bot level:1 experience:10",
+        "syntax": "/csetleveling <choice> <target> [<level>] [<experience>]",
+        "example": "/csetleveling choice:加算 target:@コマ研Bot level:1 experience:10",
         "commentout": "ただのコメントアウト用"
     },
 
@@ -488,8 +488,8 @@
             "必須引数1: c",
             "変換したい摂氏(℃)を入力してください"
         ],
-        "syntax": "/chelp <c>",
-        "example": "/chelp c:100",
+        "syntax": "/ctemperature <c>",
+        "example": "/ctemperature c:100",
         "commentout": "ただのコメントアウト用"
     },
 
@@ -513,8 +513,8 @@
             "任意引数7: second",
             "変換したい秒数を入力してください(未入力:0)"
         ],
-        "syntax": "/chelp [<year>] [<month>] [<week>] [<day>] [<hour>] [<minute>] [<second>]",
-        "example": "/chelp year:1 month:1 week:1 day:1 hour:1 minute:1 second:1",
+        "syntax": "/ctick [<year>] [<month>] [<week>] [<day>] [<hour>] [<minute>] [<second>]",
+        "example": "/ctick year:1 month:1 week:1 day:1 hour:1 minute:1 second:1",
         "commentout": "ただのコメントアウト用"
     },
 
@@ -538,8 +538,8 @@
             "任意引数1: language",
             "翻訳先の言語を指定してください(未入力の場合は自動判別)"
         ],
-        "syntax": "/chelp <text> [<language>]",
-        "example": "/chelp text:翻訳したい文章 language:ko : korean / 韓国語",
+        "syntax": "/ctranslate <text> [<language>]",
+        "example": "ctranslate text:翻訳したい文章 language:ko : korean / 韓国語",
         "commentout": "ただのコメントアウト用"
     },
 
@@ -621,8 +621,8 @@
             "任意引数1: text",
             "上記URLに対してのコメントを入力してください(変換されません)"
         ],
-        "syntax": "/chelp <url> [<text>]",
-        "example": "/chelp url:テスト :text:これいいよね",
+        "syntax": "/cybase64 <url> [<text>]",
+        "example": "/cybase64 url:テスト :text:これいいよね",
         "commentout": "ただのコメントアウト用"
     },
 
