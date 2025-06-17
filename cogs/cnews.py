@@ -30,7 +30,7 @@ class CNews(commands.Cog):
                 async with client.get("") as resp:
                     data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
                     print(data)
-                    for entry in data["entries"]:
+                    for entry in data["entries"][0]:
                         print(entry)
                         if entry["version"] == version:
                             embed = discord.Embed(
