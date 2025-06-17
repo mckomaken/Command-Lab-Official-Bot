@@ -27,7 +27,7 @@ class CNews(commands.Cog):
         await interaction.response.defer()
         try:
             async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
-                async with client.get("") as resp:
+                async with client.get("{}") as resp:
                     data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
                     for entry in data["entries"]:
                         print(entry)
