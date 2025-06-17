@@ -25,27 +25,27 @@ class CNews(commands.Cog):
     @app_commands.guild_only()
     async def cnews(self, interaction: discord.Interaction, version: str):
         await interaction.response.defer()
-        try:
-            async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
-                async with client.get("") as resp:
-                    data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
-                    print(data)
-                    for i in range(len(data["entries"])):
-                        for entry in data["entries"][i]:
-                            print(entry)
-                            if entry["version"] == version:
-                                embed = discord.Embed(
-                                    title=entry["image"]["title"],
-                                    description=md(entry["body"][:4000]) + ("..." if len(entry["body"]) > 4000 else ""),
-                                )
-                                embed.set_thumbnail(
-                                    url="https://launchercontent.mojang.com/{}".format(entry["image"]["title"])
-                                )
-                                await interaction.followup.send(embed=embed)
-                                return
-            await interaction.followup.send("バージョンが見つかりませんでした")
-        except Exception as e:
-            await interaction.followup.send(f"エラーが発生しました\n{e}")
+        # ry:
+        async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
+            async with client.get("") as resp:
+                data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
+                print(data)
+                for i in range(len(data["entries"])):
+                    for entry in data["entries"][i]:
+                        print(entry)
+                        if entry["version"] == version:
+                            embed = discord.Embed(
+                                title=entry["image"]["title"],
+                                description=md(entry["body"][:4000]) + ("..." if len(entry["body"]) > 4000 else ""),
+                            )
+                            embed.set_thumbnail(
+                                url="https://launchercontent.mojang.com/{}".format(entry["image"]["title"])
+                            )
+                            await interaction.followup.send(embed=embed)
+                            return
+        await interaction.followup.send("バージョンが見つかりませんでした")
+        # except Exception as e:
+        # await interaction.followup.send(f"エラーが発生しました\n{e}")
 
     @app_commands.command(name="creference", description="更新情報を表示します")
     @app_commands.guild_only()
