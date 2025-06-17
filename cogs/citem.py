@@ -26,16 +26,8 @@ class CItem(commands.Cog):
         async with aiofiles.open("./minecraft_data/data/dataPaths.json") as fp:
             dataPath = DataPaths.model_validate_json(await fp.read())
 
-            async with aiofiles.open(
-                "./minecraft_data/data/"
-                + dataPath.pc[config.latest_minecraft_data_version].items
-                + "/items.json"
-            ) as fp:
-                async with aiofiles.open(
-                    "./minecraft_data/data/"
-                    + dataPath.pc[config.latest_minecraft_data_version].blocks
-                    + "/blocks.json"
-                ) as fp2:
+            async with aiofiles.open("./minecraft_data/data/" + dataPath.pc[config.latest_minecraft_data_version].items + "/items.json") as fp:
+                async with aiofiles.open("./minecraft_data/data/" + dataPath.pc[config.latest_minecraft_data_version].blocks + "/blocks.json") as fp2:
                     items = Items.model_validate_json(await fp.read())
                     blocks = Blocks.model_validate_json(await fp2.read())
                     for item in items.root:
@@ -106,6 +98,21 @@ class CItem(commands.Cog):
                                                     name="適正ツール",
                                                     value=create_codeblock("斧"),
                                                 )
+                                            elif block.material == "plant;mineable/axe":
+                                                embed.add_field(
+                                                    name="適正ツール",
+                                                    value=create_codeblock("素手/斧"),
+                                                )
+                                            elif block.material == "gourd;mineable/axe":
+                                                embed.add_field(
+                                                    name="適正ツール",
+                                                    value=create_codeblock("素手/斧"),
+                                                )
+                                            elif block.material == "vine_or_glow_lichen;plant;mineable/axe":
+                                                embed.add_field(
+                                                    name="適正ツール",
+                                                    value=create_codeblock("素手/斧"),
+                                                )
                                             elif block.material == "mineable/shovel":
                                                 embed.add_field(
                                                     name="適正ツール",
@@ -116,6 +123,11 @@ class CItem(commands.Cog):
                                                     name="適正ツール",
                                                     value=create_codeblock("クワ"),
                                                 )
+                                            elif block.material == "leaves;mineable/hoe":
+                                                embed.add_field(
+                                                    name="適正ツール",
+                                                    value=create_codeblock("素手/クワ"),
+                                                )
                                             elif block.material == "wool":
                                                 embed.add_field(
                                                     name="適正ツール",
@@ -125,6 +137,11 @@ class CItem(commands.Cog):
                                                 embed.add_field(
                                                     name="適正ツール",
                                                     value=create_codeblock("剣"),
+                                                )
+                                            elif block.material == "incorrect_for_wooden_tool":
+                                                embed.add_field(
+                                                    name="適正ツール",
+                                                    value=create_codeblock("ピッケル"),
                                                 )
                                             else:
                                                 embed.add_field(
