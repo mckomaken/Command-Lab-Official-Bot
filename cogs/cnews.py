@@ -25,10 +25,11 @@ class CNews(commands.Cog):
     @app_commands.guild_only()
     async def cnews(self, interaction: discord.Interaction, version: str):
         await interaction.response.defer()
-        # ry:
+        # try:
         async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
             print(client)
             async with client.get("") as resp:
+                print(resp)
                 data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
                 print(data)
                 # for i in range(len(data["entries"])):
