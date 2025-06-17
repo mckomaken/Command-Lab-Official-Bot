@@ -27,6 +27,7 @@ class CNews(commands.Cog):
         await interaction.response.defer()
         # ry:
         async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
+            print(client)
             async with client.get("") as resp:
                 data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
                 print(data)
