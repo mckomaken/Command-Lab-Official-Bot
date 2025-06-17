@@ -10,7 +10,7 @@ from markdownify import markdownify as md
 from schemas.patch_note import PatchNote
 from schemas.version_manifest import VersionManifest
 
-JAVA_PATCH_NOTES = "https://launchercontent.mojang.com/javaPatchNotes.json"
+JAVA_PATCH_NOTES = "https://launchercontent.mojang.com/javaPatchNotes.json/"
 JAVA_VERSION_MANIFESTS = (
     "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 )
