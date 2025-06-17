@@ -36,7 +36,7 @@ class CNews(commands.Cog):
                                 description=md(entry.body[:4000]) + ("..." if len(entry.body) > 4000 else ""),
                             )
                             embed.set_thumbnail(
-                                url="https://launchercontent.mojang.com{}".format(
+                                url="https://launchercontent.mojang.com/{}".format(
                                     entry.image.url
                                 )
                             )
@@ -118,15 +118,13 @@ class CNews(commands.Cog):
                         if clrv.count(".") >= 1:
                             latest_embed.add_field(
                                 name="【English References】",
-                                value="https://www.minecraft.net/en-us/article/minecraft-java-edition-"
-                                + cclrv,
+                                value="https://www.minecraft.net/en-us/article/minecraft-java-edition-" + cclrv,
                                 inline=False,
                             )
                         else:
                             latest_embed.add_field(
                                 name="【English References】",
-                                value="https://www.minecraft.net/en-us/article/minecraft-snapshot-"
-                                + cclrv,
+                                value="https://www.minecraft.net/en-us/article/minecraft-snapshot-" + cclrv,
                                 inline=False,
                             )
                         latest_embed.add_field(
