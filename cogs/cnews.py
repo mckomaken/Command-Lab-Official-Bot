@@ -36,9 +36,7 @@ class CNews(commands.Cog):
                                 description=md(entry.body[:4000]) + ("..." if len(entry.body) > 4000 else ""),
                             )
                             embed.set_thumbnail(
-                                url="https://launchercontent.mojang.com/{}".format(
-                                    entry.image.url
-                                )
+                                url="https://launchercontent.mojang.com/{}".format(entry.image.url)
                             )
                             await interaction.followup.send(embed=embed)
                             return
@@ -60,8 +58,7 @@ class CNews(commands.Cog):
                     clsv = data.latest.snapshot
                     clrv = version or data.latest.release
                     cclrv = clrv.replace(".", "-")
-                    cclsv = "" if "pre" in clsv else "snapshot-"
-                    +clsv.replace(".", "-").replace("-pre", "-pre-release-")
+                    cclsv = "" if "pre" in clsv else "snapshot-" + clsv.replace(".", "-").replace("-pre", "-pre-release-")
 
                     clsv2 = f"{clsv} & {clrv}" if version == "" else clrv
                     latest_embed = discord.Embed(
