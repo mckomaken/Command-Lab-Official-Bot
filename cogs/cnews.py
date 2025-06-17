@@ -27,20 +27,20 @@ class CNews(commands.Cog):
         await interaction.response.defer()
         try:
             async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
-                # async with client.get("{}") as resp:
-                data = PatchNote.model_validate(await client.json(content_type=None, encoding="utf-8-sig"))
-                for entry in data["entries"]:
-                    print(entry)
-                    if entry["version"] == version:
-                        embed = discord.Embed(
-                            title=entry["image"]["title"],
-                            description=md(entry["body"][:4000]) + ("..." if len(entry["body"]) > 4000 else ""),
-                        )
-                        embed.set_thumbnail(
-                            url="https://launchercontent.mojang.com/{}".format(entry["image"]["title"])
-                        )
-                        await interaction.followup.send(embed=embed)
-                        return
+                async with client.get("") as resp:
+                    data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
+                    for entry in data["entries"]:
+                        print(entry)
+                        if entry["version"] == version:
+                            embed = discord.Embed(
+                                title=entry["image"]["title"],
+                                description=md(entry["body"][:4000]) + ("..." if len(entry["body"]) > 4000 else ""),
+                            )
+                            embed.set_thumbnail(
+                                url="https://launchercontent.mojang.com/{}".format(entry["image"]["title"])
+                            )
+                            await interaction.followup.send(embed=embed)
+                            return
             await interaction.followup.send("バージョンが見つかりませんでした")
         except Exception as e:
             await interaction.followup.send(f"エラーが発生しました\n{e}")
