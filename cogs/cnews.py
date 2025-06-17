@@ -29,15 +29,15 @@ class CNews(commands.Cog):
             async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
                 async with client.get("") as resp:
                     data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
-                    for entry in data.entries:
+                    for entry in data["entries"]:
                         print(entry)
-                        if entry.version == version:
+                        if entry["version"] == version:
                             embed = discord.Embed(
-                                title=entry.title,
-                                description=md(entry.body[:4000]) + ("..." if len(entry.body) > 4000 else ""),
+                                title=entry["image"]["title"],
+                                description=md(entry["body"][:4000]) + ("..." if len(entry["body"]) > 4000 else ""),
                             )
                             embed.set_thumbnail(
-                                url="https://launchercontent.mojang.com/{}".format(entry.image.url)
+                                url="https://launchercontent.mojang.com/{}".format(entry["image"]["title"])
                             )
                             await interaction.followup.send(embed=embed)
                             return
