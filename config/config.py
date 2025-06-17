@@ -4,7 +4,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-latest_version = "1.21.5"
+latest_version = "1.21.6"
 
 
 class BumpNofitication(BaseModel):
