@@ -205,6 +205,8 @@ class CItem(commands.Cog):
                                         typename_jp = "アイテム" if is_item else "ブロック"
                                         embed.set_author(name=typename_jp)
 
+                                        embed.set_footer(text=f"取得バージョン: {config.latest_minecraft_data_version}")
+
                                         await interaction.response.send_message(
                                             embed=embed, files=files
                                         )
