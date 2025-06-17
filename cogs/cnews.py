@@ -10,7 +10,7 @@ from markdownify import markdownify as md
 from schemas.patch_note import PatchNote
 from schemas.version_manifest import VersionManifest
 
-JAVA_PATCH_NOTES = "https://launchercontent.mojang.com/javaPatchNotes.json/"
+JAVA_PATCH_NOTES = "https://launchercontent.mojang.com/javaPatchNotes.json"
 JAVA_VERSION_MANIFESTS = (
     "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 )
@@ -28,7 +28,7 @@ class CNews(commands.Cog):
         try:
             async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
                 async with client.get("") as resp:
-                    data = PatchNote.model_validate(await resp.json())
+                    data = PatchNote.model_validate(await resp.json(content_type=None))
                     for entry in data.entries:
                         if entry.version == version:
                             embed = discord.Embed(
