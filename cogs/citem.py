@@ -28,12 +28,12 @@ class CItem(commands.Cog):
 
             async with aiofiles.open(
                 "./minecraft_data/data/"
-                + dataPath.pc[config.latest_version].items
+                + dataPath.pc[config.latest_minecraft_data_version].items
                 + "/items.json"
             ) as fp:
                 async with aiofiles.open(
                     "./minecraft_data/data/"
-                    + dataPath.pc[config.latest_version].blocks
+                    + dataPath.pc[config.latest_minecraft_data_version].blocks
                     + "/blocks.json"
                 ) as fp2:
                     items = Items.model_validate_json(await fp.read())
@@ -51,7 +51,7 @@ class CItem(commands.Cog):
                                 os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"), mode="rb"
                             ) as lang_fp:
                                 with zipfile.ZipFile(
-                                    os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), f"client_{config.latest_version}.jar")
+                                    os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), f"client_{config.latest_minecraft_data_version}.jar")
                                 ) as zipfp:
                                     tn = "item" if is_item else "block"
                                     lang_data = json.loads(await lang_fp.read())

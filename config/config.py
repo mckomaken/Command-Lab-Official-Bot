@@ -4,6 +4,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+latest_minecraft_data_version = "1.21.4"
 latest_version = "1.21.6"
 
 
