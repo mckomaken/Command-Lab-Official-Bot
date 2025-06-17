@@ -29,6 +29,7 @@ class CNews(commands.Cog):
             async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
                 async with client.get("") as resp:
                     data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
+                    print(data)
                     for entry in data["entries"]:
                         print(entry)
                         if entry["version"] == version:
