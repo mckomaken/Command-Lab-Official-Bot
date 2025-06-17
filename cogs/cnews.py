@@ -33,8 +33,7 @@ class CNews(commands.Cog):
                         if entry.version == version:
                             embed = discord.Embed(
                                 title=entry.title,
-                                description=md(entry.body[:4000])
-                                + ("..." if len(entry.body) > 4000 else ""),
+                                description=md(entry.body[:4000]) + ("..." if len(entry.body) > 4000 else ""),
                             )
                             embed.set_thumbnail(
                                 url="https://launchercontent.mojang.com{}".format(
@@ -44,8 +43,8 @@ class CNews(commands.Cog):
                             await interaction.followup.send(embed=embed)
                             return
             await interaction.followup.send("バージョンが見つかりませんでした")
-        except Exception:
-            await interaction.followup.send("エラーが発生しました")
+        except Exception as e:
+            await interaction.followup.send(f"エラーが発生しました\n{e}")
 
     @app_commands.command(name="creference", description="更新情報を表示します")
     @app_commands.guild_only()
@@ -142,8 +141,8 @@ class CNews(commands.Cog):
                         )
 
                     await interaction.followup.send(embed=latest_embed)
-        except Exception:
-            await interaction.followup.send("エラーが発生しました")
+        except Exception as e:
+            await interaction.followup.send(f"エラーが発生しました\n{e}")
 
 
 async def setup(bot: commands.Bot):
