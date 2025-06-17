@@ -28,7 +28,7 @@ class CNews(commands.Cog):
         try:
             async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
                 async with client.get("") as resp:
-                    data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf_8"))
+                    data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
                     for entry in data.entries:
                         if entry.version == version:
                             embed = discord.Embed(
