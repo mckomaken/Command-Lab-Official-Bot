@@ -7,10 +7,12 @@ from discord import app_commands
 from discord.ext import commands
 from markdownify import markdownify as md
 
-from schemas.patch_note import PatchNote
 from schemas.version_manifest import VersionManifest
 
-JAVA_PATCH_NOTES = "https://launchercontent.mojang.com/javaPatchNotes.json/"
+import requests
+import json
+import time
+
 JAVA_VERSION_MANIFESTS = (
     "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 )
@@ -24,23 +26,36 @@ class CNews(commands.Cog):
     @app_commands.command(name="cnews", description="更新情報の詳細を表示します")
     @app_commands.guild_only()
     async def cnews(self, interaction: discord.Interaction, version: str):
-        await interaction.response.defer()
+        await interaction.response.defer(thinking=True)
         try:
-            async with aiohttp.ClientSession(JAVA_PATCH_NOTES) as client:
-                async with client.get("") as resp:
-                    data = PatchNote.model_validate(await resp.json(content_type=None, encoding="utf-8-sig"))
-                    for entry in data["entries"]:
-                        print(entry)
-                        if entry["version"] == version:
-                            embed = discord.Embed(
-                                title=entry["image"]["title"],
-                                description=md(entry["body"][:4000]) + ("..." if len(entry["body"]) > 4000 else ""),
-                            )
-                            embed.set_thumbnail(
-                                url="https://launchercontent.mojang.com/{}".format(entry["image"]["title"])
-                            )
-                            await interaction.followup.send(embed=embed)
-                            return
+            jpn = requests.get("https://launchercontent.mojang.com/javaPatchNotes.json")
+            jpndata = json.loads(jpn.text)
+            time.sleep(4)
+            for i in range(len(jpndata["entries"])):
+                jpnent = jpndata["entries"][i]
+                if jpnent["version"] == version:
+                    embed = discord.Embed(
+                        title=jpnent["title"],
+                        description=md(jpnent["body"][:4000]) + ("..." if len(jpnent["body"]) > 4000 else ""),
+                    )
+                    embed.set_thumbnail(url=f"https://launchercontent.mojang.com{jpnent["image"]["url"]}")
+                    await interaction.followup.send(embed=embed)
+                    return
+
+            jpn2 = requests.get("https://launchercontent.mojang.com/v2/javaPatchNotes.json")
+            jpn2data = json.loads(jpn2.text)
+            time.sleep(3)
+            for i in range(len(jpn2data["entries"])):
+                jpn2ent = jpn2data["entries"][i]
+                if jpn2ent["version"] == version:
+                    embed = discord.Embed(
+                        title=jpn2ent["title"],
+                        description=jpn2ent["shortText"],
+                    )
+                    embed.set_thumbnail(url=f"https://launchercontent.mojang.com{jpn2ent["image"]["url"]}")
+                    await interaction.followup.send(embed=embed)
+                    return
+
             await interaction.followup.send("バージョンが見つかりませんでした")
         except Exception as e:
             await interaction.followup.send(f"エラーが発生しました\n{e}")
@@ -95,21 +110,17 @@ class CNews(commands.Cog):
                         )
                         latest_embed.add_field(
                             name="【English References】",
-                            value="https://www.minecraft.net/en-us/article/minecraft-java-edition-{cclrv}",
+                            value=f"https://www.minecraft.net/en-us/article/minecraft-java-edition-{cclrv}",
                             inline=False,
                         )
                         latest_embed.add_field(
                             name="【English Wiki】",
-                            value="https://minecraft.wiki/w/Java_Edition_{}".format(
-                                clrv
-                            ),
+                            value="https://minecraft.wiki/w/Java_Edition_{}".format(clrv),
                             inline=False,
                         )
                         latest_embed.add_field(
                             name="【Japanese Wiki】",
-                            value="https://ja.minecraft.wiki/w/Java_Edition_{}".format(
-                                clrv
-                            ),
+                            value="https://ja.minecraft.wiki/w/Java_Edition_{}".format(clrv),
                             inline=False,
                         )
                     else:
