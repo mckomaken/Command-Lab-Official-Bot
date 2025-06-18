@@ -23,7 +23,7 @@ class CNews(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="cnews", description="更新情報の詳細を表示します")
+    @app_commands.command(name="cnews", description="更新情報の詳細を表示します(最大で送信まで15秒ほどかかります)")
     @app_commands.guild_only()
     async def cnews(self, interaction: discord.Interaction, version: str):
         await interaction.response.defer(thinking=True)
@@ -60,7 +60,7 @@ class CNews(commands.Cog):
         except Exception as e:
             await interaction.followup.send(f"エラーが発生しました\n{e}")
 
-    @app_commands.command(name="creference", description="更新情報を表示します")
+    @app_commands.command(name="creference", description="更新情報のURL/マイクラwikiを表示します")
     @app_commands.guild_only()
     async def changelog(
         self, interaction: discord.Interaction, version: Optional[str] = ""
