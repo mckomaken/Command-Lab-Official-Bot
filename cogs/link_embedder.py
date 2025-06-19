@@ -20,7 +20,7 @@ class CTemplate(commands.Cog):
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
         # メッセージリンクが含まれている場合
-        if any(domain in message.content for domain in ["https://discord.com/channels/", "https://canary.discord.com/channels/"]):
+        if any(domain in message.content for domain in ["https://discord.com/channels/", "https://canary.discord.com/channels/", "https://discordapp.com/channels/"]):
             try:
                 if "https://discord.com/channels/" in message.content:
                     link = (
@@ -29,6 +29,12 @@ class CTemplate(commands.Cog):
                         .split("\n")[0]
                     )
                 elif "https://canary.discord.com/channels/" in message.content:
+                    link = (
+                        message.content.split("https://canary.discord.com/channels/")[1]
+                        .split(" ")[0]
+                        .split("\n")[0]
+                    )
+                elif "https://discordapp.com/channels/" in message.content:
                     link = (
                         message.content.split("https://canary.discord.com/channels/")[1]
                         .split(" ")[0]
