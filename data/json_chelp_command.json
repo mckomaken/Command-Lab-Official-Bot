@@ -228,11 +228,11 @@
 
     "cnews" : {
         "admin": false,
-        "description": "マイクラの更新情報を表示します\n只今壊れています(笑)",
+        "description": "更新情報の詳細を表示します(最大で送信まで15秒ほどかかります)",
         "cmdid": "1222110131911790625",
         "args": [
             "必須引数1: version",
-            "説明"
+            "指定したバージョンの更新情報を表示します"
         ],
         "syntax": "/cnews <version>",
         "example": "/cnews version:1.21.5",
@@ -336,8 +336,8 @@
 
     "cpack-mcmeta search" : {
         "admin": false,
-        "description": "説明",
-        "cmdid": "111111111111",
+        "description": "確認したいバージョンのpack_formatを表示します",
+        "cmdid": "1219610266841518150",
         "args": [
             "必須引数1: version",
             "検索したいバージョンを入力してください"
@@ -350,7 +350,7 @@
     "cping" : {
         "admin": false,
         "description": "コマ研Botのping値を表示します",
-        "cmdid": "111111111111",
+        "cmdid": "1218485729160597597",
         "args": [
             "任意引数1: count",
             "実行回数を1~10の間で指定できます(未入力の場合は1)",
@@ -371,21 +371,23 @@
             "〇周年/人プレゼント企画・〇年-新年お年玉企画",
             "必須引数2: kikan",
             "開催期間を入力",
-            "任意引数1: amagif",
+            "任意引数1: amagif1000",
+            "アマギフ1000円分の当選者数を入力",
+            "任意引数2: amagif500",
             "アマギフ500円分の当選者数を入力",
-            "任意引数2: nitro",
+            "任意引数3: nitro",
             "Nitro1ヶ月分の当選者数を入力",
-            "任意引数3: abata_prof",
+            "任意引数4: abata_prof",
             "アバターデコレーション/プロフィールエフェクトの当選者数を入力",
-            "任意引数4: pripe",
+            "任意引数5: pripe",
             "コンビニで買えるプリペイドカードの当選者数を入力",
-            "任意引数5: mcmd10000xp",
+            "任意引数6: mcmd10000xp",
             "コマ研レベル10000xpの当選者数を入力",
-            "任意引数6: mcmd5000xp",
+            "任意引数7: mcmd5000xp",
             "コマ研レベル5000xpの当選者数を入力",
-            "任意引数7: mcmd2500xp",
+            "任意引数8: mcmd2500xp",
             "コマ研レベル2500xpの当選者数を入力",
-            "任意引数8: mcmd1000xp",
+            "任意引数9: mcmd1000xp",
             "コマ研レベル1000xpの当選者数を入力"
         ],
         "syntax": "/cpresent <ptitle> <kikan> [<amagif>] [<nitro>] [<abata_prof>] [<pripe>] [<mcmd10000xp>] [<mcmd5000xp>] [<mcmd2500xp>] [<mcmd1000xp>]",
@@ -420,7 +422,7 @@
 
     "creference" : {
         "admin": false,
-        "description": "マイクラの更新情報を表示します\n只今壊れています(笑)",
+        "description": "更新情報のURL/マイクラwikiのURLを表示します",
         "cmdid": "1222618025832878102",
         "args": [
             "任意引数1: version",

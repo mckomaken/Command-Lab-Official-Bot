@@ -21,7 +21,6 @@ class CBnoticetime(commands.Cog):
         ScheduledTime = bnJST_time + timedelta(minutes=addminutes)
         fScheduledTime = ScheduledTime.strftime(" %Y/%m/%d %H:%M ")
         notice_channel = await self.bot.fetch_channel(config.bump.channel_id)
-        # notice_channel = client.get_channel(965098244193542154)
         bump_file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/bump.png"), filename="bump.png")
 
         bump_embed = discord.Embed(

@@ -60,7 +60,7 @@ class CNews(commands.Cog):
         except Exception as e:
             await interaction.followup.send(f"エラーが発生しました\n{e}")
 
-    @app_commands.command(name="creference", description="更新情報のURL/マイクラwikiを表示します")
+    @app_commands.command(name="creference", description="更新情報のURL/マイクラwikiのURLを表示します")
     @app_commands.guild_only()
     async def changelog(
         self, interaction: discord.Interaction, version: Optional[str] = ""

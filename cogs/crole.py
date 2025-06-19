@@ -20,11 +20,11 @@ async def add_or_remove_role(roleId: int, interaction: Interaction):
     if role in interaction.user.roles:
         await interaction.user.remove_roles(role)
         await interaction.response.send_message(embed=roleremove_embed, ephemeral=True)
-        await admin_channel.send(f"|- {interaction.user.mention}の{role.mention}を解除しました", silent=True)
+        await admin_channel.send(f"- {interaction.user.mention}の{role.mention}を解除しました", silent=True)
     else:
         await interaction.user.add_roles(role)
         await interaction.response.send_message(embed=rolegive_embed, ephemeral=True)
-        await admin_channel.send(f"|+ {interaction.user.mention}の{role.mention}を付与しました", silent=True)
+        await admin_channel.send(f"+ {interaction.user.mention}の{role.mention}を付与しました", silent=True)
 
 
 class CRoleRankButtons(View):  # コマンダーランク
@@ -254,7 +254,7 @@ class CRole(commands.Cog):
             title="【任意】その他設定", description="ーーーーーーーーーー", color=0x3AFF11
         )
         hoka_embed.add_field(
-            name="--【@通知ON】--", value="🔔:ゲームの勧誘などの通知が行っても大丈夫な方はこちら!", inline=False
+            name="--【@通知ON】--", value="🔔:運営からのお知らせ通知が行っても大丈夫な方はこちら!", inline=False
         )
         hoka_embed.add_field(
             name="--【@MEE6レベル通知無効化】--",

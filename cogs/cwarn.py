@@ -94,6 +94,7 @@ class Cwarn(commands.Cog):
                         warnuserdb.warnreason5 = reason
                 session.commit()
                 await interaction.response.send_message(f"{target.mention}のNo.{number}の違反を編集しました\nNo.{number}・旧理由:{oldreason}\n↓\nNo.{number}・新理由:{reason}", silent=True)
+
             case "list":
                 warnlistembed = discord.Embed(
                     title=f"{target.display_name}の違反一覧",
@@ -105,6 +106,7 @@ class Cwarn(commands.Cog):
     @app_commands.command(name="cwarn-list", description="自分の警告状況確認コマンド")
     async def cwarnlist(self, interaction: discord.Interaction):
         warnuserdb = session.query(User).filter_by(userid=interaction.user.id).first()
+
         if not warnuserdb:
             await interaction.response.send_message("あなたはまだ警告を受けていません", ephemeral=True)
             return

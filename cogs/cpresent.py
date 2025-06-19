@@ -63,7 +63,8 @@ class CPresent(commands.Cog):
     @app_commands.describe(
         ptitle="〇周年プレゼント企画!/〇人プレゼント企画!/〇年-新年お年玉企画",
         kikann="応募期間(日数入力)",
-        amagif="アマギフ500円分をプレゼントする人数(初期値0)",
+        amagif1000="アマギフ1000円分をプレゼントする人数(初期値0)",
+        amagif500="アマギフ500円分をプレゼントする人数(初期値0)",
         nitro="Nitro1ヶ月分をプレゼントする人数(初期値0)",
         abata_prof="アバターデコレーションorプロフィールエフェクトをプレゼントする人数(初期値0)",
         pripe="コンビニで買えるプリペイドカード系をプレゼントする人数(初期値0)",
@@ -73,14 +74,15 @@ class CPresent(commands.Cog):
         mcmd1000xp="mcmd-level 1000XPをプレゼントする人数(初期値0)",
     )
     @app_commands.checks.has_role(config.administrater_role_id)
-    async def cpresent(self, interaction: discord.Interaction, ptitle: str, kikann: int, amagif: int = 0, nitro: int = 0, abata_prof: int = 0, pripe: int = 0, mcmd10000xp: int = 0, mcmd5000xp: int = 0, mcmd2500xp: int = 0, mcmd1000xp: int = 0):
+    async def cpresent(self, interaction: discord.Interaction, ptitle: str, kikann: int, amagif1000: int = 0, amagif500: int = 0, nitro: int = 0, abata_prof: int = 0, pripe: int = 0, mcmd10000xp: int = 0, mcmd5000xp: int = 0, mcmd2500xp: int = 0, mcmd1000xp: int = 0):
 
         syuuryoubi = datetime.now() + timedelta(days=kikann)
         fsyuuryoubi = syuuryoubi.strftime(" %Y/%m/%d ")
         tyuusennbi = syuuryoubi + timedelta(days=1)
         ftyuusennbi = tyuusennbi.strftime(" %Y/%m/%d ")
 
-        str_amagif = ""
+        str_amagif1000 = ""
+        str_amagif500 = ""
         str_nitro = ""
         str_abata_prof = ""
         str_pripe = ""
@@ -89,8 +91,10 @@ class CPresent(commands.Cog):
         str_mcmd2500xp = ""
         str_mcmd1000xp = ""
 
-        if amagif > 0:
-            str_amagif = f"> `{amagif}名` : Amazonギフト券 500円分\n"
+        if amagif1000 > 0:
+            str_amagif1000 = f"> `{amagif1000}名` : Amazonギフト券 1000円分\n"
+        if amagif500 > 0:
+            str_amagif500 = f"> `{amagif500}名` : Amazonギフト券 500円分\n"
         if nitro > 0:
             str_nitro = f"> `{nitro}名` : Discord Nitro 1ヶ月分\n"
         if abata_prof > 0:
@@ -117,7 +121,7 @@ class CPresent(commands.Cog):
 -# 冗談です(笑)してくれたらうれしいけどw
 
 【景品内容】
-{str_amagif}{str_nitro}{str_abata_prof}{str_pripe}{str_mcmd10000xp}{str_mcmd5000xp}{str_mcmd2500xp}{str_mcmd1000xp}
+{str_amagif1000}{str_amagif500}{str_nitro}{str_abata_prof}{str_pripe}{str_mcmd10000xp}{str_mcmd5000xp}{str_mcmd2500xp}{str_mcmd1000xp}
 【注意事項】
 2アカウント以上の応募・ボタンの連打
 →その回の全アカウントでの応募権はく奪
