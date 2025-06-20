@@ -136,6 +136,7 @@ class CAutoreply(commands.Cog):
             elif message.content.startswith("oruvanoruvan"):
                 await message.channel.send(ORUVANORUVAN, silent=True)
 
+            result = None
             try:
                 result = parse_and_evaluate(message.content)
             except ValueError:
