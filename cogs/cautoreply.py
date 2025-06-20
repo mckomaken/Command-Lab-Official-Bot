@@ -134,19 +134,19 @@ class CAutoreply(commands.Cog):
             elif message.content.startswith("oruvanoruvan"):
                 await message.channel.send(ORUVANORUVAN, silent=True)
 
-            try:
-                result = parse_and_evaluate(message.content)
-            except ValueError:
-                pass  # ダイスロールでなかった
-            result["breakdown"] = map(lambda x: x.replace(" ", ""), result["breakdown"])
-            embed = discord.Embed()
-            if result["type"] == "roll":  # 成否判定なし
-                embed.color = 0x808080
-                embed.description = f"{"+".join(result["breakdown"])} = {result["result"]}"
-            if result["type"] == "comparison":  # 成否判定あり
-                embed.color = 0x456cba if result["success"] else 0xba4545
-                embed.description = f"{"+".join(result["breakdown"])} = {result["result"]} {result["operator"]} {result["target"]} : {"成功" if result["success"] else "失敗"}"
-            await message.reply(embed=embed, silent=True)
+            # try:
+            #     result = parse_and_evaluate(message.content)
+            # except ValueError:
+            #     pass  # ダイスロールでなかった
+            # result["breakdown"] = map(lambda x: x.replace(" ", ""), result["breakdown"])
+            # embed = discord.Embed()
+            # if result["type"] == "roll":  # 成否判定なし
+            #     embed.color = 0x808080
+            #     embed.description = f"{"+".join(result["breakdown"])} = {result["result"]}"
+            # if result["type"] == "comparison":  # 成否判定あり
+            #     embed.color = 0x456cba if result["success"] else 0xba4545
+            #     embed.description = f"{"+".join(result["breakdown"])} = {result["result"]} {result["operator"]} {result["target"]} : {"成功" if result["success"] else "失敗"}"
+            # await message.reply(embed=embed, silent=True)
 
 
 async def setup(bot: commands.Bot):
