@@ -16,7 +16,7 @@ class CDice(app_commands.Group):
         self.bot = bot
 
     @app_commands.command(name="roll", description="ダイスを振ります")
-    @app_commands.checks.cooldown(1, 3)
+    @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
     async def roll(self, interaction: discord.Interaction, dices: int, upto: int):
         try:
             total = 0
@@ -42,7 +42,7 @@ class CDice(app_commands.Group):
         await interaction.response.send_message(embed=embed, silent=True)
 
     @app_commands.command(name="try", description="ダイスを振り、合計が値以下で成功と判定します")
-    @app_commands.checks.cooldown(1, 3)
+    @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
     async def trying(self, interaction: discord.Interaction, dices: int, upto: int, value: int):
         try:
             total = 0
