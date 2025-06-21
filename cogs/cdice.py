@@ -35,9 +35,9 @@ class CDice(app_commands.Group):
 
         embed.color = 0x808080
         if dices == 1:
-            embed.description = f"結果: {rolls_concatenated} -> {total}"
-        else:
             embed.description = f"結果: {total}"
+        else:
+            embed.description = f"結果: {rolls_concatenated} -> {total}"
 
         await interaction.response.send_message(embed=embed, silent=True)
 
