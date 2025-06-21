@@ -39,7 +39,7 @@ class CKill(commands.Cog):
 
     @app_commands.command(name="ckill", description="キルコマンド(ネタ)")
     @app_commands.describe(target="キルするユーザー(任意)", count="回数(デフォルト1)")
-    @app_commands.checks.cooldown(1, 3)
+    @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
     async def ckill(
         self, interaction: discord.Interaction,
         target: Optional[Member] = None,
