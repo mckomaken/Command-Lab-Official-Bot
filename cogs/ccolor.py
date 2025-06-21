@@ -94,6 +94,7 @@ class CColor(app_commands.Group):
             )
 
     @app_commands.command(name="random", description="カラーコードをランダムに出力し行います")
+    @app_commands.checks.cooldown(2, 5)
     async def random(self, interaction: discord.Interaction):
         try:
             color = "#" + randhex()[2:].zfill(2) + randhex()[2:].zfill(2) + randhex()[2:].zfill(2)
@@ -120,6 +121,10 @@ class CColor(app_commands.Group):
             await interaction.response.send_message(
                 embed=create_embed("エラー", "値が無効です"), ephemeral=True
             )
+
+    async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+       if isinstance(error, app_commands.CommandOnCooldown):
+           await interaction.response.send_message("ちょっと待って！", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
