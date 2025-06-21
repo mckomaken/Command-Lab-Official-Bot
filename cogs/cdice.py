@@ -76,6 +76,34 @@ class CDice(app_commands.Group):
 
         await interaction.response.send_message(embed=embed, silent=True)
 
+    @app_commands.command(name="random", description="範囲、個数を決めて乱数を生成します")
+    @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
+    async def random(self, interaction: discord.Interaction, count: int, num_min: int, num_max: int):
+        try:
+            total = 0
+            if count > 100 or count < 1 or num_max > 10000 or num_min < -10000:
+                raise ValueError
+            if num_min > num_max:
+                raise ValueError
+            rolls = [random.randint(num_min, num_max) for _ in range(count)]
+        except ValueError:
+            await interaction.response.send_message(
+                embed=create_embed("エラー", "値が無効です（回数：1～100、範囲：-10000～10000）"), ephemeral=True
+            )
+
+        rolls_concatenated = ",".join([str(i) for i in rolls])
+        total += sum(rolls)
+
+        embed = discord.Embed()
+
+        embed.color = 0x808080
+        if count == 1:
+            embed.description = f"結果: {total}"
+        else:
+            embed.description = f"結果: [{rolls_concatenated}] -> {total}"
+
+        await interaction.response.send_message(embed=embed, silent=True)
+        
     async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
        if isinstance(error, app_commands.CommandOnCooldown):
            await interaction.response.send_message("ちょっと待って！", ephemeral=True)
