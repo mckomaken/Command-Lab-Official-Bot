@@ -28,59 +28,6 @@ GABU = """
 　（＿フ彡　　　　　 　　/　←>>1
 """
 
-
-# ダイスロール判定関数
-def parse_and_evaluate(expression: str):
-    expression = expression.replace(" ", "")
-
-    def evaluate_dice_expression(expr: str):
-        tokens = expr.split('+')
-        total = 0
-        breakdown = []
-
-        for token in tokens:
-            token = token.strip().lower()
-            if 'd' in token:
-                num, sides = token.split('d')
-                num = int(num) if num else 1
-                sides = int(sides)
-                if num > 100 or sides > 10000:
-                    raise ValueError                
-                rolls = [random.randint(1, sides) for _ in range(num)]
-                total += sum(rolls)
-                breakdown.append(f"{rolls}")
-            else:
-                val = int(token)
-                total += val
-                breakdown.append(str(val))
-
-        return total, breakdown
-
-    # 不等式を検出
-    match = re.match(r'(.+?)(<=|>=|==|!=|<|>)(.+)', expression)
-    if match:
-        dice_expr, operator, target = match.groups()
-        target = int(target)
-        total, breakdown = evaluate_dice_expression(dice_expr)
-        comparison_result = eval(f"{total} {operator} {target}")
-        return {
-            'type': 'comparison',
-            'success': comparison_result,
-            'result': total,
-            'breakdown': breakdown,
-            'operator': operator,
-            'target': target
-        }
-    else:
-        # 不等式がない → 単なるダイスロール
-        total, breakdown = evaluate_dice_expression(expression)
-        return {
-            'type': 'roll',
-            'result': total,
-            'breakdown': breakdown
-        }
-
-
 class CAutoreply(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -135,21 +82,6 @@ class CAutoreply(commands.Cog):
 
             elif message.content.startswith("oruvanoruvan"):
                 await message.channel.send(ORUVANORUVAN, silent=True)
-
-            result = None
-            try:
-                result = parse_and_evaluate(message.content)
-            except ValueError:
-                pass  # ダイスロールでなかった or あまりにもデカい数が入力された
-            result["breakdown"] = map(lambda x: x.replace(" ", ""), result["breakdown"])
-            embed = discord.Embed()
-            if result["type"] == "roll":  # 成否判定なし
-                embed.color = 0x808080
-                embed.description = f"{"+".join(result["breakdown"])} = {result["result"]}"
-            if result["type"] == "comparison":  # 成否判定あり
-                embed.color = 0x456cba if result["success"] else 0xba4545
-                embed.description = f"{"+".join(result["breakdown"])} = {result["result"]} {result["operator"]} {result["target"]} : {"成功" if result["success"] else "失敗"}"
-            await message.reply(embed=embed, silent=True)
 
 
 async def setup(bot: commands.Bot):
