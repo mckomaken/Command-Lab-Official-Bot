@@ -7,19 +7,25 @@ from discord.ext import commands
 class EmbedPaginator(discord.ui.View):
     """
     Embed Paginator.
+    await EmbedPaginator.start() でpaginateされたembedが送信されます
 
     Parameters:
     ----------
     timeout: int
         How long the Paginator should timeout in, after the last interaction. (In seconds) (Overrides default of 60)
+        最後のinteractionからタイムアウトするまでの時間（秒）（標準は60秒）
     PreviousButton: discord.ui.Button
         Overrides default previous button.
+        「前へ」ボタン
     NextButton: discord.ui.Button
         Overrides default next button.
+        「次へ」ボタン
     PageCounterStyle: discord.ButtonStyle
         Overrides default page counter style.
+        ページ数を表示するボタン
     InitialPage: int
         Page to start the pagination on.
+        最初に表示されるページ
     AllowExtInput: bool
         Overrides ability for 3rd party to interract with button.
     """
@@ -56,9 +62,20 @@ class EmbedPaginator(discord.ui.View):
 
         super().__init__(timeout=timeout)
 
+    # Embedを送信
     async def start(
         self, ctx: discord.Interaction | commands.Context, pages: list[discord.Embed]
     ):
+        """
+        await EmbedPaginator.start(ctx, pages)
+        paginateされたembedを送信します
+
+        Attributes
+        ----------
+        ctx: discord.Interaction | commands.Context
+        pages: list[discord.Embed]
+            ページ一つ一つのembedのリスト
+        """
 
         if isinstance(ctx, discord.Interaction):
             ctx = await commands.Context.from_interaction(ctx)
@@ -85,6 +102,7 @@ class EmbedPaginator(discord.ui.View):
             embed=self.pages[self.InitialPage], view=self, ephemeral=self.ephemeral
         )
 
+    # ページを一つ前へ戻す
     async def previous(self):
         if self.current_page == 0:
             self.current_page = self.total_page_count - 1
@@ -94,6 +112,7 @@ class EmbedPaginator(discord.ui.View):
         self.page_counter.label = f"{self.current_page + 1}/{self.total_page_count}"
         await self.message.edit(embed=self.pages[self.current_page], view=self)
 
+    # ページを一つ後へ送る
     async def next(self):
         if self.current_page == self.total_page_count - 1:
             self.current_page = 0
@@ -103,9 +122,11 @@ class EmbedPaginator(discord.ui.View):
         self.page_counter.label = f"{self.current_page + 1}/{self.total_page_count}"
         await self.message.edit(embed=self.pages[self.current_page], view=self)
 
+    # 「次へ」ボタン押下検知
     async def next_button_callback(self, interaction: discord.Interaction):
         if interaction.user != self.ctx.author and self.AllowExtInput:
             embed = discord.Embed(
+                # 送信者以外は操作できません
                 description="You cannot control this pagination because you did not execute it.",
                 color=discord.Colour.red(),
             )
@@ -113,9 +134,11 @@ class EmbedPaginator(discord.ui.View):
         await self.next()
         await interaction.response.defer()
 
+    # 「前へ」ボタン押下検知
     async def previous_button_callback(self, interaction: discord.Interaction):
         if interaction.user != self.ctx.author and self.AllowExtInput:
             embed = discord.Embed(
+                # 送信者以外は操作できません
                 description="You cannot control this pagination because you did not execute it.",
                 color=discord.Colour.red(),
             )
