@@ -94,7 +94,7 @@ class CColor(app_commands.Group):
             )
 
     @app_commands.command(name="random", description="カラーコードをランダムに出力し行います")
-    @app_commands.checks.cooldown(1, 3)
+    @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
     async def random(self, interaction: discord.Interaction):
         try:
             color = "#" + randhex()[2:].zfill(2) + randhex()[2:].zfill(2) + randhex()[2:].zfill(2)
