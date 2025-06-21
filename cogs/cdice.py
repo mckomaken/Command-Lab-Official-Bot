@@ -37,7 +37,7 @@ class CDice(app_commands.Group):
         if dices == 1:
             embed.description = f"結果: {total}"
         else:
-            embed.description = f"結果: {rolls_concatenated} -> {total}"
+            embed.description = f"結果: [{rolls_concatenated}] -> {total}"
 
         await interaction.response.send_message(embed=embed, silent=True)
 
@@ -69,10 +69,10 @@ class CDice(app_commands.Group):
         else:
             if total <= value:
                 embed.color = 0x456cba
-                embed.description = f"結果: {rolls_concatenated} -> {total} <= {value} 成功！"
+                embed.description = f"結果: [{rolls_concatenated}] -> {total} <= {value} 成功！"
             else:
                 embed.color = 0xba4545
-                embed.description = f"結果: {rolls_concatenated} -> {total} > {value} 失敗"
+                embed.description = f"結果: [{rolls_concatenated}] -> {total} > {value} 失敗"
 
         await interaction.response.send_message(embed=embed, silent=True)
 
