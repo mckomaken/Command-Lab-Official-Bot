@@ -430,8 +430,8 @@
             "必須引数2: range",
             "マイクラの書き方に則って範囲を書いてください→[1..10]or[1..]or[..-10]"
         ],
-        "syntax": "/cradix <mode> <range>",
-        "example": "/cradix mode:roll range:-123..4567",
+        "syntax": "/crandom <mode> <range>",
+        "example": "/crandom mode:roll range:-123..4567",
         "commentout": "ただのコメントアウト用"
     },
 
