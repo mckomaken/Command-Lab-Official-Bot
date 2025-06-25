@@ -415,8 +415,23 @@
             "任意引数1: mode",
             "どのモードで変換したいかを選択してください(初期設定: 2,4,8,10,16進数に変換)"
         ],
-        "syntax": "/cradix <command> [<command>]",
-        "example": "/cradix command:chelp-all",
+        "syntax": "/cradix <num> [<mode>]",
+        "example": "/cradix num:10 mode:2~16進数を表示させます",
+        "commentout": "ただのコメントアウト用"
+    },
+
+    "crandom" : {
+        "admin": false,
+        "description": "ランダムな数字を1つ表示します",
+        "cmdid": "",
+        "args": [
+            "必須引数1: mode",
+            "value : 自分にのみ表示・roll : 全員に公開",
+            "必須引数2: range",
+            "マイクラの書き方に則って範囲を書いてください→[1..10]or[1..]or[..-10]"
+        ],
+        "syntax": "/cradix <mode> <range>",
+        "example": "/cradix mode:roll range:-123..4567",
         "commentout": "ただのコメントアウト用"
     },
 

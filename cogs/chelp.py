@@ -35,6 +35,7 @@ COMMANDS = [
     "cpresent",
     "cpresent-reset",
     "cradix",
+    "crandom",
     "creference",
     "creload",
     "crole",
