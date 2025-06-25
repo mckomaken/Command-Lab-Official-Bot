@@ -423,7 +423,7 @@
     "crandom" : {
         "admin": false,
         "description": "ランダムな数字を1つ表示します",
-        "cmdid": "",
+        "cmdid": "1387443423757209623",
         "args": [
             "必須引数1: mode",
             "value : 自分にのみ表示・roll : 全員に公開",

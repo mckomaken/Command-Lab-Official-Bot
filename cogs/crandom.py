@@ -84,9 +84,9 @@ class CRandom(commands.Cog):
         elif mode.value == "mvalue":
             await interaction.response.send_message(f"乱数 : {num}", ephemeral=True)
 
-    # async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-    #     if isinstance(error, app_commands.CommandOnCooldown):
-    #         await interaction.response.send_message("クールダウン中です", ephemeral=True)
+    async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        if isinstance(error, app_commands.CommandOnCooldown):
+            await interaction.response.send_message("クールダウン中です", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
