@@ -10,7 +10,7 @@ class Cwarn(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="cwarn", description="【運営用】参加者の警告設定")
-    @app_commands.describe(choice="選択肢", target="警告する人", reason="理由", number="違反番号(1~5)")
+    @app_commands.describe(choice="選択肢", target="警告する人", reason="理由", reason2="DM送信時の詳細理由(無くても可)", number="違反番号(1~5)", senddm="DM送信するかどうか(初期値:True(送信する))")
     @app_commands.choices(
         choice=[
             app_commands.Choice(value="add", name="加点(理由引数必須)"),
@@ -19,8 +19,10 @@ class Cwarn(commands.Cog):
             app_commands.Choice(value="list", name="一覧表示")
         ]
     )
-    async def cwarn(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, reason: str = "", number: int = 0):
+    async def cwarn(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, reason: str = "", reason2: str = "", number: int = 0, senddm: bool = True):
         warnuserdb = session.query(User).filter_by(userid=target.id).first()
+        dm = await interaction.guild.fetch_member(target.id)
+        url = f"https://discord.com/channels/{config.guild_id}/{config.toiawasech}"  # config設定すること
 
         if interaction.guild.get_role(config.administrater_role_id) not in interaction.user.roles:
             await interaction.response.send_message("権限ないよ！", ephemeral=True)
@@ -51,7 +53,28 @@ class Cwarn(commands.Cog):
                     warnuserdb.warnreason5 = reason
                     num = 5
                 session.commit()
-                await interaction.response.send_message(f"{target.mention}に違反点数を追加しました\nNo.{num}・理由:{reason}", silent=True)
+                await interaction.response.send_message(f"{target.mention}に違反点数を追加しました\nNo.{num}\n理由:{reason}\n詳細理由:{reason2}", silent=True)
+                if senddm is True:
+                    WARNDESC = f"""
+## No.{num}
+【理由(データベース保存内容)
+{reason}
+
+【詳細理由(データベースに保存されません)
+{reason2}
+
+なお、警告に対する問い合わせは {url} で受け付けていますが、問い合わせたからと言って解除されるとは限りません
+また、違反点数が5点に達した場合はBANされますのでご注意ください
+"""
+                    warn_dm_embed = discord.Embed(
+                        title="違反点数が追加されました",
+                        description=WARNDESC,
+                        color=0xFF0000,
+                    )
+                    warn_dm_embed.set_footer(text="マイクラコマンド研究所 運営一同")
+                    await dm.send(embed=warn_dm_embed)
+                else:
+                    return
 
             case "remove":
                 if number <= 0 or number > 5:
@@ -60,17 +83,37 @@ class Cwarn(commands.Cog):
                 warnuserdb.warnpt -= 1
                 match number:
                     case 1:
+                        oldreason = warnuserdb.warnreason1
                         warnuserdb.warnreason1 = ""
                     case 2:
+                        oldreason = warnuserdb.warnreason2
                         warnuserdb.warnreason2 = ""
                     case 3:
+                        oldreason = warnuserdb.warnreason3
                         warnuserdb.warnreason3 = ""
                     case 4:
+                        oldreason = warnuserdb.warnreason4
                         warnuserdb.warnreason4 = ""
                     case 5:
+                        oldreason = warnuserdb.warnreason5
                         warnuserdb.warnreason5 = ""
                 session.commit()
-                await interaction.response.send_message(f"{target.mention}のNo.{number}の違反を削除しました\nNo.{number}・理由:{reason}", silent=True)
+                await interaction.response.send_message(f"{target.mention}のNo.{number}の違反を削除しました\nNo.{number}・理由:{oldreason}", silent=True)
+                if senddm is True:
+                    WARNDESC = f"""
+## No.{number}
+【理由(データベース保存内容)
+{oldreason}
+"""
+                    warn_dm_rem_embed = discord.Embed(
+                        title="違反点数が削除されました",
+                        description=WARNDESC,
+                        color=0xFF0000,
+                    )
+                    warn_dm_rem_embed.set_footer(text="マイクラコマンド研究所 運営一同")
+                    await dm.send(embed=warn_dm_rem_embed)
+                else:
+                    return
 
             case "edit":
                 if number <= 0 or number > 5:

@@ -84,6 +84,7 @@ class Config(BaseModel):
     listenchs: list[int] = []
     voicech: int
     voice256ch: int
+    toiawasech: int
 
 # -----------------------------------------------------------
 
