@@ -101,7 +101,7 @@ class Cwarn(commands.Cog):
                 await interaction.response.send_message(f"{target.mention}のNo.{number}の違反を削除しました\nNo.{number}・理由:{oldreason}", silent=True)
                 if senddm is True:
                     WARNDESC = f"""
-## No.{num}
+## No.{number}
 【理由(データベース保存内容)
 {oldreason}
 """
