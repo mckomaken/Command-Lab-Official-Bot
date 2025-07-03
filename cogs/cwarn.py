@@ -10,7 +10,7 @@ class Cwarn(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="cwarn", description="【運営用】参加者の警告設定")
-    @app_commands.describe(choice="選択肢", target="警告する人", reason="理由", number="違反番号(1~5)")
+    @app_commands.describe(choice="選択肢", target="警告する人", reason="理由", reason2="DM送信時の詳細理由(無くても可)", number="違反番号(1~5)")
     @app_commands.choices(
         choice=[
             app_commands.Choice(value="add", name="加点(理由引数必須)"),
@@ -19,8 +19,10 @@ class Cwarn(commands.Cog):
             app_commands.Choice(value="list", name="一覧表示")
         ]
     )
-    async def cwarn(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, reason: str = "", number: int = 0):
+    async def cwarn(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, reason: str = "", reason2: str = "", number: int = 0):
         warnuserdb = session.query(User).filter_by(userid=target.id).first()
+        dm = await interaction.guild.fetch_member(target.id)
+        url = f"https://discord.com/channels/{config.guild_id}/{confif.toiawasech}"  # config設定すること
 
         if interaction.guild.get_role(config.administrater_role_id) not in interaction.user.roles:
             await interaction.response.send_message("権限ないよ！", ephemeral=True)
@@ -52,6 +54,23 @@ class Cwarn(commands.Cog):
                     num = 5
                 session.commit()
                 await interaction.response.send_message(f"{target.mention}に違反点数を追加しました\nNo.{num}・理由:{reason}", silent=True)
+                WARNDESC = f"""
+## No.{num}
+【理由(データベース保存内容)
+```
+{reason}
+```
+【詳細理由(データベースに保存されません)
+```
+{reason2}
+```
+"""
+                warn_dm_embed= discord.Embed(
+                    title="違反点数が追加されました",
+                    description=WARNDESC,
+                    color=0xFF0000,
+                )
+                await dm.send(embed=warn_dm_embed)
 
             case "remove":
                 if number <= 0 or number > 5:
