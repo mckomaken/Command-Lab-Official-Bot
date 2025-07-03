@@ -72,7 +72,10 @@ class Cwarn(commands.Cog):
                         color=0xFF0000,
                     )
                     warn_dm_embed.set_footer(text="マイクラコマンド研究所 運営一同")
-                    await dm.send(embed=warn_dm_embed)
+                    try:
+                        await dm.send(embed=warn_dm_embed)
+                    except discord.Forbidden:
+                        await interaction.response.send_message(f"{target.mention}はDM受信を拒否しているため送信できませんでした。\nチケットを発券して、点数が増えたことを通知してください。\nなお、**点数追加の処理は既に行われています。**")
                 else:
                     return
 
@@ -111,7 +114,10 @@ class Cwarn(commands.Cog):
                         color=0xFF0000,
                     )
                     warn_dm_rem_embed.set_footer(text="マイクラコマンド研究所 運営一同")
-                    await dm.send(embed=warn_dm_rem_embed)
+                    try:
+                        await dm.send(embed=warn_dm_embed)
+                    except discord.Forbidden:
+                        await interaction.response.send_message(f"{target.mention}はDM受信を拒否しているため送信できませんでした。\nチケットを発券して、点数が削除されたことを通知してください。\nなお、**点数追加の処理は既に行われています。**")
                 else:
                     return
 
