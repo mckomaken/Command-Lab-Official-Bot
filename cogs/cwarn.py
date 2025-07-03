@@ -58,13 +58,11 @@ class Cwarn(commands.Cog):
                     WARNDESC = f"""
 ## No.{num}
 【理由(データベース保存内容)
-```
 {reason}
-```
+
 【詳細理由(データベースに保存されません)
-```
 {reason2}
-```
+
 なお、警告に対する問い合わせは {url} で受け付けていますが、問い合わせたからと言って解除されるとは限りません
 また、違反点数が5点に達した場合はBANされますのでご注意ください
 """
@@ -85,32 +83,35 @@ class Cwarn(commands.Cog):
                 warnuserdb.warnpt -= 1
                 match number:
                     case 1:
+                        oldreason = warnuserdb.warnreason1
                         warnuserdb.warnreason1 = ""
                     case 2:
+                        oldreason = warnuserdb.warnreason2
                         warnuserdb.warnreason2 = ""
                     case 3:
+                        oldreason = warnuserdb.warnreason3
                         warnuserdb.warnreason3 = ""
                     case 4:
+                        oldreason = warnuserdb.warnreason4
                         warnuserdb.warnreason4 = ""
                     case 5:
+                        oldreason = warnuserdb.warnreason5
                         warnuserdb.warnreason5 = ""
                 session.commit()
-                await interaction.response.send_message(f"{target.mention}のNo.{number}の違反を削除しました\nNo.{number}・理由:{reason}", silent=True)
+                await interaction.response.send_message(f"{target.mention}のNo.{number}の違反を削除しました\nNo.{number}・理由:{oldreason}", silent=True)
                 if senddm is True:
                     WARNDESC = f"""
 ## No.{num}
 【理由(データベース保存内容)
-```
-{reason}
-```
+{oldreason}
 """
-                    warn_dm_embed = discord.Embed(
+                    warn_dm_rem_embed = discord.Embed(
                         title="違反点数が削除されました",
                         description=WARNDESC,
                         color=0xFF0000,
                     )
-                    warn_dm_embed.set_footer(text="マイクラコマンド研究所 運営一同")
-                    await dm.send(embed=warn_dm_embed)
+                    warn_dm_rem_embed.set_footer(text="マイクラコマンド研究所 運営一同")
+                    await dm.send(embed=warn_dm_rem_embed)
                 else:
                     return
 
