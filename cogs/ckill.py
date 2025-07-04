@@ -39,6 +39,7 @@ class CKill(commands.Cog):
 
     @app_commands.command(name="ckill", description="キルコマンド(ネタ)")
     @app_commands.describe(target="キルするユーザー(任意)", count="回数(デフォルト1)")
+    @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
     async def ckill(
         self, interaction: discord.Interaction,
         target: Optional[Member] = None,
@@ -78,6 +79,10 @@ class CKill(commands.Cog):
                 if "item.minecraft." in k and "_spawn_egg" in k
             ]
             self.items = [v for k, v in self.lang_data.items() if "item.minecraft." in k]
+
+    async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+       if isinstance(error, app_commands.CommandOnCooldown):
+           await interaction.response.send_message("ちょっと待って！", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
