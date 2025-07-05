@@ -57,10 +57,10 @@ class Cwarn(commands.Cog):
                 if senddm is True:
                     WARNDESC = f"""
 ## No.{num}
-【理由(データベース保存内容)
+【理由(データベース保存内容)】
 {reason}
 
-【詳細理由(データベースに保存されません)
+【詳細理由(データベースに保存されません)】
 {reason2}
 
 なお、警告に対する問い合わせは {url} で受け付けていますが、問い合わせたからと言って解除されるとは限りません
@@ -105,7 +105,7 @@ class Cwarn(commands.Cog):
                 if senddm is True:
                     WARNDESC = f"""
 ## No.{number}
-【理由(データベース保存内容)
+【理由(データベース保存内容)】
 {oldreason}
 """
                     warn_dm_rem_embed = discord.Embed(
