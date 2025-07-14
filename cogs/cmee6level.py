@@ -34,9 +34,10 @@ class CMee6level(commands.Cog):
                 jointime = int(datetime.now().timestamp() - lvupuser.joined_at.timestamp())
                 admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
                 jointime1day = lvupuser.joined_at + timedelta(days=1)
+                icon = "<:mee6_icon:1394152910182678610>"
 
                 if level == 1 and levelupnoticeoff not in lvupuser.roles:
-                    await mee6_channel.send(f"{text}/xp reached <@{userid}> mee6-level {level}\n-# メンション通知がうるさいと感じたら<#892255648295841842>で`MEE6レベル無効化`ロールを付けてね")
+                    await mee6_channel.send(f"{text}{icon} /xp reached <@{userid}> mee6-level {level}\n-# メンション通知がうるさいと感じたら<#892255648295841842>で`MEE6レベル無効化`ロールを付けてね")
                     return
                 elif level >= 5:
                     if senndennkenn not in lvupuser.roles and hanabira not in lvupuser.roles:
@@ -46,7 +47,7 @@ class CMee6level(commands.Cog):
                             await admin_channel.send(f"<@{userid}>：宣伝権(仮)ロールを{jointime1day}に付与してください")
 
                 userdisp = f"`{username}`" if levelupnoticeoff in lvupuser.roles else f"<@{userid}>"
-                await mee6_channel.send(f"{text}/xp reached {userdisp} mee6-level {level}")
+                await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mee6-level {level}")
                 userdb = session.query(User).filter_by(userid=userid).first()
                 userdb.mee6level = level
                 session.commit()
@@ -58,6 +59,7 @@ class CMee6level(commands.Cog):
                 level = int(message.content.split(",")[3])  # レベル
                 mcmdlv_5 = message.guild.get_role(config.mee6.mcmdlv_5)
                 lvupuser = await message.guild.fetch_member(userid)
+                icon = "<:com2_i:834433852474392576>"
 
                 if level >= 5:
                     if mcmdlv_5 not in lvupuser.roles:
@@ -81,7 +83,7 @@ class CMee6level(commands.Cog):
                 mee6_channel = await self.bot.fetch_channel(config.mee6.levelup)  # 新たに作るmee6通知チャンネル
                 levelupnoticeoff = message.guild.get_role(config.mee6.levelupnoticeoff)
                 userdisp = f"`{username}`" if levelupnoticeoff in lvupuser.roles else f"<@{userid}>"
-                await mee6_channel.send(f"{text}/xp reached {userdisp} mcmd-level {level}")
+                await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mcmd-level {level}")
 
 
 async def setup(bot: commands.Bot):
