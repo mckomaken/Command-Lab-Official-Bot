@@ -53,6 +53,7 @@ class Roles(BaseModel):
     smartphone: int
     gamemachine: int
     serverbooster: int
+    regularmember: int
 
 
 class Config(BaseModel):
