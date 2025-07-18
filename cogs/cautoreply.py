@@ -3,7 +3,6 @@ import discord
 from config.config import config
 import random
 from datetime import datetime
-import re
 
 ORUVANORUVAN = """
 ஒருவன் ஒருவன் முதலாளி
@@ -27,6 +26,7 @@ GABU = """
 　 ＿/し'　／／. Ｖ｀Д´）/
 　（＿フ彡　　　　　 　　/　←>>1
 """
+
 
 class CAutoreply(commands.Cog):
     def __init__(self, bot: commands.Bot):

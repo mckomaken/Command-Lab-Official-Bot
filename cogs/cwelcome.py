@@ -15,7 +15,7 @@ class CWelcome(commands.Cog):
         if config.roles.regularmember in added_roles_id:
 
             channel = await self.bot.fetch_channel(config.freechat)  # 総合雑談チャンネルを取得
-            await channel.send(f"{after.mention}さんが入所しました。コマ研へようこそ！\n<#{config.role_set_ch}>で自分にあったロールを設定してください。", silent=True)
+            await channel.send(f"{after.mention}さんが入所しました。コマ研へようこそ！\n<#{config.role_set_ch}>で自分にあったロールを設定しましょう(^O^)/", silent=True)
 
 
 async def setup(bot: commands.Bot):
