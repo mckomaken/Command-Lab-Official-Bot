@@ -42,7 +42,7 @@ class Cmdbotlevelcom(commands.Cog):
                         level_embed.add_field(name="通常ガチャ総損失経験値量", value=f"```go\n{gachaminus} exp\n```", inline=True)
                         level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
                         level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
-                level_embed.add_field(name="有効チャット数", value=f"```go\n{userdb.chatcount} Level\n```", inline=True)
+                level_embed.add_field(name="有効チャット数", value=f"```go\n{userdb.chatcount} チャット\n```", inline=True)
                 level_embed.add_field(name="MEE6レベル", value=f"```go\n{userdb.mee6level} Level\n```", inline=True)
                 await interaction.response.send_message(embed=level_embed, silent=True)
                 userdb.allexp = (userdb.level * 10000) + userdb.exp
@@ -196,7 +196,7 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed.add_field(name="通常ガチャ総損失経験値量", value=f"```go\n{gachaminus} exp\n```", inline=True)
                 level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
                 level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
-                level_embed.add_field(name="有効チャット数", value=f"```go\n{setuserdb.chatcount} Level\n```", inline=True)
+                level_embed.add_field(name="有効チャット数", value=f"```go\n{setuserdb.chatcount} チャット\n```", inline=True)
                 level_embed.add_field(name="MEE6レベル", value=f"```go\n{setuserdb.mee6level} Level\n```", inline=True)
                 await interaction.response.send_message(embed=level_embed)
 
