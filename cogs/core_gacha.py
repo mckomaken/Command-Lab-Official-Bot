@@ -193,6 +193,10 @@ class COregacha(commands.Cog):
             gachadb.dailygacha += 1
             session2.commit()
             await coregacha9(interaction)
+        elif now.day == 22 and now.month == 7:
+            gachadb.dailygacha += 1
+            session2.commit()
+            await coregacha9(interaction)
         else:
             gachadb.dailygacha += 1
             session2.commit()
@@ -222,7 +226,10 @@ class COregacha(commands.Cog):
             await interaction.response.send_message(f"本日既に{gachadb.dailygacha}回ガチャを回しているため、10連は回せません\n本日の収支は{gachadb.ogint1}XPでした", ephemeral=True)
         else:
             now = datetime.now()
-            if now.day != 9:
+            if now.day == 22 and now.month == 7:
+                await interaction.response.send_message("本日は周年期間中の為10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
+                return
+            elif now.day != 9:
                 gachadb.dailygacha += 10
                 session2.commit()
                 await coregacha10ren(interaction)

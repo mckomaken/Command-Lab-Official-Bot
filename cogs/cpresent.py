@@ -66,7 +66,7 @@ class CPresent(commands.Cog):
         amagif1000="アマギフ1000円分をプレゼントする人数(初期値0)",
         amagif500="アマギフ500円分をプレゼントする人数(初期値0)",
         nitro="Nitro1ヶ月分をプレゼントする人数(初期値0)",
-        abata_prof="アバターデコレーションorプロフィールエフェクトをプレゼントする人数(初期値0)",
+        abata_prof="DiscordShopで790円のものをプレゼントする人数(初期値0)",
         pripe="コンビニで買えるプリペイドカード系をプレゼントする人数(初期値0)",
         mcmd10000xp="mcmd-level 10000XPをプレゼントする人数(初期値0)",
         mcmd5000xp="mcmd-level 5000XPをプレゼントする人数(初期値0)",
@@ -98,7 +98,7 @@ class CPresent(commands.Cog):
         if nitro > 0:
             str_nitro = f"> `{nitro}名` : Discord Nitro 1ヶ月分\n"
         if abata_prof > 0:
-            str_abata_prof = f"> `{abata_prof}名` : アバターデコレーションorプロフィールエフェクト(790円のもののみ)\n"
+            str_abata_prof = f"> `{abata_prof}名` : DiscordShop内790円商品\n"
         if pripe > 0:
             str_pripe = f"> `{pripe}名` : コンビニで買えるプリペイドカード系\n"
         if mcmd10000xp > 0:
@@ -112,10 +112,10 @@ class CPresent(commands.Cog):
 
         PRESENT_DESCRIPTION = f"""
 【応募条件】
-1: このサーバーに参加していること
+1: このサーバーに抽選時に参加していること
 2: 以下のいずれかを満たしていること
-> 50チャット以上
-> コマ研レベル(mcmd-level) 3Lv以上
+> ・コマ研レベル(mcmd-level)実装後 50チャット以上
+> ・mcmd-level 3Lv以上
 3: 下のボタンを押すこと
 -# 4: 春菊のチャンネルとうろk((((殴殴
 -# 冗談です(笑)してくれたらうれしいけどw
