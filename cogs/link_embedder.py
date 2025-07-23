@@ -51,7 +51,7 @@ class CTemplate(commands.Cog):
                 return
 
             # 宣伝チャンネルを除外
-            if channel_id in [config.advertisement_channnel_id] and not message.channel.category.id == config.admin_category_id:
+            if channel_id in [config.advertisement_channnel_id]:
                 return
 
             try:
