@@ -86,6 +86,7 @@ class Config(BaseModel):
     voicech: int
     voice256ch: int
     toiawasech: int
+    invite_ch: int
 
 # -----------------------------------------------------------
 

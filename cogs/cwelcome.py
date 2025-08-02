@@ -14,7 +14,7 @@ class CWelcome(commands.Cog):
         added_roles_id = [role.id for role in set(after.roles) - set(before.roles)]  # 増えたロールのid一覧
         if config.roles.regularmember in added_roles_id:
 
-            channel = await self.bot.fetch_channel(config.freechat)  # 総合雑談チャンネルを取得
+            channel = await self.bot.fetch_channel(config.invite_ch)  # 入所者チャンネルを取得
             welcome_embed = discord.Embed(
                 description=f"コマ研へようこそ！\n<#{config.role_set_ch}>で自分にあったロールを設定しましょう(^O^)/",
                 color=discord.Color.green()
