@@ -87,6 +87,7 @@ class Config(BaseModel):
     voice256ch: int
     toiawasech: int
     invite_ch: int
+    admin_meeting_ch: int
 
 # -----------------------------------------------------------
 
