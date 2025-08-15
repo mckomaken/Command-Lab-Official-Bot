@@ -193,7 +193,7 @@ class COregacha(commands.Cog):
             gachadb.dailygacha += 1
             session2.commit()
             await coregacha9(interaction)
-        elif now.day == 22 and now.month == 7:
+        elif now.day == 21 and now.month == 7:
             gachadb.dailygacha += 1
             session2.commit()
             await coregacha9(interaction)
