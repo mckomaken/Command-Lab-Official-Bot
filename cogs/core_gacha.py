@@ -153,11 +153,36 @@ async def coregacha10ren(interaction: Interaction):
     session2.commit()
     desc = "\n".join([f"`{count:02}` {emoji} No.{num:06} {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
 
-    embed = discord.Embed(
-        title="ガチャ結果【10連】",
-        description=desc,
-        color=0xff9b37
-    )
+    if sumxp >= 2000:
+        embed = discord.Embed(
+            title="ガチャ結果【10連】大当たり",
+            description=desc,
+            color=0x80ff80
+        )
+    elif sumxp >= 1000:
+        embed = discord.Embed(
+            title="ガチャ結果【10連】中当たり",
+            description=desc,
+            color=0xffff00
+        )
+    elif sumxp >= 800:
+        embed = discord.Embed(
+            title="ガチャ結果【10連】当たり",
+            description=desc,
+            color=0xff9b37
+        )
+    elif sumxp >= 0:
+        embed = discord.Embed(
+            title="ガチャ結果【10連】はずれ",
+            description=desc,
+            color=0xf36d4b
+        )
+    else:
+        embed = discord.Embed(
+            title="ガチャ結果【10連】大はずれ",
+            description=desc,
+            color=0x400000
+        )
     embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
     embed.set_footer(text=f"本日残り: 0回 / 今日の収支: {sumxp}XP")
 
