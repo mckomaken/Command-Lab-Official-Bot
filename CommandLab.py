@@ -134,7 +134,7 @@ class CommandLabBot(commands.Bot):
                     if message.author.bot:
                         return
                     await message.channel.send(
-                        f"{message.author.mention}呼んだ？\nわからないことがあったら【</help:1218483030247604265>】を実行してね", silent=True
+                        f"{message.author.mention}呼んだ？わからないことがあったら以下のコマンドを実行してみてね(^^♪\n> 全コマンド雑説明: </chelp-all:1383117112628871198>\n> コマンド別説明　: </chelp:1218483030247604265>", silent=True
                     )
 
             @client.tree.error
