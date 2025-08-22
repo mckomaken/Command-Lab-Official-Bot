@@ -25,15 +25,15 @@ class Select(discord.ui.Select):
         elif self.values[0] == "discord-violation":
             reason = "Discordの各種規約違反"
         elif self.values[0] == "law-violation":
-            reason = "Discord以外の各種法令・規約違反"
+            reason = "その他法令・規約違反"
         elif self.values[0] == "off-topic":
-            reason = "チャンネルの趣旨に合わない内容"
+            reason = "チャンネルの趣旨に合わない"
         elif self.values[0] == "harass":
             reason = "誹謗中傷・差別・脅迫"
         elif self.values[0] == "negative-language":
-            reason = "強い言葉づかい・過度な否定的表現"
+            reason = "強い言葉づかい・否定的表現"
         elif self.values[0] == "nsfw":
-            reason = "暴力的・卑猥・グロテスクな内容"
+            reason = "暴力的・エロ・グロ"
         elif self.values[0] == "spam":
             reason = "荒らし・スパム"
         elif self.values[0] == "politics-religion":
@@ -43,7 +43,7 @@ class Select(discord.ui.Select):
         elif self.values[0] == "mention":
             reason = "無意味なメンション"
         elif self.values[0] == "inappropriate-profile":
-            reason = "不適切な名前・プロフ画像・サーバータグ"
+            reason = "不適切な名前・画像・鯖タグ"
         elif self.values[0] == "advertising-rule-violation":
             reason = "宣伝ルール違反"
         elif self.values[0] == "question-rule-violation":
@@ -110,16 +110,16 @@ class Report(commands.Cog):
             options=[
                 discord.SelectOption(label="内容が気に入らない(その他)", value="dont-like"),
                 discord.SelectOption(label="Discordの各種規約違反", value="discord-violation"),
-                discord.SelectOption(label="Discord以外の各種法令・規約違反", value="law-violation"),
-                discord.SelectOption(label="チャンネルの趣旨に合わない内容", value="off-topic"),
+                discord.SelectOption(label="その他法令・規約違反", value="law-violation"),
+                discord.SelectOption(label="チャンネルの趣旨に合わない", value="off-topic"),
                 discord.SelectOption(label="誹謗中傷・差別・脅迫", value="harass"),
-                discord.SelectOption(label="強い言葉づかい・過度な否定的表現", value="negative-language"),
-                discord.SelectOption(label="暴力的・卑猥・グロテスクな内容", value="nsfw"),
+                discord.SelectOption(label="強い言葉づかい・否定的表現", value="negative-language"),
+                discord.SelectOption(label="暴力的・エロ・グロ", value="nsfw"),
                 discord.SelectOption(label="荒らし・スパム", value="spam"),
                 discord.SelectOption(label="政治・宗教的活動", value="politics-religion"),
                 discord.SelectOption(label="個人情報の過度な詮索・漏洩", value="exposing-information"),
                 discord.SelectOption(label="無意味なメンション", value="mention"),
-                discord.SelectOption(label="不適切な名前・プロフ画像・サーバータグ", value="inappropriate-profile"),
+                discord.SelectOption(label="不適切な名前・画像・鯖タグ", value="inappropriate-profile"),
                 discord.SelectOption(label="宣伝ルール違反", value="advertising-rule-violation"),
                 discord.SelectOption(label="質問ルール違反", value="question-rule-violation"),
                 discord.SelectOption(label="他参加者へのなりすまし", value="impersonation")

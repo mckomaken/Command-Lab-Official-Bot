@@ -155,31 +155,31 @@ async def coregacha10ren(interaction: Interaction):
 
     if sumxp >= 2000:
         embed = discord.Embed(
-            title="ガチャ結果【10連】大当たり",
+            title="10連ガチャ結果 : 大当たり",
             description=desc,
             color=0x80ff80
         )
     elif sumxp >= 1000:
         embed = discord.Embed(
-            title="ガチャ結果【10連】中当たり",
+            title="10連ガチャ結果 : 中当たり",
             description=desc,
             color=0xffff00
         )
     elif sumxp >= 800:
         embed = discord.Embed(
-            title="ガチャ結果【10連】当たり",
+            title="10連ガチャ結果 : 当たり",
             description=desc,
             color=0xff9b37
         )
     elif sumxp >= 0:
         embed = discord.Embed(
-            title="ガチャ結果【10連】はずれ",
+            title="10連ガチャ結果 : はずれ",
             description=desc,
             color=0xf36d4b
         )
     else:
         embed = discord.Embed(
-            title="ガチャ結果【10連】大はずれ",
+            title="10連ガチャ結果 : 大はずれ",
             description=desc,
             color=0x400000
         )
