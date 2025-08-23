@@ -1,8 +1,10 @@
-from discord.ext import commands
-import discord
-from config.config import config
 import random
 from datetime import datetime
+
+import discord
+from discord.ext import commands
+
+from config.config import config
 
 ORUVANORUVAN = """
 ஒருவன் ஒருவன் முதலாளி

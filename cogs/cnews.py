@@ -1,17 +1,16 @@
+import json
+import time
 from datetime import datetime
 from typing import Optional
 
 import aiohttp
 import discord
+import requests
 from discord import app_commands
 from discord.ext import commands
 from markdownify import markdownify as md
 
 from schemas.version_manifest import VersionManifest
-
-import requests
-import json
-import time
 
 JAVA_VERSION_MANIFESTS = (
     "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"

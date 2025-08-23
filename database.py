@@ -1,5 +1,5 @@
 from discord.ext import commands
-from sqlalchemy import Column, Integer, String, Boolean, create_engine
+from sqlalchemy import Boolean, Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 

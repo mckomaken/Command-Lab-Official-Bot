@@ -1,10 +1,11 @@
-import discord
-from discord.ext import commands
-from discord import app_commands
-import requests
 import datetime
-import sqlite3
 import os
+import sqlite3
+
+import discord
+import requests
+from discord import app_commands
+from discord.ext import commands
 
 root = os.path.dirname(os.path.dirname(__file__))
 db_name = os.path.join(root, "server.db")
@@ -83,12 +84,12 @@ def server_embed(ip:str, is_java:bool):
                 if self.ip in servers.keys():
                     await interaction.response.send_message(f"`{self.ip}`は既にお気に入り登録されています", ephemeral=True)
                     return
-                
+
                 # お気に入り件数が10件に達していた場合
                 if len(servers) >= 10:
                     await interaction.response.send_message(f"お気に入り件数が上限の10に達しています", ephemeral=True)
                     return
-                
+
                 servers[self.ip] = self.edition
 
                 cur.execute(f'update server set ips = "{servers}" where userid = {interaction.user.id}')
@@ -98,7 +99,7 @@ def server_embed(ip:str, is_java:bool):
                 conn.close()
 
                 await interaction.response.send_message(f"`{self.ip}`をお気に入りに追加しました", ephemeral=True)
-    
+
     like = LikeButton(
         emoji="⭐",
         label="お気に入り登録",
@@ -107,7 +108,7 @@ def server_embed(ip:str, is_java:bool):
         edition = "java" if is_java else "bedrock"
     )
     view.add_item(like)
-    
+
     return embed, view
 
 
@@ -150,7 +151,7 @@ class CServer(commands.Cog):
     async def raise_error(self, ctx, error):
         print(error)
 
-    
+
     ######## お気に入りリスト表示(/server list)
     @cserver.command(name="list", description="お気に入りを表示します")
     async def clist(self, interaction:discord.Interaction):

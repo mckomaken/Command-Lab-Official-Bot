@@ -1,11 +1,11 @@
+import json
+import random
 from typing import Optional
+
 import discord
 from discord import Member, app_commands
 from discord.ext import commands
 from discord.utils import escape_markdown, escape_mentions
-
-import json
-import random
 
 
 def escape(text: str) -> str:

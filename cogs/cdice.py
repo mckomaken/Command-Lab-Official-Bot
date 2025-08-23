@@ -103,7 +103,7 @@ class CDice(app_commands.Group):
             embed.description = f"結果: [{rolls_concatenated}] -> {total}"
 
         await interaction.response.send_message(embed=embed, silent=True)
-        
+
     async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
        if isinstance(error, app_commands.CommandOnCooldown):
            await interaction.response.send_message("ちょっと待って！", ephemeral=True)

@@ -1,10 +1,13 @@
-from discord.ext import commands
-# from datetime import datetime, timedelta
-from discord import app_commands, Interaction
-import discord
+import random
+
 # from config.config import config
 from typing import Optional
-import random
+
+import discord
+
+# from datetime import datetime, timedelta
+from discord import Interaction, app_commands
+from discord.ext import commands
 
 
 async def omikuzi1(interaction: Interaction):

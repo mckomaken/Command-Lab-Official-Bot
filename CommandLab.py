@@ -1,9 +1,9 @@
 import asyncio
 import logging
 import logging.config
+import os
 from datetime import datetime
 from os import listdir, path
-import os
 
 import aiofiles
 import discord
