@@ -2,8 +2,14 @@ import io
 import os
 
 import discord
-from discord import (ButtonStyle, Embed, Interaction, SelectOption, TextStyle,
-                     app_commands)
+from discord import (
+    ButtonStyle,
+    Embed,
+    Interaction,
+    SelectOption,
+    TextStyle,
+    app_commands,
+)
 from discord.ext import commands
 from discord.ui import Button, Modal, Select, TextInput, View, button, select
 from PIL import Image, ImageDraw, ImageFont
@@ -115,7 +121,9 @@ def create_preview(datas: list[SectionDataText]):
     img = Image.new("RGBA", (512, 100), color=0x000000)
     d = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype(os.path.join(os.getenv("BASE_DIR", "."), "assets/unifont-15.1.05.otf"), 14)
+    font = ImageFont.truetype(
+        os.path.join(os.getenv("BASE_DIR", "."), "assets/unifont-15.1.05.otf"), 14
+    )
 
     cursor = 10
     cursor_y = 10
@@ -313,7 +321,8 @@ class TellrawSection(View):
     @button(label="プレビュー")
     async def preview(self, interaction: Interaction, item: Button):
         embed = Embed(
-            title="プレビュー", description="※斜体と隠し文字は非対応です。\n※あくまでイメージです。実際は異なる場合があります。"
+            title="プレビュー",
+            description="※斜体と隠し文字は非対応です。\n※あくまでイメージです。実際は異なる場合があります。",
         )
         embed.set_image(url="attachment://preview.webp")
 

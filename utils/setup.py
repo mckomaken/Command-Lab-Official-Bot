@@ -59,7 +59,10 @@ async def setup():
 
             async with client.get(url=url) as resp2:
                 game_package = GamePackage.model_validate(await resp2.json())
-                path = os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "client_" + game_package.id + ".jar")
+                path = os.path.join(
+                    os.getenv("TMP_DIRECTORY", "./.tmp"),
+                    "client_" + game_package.id + ".jar",
+                )
 
                 logger.info("言語ファイルをダウンロードしています...")
                 async with client.get(url=game_package.assetIndex.url) as resp4:
@@ -70,7 +73,12 @@ async def setup():
                     async with client.get(
                         f"https://resources.download.minecraft.net/{lang_file_hash[0:2]}/{lang_file_hash}"
                     ) as resp5:
-                        async with aiofiles.open(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"), mode="wb") as fp2:
+                        async with aiofiles.open(
+                            os.path.join(
+                                os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"
+                            ),
+                            mode="wb",
+                        ) as fp2:
                             lang_data = await resp5.text()
                             await fp2.write(lang_data.encode())
                             await fp2.close()
@@ -82,10 +90,14 @@ async def setup():
                     ).hexdigest()
 
                     if hash == game_package.downloads.client.sha1:
-                        logger.info("client.jarは既にダウンロードされているため、ダウンロードをスキップします。")
+                        logger.info(
+                            "client.jarは既にダウンロードされているため、ダウンロードをスキップします。"
+                        )
                         return
                     else:
-                        logger.info("client.jarのハッシュがサーバー上と同期されていません! 再ダウンロードを行います。")
+                        logger.info(
+                            "client.jarのハッシュがサーバー上と同期されていません! 再ダウンロードを行います。"
+                        )
 
                 async with client.get(url=game_package.downloads.client.url) as resp3:
                     async with aiofiles.open(path, mode="wb") as fp:

@@ -20,7 +20,14 @@ class CTemplate(commands.Cog):
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
         # メッセージリンクが含まれている場合
-        if any(domain in message.content for domain in ["https://discord.com/channels/", "https://canary.discord.com/channels/", "https://discordapp.com/channels/"]):
+        if any(
+            domain in message.content
+            for domain in [
+                "https://discord.com/channels/",
+                "https://canary.discord.com/channels/",
+                "https://discordapp.com/channels/",
+            ]
+        ):
             try:
                 if "https://discord.com/channels/" in message.content:
                     link = (
@@ -56,7 +63,9 @@ class CTemplate(commands.Cog):
 
             try:
                 # リンク先のメッセージオブジェクトを取得
-                target_channel = self.bot.get_guild(guild_id).get_channel_or_thread(channel_id)
+                target_channel = self.bot.get_guild(guild_id).get_channel_or_thread(
+                    channel_id
+                )
                 target_message = await target_channel.fetch_message(message_id)
 
                 # リンク先のメッセージオブジェクトから、メッセージの内容、送信者の名前とアイコンなどの情報を取得
@@ -76,14 +85,16 @@ class CTemplate(commands.Cog):
 
                 # Embedオブジェクトを作成
                 embed = discord.Embed(
-                    description=content, color=0xff8000, timestamp=timestamp
+                    description=content, color=0xFF8000, timestamp=timestamp
                 )
                 embed.set_author(name=name, icon_url=icon_url)
                 embed.set_footer(text=f"From #{target_message.channel}")
 
                 # 画像添付ファイルがある場合、最初の画像をEmbedに追加
                 if target_message.attachments:
-                    attachment = target_message.attachments[0]  # 最初の添付ファイルを取得
+                    attachment = target_message.attachments[
+                        0
+                    ]  # 最初の添付ファイルを取得
                     if any(
                         attachment.filename.lower().endswith(image_ext)
                         for image_ext in ["png", "jpg", "jpeg", "gif", "webp"]
@@ -100,8 +111,7 @@ class CTemplate(commands.Cog):
                     )
                 )
                 delete_button = DeleteButton(
-                    label="削除",
-                    style=discord.ButtonStyle.gray
+                    label="削除", style=discord.ButtonStyle.gray
                 )
                 view.add_item(delete_button)
 

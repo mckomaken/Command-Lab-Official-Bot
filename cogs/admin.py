@@ -6,7 +6,15 @@ from discord.ext import commands
 
 from config.config import config
 
-TITLES = ["【お知らせ】", "再起動を行います", "使用停止期間", "荒らし対応中", "既知のバグについて", "アプデ対応中", "HP公開中!!!!!"]
+TITLES = [
+    "【お知らせ】",
+    "再起動を行います",
+    "使用停止期間",
+    "荒らし対応中",
+    "既知のバグについて",
+    "アプデ対応中",
+    "HP公開中!!!!!",
+]
 
 DESCRIPTIONS = [
     "すぐ復活するはず(笑)",
@@ -37,7 +45,9 @@ class CNoticeConfirm(discord.ui.View):
 
     @discord.ui.button(label="OK")
     async def ok(self, interaction: discord.Interaction, item: discord.ui.Item):
-        await interaction.response.edit_message(content="送信しました", view=None, embed=None)
+        await interaction.response.edit_message(
+            content="送信しました", view=None, embed=None
+        )
         await interaction.channel.send(embed=self.embed)
 
 
@@ -47,10 +57,16 @@ class LOttery(discord.ui.View):  # 抽選コマンド
         self.bot = bot
 
     @discord.ui.button(label="応募")
-    async def pressedLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
+    async def pressedLotteryButton(
+        self, interaction: discord.Interaction, button: discord.ui.button
+    ):
         send_channel = await self.bot.fetch_channel(config.lottery_channel)
-        await send_channel.send(f"応募者 : {interaction.user.display_name}\n```{interaction.user.name}```")
-        await interaction.response.send_message("応募されました。抽選開始までお待ちください。", ephemeral=True)
+        await send_channel.send(
+            f"応募者 : {interaction.user.display_name}\n```{interaction.user.name}```"
+        )
+        await interaction.response.send_message(
+            "応募されました。抽選開始までお待ちください。", ephemeral=True
+        )
 
 
 class CAdminCog(commands.Cog):
@@ -72,11 +88,15 @@ class CAdminCog(commands.Cog):
     ):
         if choice.value == "cl1":
             await interaction.response.send_message(
-                embed=discord.Embed(title="高校合格おめでとうございます!!", color=0x2B9788)
+                embed=discord.Embed(
+                    title="高校合格おめでとうございます!!", color=0x2B9788
+                )
             )
         elif choice.value == "cl2":
             await interaction.response.send_message(
-                embed=discord.Embed(title="大学合格おめでとうございます!!", color=0x2B9788)
+                embed=discord.Embed(
+                    title="大学合格おめでとうございます!!", color=0x2B9788
+                )
             )
         elif choice.value == "cl3":
             await interaction.response.send_message(
@@ -85,12 +105,15 @@ class CAdminCog(commands.Cog):
                     description=LOTTERY_DESCRIPTION,
                     color=0x2B9788,
                 ),
-                view=LOttery(self.bot)
+                view=LOttery(self.bot),
             )
 
     @app_commands.command(name="cn", description="【運営】各種お知らせ用")
     @app_commands.describe(
-        title="タイトル", description="説明", sub_title="サブタイトル", sub_description="サブ説明"
+        title="タイトル",
+        description="説明",
+        sub_title="サブタイトル",
+        sub_description="サブ説明",
     )
     @app_commands.checks.has_role(config.administrater_role_id)
     async def cn(
@@ -116,7 +139,8 @@ class CAdminCog(commands.Cog):
 
         if sub_title != "" and sub_description != "":
             notice_embed.add_field(
-                name=sub_title, value=sub_description,
+                name=sub_title,
+                value=sub_description,
             )
 
         await interaction.response.send_message(

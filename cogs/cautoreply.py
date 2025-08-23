@@ -1,8 +1,10 @@
-from discord.ext import commands
-import discord
-from config.config import config
 import random
 from datetime import datetime
+
+import discord
+from discord.ext import commands
+
+from config.config import config
 
 ORUVANORUVAN = """
 ஒருவன் ஒருவன் முதலாளி
@@ -69,7 +71,9 @@ class CAutoreply(commands.Cog):
             #         await message.channel.send("今年もよろしくお願いいたします！", silent=True)
 
             elif message.content.startswith("!d bump"):
-                await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)", silent=True)
+                await message.channel.send(
+                    "そのコマンドは<t:1648767600:F>にサ終しました(笑)", silent=True
+                )
 
             elif message.content.startswith("/bump"):
                 await message.channel.send(
@@ -77,7 +81,8 @@ class CAutoreply(commands.Cog):
                         title="BUMPを実行出来てないよ!!",
                         color=0x00BFFF,
                         timestamp=datetime.now(),
-                    ), silent=True
+                    ),
+                    silent=True,
                 )
 
             elif message.content.startswith("oruvanoruvan"):
