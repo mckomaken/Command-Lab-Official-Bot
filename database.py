@@ -3,13 +3,15 @@ from sqlalchemy import Boolean, Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = 'sqlite:///cmdlab_users.db'  # データベースの種類と名前をここで指定できます
+DATABASE_URL = (
+    "sqlite:///cmdlab_users.db"  # データベースの種類と名前をここで指定できます
+)
 engine = create_engine(DATABASE_URL)  # データベースエンジンを作成
-Base = declarative_base()            # データベースの親クラスを作成
+Base = declarative_base()  # データベースの親クラスを作成
 
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
     no = Column(Integer, primary_key=True)
     userid = Column(Integer)
     username = Column(String)
@@ -49,7 +51,9 @@ class User(Base):
     int8 = Column(Integer, default=0)
     int9 = Column(Integer, default=0)
     int10 = Column(Integer, default=0)
-    bool1 = Column(Boolean, default=False)  # bool1 : cog.cpresent.py使用中(プレゼント企画参加済みかどうか)
+    bool1 = Column(
+        Boolean, default=False
+    )  # bool1 : cog.cpresent.py使用中(プレゼント企画参加済みかどうか)
     bool2 = Column(Boolean, default=False)
     bool3 = Column(Boolean, default=False)
     bool4 = Column(Boolean, default=False)
@@ -66,13 +70,13 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-DATABASE_URL2 = 'sqlite:///ore_gacha.db'  # データベースの種類と名前をここで指定できます
+DATABASE_URL2 = "sqlite:///ore_gacha.db"  # データベースの種類と名前をここで指定できます
 engine2 = create_engine(DATABASE_URL2)  # データベースエンジンを作成
-Base2 = declarative_base()            # データベースの親クラスを作成
+Base2 = declarative_base()  # データベースの親クラスを作成
 
 
 class Oregacha(Base2):
-    __tablename__ = 'usersgacha'
+    __tablename__ = "usersgacha"
     no = Column(Integer, primary_key=True)
     userid = Column(Integer)
     username = Column(String)
@@ -110,12 +114,16 @@ class Oregacha(Base2):
 
     dailygacha = Column(Integer, default=0)
 
-    ogstr1 = Column(String, default="")  # ogstr1 : cog.core_gacha.py使用中(１日のガチャによる結果表示)
+    ogstr1 = Column(
+        String, default=""
+    )  # ogstr1 : cog.core_gacha.py使用中(１日のガチャによる結果表示)
     ogstr2 = Column(String, default="")
     ogstr3 = Column(String, default="")
     ogstr4 = Column(String, default="")
     ogstr5 = Column(String, default="")
-    ogint1 = Column(Integer, default=0)  # cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)
+    ogint1 = Column(
+        Integer, default=0
+    )  # cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)
     ogint2 = Column(Integer, default=0)
     ogint3 = Column(Integer, default=0)
     ogint4 = Column(Integer, default=0)

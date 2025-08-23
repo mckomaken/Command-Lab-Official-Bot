@@ -10,16 +10,25 @@ class CRadix(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="cradix", description="入力した数値を2~16進数に変換します")
-    @app_commands.describe(num="進数変換したい数字を入れてください", mode="モードを選択してください(任意)")
+    @app_commands.command(
+        name="cradix", description="入力した数値を2~16進数に変換します"
+    )
+    @app_commands.describe(
+        num="進数変換したい数字を入れてください", mode="モードを選択してください(任意)"
+    )
     @app_commands.choices(
         mode=[
             app_commands.Choice(name="2・4・8・10・16のみ表示します", value="cradix1"),
             app_commands.Choice(name="2~16進数を表示させます", value="cradix2"),
-            app_commands.Choice(name="2~36進数を表示させます(17進数以降は自分のみの表示)", value="cradix3"),
+            app_commands.Choice(
+                name="2~36進数を表示させます(17進数以降は自分のみの表示)",
+                value="cradix3",
+            ),
         ]
     )
-    async def cradix(self, interaction: discord.Interaction, num: int, mode: Optional[str] = None):
+    async def cradix(
+        self, interaction: discord.Interaction, num: int, mode: Optional[str] = None
+    ):
         absnum = abs(num)
         DESCRIPTION1 = f"""
 ```
@@ -80,21 +89,15 @@ Send by {interaction.user.mention}
 Send by {interaction.user.mention}
 """
         radix_embed1 = discord.Embed(
-            title="進数変換",
-            description=DESCRIPTION1,
-            color=0x58619A
+            title="進数変換", description=DESCRIPTION1, color=0x58619A
         )
 
         radix_embed2 = discord.Embed(
-            title="進数変換",
-            description=DESCRIPTION2,
-            color=0x58619A
+            title="進数変換", description=DESCRIPTION2, color=0x58619A
         )
 
         radix_embed3 = discord.Embed(
-            title="進数変換",
-            description=DESCRIPTION3,
-            color=0x58619A
+            title="進数変換", description=DESCRIPTION3, color=0x58619A
         )
 
         if mode == "cradix2":

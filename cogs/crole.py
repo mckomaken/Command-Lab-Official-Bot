@@ -10,21 +10,23 @@ async def add_or_remove_role(roleId: int, interaction: Interaction):
     role = interaction.guild.get_role(roleId)
     admin_channel = await interaction.guild.fetch_channel(config.cmdbot_log)
     roleremove_embed = discord.Embed(
-        description=f"{role.mention}を解除しました",
-        color=0x7cfc00
+        description=f"{role.mention}を解除しました", color=0x7CFC00
     )
     rolegive_embed = discord.Embed(
-        description=f"{role.mention}を付与しました",
-        color=0xff6347
+        description=f"{role.mention}を付与しました", color=0xFF6347
     )
     if role in interaction.user.roles:
         await interaction.user.remove_roles(role)
         await interaction.response.send_message(embed=roleremove_embed, ephemeral=True)
-        await admin_channel.send(f"- {interaction.user.mention}の{role.mention}を解除しました", silent=True)
+        await admin_channel.send(
+            f"- {interaction.user.mention}の{role.mention}を解除しました", silent=True
+        )
     else:
         await interaction.user.add_roles(role)
         await interaction.response.send_message(embed=rolegive_embed, ephemeral=True)
-        await admin_channel.send(f"+ {interaction.user.mention}の{role.mention}を付与しました", silent=True)
+        await admin_channel.send(
+            f"+ {interaction.user.mention}の{role.mention}を付与しました", silent=True
+        )
 
 
 class CRoleRankButtons(View):  # コマンダーランク
@@ -82,13 +84,21 @@ class CRolekisyuButtons(View):  # 遊んでる機種
         await add_or_remove_role(1103559576953045042, interaction)
 
     @button(
-        label="スマホ", style=ButtonStyle.gray, emoji="📱", row=1, custom_id="smartphone"
+        label="スマホ",
+        style=ButtonStyle.gray,
+        emoji="📱",
+        row=1,
+        custom_id="smartphone",
     )
     async def pressedJebe4(self, interaction: Interaction, button: Button):
         await add_or_remove_role(1103559803827146823, interaction)
 
     @button(
-        label="家庭用ゲーム機", style=ButtonStyle.gray, emoji="🎮", row=1, custom_id="console"
+        label="家庭用ゲーム機",
+        style=ButtonStyle.gray,
+        emoji="🎮",
+        row=1,
+        custom_id="console",
     )
     async def pressedJebe5(self, interaction: Interaction, button: Button):
         await add_or_remove_role(1103559906872795178, interaction)
@@ -99,15 +109,22 @@ class CRoleAdButtons(View):  # 宣伝関連 & 質問メンション
         super().__init__(timeout=None)
 
     @button(
-        label="宣伝し隊", style=ButtonStyle.green, emoji="📝", row=0, custom_id="ads-sender"
+        label="宣伝し隊",
+        style=ButtonStyle.green,
+        emoji="📝",
+        row=0,
+        custom_id="ads-sender",
     )
     async def pressedSen1(self, interaction: Interaction, button: Button):
         senndennkenn = interaction.guild.get_role(config.mee6.senndennkenn)
         sen1_embed = discord.Embed(
             description=f"{senndennkenn.mention}を持っていないため付与出来ませんでした",
-            color=0xff0000
+            color=0xFF0000,
         )
-        sen1_embed.add_field(name="`＠宣伝権(仮)ロール付与条件`", value="サーバー加入後1日以上経過 & MEE6レベル5以上")
+        sen1_embed.add_field(
+            name="`＠宣伝権(仮)ロール付与条件`",
+            value="サーバー加入後1日以上経過 & MEE6レベル5以上",
+        )
         if senndennkenn in interaction.user.roles:
             await add_or_remove_role(808617738180231178, interaction)
         else:
@@ -153,7 +170,10 @@ class CRoleOtherButtons(View):  # その他
         await add_or_remove_role(763342542719811605, interaction)
 
     @button(
-        label="MEE6レベル無効化", style=ButtonStyle.gray, emoji="🔏", custom_id="disable-mee6"
+        label="MEE6レベル無効化",
+        style=ButtonStyle.gray,
+        emoji="🔏",
+        custom_id="disable-mee6",
     )
     async def pressedHoka2(self, interaction: Interaction, button: Button):
         await add_or_remove_role(891286619783581706, interaction)
@@ -171,7 +191,10 @@ class CRole(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="crole", description="【運営】ロール付与するボタンを表示させるコマンドです)")
+    @app_commands.command(
+        name="crole",
+        description="【運営】ロール付与するボタンを表示させるコマンドです)",
+    )
     @app_commands.checks.has_role(config.administrater_role_id)
     async def croll(self, interaction: Interaction):
         role_embed = discord.Embed(
@@ -180,10 +203,14 @@ class CRole(commands.Cog):
             color=0x3AFF11,
         )
         com_embed = discord.Embed(
-            title="【必須】コマンダーランク設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【必須】コマンダーランク設定",
+            description="ーーーーーーーーーー",
+            color=0x3AFF11,
         )
         com_embed.add_field(
-            name="--【@駆け出しコマンダー】--", value="🇦:興味を持っている/これから勉強を始める方はこちら!", inline=False
+            name="--【@駆け出しコマンダー】--",
+            value="🇦:興味を持っている/これから勉強を始める方はこちら!",
+            inline=False,
         )
         com_embed.add_field(
             name="--【@初級コマンダー】--",
@@ -219,10 +246,14 @@ class CRole(commands.Cog):
             title="【必須】機種設定", description="ーーーーーーーーーー", color=0x3AFF11
         )
         kisyu_embed.add_field(
-            name="--【@PC】--", value="🖥️:パソコンを使ってプレイしてる人はこちら !", inline=False
+            name="--【@PC】--",
+            value="🖥️:パソコンを使ってプレイしてる人はこちら !",
+            inline=False,
         )
         kisyu_embed.add_field(
-            name="--【@スマホ】--", value="📱:スマートフォンを使ってプレイしてる人はこちら!", inline=False
+            name="--【@スマホ】--",
+            value="📱:スマートフォンを使ってプレイしてる人はこちら!",
+            inline=False,
         )
         kisyu_embed.add_field(
             name="--【@家庭用ゲーム機】--",
@@ -231,13 +262,19 @@ class CRole(commands.Cog):
         )
 
         sen_embed = discord.Embed(
-            title="【任意】宣伝・質問受付設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【任意】宣伝・質問受付設定",
+            description="ーーーーーーーーーー",
+            color=0x3AFF11,
         )
         sen_embed.add_field(
-            name="--【@宣伝し隊】--", value="📝:宣伝したい人はこのロールを付けて宣伝してください!", inline=False
+            name="--【@宣伝し隊】--",
+            value="📝:宣伝したい人はこのロールを付けて宣伝してください!",
+            inline=False,
         )
         sen_embed.add_field(
-            name="--【@DM質問OK】--", value="📮:DMでの質問対応をしてもいいよという方はこちら!", inline=False
+            name="--【@DM質問OK】--",
+            value="📮:DMでの質問対応をしてもいいよという方はこちら!",
+            inline=False,
         )
         sen_embed.add_field(
             name="--【@java 質問受け付け-メンション可】--",
@@ -251,10 +288,14 @@ class CRole(commands.Cog):
         )
 
         hoka_embed = discord.Embed(
-            title="【任意】その他設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【任意】その他設定",
+            description="ーーーーーーーーーー",
+            color=0x3AFF11,
         )
         hoka_embed.add_field(
-            name="--【@通知ON】--", value="🔔:運営からのお知らせ通知が行っても大丈夫な方はこちら!", inline=False
+            name="--【@通知ON】--",
+            value="🔔:運営からのお知らせ通知が行っても大丈夫な方はこちら!",
+            inline=False,
         )
         hoka_embed.add_field(
             name="--【@MEE6レベル通知無効化】--",
@@ -271,7 +312,9 @@ class CRole(commands.Cog):
             value="⤴️:DisboardによるBUMP通知が邪魔だと思った方はこちら!\n(このロールがつくと、<#965098244193542154>が見れなくなります)",
             inline=False,
         )
-        file_komakenimg1 = discord.File("assets/komakenimage1.png", filename="komakenimage1.png")
+        file_komakenimg1 = discord.File(
+            "assets/komakenimage1.png", filename="komakenimage1.png"
+        )
 
         await interaction.response.send_message("実行されました", ephemeral=True)
         await interaction.channel.send(embed=role_embed)

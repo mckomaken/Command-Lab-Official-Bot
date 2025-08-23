@@ -120,9 +120,17 @@ class CTranslate(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="ctranslate", description="各言語に翻訳できます(Can be translated into any language)")
-    @app_commands.describe(text="翻訳したい文章(Text-to-be-translated)", language="翻訳先言語(translation-target-language)")
-    async def ctranslate(self, interaction: discord.Interaction, text: str, language: str = None):
+    @app_commands.command(
+        name="ctranslate",
+        description="各言語に翻訳できます(Can be translated into any language)",
+    )
+    @app_commands.describe(
+        text="翻訳したい文章(Text-to-be-translated)",
+        language="翻訳先言語(translation-target-language)",
+    )
+    async def ctranslate(
+        self, interaction: discord.Interaction, text: str, language: str = None
+    ):
         await interaction.response.defer(thinking=True)
         translator = Translator()
         textlang = await translator.detect(text)
@@ -132,14 +140,18 @@ class CTranslate(commands.Cog):
                 if textlang.lang == "ja":
                     translationsource = "ja"
                     translationtarget = "English/英語"
-                    translated_text = await translator.translate(text, src="ja", dest="en")
+                    translated_text = await translator.translate(
+                        text, src="ja", dest="en"
+                    )
                 else:
                     translationsource = textlang.lang
                     translationtarget = "Japanese/日本語"
                     translated_text = await translator.translate(text, dest="ja")
             else:
                 langcode = str(language.split(" ")[0])
-                langname = f"({str(language.split(" ")[3])}/{str(language.split(" ")[5])})"
+                langname = (
+                    f"({str(language.split(' ')[3])}/{str(language.split(' ')[5])})"
+                )
                 translationsource = textlang.lang
                 translationtarget = langname
                 translated_text = await translator.translate(text, dest=langcode)
@@ -147,24 +159,34 @@ class CTranslate(commands.Cog):
             translated_embed = discord.Embed(
                 title="翻訳結果",
                 description=f"【翻訳元(translation source)/{translationsource}】\n```{text}```\n【翻訳先(translation target)】\n{translationtarget}\n```{translated_text.text}```",
-                color=0x00ff00
+                color=0x00FF00,
             )
             translated_embed.set_footer(text="Translated by Google Translate")
-            translated_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+            translated_embed.set_author(
+                name=interaction.user.display_name,
+                icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png"
+                if interaction.user.avatar is None
+                else interaction.user.avatar.url,
+            )
             await interaction.followup.send(embed=translated_embed)
 
         except Exception as e:
             translated_embed = discord.Embed(
                 title="翻訳エラー",
                 description=f"翻訳に失敗しました\nエラー内容: {e}",
-                color=0xff0000
+                color=0xFF0000,
             )
             await interaction.followup.send(embed=translated_embed)
 
     @ctranslate.autocomplete("language")
     async def translate_language(self, interaction: discord.Interaction, current: str):
-        filtered_languages = [lang for lang in LANGUAGES if current.lower() in lang.lower()]
-        return [app_commands.Choice(name=lang, value=lang) for lang in filtered_languages[:25]]
+        filtered_languages = [
+            lang for lang in LANGUAGES if current.lower() in lang.lower()
+        ]
+        return [
+            app_commands.Choice(name=lang, value=lang)
+            for lang in filtered_languages[:25]
+        ]
 
 
 async def setup(bot: commands.Bot):

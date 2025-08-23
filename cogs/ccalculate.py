@@ -54,7 +54,12 @@ tashihiki = {
 
 
 keywords = (
-    list(const.keys()) + list(func1.keys()) + list(func2.keys()) + list(kakewari.keys()) + list(tashihiki.keys()) + ["^", "(", ")", "->"]
+    list(const.keys())
+    + list(func1.keys())
+    + list(func2.keys())
+    + list(kakewari.keys())
+    + list(tashihiki.keys())
+    + ["^", "(", ")", "->"]
 )
 keywords.sort(reverse=True, key=len)
 
@@ -64,7 +69,6 @@ calc_marks = ["+", "-", "*", "/", "^", "st", "lc", "個"]
 
 # 計算
 def calculate(text):
-
     # 式を要素ごとに分割
     def divide(text):
         separate = set()
@@ -86,7 +90,12 @@ def calculate(text):
                         for i in range(
                             len(separate) - 1
                         ):  # separateする前に、今separateしようとしたところが既にseparateされた文字列の一部でないか確認する
-                            if (sorted(separate)[i] <= start and end <= sorted(separate)[i + 1] and text[sorted(separate)[i]: sorted(separate)[i + 1]] in keywords):
+                            if (
+                                sorted(separate)[i] <= start
+                                and end <= sorted(separate)[i + 1]
+                                and text[sorted(separate)[i] : sorted(separate)[i + 1]]
+                                in keywords
+                            ):
                                 stop_separate = True
                                 break
                         if not stop_separate:
@@ -117,7 +126,7 @@ def calculate(text):
                     if i == len(eles):
                         raise CalculateError("カッコが閉じられていません！")
                 end = i
-                result = cal_core(eles[start + 1: end])
+                result = cal_core(eles[start + 1 : end])
                 for _ in range(end - start + 1):
                     eles.pop(start)
                 eles.insert(start, result)
@@ -235,7 +244,9 @@ buttons = [
     discord.ui.Button(label="del", row=3, custom_id="cdel"),
     discord.ui.Button(label="0", row=4, custom_id="c0"),
     discord.ui.Button(label=".", row=4, custom_id="cdot"),
-    discord.ui.Button(label="=", row=4, custom_id="cequal", style=discord.ButtonStyle.primary),
+    discord.ui.Button(
+        label="=", row=4, custom_id="cequal", style=discord.ButtonStyle.primary
+    ),
     discord.ui.Button(label="+", row=4, custom_id="cadd"),
     discord.ui.Button(label="C", row=4, custom_id="cc"),
 ]
@@ -251,9 +262,10 @@ class CCalculate(commands.Cog):
     @app_commands.command(name="ccalculate", description="計算します")
     @app_commands.describe(text="数式(空の場合電卓が表示されます)")
     async def ccalculate(self, interaction: discord.Interaction, text: str = ""):
-
         embed = discord.Embed(color=Color.blue(), title="", description="```0```")
-        embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.display_avatar)
+        embed.set_author(
+            name=interaction.user.display_name, icon_url=interaction.user.display_avatar
+        )
         embed.set_footer(text="計算機")
 
         if text == "":
@@ -261,7 +273,9 @@ class CCalculate(commands.Cog):
 
         else:
             try:
-                await interaction.response.send_message(calculate(text), ephemeral=False)
+                await interaction.response.send_message(
+                    calculate(text), ephemeral=False
+                )
             except CalculateError as e:
                 embed.color = Color.red()
                 embed.title = "エラー"
@@ -295,7 +309,7 @@ class CCalculate(commands.Cog):
                 "c0": "0",
                 "cdot": ".",
                 "cadd": "+",
-                "cbeki": "^"
+                "cbeki": "^",
             }
             embed = interaction.message.embeds[0]
             if embed.footer.text != "計算機":
@@ -317,7 +331,9 @@ class CCalculate(commands.Cog):
                     formula = formula_list[-1]
                     formula = formula.replace("=", "")
 
-                if any(keyword in formula for keyword in calc_marks):  # 四則演算系があったらきちんと計算するように
+                if any(
+                    keyword in formula for keyword in calc_marks
+                ):  # 四則演算系があったらきちんと計算するように
                     isOnlyEq = False
 
                 try:

@@ -26,6 +26,8 @@ async def loop():
             i2.ogstr1 = ""
         session2.commit()
         print("リセット完了")
+
+
 loop.start()
 
 
@@ -35,7 +37,6 @@ class Cmdbotlevel(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
-
         userdb = session.query(User).filter_by(userid=message.author.id).first()
 
         if not userdb and not message.author.bot:
@@ -47,10 +48,10 @@ class Cmdbotlevel(commands.Cog):
         if message.author.bot:
             return
 
-        emoji_ptn = r'<a?:\w+:\d+>'
-        unicode_emoji_ptn = r'[\U0001F900-\U0001FFFF]'
-        mention_ptn = r'<@\d+>'
-        combined_ptn = re.compile(f'(?:{emoji_ptn}|{unicode_emoji_ptn}|{mention_ptn})')
+        emoji_ptn = r"<a?:\w+:\d+>"
+        unicode_emoji_ptn = r"[\U0001F900-\U0001FFFF]"
+        mention_ptn = r"<@\d+>"
+        combined_ptn = re.compile(f"(?:{emoji_ptn}|{unicode_emoji_ptn}|{mention_ptn})")
 
         if userdb.noxp is True and userdb:
             return
@@ -66,9 +67,9 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.content.startswith("https://tenor.com/view/"):
             return
-        elif len(combined_ptn.sub('', message.content).strip()) <= 5:
+        elif len(combined_ptn.sub("", message.content).strip()) <= 5:
             return
-        elif re.match(r'^(.+)\1+$', message.content):
+        elif re.match(r"^(.+)\1+$", message.content):
             return
 
         if message.channel.id == config.listench:
@@ -125,7 +126,7 @@ class Cmdbotlevel(commands.Cog):
         if userdb.dailylogin is False:
             userdb.dailylogin = True
             userdb.dailylogincount += 1
-            if (userdb.dailylogincount % 10 == 0):
+            if userdb.dailylogincount % 10 == 0:
                 userdb.alladdexp += 300
                 userdb.exp += 300
             else:
@@ -138,21 +139,22 @@ class Cmdbotlevel(commands.Cog):
             userdb.exp -= 10000
             session.commit()
             mee6_channel = await self.bot.fetch_channel(config.mee6.botch)
-            await mee6_channel.send(f"mcmdlevel,{message.author.id},{message.author.name},{userdb.level}")
+            await mee6_channel.send(
+                f"mcmdlevel,{message.author.id},{message.author.name},{userdb.level}"
+            )
 
     @commands.Cog.listener("on_message_delete")
     async def on_message_delete(self, message: discord.Message):
-
         deluserdb = session.query(User).filter_by(userid=message.author.id).first()
 
         exp_per_delmsg = random.randint(75, 100)
         if message.author.bot:
             return
 
-        emoji_ptn = r'<a?:\w+:\d+>'
-        unicode_emoji_ptn = r'[\U0001F900-\U0001FFFF]'
-        mention_ptn = r'<@\d+>'
-        combined_ptn = re.compile(f'(?:{emoji_ptn}|{unicode_emoji_ptn}|{mention_ptn})')
+        emoji_ptn = r"<a?:\w+:\d+>"
+        unicode_emoji_ptn = r"[\U0001F900-\U0001FFFF]"
+        mention_ptn = r"<@\d+>"
+        combined_ptn = re.compile(f"(?:{emoji_ptn}|{unicode_emoji_ptn}|{mention_ptn})")
 
         if message.content.startswith("ぬるぽ"):
             return
@@ -166,9 +168,9 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.content.startswith("https://tenor.com/view/"):
             return
-        elif len(combined_ptn.sub('', message.content).strip()) <= 5:
+        elif len(combined_ptn.sub("", message.content).strip()) <= 5:
             return
-        elif re.match(r'^(.+)\1+$', message.content):
+        elif re.match(r"^(.+)\1+$", message.content):
             return
 
         if message.channel.id == config.listench:

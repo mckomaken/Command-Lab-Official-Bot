@@ -96,9 +96,11 @@ class CommandLabBot(commands.Bot):
     async def start(cls, token: str) -> None:
         logging.config.dictConfig(
             yaml.load(
-                await (await aiofiles.open(
-                    path.join(os.getenv("BASE_DIR", "."), "data/logging.yaml")
-                )).read(),
+                await (
+                    await aiofiles.open(
+                        path.join(os.getenv("BASE_DIR", "."), "data/logging.yaml")
+                    )
+                ).read(),
                 Loader=yaml.SafeLoader,
             )
         )
@@ -134,7 +136,8 @@ class CommandLabBot(commands.Bot):
                     if message.author.bot:
                         return
                     await message.channel.send(
-                        f"{message.author.mention}呼んだ？わからないことがあったら以下のコマンドを実行してみてね(^^♪\n> 全コマンド雑説明: </chelp-all:1383117112628871198>\n> コマンド別説明　: </chelp:1218483030247604265>", silent=True
+                        f"{message.author.mention}呼んだ？わからないことがあったら以下のコマンドを実行してみてね(^^♪\n> 全コマンド雑説明: </chelp-all:1383117112628871198>\n> コマンド別説明　: </chelp:1218483030247604265>",
+                        silent=True,
                     )
 
             @client.tree.error
@@ -144,7 +147,9 @@ class CommandLabBot(commands.Bot):
                 if isinstance(error, app_commands.MissingRole) or isinstance(
                     error, app_commands.MissingPermissions
                 ):
-                    await ctx.response.send_message("権限あらへんで(関西弁)", ephemeral=True)
+                    await ctx.response.send_message(
+                        "権限あらへんで(関西弁)", ephemeral=True
+                    )
                 else:
                     logger.error(error)
 

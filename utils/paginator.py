@@ -45,7 +45,6 @@ class EmbedPaginator(discord.ui.View):
         AllowExtInput: bool = False,
         ephemeral: bool = False,
     ) -> None:
-
         self.PreviousButton = PreviousButton
         self.NextButton = NextButton
         self.PageCounterStyle = PageCounterStyle

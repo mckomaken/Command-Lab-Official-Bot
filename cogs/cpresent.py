@@ -15,28 +15,44 @@ class LOttery(discord.ui.View):  # 抽選コマンド
         super().__init__(timeout=None)
         self.bot = bot
 
-    @discord.ui.button(label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present")
-    async def pressedLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
+    @discord.ui.button(
+        label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present"
+    )
+    async def pressedLotteryButton(
+        self, interaction: discord.Interaction, button: discord.ui.button
+    ):
         send_channel = await self.bot.fetch_channel(config.lottery_channel)
         oubouser = session.query(User).filter_by(userid=interaction.user.id).first()
         if oubouser is None:
             userdb = User(userid=interaction.user.id, username=interaction.user.name)
             session.add(userdb)
             session.commit()
-            await interaction.response.send_message("【応募条件】\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: 0・レベル: 0\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            await interaction.response.send_message(
+                "【応募条件】\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: 0・レベル: 0\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!",
+                ephemeral=True,
+            )
             return
         elif oubouser.noxp is True:
-            await interaction.response.send_message("あなたには参加資格がありません", ephemeral=True)
+            await interaction.response.send_message(
+                "あなたには参加資格がありません", ephemeral=True
+            )
             return
         elif oubouser.chatcount < 50 and oubouser.level < 3:
-            await interaction.response.send_message(f"【応募条件】\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: {oubouser.chatcount}・レベル: {oubouser.level}\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            await interaction.response.send_message(
+                f"【応募条件】\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: {oubouser.chatcount}・レベル: {oubouser.level}\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!",
+                ephemeral=True,
+            )
             return
         elif oubouser.bool1 is True:
-            await interaction.response.send_message("すでに応募済みです。抽選開始までお待ちください。", ephemeral=True)
+            await interaction.response.send_message(
+                "すでに応募済みです。抽選開始までお待ちください。", ephemeral=True
+            )
             await send_channel.send(f"-# 〇２回以上押した人: <@{interaction.user.id}>")
             return
         else:
-            await send_channel.send(f"応募者 : <@{interaction.user.id}> / {interaction.user.display_name}")
+            await send_channel.send(
+                f"応募者 : <@{interaction.user.id}> / {interaction.user.display_name}"
+            )
             oubouser.bool1 = True  # 応募済み
             oubouser.exp += 100  # 応募したら100経験値追加
             oubouser.alladdexp += 100
@@ -44,10 +60,14 @@ class LOttery(discord.ui.View):  # 抽選コマンド
                 oubouser.level += 1
                 oubouser.exp -= 10000
             session.commit()
-            await interaction.response.send_message("応募されました。抽選開始までお待ちください。", ephemeral=True)
+            await interaction.response.send_message(
+                "応募されました。抽選開始までお待ちください。", ephemeral=True
+            )
 
     @discord.ui.button(label="企画終了", style=ButtonStyle.red, custom_id="delevent")
-    async def pressedDeleventButton(self, interaction: discord.Interaction, button: discord.ui.button):
+    async def pressedDeleventButton(
+        self, interaction: discord.Interaction, button: discord.ui.button
+    ):
         role = interaction.guild.get_role(config.administrater_role_id)
         send_channel = await self.bot.fetch_channel(config.lottery_channel)
         if role in interaction.user.roles:
@@ -76,8 +96,21 @@ class CPresent(commands.Cog):
         mcmd1000xp="mcmd-level 1000XPをプレゼントする人数(初期値0)",
     )
     @app_commands.checks.has_role(config.administrater_role_id)
-    async def cpresent(self, interaction: discord.Interaction, ptitle: str, kikann: int, amagif1000: int = 0, amagif500: int = 0, nitro: int = 0, abata_prof: int = 0, pripe: int = 0, mcmd10000xp: int = 0, mcmd5000xp: int = 0, mcmd2500xp: int = 0, mcmd1000xp: int = 0):
-
+    async def cpresent(
+        self,
+        interaction: discord.Interaction,
+        ptitle: str,
+        kikann: int,
+        amagif1000: int = 0,
+        amagif500: int = 0,
+        nitro: int = 0,
+        abata_prof: int = 0,
+        pripe: int = 0,
+        mcmd10000xp: int = 0,
+        mcmd5000xp: int = 0,
+        mcmd2500xp: int = 0,
+        mcmd1000xp: int = 0,
+    ):
         syuuryoubi = datetime.now() + timedelta(days=kikann)
         fsyuuryoubi = syuuryoubi.strftime(" %Y/%m/%d ")
         tyuusennbi = syuuryoubi + timedelta(days=1)
@@ -136,13 +169,15 @@ class CPresent(commands.Cog):
             title=ptitle,
             description=PRESENT_DESCRIPTION,
             color=0x2B9788,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
         await interaction.response.send_message("送信しました", ephemeral=True)
         await interaction.channel.send(embed=present_embed)
         await interaction.channel.send(view=LOttery(self.bot))
 
-    @app_commands.command(name="cpresent-reset", description="【運営】present企画-リセットコマンド")
+    @app_commands.command(
+        name="cpresent-reset", description="【運営】present企画-リセットコマンド"
+    )
     @app_commands.checks.has_role(config.administrater_role_id)
     async def cpresentreset(self, interaction: discord.Interaction):
         results = session.query(User).all()

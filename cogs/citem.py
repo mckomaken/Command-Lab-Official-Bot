@@ -26,13 +26,20 @@ class CItem(commands.Cog):
         async with aiofiles.open("./minecraft_data/data/dataPaths.json") as fp:
             dataPath = DataPaths.model_validate_json(await fp.read())
 
-            async with aiofiles.open("./minecraft_data/data/" + dataPath.pc[config.latest_minecraft_data_version].items + "/items.json") as fp:
-                async with aiofiles.open("./minecraft_data/data/" + dataPath.pc[config.latest_minecraft_data_version].blocks + "/blocks.json") as fp2:
+            async with aiofiles.open(
+                "./minecraft_data/data/"
+                + dataPath.pc[config.latest_minecraft_data_version].items
+                + "/items.json"
+            ) as fp:
+                async with aiofiles.open(
+                    "./minecraft_data/data/"
+                    + dataPath.pc[config.latest_minecraft_data_version].blocks
+                    + "/blocks.json"
+                ) as fp2:
                     items = Items.model_validate_json(await fp.read())
                     blocks = Blocks.model_validate_json(await fp2.read())
                     for item in items.root:
                         if item.name == id.replace("minecraft:", ""):
-
                             is_item = id not in [b.name for b in blocks.root]
                             block = next(
                                 iter([b for b in blocks.root if b.name == item.name]),
@@ -40,10 +47,16 @@ class CItem(commands.Cog):
                             )
 
                             async with aiofiles.open(
-                                os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"), mode="rb"
+                                os.path.join(
+                                    os.getenv("TMP_DIRECTORY", "./.tmp"), "ja_jp.json"
+                                ),
+                                mode="rb",
                             ) as lang_fp:
                                 with zipfile.ZipFile(
-                                    os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), f"client_{config.latest_minecraft_data_version}.jar")
+                                    os.path.join(
+                                        os.getenv("TMP_DIRECTORY", "./.tmp"),
+                                        f"client_{config.latest_minecraft_data_version}.jar",
+                                    )
                                 ) as zipfp:
                                     tn = "item" if is_item else "block"
                                     lang_data = json.loads(await lang_fp.read())
@@ -108,7 +121,10 @@ class CItem(commands.Cog):
                                                     name="適正ツール",
                                                     value=create_codeblock("素手/斧"),
                                                 )
-                                            elif block.material == "vine_or_glow_lichen;plant;mineable/axe":
+                                            elif (
+                                                block.material
+                                                == "vine_or_glow_lichen;plant;mineable/axe"
+                                            ):
                                                 embed.add_field(
                                                     name="適正ツール",
                                                     value=create_codeblock("素手/斧"),
@@ -123,7 +139,9 @@ class CItem(commands.Cog):
                                                     name="適正ツール",
                                                     value=create_codeblock("クワ"),
                                                 )
-                                            elif block.material == "leaves;mineable/hoe":
+                                            elif (
+                                                block.material == "leaves;mineable/hoe"
+                                            ):
                                                 embed.add_field(
                                                     name="適正ツール",
                                                     value=create_codeblock("素手/クワ"),
@@ -138,7 +156,10 @@ class CItem(commands.Cog):
                                                     name="適正ツール",
                                                     value=create_codeblock("剣"),
                                                 )
-                                            elif block.material == "incorrect_for_wooden_tool":
+                                            elif (
+                                                block.material
+                                                == "incorrect_for_wooden_tool"
+                                            ):
                                                 embed.add_field(
                                                     name="適正ツール",
                                                     value=create_codeblock("ピッケル"),
@@ -192,7 +213,9 @@ class CItem(commands.Cog):
                                             )
                                             files.append(file2)
                                             embed.add_field(
-                                                name="ドロップアイテム", value="", inline=False
+                                                name="ドロップアイテム",
+                                                value="",
+                                                inline=False,
                                             )
                                             embed.set_image(
                                                 url=f"attachment://{id}_loot.webp"
@@ -202,10 +225,14 @@ class CItem(commands.Cog):
                                             url=f"attachment://{id}.webp"
                                         )
 
-                                        typename_jp = "アイテム" if is_item else "ブロック"
+                                        typename_jp = (
+                                            "アイテム" if is_item else "ブロック"
+                                        )
                                         embed.set_author(name=typename_jp)
 
-                                        embed.set_footer(text=f"取得バージョン: {config.latest_minecraft_data_version}")
+                                        embed.set_footer(
+                                            text=f"取得バージョン: {config.latest_minecraft_data_version}"
+                                        )
 
                                         await interaction.response.send_message(
                                             embed=embed, files=files

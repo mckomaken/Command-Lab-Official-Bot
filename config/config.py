@@ -89,6 +89,7 @@ class Config(BaseModel):
     invite_ch: int
     admin_meeting_ch: int
 
+
 # -----------------------------------------------------------
 
 
@@ -101,7 +102,9 @@ class PackVersions(BaseModel):
     versions: dict[str, PackVersionEntry]
 
 
-config = Config.model_validate_json(open(path.join(os.getenv("BASE_DIR", "."), "config/config.json"), mode="rb").read())
+config = Config.model_validate_json(
+    open(path.join(os.getenv("BASE_DIR", "."), "config/config.json"), mode="rb").read()
+)
 
 pack_versions = PackVersions.model_validate_json(
     open(path.join(os.getenv("BASE_DIR", "."), "data/pack_versions.json")).read()

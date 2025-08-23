@@ -11,9 +11,11 @@ from utils.util import create_codeblock, create_embed
 
 
 def create_image(width: int, height: int, color_code: str) -> io.BytesIO:
-    if not (isinstance(width, int) and width > 0 and isinstance(height, int) and height > 0):
+    if not (
+        isinstance(width, int) and width > 0 and isinstance(height, int) and height > 0
+    ):
         raise ValueError("Width and Height must be positive integers")
-    if not color_code.startswith('#') or len(color_code) not in (7, 9):
+    if not color_code.startswith("#") or len(color_code) not in (7, 9):
         raise ValueError("Color code must be in the format #RRGGBB or #RRGGBBAA")
 
     # Parse the color code
@@ -23,24 +25,41 @@ def create_image(width: int, height: int, color_code: str) -> io.BytesIO:
     a = int(color_code[7:9], 16) if len(color_code) == 9 else 255
 
     # PNG file signature
-    png_signature = b'\x89PNG\r\n\x1a\n'
+    png_signature = b"\x89PNG\r\n\x1a\n"
 
     # IHDR chunk
-    ihdr_data = struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0)  # Width, Height, Bit depth, Color type, Compression, Filter, Interlace
-    ihdr_crc = zlib.crc32(b'IHDR' + ihdr_data) & 0xffffffff
-    ihdr_chunk = struct.pack(">I", len(ihdr_data)) + b'IHDR' + ihdr_data + struct.pack(">I", ihdr_crc)
+    ihdr_data = struct.pack(
+        ">IIBBBBB", width, height, 8, 6, 0, 0, 0
+    )  # Width, Height, Bit depth, Color type, Compression, Filter, Interlace
+    ihdr_crc = zlib.crc32(b"IHDR" + ihdr_data) & 0xFFFFFFFF
+    ihdr_chunk = (
+        struct.pack(">I", len(ihdr_data))
+        + b"IHDR"
+        + ihdr_data
+        + struct.pack(">I", ihdr_crc)
+    )
 
     # IDAT chunk
-    row = b'\x00' + struct.pack("BBBB", r, g, b, a) * width
-    idat_data = b''.join([row for _ in range(height)])
+    row = b"\x00" + struct.pack("BBBB", r, g, b, a) * width
+    idat_data = b"".join([row for _ in range(height)])
     compressed_idat_data = zlib.compress(idat_data)
-    idat_crc = zlib.crc32(b'IDAT' + compressed_idat_data) & 0xffffffff
-    idat_chunk = struct.pack(">I", len(compressed_idat_data)) + b'IDAT' + compressed_idat_data + struct.pack(">I", idat_crc)
+    idat_crc = zlib.crc32(b"IDAT" + compressed_idat_data) & 0xFFFFFFFF
+    idat_chunk = (
+        struct.pack(">I", len(compressed_idat_data))
+        + b"IDAT"
+        + compressed_idat_data
+        + struct.pack(">I", idat_crc)
+    )
 
     # IEND chunk
-    iend_data = b''
-    iend_crc = zlib.crc32(b'IEND' + iend_data) & 0xffffffff
-    iend_chunk = struct.pack(">I", len(iend_data)) + b'IEND' + iend_data + struct.pack(">I", iend_crc)
+    iend_data = b""
+    iend_crc = zlib.crc32(b"IEND" + iend_data) & 0xFFFFFFFF
+    iend_chunk = (
+        struct.pack(">I", len(iend_data))
+        + b"IEND"
+        + iend_data
+        + struct.pack(">I", iend_crc)
+    )
 
     png_data = png_signature + ihdr_chunk + idat_chunk + iend_chunk
 
@@ -66,7 +85,9 @@ class CColor(app_commands.Group):
         super().__init__(name="ccolor")
         self.bot = bot
 
-    @app_commands.command(name="preview", description="カラーコードのプレビューを行います")
+    @app_commands.command(
+        name="preview", description="カラーコードのプレビューを行います"
+    )
     async def preview(self, interaction: discord.Interaction, color: str):
         try:
             c_color = int(color.replace("#", ""), base=16)
@@ -79,9 +100,7 @@ class CColor(app_commands.Group):
                 color=c_color, title="色のプレビュー", description=color.upper()
             )
             embed.set_image(url="attachment://color.png")
-            embed.add_field(
-                name="10進数表記", value=create_codeblock(f"{c_color}")
-            )
+            embed.add_field(name="10進数表記", value=create_codeblock(f"{c_color}"))
             embed.add_field(
                 name="RGB",
                 value=create_codeblock(f"{cc_color[0]}, {cc_color[1]}, {cc_color[2]}"),
@@ -93,11 +112,18 @@ class CColor(app_commands.Group):
                 embed=create_embed("エラー", "値が無効です"), ephemeral=True
             )
 
-    @app_commands.command(name="random", description="カラーコードをランダムに出力し行います")
+    @app_commands.command(
+        name="random", description="カラーコードをランダムに出力し行います"
+    )
     @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
     async def random(self, interaction: discord.Interaction):
         try:
-            color = "#" + randhex()[2:].zfill(2) + randhex()[2:].zfill(2) + randhex()[2:].zfill(2)
+            color = (
+                "#"
+                + randhex()[2:].zfill(2)
+                + randhex()[2:].zfill(2)
+                + randhex()[2:].zfill(2)
+            )
             c_color = int(color.replace("#", ""), base=16)
             cc_color = get_rgb_from_hex(color)
             image = create_image(1024, 300, color)
@@ -108,9 +134,7 @@ class CColor(app_commands.Group):
                 color=c_color, title="色のプレビュー", description=color.upper()
             )
             embed.set_image(url="attachment://color.png")
-            embed.add_field(
-                name="10進数表記", value=create_codeblock(f"{c_color}")
-            )
+            embed.add_field(name="10進数表記", value=create_codeblock(f"{c_color}"))
             embed.add_field(
                 name="RGB",
                 value=create_codeblock(f"{cc_color[0]}, {cc_color[1]}, {cc_color[2]}"),
@@ -122,9 +146,11 @@ class CColor(app_commands.Group):
                 embed=create_embed("エラー", "値が無効です"), ephemeral=True
             )
 
-    async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-       if isinstance(error, app_commands.CommandOnCooldown):
-           await interaction.response.send_message("ちょっと待って！", ephemeral=True)
+    async def on_error(
+        self, interaction: discord.Interaction, error: app_commands.AppCommandError
+    ):
+        if isinstance(error, app_commands.CommandOnCooldown):
+            await interaction.response.send_message("ちょっと待って！", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
