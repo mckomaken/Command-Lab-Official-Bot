@@ -7,7 +7,7 @@ from typing import Optional
 import aiofiles
 import aiohttp
 import pygit2
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 from tqdm import tqdm
 
 from cogs.cnews import VersionManifest
@@ -108,6 +108,21 @@ class VersionDataPackFormat(BaseModel):
     resource: Optional[int] = None
     data: Optional[int] = None
 
+class VersionDataPackFormat2(BaseModel):
+    resource_major: Optional[int] = None
+    resource_minor: Optional[int] = None
+    data_major: Optional[int] = None
+    data_minor: Optional[int] = None
+
+    @computed_field
+    @property
+    def data(self) -> str:
+        return f"{self.data_major}.{self.data_minor}"
+
+    @computed_field
+    @property
+    def resource(self) -> str:
+        return f"{self.resource_major}.{self.resource_minor}"
 
 class VersionData(BaseModel):
     id: str
@@ -115,7 +130,7 @@ class VersionData(BaseModel):
     world_version: int
     series_id: str
     protocol_version: int
-    pack_version: VersionDataPackFormat
+    pack_version: VersionDataPackFormat | VersionDataPackFormat2 | int
     build_time: datetime
     java_component: str
     java_version: int
