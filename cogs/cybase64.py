@@ -2,6 +2,7 @@ from discord.ext import commands
 import base64
 import discord
 from discord import app_commands
+import pyperclip
 
 from utils.util import create_codeblock, create_embed
 from config.config import config
@@ -13,9 +14,7 @@ class UrlView(discord.ui.View):
         self.url = url
 
     @discord.ui.button(label="送信内容を見る", style=discord.ButtonStyle.red, custom_id="ydan")
-    async def convert_url(
-        self, interaction: discord.Interaction, item: discord.ui.Item
-    ):
+    async def convert_url(self, interaction: discord.Interaction, item: discord.ui.Item):
         await interaction.response.send_message(
             embed=create_embed(
                 title="送信内容",
@@ -25,6 +24,11 @@ class UrlView(discord.ui.View):
             ),
             ephemeral=True,
         )
+
+    @discord.ui.button(label="リンクをコピー", style=discord.ButtonStyle.link, custom_id="ydan-copy")
+    async def copy_url(self, interaction: discord.Interaction, item: discord.ui.Item):
+        pyperclip.copy(self.url)
+        await interaction.response.send_message("クリップボードにコピーしました！", ephemeral=True)
 
 
 class CYbase64(commands.Cog):
