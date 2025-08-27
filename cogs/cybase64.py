@@ -25,9 +25,9 @@ class UrlView(discord.ui.View):
             ephemeral=True,
         )
 
-    @discord.ui.button(label="リンクをコピー", style=discord.ButtonStyle.link, custom_id="ydan-copy")
+    @discord.ui.button(label="リンクをコピー", style=discord.ButtonStyle.link, custom_id="ydancopy")
     async def copy_url(self, interaction: discord.Interaction, item: discord.ui.Item):
-        pyperclip.copy(self.url)
+        await pyperclip.copy(self.url)
         await interaction.response.send_message("クリップボードにコピーしました！", ephemeral=True)
 
 
