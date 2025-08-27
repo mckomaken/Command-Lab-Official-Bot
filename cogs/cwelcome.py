@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
 from config.config import config
+from database import User, session
 
 
 class CWelcome(commands.Cog):
@@ -16,10 +17,10 @@ class CWelcome(commands.Cog):
 
             channel = await self.bot.fetch_channel(config.invite_ch)  # 入所者チャンネルを取得
             welcome_embed = discord.Embed(
-                description=f"コマ研へようこそ！\n<#{config.role_set_ch}>で自分にあったロールを設定しましょう(^O^)/",
+                description=f"コマ研へようこそ！あなたは無事認証されました！\n<#{config.role_set_ch}>で自分にあったロールを設定しましょう(^O^)/",
                 color=discord.Color.green()
             )
-            await channel.send(f"{after.mention}さんが入所しました", embed=welcome_embed, silent=True)
+            await channel.send(f"{after.mention}さんが入所しました！", embed=welcome_embed, silent=True)
 
 
 async def setup(bot: commands.Bot):
