@@ -153,7 +153,7 @@ class CRoleOtherButtons(View):  # その他
         await add_or_remove_role(763342542719811605, interaction)
 
     @button(
-        label="MEE6レベル無効化", style=ButtonStyle.gray, emoji="🔏", custom_id="disable-mee6"
+        label="レベル通知無効", style=ButtonStyle.gray, emoji="🔏", custom_id="disable-mee6"
     )
     async def pressedHoka2(self, interaction: Interaction, button: Button):
         await add_or_remove_role(891286619783581706, interaction)
@@ -257,8 +257,8 @@ class CRole(commands.Cog):
             name="--【@通知ON】--", value="🔔:運営からのお知らせ通知が行っても大丈夫な方はこちら!", inline=False
         )
         hoka_embed.add_field(
-            name="--【@MEE6レベル通知無効化】--",
-            value="🔏:MEEE6による、レベリング機能の通知がいらないと思った方はこちら!",
+            name="--【@レベル通知無効】--",
+            value="🔏:MEEE6/コマ研Botによる、レベリング機能の通知がいらないと思った方はこちら!",
             inline=False,
         )
         hoka_embed.add_field(
