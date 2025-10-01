@@ -123,8 +123,8 @@ class CColor(app_commands.Group):
             )
 
     async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-       if isinstance(error, app_commands.CommandOnCooldown):
-           await interaction.response.send_message("ちょっと待って！", ephemeral=True)
+        if isinstance(error, app_commands.CommandOnCooldown):
+            await interaction.response.send_message("ちょっと待って！", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

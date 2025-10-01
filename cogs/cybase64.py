@@ -2,7 +2,6 @@ from discord.ext import commands
 import base64
 import discord
 from discord import app_commands
-import pyperclip
 
 from utils.util import create_codeblock, create_embed
 from config.config import config
@@ -24,11 +23,6 @@ class UrlView(discord.ui.View):
             ),
             ephemeral=True,
         )
-
-    @discord.ui.button(label="リンクをコピー", style=discord.ButtonStyle.gray, custom_id="ydancopy")
-    async def copy_url(self, interaction: discord.Interaction, item: discord.ui.Item):
-        pyperclip.copy(f"{self.url}")
-        await interaction.response.send_message("クリップボードにコピーしました！", ephemeral=True)
 
 
 class CYbase64(commands.Cog):

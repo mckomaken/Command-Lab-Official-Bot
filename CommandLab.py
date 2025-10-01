@@ -133,7 +133,7 @@ class CommandLabBot(commands.Bot):
                 if client.user in message.mentions and message.reference is None:
                     if message.author.bot:
                         return
-                    await message.channel.send(
+                    await message.reply(
                         f"{message.author.mention}呼んだ？わからないことがあったら以下のコマンドを実行してみてね(^^♪\n> 全コマンド雑説明: </chelp-all:1383117112628871198>\n> コマンド別説明　: </chelp:1218483030247604265>", silent=True
                     )
 
