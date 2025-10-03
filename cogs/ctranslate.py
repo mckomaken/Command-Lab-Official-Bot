@@ -129,7 +129,7 @@ class CTranslate(commands.Cog):
         if message.author.bot:
             return
         if message.content.startswith("Ctr"):
-            text = str(message.content.split(" ")[1])
+            text = str(message.content.split(" ", maxsplit=1)[1])
             translator = Translator()
             textlang = await translator.detect(text)
 
