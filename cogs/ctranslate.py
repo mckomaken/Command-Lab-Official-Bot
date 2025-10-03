@@ -115,9 +115,46 @@ LANGUAGES = [
 ]
 
 
+class DeleteButton(discord.ui.Button):
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.message.delete()
+
+
 class CTranslate(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+
+    @commands.Cog.listener("on_message")
+    async def on_message(self, message: discord.Message):
+        if message.author.bot:
+            return
+        if message.content.startswith("Ctr"):
+            text = str(message.content.split(" ")[1])
+            translator = Translator()
+            textlang = await translator.detect(text)
+
+            try:
+                if textlang.lang == "ja":
+                    translated_text = await translator.translate(text, src="ja", dest="en")
+                else:
+                    translated_text = await translator.translate(text, dest="ja")
+
+                translated_embed = discord.Embed(
+                    title="翻訳結果",
+                    description=f"{translated_text.text}",
+                    color=0x008c00
+                )
+                translated_embed.set_author(name=message.author.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if message.author.avatar is None else message.author.avatar.url)
+                await message.reply(embed=translated_embed)
+
+            except Exception as e:
+                delete_button = DeleteButton(
+                    label="削除",
+                    style=discord.ButtonStyle.gray
+                )
+                view = discord.ui.View(timeout=None)
+                view.add_item(delete_button)
+                await message.reply(f"【翻訳失敗/エラー発生】\n{e}", view=view)
 
     @app_commands.command(name="ctranslate", description="各言語に翻訳できます(Can be translated into any language)")
     @app_commands.describe(text="翻訳したい文章(Text-to-be-translated)", language="翻訳先言語(translation-target-language)")
