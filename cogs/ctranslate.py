@@ -128,12 +128,13 @@ class CTranslate(commands.Cog):
     async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
+        if message.content.startswith("Ctrl"):
+            return
         if message.content.startswith("Ctr"):
-            text = str(message.content.split(" ", maxsplit=1)[1])
-            translator = Translator()
-            textlang = await translator.detect(text)
-
             try:
+                text = str(message.content.split(" ", maxsplit=1)[1])
+                translator = Translator()
+                textlang = await translator.detect(text)
                 if textlang.lang == "ja":
                     translated_text = await translator.translate(text, src="ja", dest="en")
                 else:
