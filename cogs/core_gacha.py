@@ -291,12 +291,12 @@ class COregacha(commands.Cog):
             for item in data1:
                 count = eval(f"gachadb.{item['database']}")
                 persent = (count / gachadb.allcount * 100) if gachadb.allcount > 0 else 0
-                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
+                desc += f"{item['emoji']} : `{count:03}`回 `{persent:09.06f}`%\n"
             desc += "------------------\n"
             for item in data2:
                 count = eval(f"gachadb.{item['database']}")
-                persent = (count / gachadb.allcount * 100) if gachadb.allcount > 0 else 0
-                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
+                persent = (count / gachadb.ogint2 * 100) if gachadb.allcount > 0 else 0
+                desc += f"{item['emoji']} : `{count:03}`回 `{persent:09.06f}`%\n"
             if desc == "":
                 desc = "まだ一度もガチャを回していないため、結果を見ることができません\nまずはガチャを回してください"
             embed = discord.Embed(
@@ -316,12 +316,12 @@ class COregacha(commands.Cog):
             for item in data1:
                 count = eval(f"alldb.{item['database']}")
                 persent = (count / alldb.allcount * 100) if alldb.allcount > 0 else 0
-                desc += f"{item['emoji']} : {count}回 `{persent:09.06f}`%\n"
+                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
             desc += "------------------\n"
             for item in data2:
                 count = eval(f"alldb.{item['database']}")
-                persent = (count / alldb.allcount * 100) if alldb.allcount > 0 else 0
-                desc += f"{item['emoji']} : {count}回 `{persent:09.06f}`%\n"
+                persent = (count / alldb.ogint2 * 100) if alldb.allcount > 0 else 0
+                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
             if desc == "":
                 desc = "まだ一度もガチャが回されていないため、結果を見ることができません"
             embed = discord.Embed(
