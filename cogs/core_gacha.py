@@ -285,12 +285,18 @@ class COregacha(commands.Cog):
                 return
             with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
                 jsonfile = json.load(f)
-                data = jsonfile["gacha1"]
+                data1 = jsonfile["gacha1"]
+                data2 = jsonfile["gacha2"]
             desc = ""
-            for item in data:
+            for item in data1:
                 count = eval(f"gachadb.{item['database']}")
-                if count > 0:
-                    desc += f"{item['emoji']} {item['japanese']} : {count}回\n"
+                persent = (count / gachadb.allcount * 100) if gachadb.allcount > 0 else 0
+                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
+            desc += "------------------\n"
+            for item in data2:
+                count = eval(f"gachadb.{item['database']}")
+                persent = (count / gachadb.allcount * 100) if gachadb.allcount > 0 else 0
+                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
             if desc == "":
                 desc = "まだ一度もガチャを回していないため、結果を見ることができません\nまずはガチャを回してください"
             embed = discord.Embed(
@@ -304,11 +310,18 @@ class COregacha(commands.Cog):
             alldb = session2.query(Oregacha).filter_by(userid="101").first()
             with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
                 jsonfile = json.load(f)
-                data = jsonfile["gacha1"]
+                data1 = jsonfile["gacha1"]
+                data2 = jsonfile["gacha2"]
             desc = ""
-            for item in data:
+            for item in data1:
                 count = eval(f"alldb.{item['database']}")
-                desc += f"{item['emoji']} {item['japanese']} : {count}回\n"
+                persent = (count / alldb.allcount * 100) if alldb.allcount > 0 else 0
+                desc += f"{item['emoji']} : {count}回 `{persent:09.06f}`%\n"
+            desc += "------------------\n"
+            for item in data2:
+                count = eval(f"alldb.{item['database']}")
+                persent = (count / alldb.allcount * 100) if alldb.allcount > 0 else 0
+                desc += f"{item['emoji']} : {count}回 `{persent:09.06f}`%\n"
             if desc == "":
                 desc = "まだ一度もガチャが回されていないため、結果を見ることができません"
             embed = discord.Embed(
