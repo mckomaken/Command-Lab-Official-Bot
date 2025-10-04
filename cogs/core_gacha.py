@@ -106,7 +106,7 @@ async def coregacha9(interaction: Interaction):
             exec(f"ogdb.{item["database"]} += 1")
             ogdb.ogstr1 += item["emoji"]
             ogdb.ogint1 += xp
-            alldb.allcount += 1
+            alldb.ogint2 += 1
             exec(f"alldb.{item["database"]} += 1")
             session2.commit()
             return
@@ -151,7 +151,7 @@ async def coregacha10ren(interaction: Interaction):
         xpdb.exp += 10000
     session.commit()
     session2.commit()
-    desc = "\n".join([f"`{count:02}` {emoji} No.{num:06} {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
+    desc = "\n".join([f"`{count:02}` {emoji} `No.{num:06}` {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
 
     if sumxp >= 3456:
         embed = discord.Embed(
@@ -159,6 +159,7 @@ async def coregacha10ren(interaction: Interaction):
             description=desc,
             color=0x9224ff
         )
+        # https://discord.com/channels/735130420630388807/965095619838488576/1416628799638081656
     elif sumxp >= 2000:
         embed = discord.Embed(
             title="10連ガチャ結果 : 大当たり",
@@ -195,6 +196,7 @@ async def coregacha10ren(interaction: Interaction):
             description=desc,
             color=0xff0000
         )
+        # https://discord.com/channels/735130420630388807/965095619838488576/1382557452893163632
     embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
     embed.set_footer(text=f"本日残り: 0回 / 今日の収支: {sumxp}XP")
 
@@ -272,6 +274,50 @@ class COregacha(commands.Cog):
                 await coregacha10ren(interaction)
             else:
                 await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
+
+    @app_commands.command(name="core-gacha-list", description="鉱石ガチャコマンド")
+    @app_commands.describe(server="サーバー全体の確率表示(未指定:FALSE(自分の結果表示))")
+    async def coregachalistcom(self, interaction: discord.Interaction, server: bool = False):
+        if server is False:
+            gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
+            if not gachadb:
+                await interaction.response.send_message("あなたはまだ一度もガチャを回していないため、結果を見ることができません\nまずはガチャを回してください", ephemeral=True)
+                return
+            with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
+                jsonfile = json.load(f)
+                data = jsonfile["gacha1"]
+            desc = ""
+            for item in data:
+                count = eval(f"gachadb.{item['database']}")
+                if count > 0:
+                    desc += f"{item['emoji']} {item['japanese']} : {count}回\n"
+            if desc == "":
+                desc = "まだ一度もガチャを回していないため、結果を見ることができません\nまずはガチャを回してください"
+            embed = discord.Embed(
+                title=f"{interaction.user.display_name}さんのガチャ結果",
+                description=desc,
+                color=0x00aaff
+            )
+            embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+            await interaction.response.send_message(embed=embed)
+        else:
+            alldb = session2.query(Oregacha).filter_by(userid="101").first()
+            with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
+                jsonfile = json.load(f)
+                data = jsonfile["gacha1"]
+            desc = ""
+            for item in data:
+                count = eval(f"alldb.{item['database']}")
+                desc += f"{item['emoji']} {item['japanese']} : {count}回\n"
+            if desc == "":
+                desc = "まだ一度もガチャが回されていないため、結果を見ることができません"
+            embed = discord.Embed(
+                title="サーバー全体のガチャ結果",
+                description=desc,
+                color=0x00aaff
+            )
+            embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+            await interaction.response.send_message(embed=embed)
 
 
 async def setup(bot: commands.Bot):
