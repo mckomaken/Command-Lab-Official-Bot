@@ -297,8 +297,8 @@ class COregacha(commands.Cog):
                 count = eval(f"gachadb.{item['database']}")
                 persent = (count / gachadb.ogint2 * 100) if gachadb.allcount > 0 else 0
                 desc += f"{item['emoji']} : `{count:03}`回 `{persent:09.06f}`%\n"
-            if desc == "":
-                desc = "まだ一度もガチャを回していないため、結果を見ることができません\nまずはガチャを回してください"
+            desc += "------------------\n"
+            desc += f"通常合計: {gachadb.allcount}回 ・ 約9倍デー合計: {gachadb.ogint2}回"
             embed = discord.Embed(
                 title=f"{interaction.user.display_name}さんのガチャ結果",
                 description=desc,
@@ -322,8 +322,8 @@ class COregacha(commands.Cog):
                 count = eval(f"alldb.{item['database']}")
                 persent = (count / alldb.ogint2 * 100) if alldb.allcount > 0 else 0
                 desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
-            if desc == "":
-                desc = "まだ一度もガチャが回されていないため、結果を見ることができません"
+            desc += "------------------\n"
+            desc += f"通常合計: {alldb.allcount}回 ・ 約9倍デー合計: {alldb.ogint2}回"
             embed = discord.Embed(
                 title="サーバー全体のガチャ結果",
                 description=desc,
