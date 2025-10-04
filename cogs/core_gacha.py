@@ -102,7 +102,7 @@ async def coregacha9(interaction: Interaction):
                 else:
                     xpdb.alladdexp += xp
                 session.commit()
-            ogdb.allcount += 1
+            ogdb.ogint2 += 1
             exec(f"ogdb.{item["database"]} += 1")
             ogdb.ogstr1 += item["emoji"]
             ogdb.ogint1 += xp
