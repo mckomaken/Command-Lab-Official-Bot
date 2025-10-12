@@ -4,6 +4,7 @@ from discord import ButtonStyle, app_commands
 from database import User, session
 import discord
 from config.config import config
+import random
 
 # bool1 : cog.cpresent.py使用中(プレゼント企画参加済みかどうか)
 
@@ -34,10 +35,54 @@ class LOttery(discord.ui.View):  # 抽選コマンド
             await send_channel.send(f"-# 〇２回以上押した人: <@{interaction.user.id}>")
             return
         else:
-            await send_channel.send(f"応募者 : <@{interaction.user.id}> / {interaction.user.display_name}")
+            await send_channel.send(f"応募者 : <@{interaction.user.id}>\n```{interaction.user.display_name}```")
             oubouser.bool1 = True  # 応募済み
             oubouser.exp += 100  # 応募したら100経験値追加
             oubouser.alladdexp += 100
+            if oubouser.exp >= 10000:
+                oubouser.level += 1
+                oubouser.exp -= 10000
+            session.commit()
+            await interaction.response.send_message("応募されました。抽選開始までお待ちください。", ephemeral=True)
+
+    @discord.ui.button(label="企画終了", style=ButtonStyle.red, custom_id="delevent")
+    async def pressedDeleventButton(self, interaction: discord.Interaction, button: discord.ui.button):
+        role = interaction.guild.get_role(config.administrater_role_id)
+        send_channel = await self.bot.fetch_channel(config.lottery_channel)
+        if role in interaction.user.roles:
+            await interaction.message.delete()
+        else:
+            await interaction.response.send_message("権限ないで", ephemeral=True)
+            await send_channel.send(f"-# ◆削除ボタン押した人: <@{interaction.user.id}>")
+
+
+class PUtilottery(discord.ui.View):  # プチ抽選コマンド
+    def __init__(self, bot: commands.Bot):
+        super().__init__(timeout=None)
+        self.bot = bot
+
+    @discord.ui.button(label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present")
+    async def pressedputiLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
+        send_channel = await self.bot.fetch_channel(config.lottery_channel)
+        oubouser = session.query(User).filter_by(userid=interaction.user.id).first()
+        if oubouser is None:
+            await interaction.response.send_message("応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが10以上\nを満たしていません\n現時点でのチャット数: 0\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            return
+        elif oubouser.noxp is True:
+            await interaction.response.send_message("あなたには参加資格がありません", ephemeral=True)
+            return
+        elif oubouser.chatcount < 10:
+            await interaction.response.send_message(f"応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが10以上\nを満たしていません\n現時点でのチャット数: {oubouser.chatcount}\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            return
+        elif oubouser.bool1 is True:
+            await interaction.response.send_message("すでに応募済みです。抽選開始までお待ちください。", ephemeral=True)
+            await send_channel.send(f"-# 〇２回以上押した人: <@{interaction.user.id}>")
+            return
+        else:
+            await send_channel.send(f"応募者 : <@{interaction.user.id}>\n```{interaction.user.display_name}```")
+            oubouser.bool1 = True  # 応募済み
+            oubouser.exp += 50  # 応募したら50経験値追加
+            oubouser.alladdexp += 50
             if oubouser.exp >= 10000:
                 oubouser.level += 1
                 oubouser.exp -= 10000
@@ -132,6 +177,49 @@ class CPresent(commands.Cog):
 """
         present_embed = discord.Embed(
             title=ptitle,
+            description=PRESENT_DESCRIPTION,
+            color=0x2B9788,
+            timestamp=datetime.now()
+        )
+        await interaction.response.send_message("送信しました", ephemeral=True)
+        await interaction.channel.send(embed=present_embed)
+        await interaction.channel.send(view=LOttery(self.bot))
+
+# !--------------------------------------------------------------------
+
+    @app_commands.command(name="cpresent-user", description="【運営】present企画")
+    @app_commands.describe(
+        serveruser="サーバー人数(100の倍数で入力)",
+        kikann="応募期間(日数入力)"
+    )
+    @app_commands.checks.has_role(config.administrater_role_id)
+    async def cpresent_user(self, interaction: discord.Interaction, serveruser: int, kikann: int):
+
+        syuuryoubi = datetime.now() + timedelta(days=kikann)
+        fsyuuryoubi = syuuryoubi.strftime(" %Y/%m/%d ")
+        tyuusennbi = syuuryoubi + timedelta(days=1)
+        ftyuusennbi = tyuusennbi.strftime(" %Y/%m/%d ")
+
+        PRESENT_DESCRIPTION = f"""
+【応募条件】
+1: このサーバーに抽選時に参加していること
+2: コマ研レベル(mcmd-level)実装後に有効チャットが{serveruser / 100}以上
+3: 下のボタンを押すこと
+
+【景品内容】
+1名 : {serveruser * random.randint(3, 10)}XP
+{random.randint(3, 10)}名 : {serveruser}XP
+
+【注意事項】
+2アカウント以上の応募・ボタンの連打
+→その回の全アカウントでの応募権はく奪
+-# あまりにひどい/しつこい場合は今後一切の参加を認めない場合があります
+
+【締め切り】{fsyuuryoubi} 23:59
+【当選発表】{ftyuusennbi} 00:00からVCにて発表
+"""
+        present_embed = discord.Embed(
+            title=f"{serveruser}人突破記念プチプレゼント企画!",
             description=PRESENT_DESCRIPTION,
             color=0x2B9788,
             timestamp=datetime.now()
