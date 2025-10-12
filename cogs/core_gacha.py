@@ -275,7 +275,7 @@ class COregacha(commands.Cog):
             else:
                 await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
 
-    @app_commands.command(name="core-gacha-list", description="鉱石ガチャコマンド")
+    @app_commands.command(name="core-gacha-list", description="鉱石ガチャ結果一覧")
     @app_commands.describe(server="サーバー全体の確率表示(未指定:FALSE(自分の結果表示))")
     async def coregachalistcom(self, interaction: discord.Interaction, server: bool = False):
         if server is False:
@@ -305,7 +305,7 @@ class COregacha(commands.Cog):
                 color=0x00aaff
             )
             embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
-            await interaction.response.send_message(embed=embed)
+            await interaction.response.send_message(embed=embed, silent=True)
         else:
             alldb = session2.query(Oregacha).filter_by(userid="101").first()
             with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
@@ -330,7 +330,7 @@ class COregacha(commands.Cog):
                 color=0x00aaff
             )
             embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
-            await interaction.response.send_message(embed=embed)
+            await interaction.response.send_message(embed=embed, silent=True)
 
 
 async def setup(bot: commands.Bot):
