@@ -3,7 +3,7 @@ Discordサーバー「マイクラコマンド研究所」の公式Bot「コマ�
 
 メイン開発者(敬称略)  
 ・春菊 https://hp.syunngiku.com  
-・AP https://github.com/ap12-code  
+・AP https://ap12.net
 
 開発協力(敬称略)  
 ・ラブスペ  
