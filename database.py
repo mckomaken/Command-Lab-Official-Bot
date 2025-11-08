@@ -34,7 +34,7 @@ class User(Base):
     warnreason3 = Column(String)
     warnreason4 = Column(String)
     warnreason5 = Column(String)
-    str1 = Column(String, default="")
+    str1 = Column(String, default="")  # str1 : cog.cwarn.py使用中(tempwarn時間保存用)
     str2 = Column(String, default="")
     str3 = Column(String, default="")
     str4 = Column(String, default="")

@@ -17,13 +17,21 @@ async def loop():
         for i in results:
             i.dailylogin = False
             i.dailygivexp = False
+            if i.str1 != "":
+                unwarn_date = datetime.strptime(i.str1, '%Y/%m/%d')
+                if now >= unwarn_date:
+                    i.str1 = ""
+                    if i.warnpt > 0:
+                        i.warnpt -= 1
+                        print("\033[45m" + f"{now} : {i.username}の一時警告が解除され、警告ポイントが1減少しました。" + "\033[0m")
         session.commit()
+        print("\033[42m" + "レベルDB-リセット完了" + "\033[0m")
         for i2 in results2:
             i2.dailygacha = 0
             i2.ogint1 = 0
             i2.ogstr1 = ""
         session2.commit()
-        print("リセット完了")
+        print("\033[44m" + "ガチャDB-リセット完了" + "\033[0m")
 loop.start()
 
 
