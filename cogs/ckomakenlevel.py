@@ -23,17 +23,17 @@ async def loop():
                     i.str1 = ""
                     if i.warnpt > 0:
                         i.warnpt -= 1
-                        if i.warnreason5 != "":
-                            i.warnreason5 = ""
-                        elif i.warnreason4 != "":
-                            i.warnreason4 = ""
-                        elif i.warnreason3 != "":
-                            i.warnreason3 = ""
-                        elif i.warnreason2 != "":
-                            i.warnreason2 = ""
-                        elif i.warnreason1 != "":
-                            i.warnreason1 = ""
-                        print("\033[45m" + f"{now} : {i.username}の一時警告が解除され、警告ポイントが1減少しました。" + "\033[0m")
+                    if i.warnreason5 != "":
+                        i.warnreason5 = ""
+                    elif i.warnreason4 != "":
+                        i.warnreason4 = ""
+                    elif i.warnreason3 != "":
+                        i.warnreason3 = ""
+                    elif i.warnreason2 != "":
+                        i.warnreason2 = ""
+                    elif i.warnreason1 != "":
+                        i.warnreason1 = ""
+                    print("\033[45m" + f"{now} : {i.username}の一時警告が解除され、警告ポイントが1減少しました。" + "\033[0m")
         session.commit()
         print("\033[42m" + "レベルDB-リセット完了" + "\033[0m")
         for i2 in results2:
