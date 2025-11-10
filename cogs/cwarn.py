@@ -17,7 +17,7 @@ class Cwarn(commands.Cog):
     @app_commands.choices(
         choice=[
             app_commands.Choice(value="add", name="加点(理由引数必須)"),
-            app_commands.Choice(value="tempwarn", name="期間限定警告(理由/日数引数必須)(既定の日数経つと自動で点数が減ります)"),
+            app_commands.Choice(value="tempwarn", name="一時警告(理由/日数引数必須)(既定の日数経つと自動で点数が減ります)"),
             app_commands.Choice(value="remove", name="減点(指定番号の違反を削除)"),
             app_commands.Choice(value="edit", name="編集(指定番号の違反を編集/変更前に一覧で確認してください)"),
             app_commands.Choice(value="list", name="一覧表示")
@@ -120,7 +120,7 @@ class Cwarn(commands.Cog):
                     warnuserdb.warnreason5 = f"{str_unwarn_date} 00:00:00まで : {reason}"
                     num = 5
                 session.commit()
-                await interaction.response.send_message(f"{target.mention}に期間限定違反点数を追加しました\nNo.{num}\n理由:{reason}\n詳細理由:{reason2}\n解除日時:{str_unwarn_date} 00:00:00", silent=True)
+                await interaction.response.send_message(f"{target.mention}に一時違反点数を追加しました\nNo.{num}\n理由:{reason}\n詳細理由:{reason2}\n解除日時:{str_unwarn_date} 00:00:00", silent=True)
 
                 if senddm is True:
                     WARNDESC = f"""
@@ -131,13 +131,14 @@ class Cwarn(commands.Cog):
 {reason2}
 【解除日時】
 {str_unwarn_date} 00:00:00
+
 解除日時までに再度違反をしなければ自動で点数が減ります
 違反をした場合、永久違反点数となり、きっかけとなった違反と合わせて最低でも計2点追加されます
 なお、警告に対する問い合わせは {url} で受け付けていますが、問い合わせたからと言って解除されるとは限りません
 また、違反点数が5点に達した場合はBANされますのでご注意ください
 """
                     warn_dm_embed = discord.Embed(
-                        title="期間指定違反点数(tempwarn/執行猶予)が追加されました",
+                        title="一時警告/違反点数(tempwarn/執行猶予)が追加されました",
                         description=WARNDESC,
                         color=0xFF0000,
                     )
