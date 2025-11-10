@@ -13,7 +13,8 @@ async def loop():
     now = datetime.now()
     results = session.query(User).all()
     results2 = session2.query(Oregacha).all()
-    if now.hour == 0 and now.minute == 0:
+    if now.hour == 0 and now.minute == 19:
+        print("\033[40m" + "開始" + "\033[0m")
         for i in results:
             i.dailylogin = False
             i.dailygivexp = False
