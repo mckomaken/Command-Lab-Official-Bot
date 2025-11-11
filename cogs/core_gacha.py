@@ -10,7 +10,7 @@ import json
 # ogstr1 : cog.core_gacha.py使用中(１日のガチャによる結果表示)
 
 
-async def coregacha(interaction: Interaction):
+async def cOreGacha(interaction: Interaction):
     num = random.randint(1, 100000)
     xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
     ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
@@ -57,7 +57,7 @@ async def coregacha(interaction: Interaction):
             return
 
 
-async def coregacha9(interaction: Interaction):
+async def cOreGacha9(interaction: Interaction):
     num = random.randint(1, 100000)
     xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
     ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
@@ -112,7 +112,7 @@ async def coregacha9(interaction: Interaction):
             return
 
 
-async def coregacha10ren(interaction: Interaction):
+async def cOreGacha10(interaction: Interaction):
     xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
     ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
     alldb = session2.query(Oregacha).filter_by(userid="101").first()
@@ -120,7 +120,7 @@ async def coregacha10ren(interaction: Interaction):
     explist = []
     emojilist = []
     jpnamelist = []
-    countlist = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    countlist = []
     with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
         jsonfile = json.load(f)
         data = jsonfile["gacha1"]
@@ -133,6 +133,7 @@ async def coregacha10ren(interaction: Interaction):
                 explist.append(int(item["level"]) * 10000 + int(item["xp"]))
                 emojilist.append(item["emoji"])
                 jpnamelist.append(item["japanese"])
+                countlist.append(count + 1)
                 exec(f"ogdb.{item['database']} += 1")
                 alldb.allcount += 1
                 exec(f"alldb.{item['database']} += 1")
@@ -208,7 +209,7 @@ class COregacha(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="core-gacha", description="鉱石ガチャコマンド")
-    async def coregachacom(self, interaction: discord.Interaction):
+    async def cOreGachaCommand(self, interaction: discord.Interaction):
         userdb = session.query(User).filter_by(userid=interaction.user.id).first()
         gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
         if not userdb:
@@ -231,15 +232,15 @@ class COregacha(commands.Cog):
         if now.day == 9:
             gachadb.dailygacha += 1
             session2.commit()
-            await coregacha9(interaction)
+            await cOreGacha9(interaction)
         elif now.day == 21 and now.month == 7:
             gachadb.dailygacha += 1
             session2.commit()
-            await coregacha9(interaction)
+            await cOreGacha9(interaction)
         else:
             gachadb.dailygacha += 1
             session2.commit()
-            await coregacha(interaction)
+            await cOreGacha(interaction)
 
     # @app_commands.command(name="core", description="鉱石ガチャ登録")
     # async def coregachatouroku(self, interaction: discord.Interaction):
@@ -248,7 +249,7 @@ class COregacha(commands.Cog):
     #     await interaction.response.send_message("合計データを登録しました", ephemeral=True)
 
     @app_commands.command(name="core-gacha-10", description="鉱石ガチャコマンド【10連】")
-    async def coregacha10renncom(self, interaction: discord.Interaction):
+    async def cOreGacha10Command(self, interaction: discord.Interaction):
         userdb = session.query(User).filter_by(userid=interaction.user.id).first()
         gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
         if not userdb:
@@ -271,13 +272,13 @@ class COregacha(commands.Cog):
             elif now.day != 9:
                 gachadb.dailygacha += 10
                 session2.commit()
-                await coregacha10ren(interaction)
+                await cOreGacha10(interaction)
             else:
                 await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
 
     @app_commands.command(name="core-gacha-list", description="鉱石ガチャ結果一覧")
     @app_commands.describe(server="サーバー全体の確率表示(未指定:FALSE(自分の結果表示))")
-    async def coregachalistcom(self, interaction: discord.Interaction, server: bool = False):
+    async def cOreGachaListCommand(self, interaction: discord.Interaction, server: bool = False):
         if server is False:
             gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
             if not gachadb:
