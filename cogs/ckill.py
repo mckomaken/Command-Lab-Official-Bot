@@ -1,11 +1,12 @@
+import json
+import random
+
 from typing import Optional
+
 import discord
 from discord import Member, app_commands
 from discord.ext import commands
 from discord.utils import escape_markdown, escape_mentions
-
-import json
-import random
 
 
 def escape(text: str) -> str:
@@ -81,8 +82,8 @@ class CKill(commands.Cog):
             self.items = [v for k, v in self.lang_data.items() if "item.minecraft." in k]
 
     async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-       if isinstance(error, app_commands.CommandOnCooldown):
-           await interaction.response.send_message("ちょっと待って！", ephemeral=True)
+        if isinstance(error, app_commands.CommandOnCooldown):
+            await interaction.response.send_message("ちょっと待って！", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

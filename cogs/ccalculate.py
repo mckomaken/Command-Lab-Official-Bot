@@ -1,7 +1,8 @@
-from discord.ext import commands
-from discord import app_commands, Color
-import discord
 import math
+
+import discord
+from discord import Color, app_commands
+from discord.ext import commands
 
 
 # エラー定義

@@ -1,9 +1,11 @@
+import random
+
 import discord
 from discord import app_commands
 from discord.ext import commands
-from database import User, session, Oregacha, session2
+
 from config.config import config
-import random
+from database import User, session, Oregacha, session2
 
 
 class Cmdbotlevelcom(commands.Cog):
