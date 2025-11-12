@@ -84,7 +84,7 @@ class Report(commands.Cog):
         self.bot = bot
         self.context_menu = app_commands.ContextMenu(
             name="このメッセージを通報",
-            callback=self.send_msg
+            callback=self.SendMessage
         )
         self.bot.tree.add_command(self.context_menu)
 
