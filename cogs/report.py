@@ -1,10 +1,12 @@
-import discord
-from discord.ext import commands
-from discord import app_commands
 import random
 import string
-from config.config import config
 from datetime import datetime
+
+import discord
+from discord import app_commands
+from discord.ext import commands
+
+from config.config import config
 
 
 class Select(discord.ui.Select):
@@ -20,37 +22,25 @@ class Select(discord.ui.Select):
         self.message = message
 
     async def callback(self, interaction: discord.Interaction):
-        if self.values[0] == "dont-like":
-            reason = "内容が気に入らない(その他)"
-        elif self.values[0] == "discord-violation":
-            reason = "Discordの各種規約違反"
-        elif self.values[0] == "law-violation":
-            reason = "その他法令・規約違反"
-        elif self.values[0] == "off-topic":
-            reason = "チャンネルの趣旨に合わない"
-        elif self.values[0] == "harass":
-            reason = "誹謗中傷・差別・脅迫"
-        elif self.values[0] == "negative-language":
-            reason = "強い言葉づかい・否定的表現"
-        elif self.values[0] == "nsfw":
-            reason = "暴力的・エロ・グロ"
-        elif self.values[0] == "spam":
-            reason = "荒らし・スパム"
-        elif self.values[0] == "politics-religion":
-            reason = "政治・宗教的活動"
-        elif self.values[0] == "exposing-information":
-            reason = "個人情報の過度な詮索・漏洩"
-        elif self.values[0] == "mention":
-            reason = "無意味なメンション"
-        elif self.values[0] == "inappropriate-profile":
-            reason = "不適切な名前・画像・鯖タグ"
-        elif self.values[0] == "advertising-rule-violation":
-            reason = "宣伝ルール違反"
-        elif self.values[0] == "question-rule-violation":
-            reason = "質問ルール違反"
-        elif self.values[0] == "impersonation":
-            reason = "他参加者へのなりすまし"
+        reason_map = {
+            "dont-like": "内容が気に入らない(その他)",
+            "discord-violation": "Discordの各種規約違反",
+            "law-violation": "その他法令・規約違反",
+            "off-topic": "チャンネルの趣旨に合わない",
+            "harass": "誹謗中傷・差別・脅迫",
+            "negative-language": "強い言葉づかい・否定的表現",
+            "nsfw": "暴力的・エロ・グロ",
+            "spam": "荒らし・スパム",
+            "politics-religion": "政治・宗教的活動",
+            "exposing-information": "個人情報の過度な詮索・漏洩",
+            "mention": "無意味なメンション",
+            "inappropriate-profile": "不適切な名前・画像・鯖タグ",
+            "advertising-rule-violation": "宣伝ルール違反",
+            "question-rule-violation": "質問ルール違反",
+            "impersonation": "他参加者へのなりすまし"
+        }
 
+        reason = reason_map.get(self.values[0], "不明な理由")
         important_logch = await self.bot.fetch_channel(config.admin_meeting_ch)
         REPORTMESSAGE = f"""
 `通報内容:`{reason}
@@ -94,11 +84,11 @@ class Report(commands.Cog):
         self.bot = bot
         self.context_menu = app_commands.ContextMenu(
             name="このメッセージを通報",
-            callback=self.send_msg
+            callback=self.send_message
         )
         self.bot.tree.add_command(self.context_menu)
 
-    async def send_msg(self, interaction: discord.Interaction, message: discord.Message) -> None:
+    async def send_message(self, interaction: discord.Interaction, message: discord.Message) -> None:
         random_id = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(4))
 
         embed = discord.Embed(

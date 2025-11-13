@@ -114,7 +114,7 @@ class Cmdbotlevelcom(commands.Cog):
             targetdb.exp -= 10000
         givedb.dailygivexp = True
         session.commit()
-        await interaction.response.send_message(f"{target.mention}に{givexp}与えました", silent=True)
+        await interaction.response.send_message(f"{target.mention}に{givexp}xp与えました", silent=True, allowed_mentions=discord.AllowedMentions.none())
 
     @app_commands.command(name="csetleveling", description="【運営用】参加者のLv/exp変更)")
     @app_commands.describe(choice="選択肢", target="変更する人", level="レベル", experience="経験値")
@@ -154,7 +154,7 @@ class Cmdbotlevelcom(commands.Cog):
                     setuserdb.level += 1
                     setuserdb.exp -= 10000
                 session.commit()
-                await interaction.response.send_message(f"{target.mention}に{level}Lv{experience}exp分を付与しました", silent=True)
+                await interaction.response.send_message(f"{target.mention}に{level}Lv{experience}exp分を付与しました", silent=True, allowed_mentions=discord.AllowedMentions.none())
             case "remove":
                 if ((setuserdb.level * 10000) + setuserdb.exp) <= ((level * 10000) + experience):
                     setuserdb.exp = 0
@@ -206,7 +206,7 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
                 level_embed.add_field(name="有効チャット数", value=f"```go\n{setuserdb.chatcount} チャット\n```", inline=True)
                 level_embed.add_field(name="MEE6レベル", value=f"```go\n{setuserdb.mee6level} Level\n```", inline=True)
-                await interaction.response.send_message(embed=level_embed)
+                await interaction.response.send_message(embed=level_embed, silent=True)
 
 
 async def setup(bot: commands.Bot):

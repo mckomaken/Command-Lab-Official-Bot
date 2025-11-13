@@ -8,15 +8,49 @@ from discord.ext import commands, tasks
 
 from config.config import config
 from database import Oregacha, User, session, session2
-from utils.channel import is_text_channel
-
-EMOJI_PATTERN = r"<a?:\w+:\d+>"
-UNICODE_EMOJI_PATTERN = r"[\U0001F900-\U0001FFFF]"
-MENTION_PATTERN = r"<@\d+>"
-COMBINED_PATTERN = re.compile(f"(?:{EMOJI_PATTERN}|{UNICODE_EMOJI_PATTERN}|{MENTION_PATTERN})")
 
 
-class LevelCog(commands.Cog):
+@tasks.loop(seconds=60)
+async def loop():
+    now = datetime.now()
+    results = session.query(User).all()
+    results2 = session2.query(Oregacha).all()
+    if now.hour == 0 and now.minute == 0:
+        print("\033[41m" + "リセット開始" + "\033[0m")
+        for i in results:
+            i.dailylogin = False
+            i.dailygivexp = False
+            if i.str1 != "":
+                unwarn_date = datetime.strptime(i.str1, "%Y/%m/%d")
+                if now >= unwarn_date:
+                    i.str1 = ""
+                    if i.warnpt > 0:
+                        i.warnpt -= 1
+                    if i.warnreason5 != "":
+                        i.warnreason5 = ""
+                    elif i.warnreason4 != "":
+                        i.warnreason4 = ""
+                    elif i.warnreason3 != "":
+                        i.warnreason3 = ""
+                    elif i.warnreason2 != "":
+                        i.warnreason2 = ""
+                    elif i.warnreason1 != "":
+                        i.warnreason1 = ""
+                    print("\033[45m" + f"{now} : {i.username}の一時警告が解除され、警告ポイントが1減少しました。" + "\033[0m")
+        session.commit()
+        print("\033[42m" + "レベルDB-リセット完了" + "\033[0m")
+        for i2 in results2:
+            i2.dailygacha = 0
+            i2.ogint1 = 0
+            i2.ogstr1 = ""
+        session2.commit()
+        print("\033[44m" + "ガチャDB-リセット完了" + "\033[0m")
+
+
+loop.start()
+
+
+class Cmdbotlevel(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 

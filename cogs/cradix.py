@@ -1,8 +1,9 @@
-from discord.ext import commands
-import discord
-from discord import app_commands
-import numpy as np
 from typing import Optional
+
+import discord
+import numpy as np
+from discord import app_commands
+from discord.ext import commands
 
 
 class CRadix(commands.Cog):

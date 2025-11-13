@@ -1,10 +1,11 @@
-from discord.ext import commands
 import base64
+
 import discord
 from discord import app_commands
+from discord.ext import commands
 
-from utils.util import create_codeblock, create_embed
 from config.config import config
+from utils.util import create_codeblock, create_embed
 
 
 class UrlView(discord.ui.View):
@@ -50,7 +51,7 @@ class CYbase64(commands.Cog):
         )
         if interaction.channel == send_channel:
             await interaction.response.send_message("送信しました", ephemeral=True)
-            await send_channel.send(text, embed=yembed, view=UrlView(url))
+            await send_channel.send(text, embed=yembed, view=UrlView(url), allowed_mentions=discord.AllowedMentions.none())
             await admin_channel.send(embed=admin_embed)
         else:
             await interaction.response.send_message("チャンネル違うよ！", ephemeral=True)

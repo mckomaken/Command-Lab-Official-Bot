@@ -1,7 +1,8 @@
-from discord.ext import commands
 import discord
+from discord.ext import commands
+
 from config.config import config
-from database import User, session
+# from database import User, session のちに使用予定
 
 
 class CWelcome(commands.Cog):
