@@ -51,7 +51,7 @@ class CYbase64(commands.Cog):
         )
         if interaction.channel == send_channel:
             await interaction.response.send_message("送信しました", ephemeral=True)
-            await send_channel.send(text, embed=yembed, view=UrlView(url))
+            await send_channel.send(text, embed=yembed, view=UrlView(url), allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False, replied_user=False))
             await admin_channel.send(embed=admin_embed)
         else:
             await interaction.response.send_message("チャンネル違うよ！", ephemeral=True)
