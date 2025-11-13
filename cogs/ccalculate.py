@@ -1,7 +1,8 @@
-from discord.ext import commands
-from discord import app_commands, Color
-import discord
 import math
+
+import discord
+from discord import Color, app_commands
+from discord.ext import commands
 
 
 # エラー定義
@@ -52,9 +53,7 @@ tashihiki = {
 }
 
 
-keywords = (
-    list(const.keys()) + list(func1.keys()) + list(func2.keys()) + list(kakewari.keys()) + list(tashihiki.keys()) + ["^", "(", ")", "->"]
-)
+keywords = list(const.keys()) + list(func1.keys()) + list(func2.keys()) + list(kakewari.keys()) + list(tashihiki.keys()) + ["^", "(", ")", "->"]
 keywords.sort(reverse=True, key=len)
 
 
@@ -63,7 +62,6 @@ calc_marks = ["+", "-", "*", "/", "^", "st", "lc", "個"]
 
 # 計算
 def calculate(text):
-
     # 式を要素ごとに分割
     def divide(text):
         separate = set()
@@ -82,10 +80,8 @@ def calculate(text):
                 while keyword in text[start:end]:
                     if keyword == text[start:end]:  # startを繰り上げよう
                         stop_separate = False
-                        for i in range(
-                            len(separate) - 1
-                        ):  # separateする前に、今separateしようとしたところが既にseparateされた文字列の一部でないか確認する
-                            if (sorted(separate)[i] <= start and end <= sorted(separate)[i + 1] and text[sorted(separate)[i]: sorted(separate)[i + 1]] in keywords):
+                        for i in range(len(separate) - 1):  # separateする前に、今separateしようとしたところが既にseparateされた文字列の一部でないか確認する
+                            if sorted(separate)[i] <= start and end <= sorted(separate)[i + 1] and text[sorted(separate)[i] : sorted(separate)[i + 1]] in keywords:
                                 stop_separate = True
                                 break
                         if not stop_separate:
@@ -116,7 +112,7 @@ def calculate(text):
                     if i == len(eles):
                         raise CalculateError("カッコが閉じられていません！")
                 end = i
-                result = cal_core(eles[start + 1: end])
+                result = cal_core(eles[start + 1 : end])
                 for _ in range(end - start + 1):
                     eles.pop(start)
                 eles.insert(start, result)
@@ -250,6 +246,7 @@ class CCalculate(commands.Cog):
     @app_commands.command(name="ccalculate", description="計算します")
     @app_commands.describe(text="数式(空の場合電卓が表示されます)")
     async def ccalculate(self, interaction: discord.Interaction, text: str = ""):
+        assert isinstance(interaction.channel, discord.abc.Messageable)
 
         embed = discord.Embed(color=Color.blue(), title="", description="```0```")
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.display_avatar)
@@ -270,9 +267,13 @@ class CCalculate(commands.Cog):
     # ボタンを押されたときの処理
     @commands.Cog.listener()
     async def on_interaction(self, interaction: discord.Interaction):
+        assert interaction.data is not None
+        assert interaction.message
         try:
-            custom_id = interaction.data["custom_id"]
-            button_id = {
+            custom_id = interaction.data.get("custom_id")
+            if not custom_id:
+                return
+            button_ids = {
                 "cto": "->",
                 "citem": "個",
                 "cst": "st",
@@ -294,18 +295,21 @@ class CCalculate(commands.Cog):
                 "c0": "0",
                 "cdot": ".",
                 "cadd": "+",
-                "cbeki": "^"
+                "cbeki": "^",
             }
             embed = interaction.message.embeds[0]
+            if not embed or not embed.description:
+                return
+
             if embed.footer.text != "計算機":
                 return
             embed.title = ""
             text = embed.description.replace("```", "")
-            if custom_id in button_id.keys():  # 文字入力キーの場合
+            if custom_id in button_ids.keys():  # 文字入力キーの場合
                 if text == "0":
-                    text = f"```{button_id[custom_id]}```"
+                    text = f"```{button_ids[custom_id]}```"
                 else:
-                    text = f"```{text}{button_id[custom_id]}```"
+                    text = f"```{text}{button_ids[custom_id]}```"
                 embed.description = text
 
             elif custom_id == "cequal":  # 計算実行

@@ -7,9 +7,9 @@ from discord.ext import commands
 from utils.util import create_codeblock
 
 
-class CBase64(app_commands.Group):
+@app_commands.guild_only()
+class CBase64(commands.GroupCog, group_name="cbase64", description="Base64のエンコード/デコードを行います"):
     def __init__(self, bot: commands.Bot):
-        super().__init__(name="cbase64", description="Base64のエンコード/デコードを行います")
         self.bot = bot
 
     @app_commands.command(name="encode", description="Base64のエンコードを行います")
@@ -29,11 +29,7 @@ class CBase64(app_commands.Group):
         try:
             decoded_message = base64.b64decode(text.encode()).decode()
         except Exception:
-            embed = discord.Embed(
-                color=0x00FF00,
-                title="Base64 Decode",
-                description="デコードに失敗しました。"
-            )
+            embed = discord.Embed(color=0x00FF00, title="Base64 Decode", description="デコードに失敗しました。")
 
             await interaction.response.send_message(embed=embed, ephemeral=True)
         else:
@@ -47,4 +43,4 @@ class CBase64(app_commands.Group):
 
 
 async def setup(bot: commands.Bot):
-    bot.tree.add_command(CBase64(bot=bot))
+    await bot.add_cog(CBase64(bot=bot))

@@ -1,12 +1,15 @@
+import logging
 import os
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 import discord
 from discord.ext import commands, tasks
 from pydantic import BaseModel
 
 from config.config import config
+
+logger = logging.getLogger("bump_notification")
 
 JA_BUMP_MESSAGE = """
 BUMPの時間になったよ♪
@@ -29,6 +32,7 @@ class BumpData(BaseModel):
 
 class BumpNofiticationCog(commands.Cog):
     bump_data: BumpData
+    channel: discord.TextChannel
 
     def __init__(self, bot: commands.Bot):
         super().__init__()
@@ -39,13 +43,14 @@ class BumpNofiticationCog(commands.Cog):
     async def bump_check_task(self):
         if self.bump_data.last_timestamp is None:
             return
-        last = datetime.fromtimestamp(self.bump_data.last_timestamp) + timedelta(
-            hours=2
-        )
+        last = datetime.fromtimestamp(self.bump_data.last_timestamp) + timedelta(hours=2)
         now = datetime.now()
 
         if last < now and not self.bump_data.notified:
-            bump_file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/bump.png"), filename="bump.png")
+            bump_file = discord.File(
+                os.path.join(os.getenv("BASE_DIR", "."), "assets/bump.png"),
+                filename="bump.png",
+            )
 
             bump_embed = discord.Embed(
                 title="BUMPの時間だよ(^O^)／",
@@ -56,24 +61,39 @@ class BumpNofiticationCog(commands.Cog):
             bump_embed.add_field(name="It's BUMP time (^O^)/", value=EN_BUMP_MESSAGE)
             bump_embed.set_image(url="attachment://bump.png")
 
-            channel = await self.bot.fetch_channel(config.bump.channel_id)
-            await channel.send(embed=bump_embed, file=bump_file)
+            await self.channel.send(embed=bump_embed, file=bump_file)
 
             self.bump_data.notified = True
 
     async def cog_load(self):
         if not os.path.exists(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png")):
-            open(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"), mode="w").write(BumpData().model_dump_json())
+            open(
+                os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"),
+                mode="w",
+            ).write(BumpData().model_dump_json())
 
         self.bump_data = BumpData.model_validate_json(
-            open(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"), mode="rb").read()
+            open(
+                os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"),
+                mode="rb",
+            ).read()
         )
 
+        channel = await self.bot.fetch_channel(config.bump.channel_id)
+        if not isinstance(channel, discord.TextChannel):
+            logger.warning("チャンネル設定が無効なためBump通知は行われません")
+            await self.cog_unload()
+            return
+
+        self.channel = channel
         self.bump_check_task.start()
 
     async def cog_unload(self):
         self.bump_check_task.cancel()
-        open(os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"), mode="w").write(self.bump_data.model_dump_json())
+        open(
+            os.path.join(os.getenv("TMP_DIRECTORY", "./.tmp"), "bump_data.png"),
+            mode="w",
+        ).write(self.bump_data.model_dump_json())
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
@@ -82,53 +102,50 @@ class BumpNofiticationCog(commands.Cog):
 
             if embeds is not None and len(embeds) != 0:
                 if "表示順をアップしたよ" in (embeds[0].description or ""):
-                    JST_time = datetime.now()
-                    master = JST_time + timedelta(hours=2)
-                    fmaster = master.strftime(" %Y/%m/%d %H:%M:%S ")
-                    notice_channel = await self.bot.fetch_channel(
-                        config.bump.channel_id
-                    )
+                    current_time = datetime.now()
+                    scheduled = current_time + timedelta(hours=2)
+                    formatted_scheduled_time = scheduled.strftime(" %Y/%m/%d %H:%M:%S ")
 
                     bump_notice_embed = discord.Embed(
                         title="BUMPを検知しました",
-                        description=f"次は {fmaster} 頃に通知するね～ \n ",
+                        description=f"次は {formatted_scheduled_time} 頃に通知するね～ \n ",
                         color=0x00BFFF,
-                        timestamp=JST_time,
+                        timestamp=current_time,
                     )
                     bump_notice_embed.add_field(
                         name="BUMP detected",
-                        value=f"The next time you can BUMP is {fmaster}",
+                        value=f"The next time you can BUMP is {formatted_scheduled_time}",
                     )
 
                     another_channel_bump_notice_embed = discord.Embed(
                         title="別のチャンネルでBUMPを検知しました",
-                        description=f"次はここのチャンネルで {fmaster} 頃に通知するね～ \n ",
+                        description=f"次はここのチャンネルで {formatted_scheduled_time} 頃に通知するね～ \n ",
                         color=0x00BFFF,
-                        timestamp=JST_time,
+                        timestamp=current_time,
                     )
                     another_channel_bump_notice_embed.add_field(
                         name="BUMP detected on another channel",
-                        value=f"The next time you can BUMP is {fmaster} in this channel",
+                        value=f"The next time you can BUMP is {formatted_scheduled_time} in this channel",
                     )
 
                     caution_another_channel_bump_notice_embed = discord.Embed(
                         title="ここのチャンネルでBUMPしないでね",
-                        description=f"次からは {notice_channel.mention} でBUMPしてね \n ",
+                        description=f"次からは {self.channel.mention} でBUMPしてね \n ",
                         color=0xFF4500,
-                        timestamp=JST_time,
+                        timestamp=current_time,
                     )
                     caution_another_channel_bump_notice_embed.add_field(
                         name="Don't BUMP on this channel here",
-                        value=f"Next time, BUMP at {notice_channel.mention}!",
+                        value=f"Next time, BUMP at {self.channel.mention}!",
                     )
 
                     if message.channel.id != config.bump.channel_id:
-                        await notice_channel.send(
-                            "＼(^o^)／", embed=another_channel_bump_notice_embed, silent=True
+                        await self.channel.send(
+                            "＼(^o^)／",
+                            embed=another_channel_bump_notice_embed,
+                            silent=True,
                         )
-                        await message.reply(
-                            embed=caution_another_channel_bump_notice_embed, silent=True
-                        )
+                        await message.reply(embed=caution_another_channel_bump_notice_embed, silent=True)
                     else:
                         await message.channel.send(embed=bump_notice_embed, silent=True)
 

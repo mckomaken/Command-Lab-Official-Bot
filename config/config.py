@@ -1,5 +1,5 @@
-from os import path
 import os
+from os import path
 from typing import Optional
 
 from pydantic import BaseModel
@@ -43,17 +43,34 @@ class Mee6(BaseModel):
 
 
 class Roles(BaseModel):
-    kakedasi: int
-    syokyuu: int
-    tyuukyuu: int
-    zyoukyuu: int
-    jezei: int
-    bezei: int
-    personalcomputer: int
+    beginner: int
+    basic: int
+    intermediate: int
+    advanced: int
+    java_edition: int
+    bedrock_edition: int
+    computer: int
     smartphone: int
-    gamemachine: int
-    serverbooster: int
-    regularmember: int
+    console: int
+    server_booster: int
+    regular_member: int
+
+
+class Channels(BaseModel):
+    bot_log_channel: Optional[int] = None
+    start_notice_channel: Optional[int] = None
+    lottery_channel: Optional[int] = None
+    y_channel: Optional[int] = None
+    advertisement_channnel_id: Optional[int] = None
+    bot_command_channel_id: Optional[int] = None
+    role_set_channel: Optional[int] = None
+    self_introduction_channel: Optional[int] = None
+    authentication_channel: Optional[int] = None
+    admin_meeting_channel: Optional[int] = None
+
+    voice_channel: Optional[int] = None
+
+    question_channels: list[int] = []
 
 
 class Config(BaseModel):
@@ -62,22 +79,13 @@ class Config(BaseModel):
     administrater_role_id: int
     bump: BumpNofitication
     status: str
-    start_notice_channel: Optional[int] = None
     enabled_features: list[str] = []
     owner_ids: list[int] = []
-    prefix: Optional[str] = "cm!"
-    question_channels: list[int] = []
-    y_channel: int
-    cmdbot_log: int
-    lottery_channel: int
+    prefix: str = "cm!"
     mee6: Mee6
     roles: Roles
-    advertisement_channnel_id: int
+    channels: Channels
     admin_category_id: int
-    botcommand_channel_id: int
-    role_set_ch: int
-    ninnsyouch: int
-    selfintroductionch: int
     anotherch: int
     freechat: int
     listench: int
@@ -87,7 +95,7 @@ class Config(BaseModel):
     voice256ch: int
     toiawasech: int
     invite_ch: int
-    admin_meeting_ch: int
+
 
 # -----------------------------------------------------------
 
@@ -103,6 +111,4 @@ class PackVersions(BaseModel):
 
 config = Config.model_validate_json(open(path.join(os.getenv("BASE_DIR", "."), "config/config.json"), mode="rb").read())
 
-pack_versions = PackVersions.model_validate_json(
-    open(path.join(os.getenv("BASE_DIR", "."), "data/pack_versions.json")).read()
-)
+pack_versions = PackVersions.model_validate_json(open(path.join(os.getenv("BASE_DIR", "."), "data/pack_versions.json")).read())

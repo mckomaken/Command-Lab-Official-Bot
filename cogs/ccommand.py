@@ -1,6 +1,6 @@
 import json
-from datetime import datetime
 import os
+from datetime import datetime
 from typing import Any, Optional
 
 import aiofiles
@@ -12,7 +12,7 @@ from schemas.data import CommandEntry
 from utils.util import create_codeblock, create_embed
 
 
-class CCommandInfoButtons(discord.ui.View):
+class CCommandInfoButtonsView(discord.ui.View):
     def __init__(self, je: Optional[Embed] = None, be: Optional[Embed] = None):
         super().__init__(timeout=None)
         if je is None:
@@ -40,9 +40,7 @@ class CCommandInfo(commands.Cog):
         async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
             if command not in data:
-                await interaction.response.send_message(
-                    embed=create_embed(title="エラー", description="コマンドが不明です")
-                )
+                await interaction.response.send_message(embed=create_embed(title="エラー", description="コマンドが不明です"))
                 return
             d = CommandEntry.model_validate(data[command])
 
@@ -58,16 +56,12 @@ class CCommandInfo(commands.Cog):
             je_embed.set_author(name="Java Edition")
             je_embed.add_field(
                 name="使用法",
-                value=create_codeblock(
-                    "/" + d.options.je if d.options.je != "-" else f"/{command}"
-                ),
+                value=create_codeblock("/" + (d.options.je or "") if d.options.je != "-" else f"/{command}"),
                 inline=False,
             )
             je_embed.add_field(
                 name="例",
-                value=create_codeblock(
-                    d.exmp.je if d.exmp.je != "-" else f"/{command}"
-                ),
+                value=create_codeblock(d.exmp.je or "" if d.exmp.je != "-" else f"/{command}"),
                 inline=False,
             )
 
@@ -81,37 +75,32 @@ class CCommandInfo(commands.Cog):
             be_embed.set_author(name="Bedrock Edition")
             be_embed.add_field(
                 name="使用法",
-                value=create_codeblock(
-                    "/" + d.options.be if d.options.be != "-" else f"/{command}"
-                ),
+                value=create_codeblock("/" + (d.options.be or "") if d.options.be != "-" else f"/{command}"),
                 inline=False,
             )
             be_embed.add_field(
                 name="例",
-                value=create_codeblock(
-                    d.exmp.be if d.exmp.be != "-" else f"/{command}"
-                ),
+                value=create_codeblock(d.exmp.be or "" if d.exmp.be != "-" else f"/{command}"),
                 inline=False,
             )
 
         view = None
         if d.is_diff:
-            view = CCommandInfoButtons(je_embed, be_embed)
+            view = CCommandInfoButtonsView(je_embed, be_embed)
 
-        await interaction.response.send_message(embed=(je_embed or be_embed), view=view)
+        response_embed = je_embed or be_embed
+        if response_embed is None or view is None:
+            await interaction.response.send_message(content="エラー", ephemeral=True)
+            return
+
+        await interaction.response.send_message(embed=response_embed, view=view)
 
     @ccommand.autocomplete("command")
-    async def ccommand_autocomplete(
-        self, interaction: discord.Interaction, current: str
-    ):
+    async def ccommand_autocomplete(self, interaction: discord.Interaction, current: str):
         async with aiofiles.open(os.path.join(os.getenv("BASE_DIR", "."), "data/commands.json"), mode="rb") as fp:
             data: dict[str, Any] = json.loads(await fp.read())["command_data"]
 
-            return [
-                app_commands.Choice(name=k, value=k)
-                for k in data.keys()
-                if k.startswith(current)
-            ][:25]
+            return [app_commands.Choice(name=k, value=k) for k in data.keys() if k.startswith(current)][:25]
 
 
 async def setup(bot: commands.Bot):

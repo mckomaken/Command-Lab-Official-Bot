@@ -1,9 +1,10 @@
 import asyncio
 import logging
 import logging.config
+import os
+import sys
 from datetime import datetime
 from os import listdir, path
-import os
 
 import aiofiles
 import discord
@@ -96,9 +97,7 @@ class CommandLabBot(commands.Bot):
     async def start(cls, token: str) -> None:
         logging.config.dictConfig(
             yaml.load(
-                await (await aiofiles.open(
-                    path.join(os.getenv("BASE_DIR", "."), "data/logging.yaml")
-                )).read(),
+                await (await aiofiles.open(path.join(os.getenv("BASE_DIR", "."), "data/logging.yaml"))).read(),
                 Loader=yaml.SafeLoader,
             )
         )
@@ -118,32 +117,28 @@ class CommandLabBot(commands.Bot):
                 )
 
                 logger.info("BOTが起動しました")
-                if config.start_notice_channel is not None:
-                    start_notice_channel = await client.fetch_channel(
-                        config.start_notice_channel
-                    )
+                if config.channels.start_notice_channel is not None:
+                    start_notice_channel = await client.fetch_channel(config.channels.start_notice_channel)
+                    assert isinstance(start_notice_channel, discord.abc.Messageable)
                     await start_notice_channel.send(embed=start_embed)
 
             @client.event
             async def on_message(message: discord.Message):
                 if not message.author.bot:
-                    if message.author.id in client.owner_ids or []:
+                    if message.author.id in (client.owner_ids or []):
                         await client.process_commands(message)
 
                 if client.user in message.mentions and message.reference is None:
                     if message.author.bot:
                         return
                     await message.reply(
-                        f"{message.author.mention}呼んだ？わからないことがあったら以下のコマンドを実行してみてね(^^♪\n> 全コマンド雑説明: </chelp-all:1383117112628871198>\n> コマンド別説明　: </chelp:1218483030247604265>", silent=True
+                        f"{message.author.mention}呼んだ？わからないことがあったら以下のコマンドを実行してみてね(^^♪\n> 全コマンド雑説明: </chelp-all:1383117112628871198>\n> コマンド別説明　: </chelp:1218483030247604265>",
+                        silent=True,
                     )
 
             @client.tree.error
-            async def on_error(
-                ctx: discord.Interaction, error: app_commands.AppCommandError
-            ):
-                if isinstance(error, app_commands.MissingRole) or isinstance(
-                    error, app_commands.MissingPermissions
-                ):
+            async def on_error(ctx: discord.Interaction, error: app_commands.AppCommandError):
+                if isinstance(error, app_commands.MissingRole) or isinstance(error, app_commands.MissingPermissions):
                     await ctx.response.send_message("権限あらへんで(関西弁)", ephemeral=True)
                 else:
                     logger.error(error)
@@ -160,8 +155,12 @@ class CommandLabBot(commands.Bot):
 
 if config.token == "FILE":
     config.token = open("..\\CMTK.txt", mode="r").read()
+
 if config.token == "ENV":
-    config.token = os.getenv("TOKEN")
+    token = os.getenv("TOKEN")
+    if token is None:
+        sys.exit(-12)
+    config.token = token
 
 if __name__ == "__main__":
     asyncio.run(CommandLabBot.start(token=config.token))

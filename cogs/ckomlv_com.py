@@ -1,9 +1,11 @@
+import random
+
 import discord
 from discord import app_commands
 from discord.ext import commands
-from database import User, session, Oregacha, session2
+
 from config.config import config
-import random
+from database import Oregacha, User, session, session2
 
 
 class Cmdbotlevelcom(commands.Cog):
@@ -21,9 +23,12 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed = discord.Embed(
                     title=f"{interaction.user.display_name}のレベル",
                     description=f"```go\nレベル: {userdb.level} lv\n経験値: {userdb.exp} exp\n{userdb.level + 1}lvまであと {10000 - userdb.exp} exp\n```",
-                    color=0x6fb7ff
+                    color=0x6FB7FF,
                 )
-                level_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+                level_embed.set_author(
+                    name=interaction.user.display_name,
+                    icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url,
+                )
                 if more_info is True:
                     gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
                     if not gachadb:
@@ -59,9 +64,12 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed = discord.Embed(
                     title=f"{target.display_name}のレベル",
                     description=f"```go\nレベル: {targetdb.level} lv\n経験値: {targetdb.exp} exp\n{targetdb.level + 1}lvまであと {10000 - targetdb.exp} exp\n```",
-                    color=0x6fb7ff
+                    color=0x6FB7FF,
                 )
-                level_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+                level_embed.set_author(
+                    name=interaction.user.display_name,
+                    icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url,
+                )
                 await interaction.response.send_message(embed=level_embed, silent=True)
                 targetdb.allexp = (targetdb.level * 10000) + targetdb.exp
                 session.commit()
@@ -116,7 +124,7 @@ class Cmdbotlevelcom(commands.Cog):
             app_commands.Choice(value="remove", name="減算"),
             app_commands.Choice(value="set", name="設定"),
             app_commands.Choice(value="stop", name="権限停止"),
-            app_commands.Choice(value="list", name="詳細表示")
+            app_commands.Choice(value="list", name="詳細表示"),
         ]
     )
     async def setleveling(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, level: int = 0, experience: int = 0):
@@ -182,7 +190,7 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed = discord.Embed(
                     title=f"{target.display_name}のレベル",
                     description=f"```go\nレベル: {setuserdb.level} lv\n経験値: {setuserdb.exp} exp\n{setuserdb.level + 1}lvまであと {10000 - setuserdb.exp} exp\n```",
-                    color=0x6fb7ff
+                    color=0x6FB7FF,
                 )
                 gachaplus1 = gachadb.netheritei * 2200 + gachadb.netherites * 400 + gachadb.lapis * 180 + gachadb.diamond * 250 + gachadb.gold * 150 + gachadb.redstone * 130
                 gachaplus2 = gachadb.emerald * 100 + gachadb.iron * 85 + gachadb.copper * 40 + gachadb.quartz * 55 + gachadb.coal * 80

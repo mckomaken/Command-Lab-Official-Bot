@@ -1,13 +1,10 @@
-import io
 import random
-import struct
-import zlib
 
 import discord
 from discord import app_commands
 from discord.ext import commands
 
-from utils.util import create_codeblock, create_embed
+from utils.util import create_embed
 
 
 class CDice(app_commands.Group):
@@ -24,9 +21,7 @@ class CDice(app_commands.Group):
                 raise ValueError
             rolls = [random.randint(1, upto) for _ in range(dices)]
         except ValueError:
-            await interaction.response.send_message(
-                embed=create_embed("エラー", "値が無効です（ダイスの数：1～100、出目：1～10000）"), ephemeral=True
-            )
+            await interaction.response.send_message(embed=create_embed("エラー", "値が無効です（ダイスの数：1～100、出目：1～10000）"), ephemeral=True)
 
         rolls_concatenated = ",".join([str(i) for i in rolls])
         total += sum(rolls)
@@ -50,9 +45,7 @@ class CDice(app_commands.Group):
                 raise ValueError
             rolls = [random.randint(1, upto) for _ in range(dices)]
         except ValueError:
-            await interaction.response.send_message(
-                embed=create_embed("エラー", "値が無効です（ダイスの数：1～100、出目：1～10000）"), ephemeral=True
-            )
+            await interaction.response.send_message(embed=create_embed("エラー", "値が無効です（ダイスの数：1～100、出目：1～10000）"), ephemeral=True)
 
         rolls_concatenated = ",".join([str(i) for i in rolls])
         total += sum(rolls)
@@ -61,17 +54,17 @@ class CDice(app_commands.Group):
 
         if dices == 1:
             if total <= value:
-                embed.color = 0x456cba
+                embed.color = 0x456CBA
                 embed.description = f"結果: {total} <= {value} 成功！"
             else:
-                embed.color = 0xba4545
+                embed.color = 0xBA4545
                 embed.description = f"結果: {total} > {value} 失敗"
         else:
             if total <= value:
-                embed.color = 0x456cba
+                embed.color = 0x456CBA
                 embed.description = f"結果: [{rolls_concatenated}] -> {total} <= {value} 成功！"
             else:
-                embed.color = 0xba4545
+                embed.color = 0xBA4545
                 embed.description = f"結果: [{rolls_concatenated}] -> {total} > {value} 失敗"
 
         await interaction.response.send_message(embed=embed, silent=True)
@@ -87,9 +80,7 @@ class CDice(app_commands.Group):
                 raise ValueError
             rolls = [random.randint(num_min, num_max) for _ in range(count)]
         except ValueError:
-            await interaction.response.send_message(
-                embed=create_embed("エラー", "値が無効です（回数：1～100、範囲：-10000～10000）"), ephemeral=True
-            )
+            await interaction.response.send_message(embed=create_embed("エラー", "値が無効です（回数：1～100、範囲：-10000～10000）"), ephemeral=True)
 
         rolls_concatenated = ",".join([str(i) for i in rolls])
         total += sum(rolls)
@@ -103,10 +94,10 @@ class CDice(app_commands.Group):
             embed.description = f"結果: [{rolls_concatenated}] -> {total}"
 
         await interaction.response.send_message(embed=embed, silent=True)
-        
+
     async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-       if isinstance(error, app_commands.CommandOnCooldown):
-           await interaction.response.send_message("ちょっと待って！", ephemeral=True)
+        if isinstance(error, app_commands.CommandOnCooldown):
+            await interaction.response.send_message("ちょっと待って！", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

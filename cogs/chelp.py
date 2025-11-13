@@ -1,7 +1,8 @@
+import json
+
 import discord
 from discord import app_commands
 from discord.ext import commands
-import json
 
 COMMANDS = [
     "chelp",
@@ -50,7 +51,7 @@ COMMANDS = [
     "cuuid",
     "cwarn",
     "cwarn-list",
-    "cybase64"
+    "cybase64",
 ]
 
 
@@ -74,21 +75,18 @@ class CHelp_com(commands.Cog):
         else:
             for i in range(len(jsonfile[command]["args"])):
                 text = "### " if i % 2 == 0 else ""
-                argdesc = f"{text}{jsonfile[command]["args"][i]}"
+                argdesc = f"{text}{jsonfile[command]['args'][i]}"
                 arglist.append(argdesc)
-                args = f'\n{"\n".join(arglist)}'
-        syntax = f"### 【構文】\n{cmdname["syntax"]}" if cmdname["syntax"] != "" else ""
-        example = f"### 【例文】\n{cmdname["example"]}" if cmdname["example"] != "" else ""
+                args = f"\n{'\n'.join(arglist)}"
+        syntax = f"### 【構文】\n{cmdname['syntax']}" if cmdname["syntax"] != "" else ""
+        example = f"### 【例文】\n{cmdname['example']}" if cmdname["example"] != "" else ""
         EMBEDDESC = f"""
 # </{command}:{cmdid}> {admintf}
 {description}{args}
 {syntax}
 {example}
 """
-        help_embed = discord.Embed(
-            description=EMBEDDESC,
-            color=0x60ff99
-        )
+        help_embed = discord.Embed(description=EMBEDDESC, color=0x60FF99)
         await interaction.followup.send(embed=help_embed, silent=True)
 
     @ctranslate.autocomplete("command")

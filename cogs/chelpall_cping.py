@@ -17,6 +17,8 @@ class CHelpCog(commands.Cog):
     @app_commands.command(name="chelp-all", description="このBotができること一覧")
     @app_commands.guild_only()
     async def chelp(self, interaction: discord.Interaction):
+        assert isinstance(interaction.user, discord.Member)
+
         embeds: list[discord.Embed] = []
         cmds: list[app_commands.Command] = []
         roles = [r.id for r in interaction.user.roles]
@@ -30,7 +32,7 @@ class CHelpCog(commands.Cog):
 
         for i in range(0, len(cmds), 5):
             emb = discord.Embed(title="ヘルプ", timestamp=datetime.now(), color=0x00AA00)
-            for command in cmds[i:i + 5]:
+            for command in cmds[i : i + 5]:
                 c_name = "/" + command.qualified_name
                 c_desc = create_codeblock(command.description)
 
@@ -57,9 +59,10 @@ class CHelpCog(commands.Cog):
         pi1JST_time = datetime.now()
         text1 = f"{latency_tick}tick\n{latency_ms}ms"
 
-        ping1_embed = discord.Embed(
-            title="現在のping", description=text1, color=0x400080, timestamp=pi1JST_time
-        )
+        if count is None:
+            count = 1
+
+        ping1_embed = discord.Embed(title="現在のping", description=text1, color=0x400080, timestamp=pi1JST_time)
 
         if count > 10:
             await interaction.response.send_message(
@@ -75,7 +78,6 @@ class CHelpCog(commands.Cog):
 
                     @tasks.loop(minutes=3, count=count)  # ←あとで３分に変える
                     async def interval_cb():
-
                         pi2JST_time = datetime.now()
                         text2 = f"{latency_tick}tick\n{latency_ms}ms"
 
@@ -94,7 +96,6 @@ class CHelpCog(commands.Cog):
 
                     @tasks.loop(seconds=1, count=count)
                     async def interval_cb():
-
                         pi3JST_time = datetime.now()
                         text3 = f"{latency_tick}tick\n{latency_ms}ms"
 

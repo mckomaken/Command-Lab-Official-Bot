@@ -1,8 +1,10 @@
-from discord.ext import commands
-import discord
-from config.config import config
 import random
 from datetime import datetime
+
+import discord
+from discord.ext import commands
+
+from config.config import config
 
 ORUVANORUVAN = """
 ஒருவன் ஒருவன் முதலாளி
@@ -28,13 +30,13 @@ GABU = """
 """
 
 
-class CAutoreply(commands.Cog):
+class AutoReplyCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
-        if message.channel.id == config.botcommand_channel_id:
+        if message.channel.id == config.channels.bot_command_channel_id:
             if message.author.bot:
                 return
 
@@ -47,6 +49,8 @@ class CAutoreply(commands.Cog):
                 else:
                     await message.channel.send(GABU, silent=True)
 
+                return
+
             elif message.content.startswith("NullPointerException"):
                 num = random.random()
                 if num < 0.95:
@@ -55,6 +59,8 @@ class CAutoreply(commands.Cog):
                     await message.channel.send("ｶﾞﾌﾞｯ", silent=True)
                 else:
                     await message.channel.send(GABU, silent=True)
+
+                return
             # elif message.content.startswith("あけおめ"):
             #     num = random.random()
             #     if num < 0.6:
@@ -70,6 +76,7 @@ class CAutoreply(commands.Cog):
 
             elif message.content.startswith("!d bump"):
                 await message.channel.send("そのコマンドは<t:1648767600:F>にサ終しました(笑)", silent=True)
+                return
 
             elif message.content.startswith("/bump"):
                 await message.channel.send(
@@ -77,12 +84,15 @@ class CAutoreply(commands.Cog):
                         title="BUMPを実行出来てないよ!!",
                         color=0x00BFFF,
                         timestamp=datetime.now(),
-                    ), silent=True
+                    ),
+                    silent=True,
                 )
+                return
 
             elif message.content.startswith("oruvanoruvan"):
                 await message.channel.send(ORUVANORUVAN, silent=True)
+                return
 
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(CAutoreply(bot))
+    await bot.add_cog(AutoReplyCog(bot))

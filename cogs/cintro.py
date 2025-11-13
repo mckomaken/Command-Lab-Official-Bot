@@ -30,30 +30,29 @@ class IntroView(View):
 
     @button(emoji="🗑️", custom_id="delete", style=discord.ButtonStyle.gray)
     async def _remove(self, interaction: Interaction, item: Item):
+        assert interaction.message and interaction.message.reference
+        assert interaction.guild
+        assert isinstance(interaction.channel, discord.TextChannel)
+
         await interaction.response.defer(thinking=True, ephemeral=True)
         old_message_id = interaction.message.reference.message_id
-        old_message = await interaction.channel.fetch_message(old_message_id)
-        if old_message is None:
-            await interaction.followup.send(
-                content="メッセージ情報がないから消去できないよ!!!", ephemeral=True
-            )
-        member_id = old_message.author.id
-        member = await interaction.guild.fetch_member(member_id)
-        if member is None:
-            await interaction.followup.send(
-                "削除したよ\n送り主が既にサーバーにいなかったから誰でも消せるようになってるよ", ephemeral=True
-            )
-            await interaction.message.delete()
-        elif member_id == interaction.user.id:
-            await interaction.followup.send(content="削除したよ", ephemeral=True)
-            await interaction.message.delete()
-        else:
-            if member.resolved_permissions.manage_messages:
+
+        if old_message_id is not None and (old_message := await interaction.channel.fetch_message(old_message_id)) is not None:
+            member_id = old_message.author.id
+            member = await interaction.guild.fetch_member(member_id)
+            if member is None:
+                await interaction.followup.send("削除したよ\n送り主が既にサーバーにいなかったから誰でも消せるようになってるよ", ephemeral=True)
+                await interaction.message.delete()
+            elif member_id == interaction.user.id:
+                await interaction.followup.send(content="削除したよ", ephemeral=True)
                 await interaction.message.delete()
             else:
-                await interaction.followup.send(
-                    content="権限がないから消去できないよ", ephemeral=True
-                )
+                if member.resolved_permissions and member.resolved_permissions.manage_messages:
+                    await interaction.message.delete()
+                else:
+                    await interaction.followup.send(content="権限がないから消去できないよ", ephemeral=True)
+        else:
+            await interaction.followup.send(content="メッセージ情報がないから消去できないよ!!!", ephemeral=True)
 
 
 class CIntro(commands.Cog):
@@ -64,11 +63,14 @@ class CIntro(commands.Cog):
     async def message(self, message: discord.Message):
         if message.author == self.bot.user:
             return
-        elif message.channel.id in config.question_channels:
+        elif message.channel.id in config.channels.question_channels:
+            assert message.guild
+
             org_msg = message
             counter = 0
-            for i in config.question_channels:
+            for i in config.channels.question_channels:
                 q_ch = message.guild.get_channel(i)
+
                 if q_ch.type == discord.ChannelType.forum:
                     for j in q_ch.threads:
                         async for message in j.history(limit=200):
@@ -84,9 +86,7 @@ class CIntro(commands.Cog):
                     description=QDESC,
                     color=0xE06E64,
                 )
-                embed.set_footer(
-                    text=QFOOTER
-                )
+                embed.set_footer(text=QFOOTER)
                 view = IntroView()
                 await org_msg.reply(embed=embed, view=view)
 

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Optional
 
 import discord
 from discord.ext import commands
@@ -33,19 +34,14 @@ class EmbedPaginator(discord.ui.View):
     def __init__(
         self,
         *,
-        timeout: int = 60,
-        PreviousButton: discord.ui.Button = discord.ui.Button(
-            emoji=discord.PartialEmoji(name="\U000025c0")
-        ),
-        NextButton: discord.ui.Button = discord.ui.Button(
-            emoji=discord.PartialEmoji(name="\U000025b6")
-        ),
+        timeout: Optional[int] = 60,
+        PreviousButton: discord.ui.Button = discord.ui.Button(emoji=discord.PartialEmoji(name="\U000025c0")),
+        NextButton: discord.ui.Button = discord.ui.Button(emoji=discord.PartialEmoji(name="\U000025b6")),
         PageCounterStyle: discord.ButtonStyle = discord.ButtonStyle.grey,
         InitialPage: int = 0,
         AllowExtInput: bool = False,
         ephemeral: bool = False,
     ) -> None:
-
         self.PreviousButton = PreviousButton
         self.NextButton = NextButton
         self.PageCounterStyle = PageCounterStyle
@@ -56,16 +52,14 @@ class EmbedPaginator(discord.ui.View):
         self.pages = None
         self.ctx = None
         self.message = None
-        self.current_page = None
+        self.current_page = 1
         self.page_counter = None
-        self.total_page_count = None
+        self.total_page_count = 1
 
         super().__init__(timeout=timeout)
 
     # Embedを送信
-    async def start(
-        self, ctx: discord.Interaction | commands.Context, pages: list[discord.Embed]
-    ):
+    async def start(self, ctx: discord.Interaction | commands.Context, pages: list[discord.Embed]):
         """
         await EmbedPaginator.start(ctx, pages)
         paginateされたembedを送信します
@@ -98,9 +92,7 @@ class EmbedPaginator(discord.ui.View):
         self.add_item(self.page_counter)
         self.add_item(self.NextButton)
 
-        self.message = await ctx.send(
-            embed=self.pages[self.InitialPage], view=self, ephemeral=self.ephemeral
-        )
+        self.message = await ctx.send(embed=self.pages[self.InitialPage], view=self, ephemeral=self.ephemeral)
 
     # ページを一つ前へ戻す
     async def previous(self):
@@ -149,6 +141,4 @@ class EmbedPaginator(discord.ui.View):
 
 class SimplePaginatorPageCounter(discord.ui.Button):
     def __init__(self, style: discord.ButtonStyle, TotalPages, InitialPage):
-        super().__init__(
-            label=f"{InitialPage + 1}/{TotalPages}", style=style, disabled=True
-        )
+        super().__init__(label=f"{InitialPage + 1}/{TotalPages}", style=style, disabled=True)
