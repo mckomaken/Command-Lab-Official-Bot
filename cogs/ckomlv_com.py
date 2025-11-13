@@ -108,7 +108,7 @@ class Cmdbotlevelcom(commands.Cog):
             targetdb.exp -= 10000
         givedb.dailygivexp = True
         session.commit()
-        await interaction.response.send_message(f"{target.mention}に{givexp}xp与えました", silent=True, allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False, replied_user=False))
+        await interaction.response.send_message(f"{target.mention}に{givexp}xp与えました", silent=True, allowed_mentions=discord.AllowedMentions.none())
 
     @app_commands.command(name="csetleveling", description="【運営用】参加者のLv/exp変更)")
     @app_commands.describe(choice="選択肢", target="変更する人", level="レベル", experience="経験値")
@@ -148,7 +148,7 @@ class Cmdbotlevelcom(commands.Cog):
                     setuserdb.level += 1
                     setuserdb.exp -= 10000
                 session.commit()
-                await interaction.response.send_message(f"{target.mention}に{level}Lv{experience}exp分を付与しました", silent=True, allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False, replied_user=False))
+                await interaction.response.send_message(f"{target.mention}に{level}Lv{experience}exp分を付与しました", silent=True, allowed_mentions=discord.AllowedMentions.none())
             case "remove":
                 if ((setuserdb.level * 10000) + setuserdb.exp) <= ((level * 10000) + experience):
                     setuserdb.exp = 0
