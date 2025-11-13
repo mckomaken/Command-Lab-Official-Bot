@@ -21,7 +21,7 @@ class Select(discord.ui.Select):
         self.bot = bot
         self.message = message
 
-    async def callback(self, interaction: discord.Interaction):
+    async def CallBack(self, interaction: discord.Interaction):
         reason_map = {
             "dont-like": "内容が気に入らない(その他)",
             "discord-violation": "Discordの各種規約違反",
@@ -84,11 +84,11 @@ class Report(commands.Cog):
         self.bot = bot
         self.context_menu = app_commands.ContextMenu(
             name="このメッセージを通報",
-            callback=self.send_message
+            callback=self.SendMessage
         )
         self.bot.tree.add_command(self.context_menu)
 
-    async def send_message(self, interaction: discord.Interaction, message: discord.Message) -> None:
+    async def SendMessage(self, interaction: discord.Interaction, message: discord.Message) -> None:
         random_id = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(4))
 
         embed = discord.Embed(
