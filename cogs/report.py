@@ -41,7 +41,7 @@ class Select(discord.ui.Select):
         }
 
         reason = reason_map.get(self.values[0], "不明な理由")
-        important_logch = await self.bot.fetch_channel(config.admin_meeting_ch)
+        important_logch = await self.bot.fetch_channel(config.channels.admin_meeting)
         REPORTMESSAGE = f"""
 `通報内容:`{reason}
 `送信者　:`{self.message.author.mention}

@@ -48,7 +48,7 @@ class LOttery(discord.ui.View):  # 抽選コマンド
 
     @discord.ui.button(label="応募")
     async def pressedLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
-        send_channel = await self.bot.fetch_channel(config.lottery_channel)
+        send_channel = await self.bot.fetch_channel(config.channels.lottery)
         await send_channel.send(f"応募者 : {interaction.user.display_name}\n```{interaction.user.name}```")
         await interaction.response.send_message("応募されました。抽選開始までお待ちください。", ephemeral=True)
 
@@ -66,7 +66,7 @@ class CAdminCog(commands.Cog):
             app_commands.Choice(name="プレゼント企画", value="cl3"),
         ]
     )
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def cmisc(
         self, interaction: discord.Interaction, choice: app_commands.Choice[str]
     ):
@@ -92,7 +92,7 @@ class CAdminCog(commands.Cog):
     @app_commands.describe(
         title="タイトル", description="説明", sub_title="サブタイトル", sub_description="サブ説明"
     )
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def cn(
         self,
         interaction: discord.Interaction,

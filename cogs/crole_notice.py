@@ -13,18 +13,18 @@ class Rolenotice(commands.Cog):
 
         if message.author.bot:
             return
-        if message.channel.id == config.ninnsyouch:
+        if message.channel.id == config.channels.authentication_inquiry:
             return
-        kake = message.guild.get_role(config.roles.kakedasi)
-        syo = message.guild.get_role(config.roles.syokyuu)
-        tyuu = message.guild.get_role(config.roles.tyuukyuu)
-        zyou = message.guild.get_role(config.roles.zyoukyuu)
-        je = message.guild.get_role(config.roles.jezei)
-        be = message.guild.get_role(config.roles.bezei)
-        pc = message.guild.get_role(config.roles.personalcomputer)
+        kake = message.guild.get_role(config.roles.newbie)
+        syo = message.guild.get_role(config.roles.beginner)
+        tyuu = message.guild.get_role(config.roles.intermediate)
+        zyou = message.guild.get_role(config.roles.advanced)
+        je = message.guild.get_role(config.roles.java_edition)
+        be = message.guild.get_role(config.roles.bedrock_edition)
+        pc = message.guild.get_role(config.roles.computer)
         sumaho = message.guild.get_role(config.roles.smartphone)
-        gameki = message.guild.get_role(config.roles.gamemachine)
-        role_ch = await self.bot.fetch_channel(config.role_set_ch)
+        gameki = message.guild.get_role(config.roles.console)
+        role_ch = await self.bot.fetch_channel(config.channels.role_set)
 
         comlank = ""
         jebe = ""
@@ -41,7 +41,7 @@ class Rolenotice(commands.Cog):
             kisyu = f"> {pc.mention}/{sumaho.mention}/{gameki.mention}のうち1つ\n"
             send = True
         if send is True:
-            await message.reply(f"以下のロールが付いていません\n{comlank}{jebe}{kisyu}<#{config.role_set_ch}>でロールを付けてきてください\n-# なおこのメッセージは10秒後に消えます", silent=True, delete_after=10, allowed_mentions=discord.AllowedMentions(roles=False))
+            await message.reply(f"以下のロールが付いていません\n{comlank}{jebe}{kisyu}<#{config.channels.role_set}>でロールを付けてきてください\n-# なおこのメッセージは10秒後に消えます", silent=True, delete_after=10, allowed_mentions=discord.AllowedMentions(roles=False))
             await role_ch.send(f"{message.author.mention}\nこちらのチャンネルの上部で\n{comlank}{jebe}{kisyu}対応するボタンを押して、ロールを付けてきてください\n-# なおこのメッセージは20秒後に消えます", silent=True, delete_after=20, allowed_mentions=discord.AllowedMentions(roles=False))
         else:
             return

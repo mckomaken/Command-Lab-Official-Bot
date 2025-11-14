@@ -54,7 +54,7 @@ class Cmdbotlevelcom(commands.Cog):
             if not targetdb:
                 await interaction.response.send_message(f"`{target.display_name}`はまだ経験値を獲得していません\n### 喋らせよう!!!!!(笑)", silent=True)
                 return
-            elif targetdb.noxp is True or target.id == config.syunngikuid:
+            elif targetdb.noxp is True or target.id == config.users.syunngiku:
                 await interaction.response.send_message(f"`{target.display_name}`の経験値量は確認できません", ephemeral=True)
                 return
             else:
@@ -125,7 +125,7 @@ class Cmdbotlevelcom(commands.Cog):
         setuserdb = session.query(User).filter_by(userid=target.id).first()
         gachadb = session2.query(Oregacha).filter_by(userid=target.id).first()
 
-        if interaction.guild.get_role(config.administrater_role_id) not in interaction.user.roles:
+        if interaction.guild.get_role(config.roles.administrater) not in interaction.user.roles:
             await interaction.response.send_message("権限ないよ！", ephemeral=True)
             return
         if not setuserdb:
