@@ -8,7 +8,7 @@ from config.config import config
 
 async def add_or_remove_role(roleId: int, interaction: Interaction):
     role = interaction.guild.get_role(roleId)
-    admin_channel = await interaction.guild.fetch_channel(config.cmdbot_log)
+    admin_channel = await interaction.guild.fetch_channel(config.channels.cmdbot_log)
     roleremove_embed = discord.Embed(
         description=f"{role.mention}を解除しました",
         color=0x7cfc00
@@ -102,7 +102,7 @@ class CRoleAdButtons(View):  # 宣伝関連 & 質問メンション
         label="宣伝し隊", style=ButtonStyle.green, emoji="📝", row=0, custom_id="ads-sender"
     )
     async def pressedSen1(self, interaction: Interaction, button: Button):
-        senndennkenn = interaction.guild.get_role(config.mee6.senndennkenn)
+        senndennkenn = interaction.guild.get_role(config.roles.advertising_rights)
         sen1_embed = discord.Embed(
             description=f"{senndennkenn.mention}を持っていないため付与出来ませんでした",
             color=0xff0000
@@ -172,7 +172,7 @@ class CRole(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="crole", description="【運営】ロール付与するボタンを表示させるコマンドです)")
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def croll(self, interaction: Interaction):
         role_embed = discord.Embed(
             title="ロール設定",

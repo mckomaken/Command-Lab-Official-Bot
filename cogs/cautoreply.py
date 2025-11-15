@@ -36,7 +36,7 @@ class CAutoreply(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
-        if message.channel.id == config.botcommand_channel_id:
+        if message.channel.id == config.channels.bot_command:
             if message.author.bot:
                 return
 

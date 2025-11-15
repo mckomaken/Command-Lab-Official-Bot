@@ -18,7 +18,7 @@ class LOttery(discord.ui.View):  # 抽選コマンド
 
     @discord.ui.button(label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present")
     async def pressedLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
-        send_channel = await self.bot.fetch_channel(config.lottery_channel)
+        send_channel = await self.bot.fetch_channel(config.channels.lottery)
         oubouser = session.query(User).filter_by(userid=interaction.user.id).first()
         if oubouser is None:
             userdb = User(userid=interaction.user.id, username=interaction.user.name)
@@ -49,8 +49,8 @@ class LOttery(discord.ui.View):  # 抽選コマンド
 
     @discord.ui.button(label="企画終了", style=ButtonStyle.red, custom_id="delevent")
     async def pressedDeleventButton(self, interaction: discord.Interaction, button: discord.ui.button):
-        role = interaction.guild.get_role(config.administrater_role_id)
-        send_channel = await self.bot.fetch_channel(config.lottery_channel)
+        role = interaction.guild.get_role(config.roles.administrater)
+        send_channel = await self.bot.fetch_channel(config.channels.lottery)
         if role in interaction.user.roles:
             await interaction.message.delete()
         else:
@@ -65,7 +65,7 @@ class PUtilottery(discord.ui.View):  # プチ抽選コマンド
 
     @discord.ui.button(label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present")
     async def pressedputiLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
-        send_channel = await self.bot.fetch_channel(config.lottery_channel)
+        send_channel = await self.bot.fetch_channel(config.channels.lottery)
         oubouser = session.query(User).filter_by(userid=interaction.user.id).first()
         if oubouser is None:
             await interaction.response.send_message("応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが10以上\nを満たしていません\n現時点でのチャット数: 0\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
@@ -93,8 +93,8 @@ class PUtilottery(discord.ui.View):  # プチ抽選コマンド
 
     @discord.ui.button(label="企画終了", style=ButtonStyle.red, custom_id="delevent")
     async def pressedDeleventButton(self, interaction: discord.Interaction, button: discord.ui.button):
-        role = interaction.guild.get_role(config.administrater_role_id)
-        send_channel = await self.bot.fetch_channel(config.lottery_channel)
+        role = interaction.guild.get_role(config.roles.administrater)
+        send_channel = await self.bot.fetch_channel(config.channels.lottery)
         if role in interaction.user.roles:
             await interaction.message.delete()
         else:
@@ -120,7 +120,7 @@ class CPresent(commands.Cog):
         mcmd2500xp="mcmd-level 2500XPをプレゼントする人数(初期値0)",
         mcmd1000xp="mcmd-level 1000XPをプレゼントする人数(初期値0)",
     )
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def cpresent(self, interaction: discord.Interaction, ptitle: str, kikann: int, amagif1000: int = 0, amagif500: int = 0, nitro: int = 0, abata_prof: int = 0, pripe: int = 0, mcmd10000xp: int = 0, mcmd5000xp: int = 0, mcmd2500xp: int = 0, mcmd1000xp: int = 0):
 
         syuuryoubi = datetime.now() + timedelta(days=kikann)
@@ -194,7 +194,7 @@ class CPresent(commands.Cog):
         serveruser="サーバー人数(100の倍数で入力)",
         kikann="応募期間(日数入力)"
     )
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def cpresent_user(self, interaction: discord.Interaction, serveruser: int, kikann: int):
 
         syuuryoubi = datetime.now() + timedelta(days=kikann)
@@ -231,7 +231,7 @@ class CPresent(commands.Cog):
         await interaction.channel.send(view=LOttery(self.bot))
 
     @app_commands.command(name="cpresent-reset", description="【運営】present企画-リセットコマンド")
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def cpresentreset(self, interaction: discord.Interaction):
         results = session.query(User).all()
         for i in results:

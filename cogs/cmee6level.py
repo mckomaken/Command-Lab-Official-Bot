@@ -14,7 +14,7 @@ class CMee6level(commands.Cog):
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
         if message.content.startswith("mee6level"):
-            if message.channel.id in [config.mee6.botch]:  # 非公開mee6-level通知チャンネル
+            if message.channel.id in [config.channels.level_data]:  # 非公開mee6-level通知チャンネル
                 userid = int(message.content.split(",")[1])  # userid表示
                 username = str(message.content.split(",")[2])  # user名表示
                 level = int(message.content.split(",")[3])  # レベル
@@ -28,13 +28,13 @@ class CMee6level(commands.Cog):
                 else:
                     text = ""
 
-                mee6_channel = await self.bot.fetch_channel(config.mee6.levelup)  # 新たに作るmee6通知チャンネル
-                levelupnoticeoff = message.guild.get_role(config.mee6.levelupnoticeoff)
-                senndennkenn = message.guild.get_role(config.mee6.senndennkenn)
-                hanabira = message.guild.get_role(config.mee6.hanabira)
+                mee6_channel = await self.bot.fetch_channel(config.channels.levelup)  # 新たに作るmee6通知チャンネル
+                levelupnoticeoff = message.guild.get_role(config.roles.levelupnoticeoff)
+                senndennkenn = message.guild.get_role(config.roles.advertising_rights)
+                hanabira = message.guild.get_role(config.roles.no_advertising)
                 lvupuser = await message.guild.fetch_member(userid)
                 jointime = int(datetime.now().timestamp() - lvupuser.joined_at.timestamp())
-                admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
+                admin_channel = await self.bot.fetch_channel(config.channels.cmdbot_log)
                 jointime1day = lvupuser.joined_at + timedelta(days=1)
                 icon = "<:mee6_icon:1394152910182678610>"
 
@@ -55,11 +55,11 @@ class CMee6level(commands.Cog):
                 session.commit()
 
         elif message.content.startswith("mcmdlevel"):
-            if message.channel.id in [config.mee6.botch]:  # 非公開mee6-level通知チャンネル
+            if message.channel.id in [config.channels.level_data]:  # 非公開mee6-level通知チャンネル
                 userid = int(message.content.split(",")[1])  # userid表示
                 username = str(message.content.split(",")[2])  # user名表示
                 level = int(message.content.split(",")[3])  # レベル
-                mcmdlv_5 = message.guild.get_role(config.mee6.mcmdlv_5)
+                mcmdlv_5 = message.guild.get_role(config.roles.mcmdlv_5)
                 lvupuser = await message.guild.fetch_member(userid)
                 icon = "<:com2_i:834433852474392576>"
 
@@ -67,7 +67,7 @@ class CMee6level(commands.Cog):
                     if mcmdlv_5 not in lvupuser.roles:
                         await lvupuser.add_roles(mcmdlv_5)
 
-                if userid == config.syunngikuid:
+                if userid == config.users.syunngiku:
                     return
                 elif level <= 0:
                     return
@@ -82,8 +82,8 @@ class CMee6level(commands.Cog):
                 else:
                     return
 
-                mee6_channel = await self.bot.fetch_channel(config.mee6.levelup)  # 新たに作るmee6通知チャンネル
-                levelupnoticeoff = message.guild.get_role(config.mee6.levelupnoticeoff)
+                mee6_channel = await self.bot.fetch_channel(config.channels.levelup)  # 新たに作るmee6通知チャンネル
+                levelupnoticeoff = message.guild.get_role(config.roles.levelupnoticeoff)
                 userdisp = f"`{username}`" if levelupnoticeoff in lvupuser.roles else f"<@{userid}>"
                 await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mcmd-level {level}")
 

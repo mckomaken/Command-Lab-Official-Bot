@@ -46,12 +46,12 @@ class CommandLabBot(commands.Bot):
         super().__init__(
             command_prefix=config.prefix,
             intents=discord.Intents.all(),
-            owner_ids=config.owner_ids,
+            owner_ids=config.users.owner_ids,
         )
         self.status_index = 0
 
     async def is_owner(self, user: User) -> bool:
-        return user.id in config.owner_ids
+        return user.id in config.users.owner_ids
 
     async def change_status(self):
         await self.wait_until_ready()
@@ -118,9 +118,9 @@ class CommandLabBot(commands.Bot):
                 )
 
                 logger.info("BOTが起動しました")
-                if config.start_notice_channel is not None:
+                if config.channels.komaken_bot_development_room is not None:
                     start_notice_channel = await client.fetch_channel(
-                        config.start_notice_channel
+                        config.channels.komaken_bot_development_room
                     )
                     await start_notice_channel.send(embed=start_embed)
 

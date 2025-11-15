@@ -23,7 +23,7 @@ class CHelpCog(commands.Cog):
 
         for cmd in self.bot.tree.walk_commands():
             if cmd.description in "運営":
-                if config.administrater_role_id not in roles:
+                if config.roles.administrater not in roles:
                     continue
             if not isinstance(cmd, app_commands.Group):
                 cmds.append(cmd)
