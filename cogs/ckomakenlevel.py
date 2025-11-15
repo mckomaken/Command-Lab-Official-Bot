@@ -94,7 +94,7 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.channel.id == config.channels.voice:
             return
-        elif message.channel.id == config.channels.voice265:
+        elif message.channel.id == config.channels.voice256:
             return
         elif message.channel.category_id == config.categories.administrater:
             start = 50 - math.floor(userdb.level / 10)

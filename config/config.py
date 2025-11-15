@@ -101,13 +101,13 @@ class Channels():  # yellow 新規
     advertisement: int  # orange 宣伝チャンネル
     bot_command: int  # orange Botコマンドチャンネル
     role_set: int  # orange ロール設定チャンネル
-    authentication_inquiry: int  # orange 認証問い合わせチャンネル
+    authentication: int  # orange 認証問い合わせチャンネル
     selfintroduction: int  # orange 自己紹介チャンネル
     another: int  # orange その他チャンネル(未指定チャンネル)
     freechat: int  # orange 総合雑談チャンネル
     listen: int  # orange 聞き専チャンネル
     voice: int  # orange ボイスチャンネル
-    voice265: int  # orange 256kbpsボイスチャンネル
+    voice256: int  # orange 256kbpsボイスチャンネル
     discord_inquiry: int  # orange Discord問い合わせチャンネル
     invite: int  # orange 入所者チャンネル
     admin_meeting: int  # orange 運営会議チャンネル

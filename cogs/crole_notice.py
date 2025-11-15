@@ -13,7 +13,7 @@ class Rolenotice(commands.Cog):
 
         if message.author.bot:
             return
-        if message.channel.id == config.channels.authentication_inquiry:
+        if message.channel.id == config.channels.authentication:
             return
         kake = message.guild.get_role(config.roles.newbie)
         syo = message.guild.get_role(config.roles.beginner)
