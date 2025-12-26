@@ -28,7 +28,7 @@ class CMee6level(commands.Cog):
                 else:
                     text = ""
 
-                mee6_channel = await self.bot.fetch_channel(config.channels.levelup)  # 新たに作るmee6通知チャンネル
+                mee6_channel = await self.bot.fetch_channel(config.channels.levelup)  # レベルアップ通知チャンネル
                 levelupnoticeoff = message.guild.get_role(config.roles.levelupnoticeoff)
                 senndennkenn = message.guild.get_role(config.roles.advertising_rights)
                 hanabira = message.guild.get_role(config.roles.no_advertising)
