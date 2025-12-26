@@ -19,9 +19,9 @@ logger = logging.getLogger("root")
 
 # ステータス定義 ({key}を{value}中)
 STATUSES = [
-    ("JavaEdition", "playing", 120),
-    ("BedrockEdition", "playing", 120),
-    ("BugEdition", "playing", 10),
+    ("JavaEditionをプレイ中", "playing", 120),
+    ("BedrockEditionをプレイ中", "playing", 120),
+    ("BugEditionをプレイ中(笑)", "playing", 10),
     ("マイクラのコマンドを勉強中", "playing", 100),
     ("discord.pyとpythonを勉強中", "playing", 100),
     ("Javaを勉強中", "playing", 100),
@@ -29,13 +29,13 @@ STATUSES = [
     ("コマ研Botはいつでもあなたのメッセージを見ている", "watching", 20),
     ("大体何でもできるのだ♪", "watching", 30),
     ("私はボットです", "playing", 30),
-    ("Netflixで映画", "watching", 30),
+    ("Netflixで映画を視聴中", "watching", 30),
     ("ポテトをツンツン中", "playing", 30),
-    ("YouTube", "watching", 100),
+    ("YouTubeを視聴中", "watching", 100),
     ("春菊を調理中", "playing", 120),
-    ("春菊の配信", "watching", 10),
-    ("YouTube", "watching", 100),
-    ("Spotify", "listening", 100),
+    ("春菊の配信を視聴中", "watching", 10),
+    ("ニコニコ動画を視聴中", "watching", 100),
+    ("Spotifyを再生中", "listening", 100),
 ]
 
 
