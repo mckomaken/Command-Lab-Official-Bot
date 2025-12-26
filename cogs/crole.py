@@ -177,7 +177,7 @@ class CRole(commands.Cog):
         role_embed = discord.Embed(
             title="ロール設定",
             description="該当するロールのボタンを押すと付与されます\nもう一度押すと、解除されます",
-            color=0x3AFF11,
+            color=0xffff00,
         )
         com_embed = discord.Embed(
             title="【必須】コマンダーランク設定", description="ーーーーーーーーーー", color=0x3AFF11
@@ -192,12 +192,12 @@ class CRole(commands.Cog):
         )
         com_embed.add_field(
             name="--【@中級コマンダー】--",
-            value="🇨:まぁまぁできるかなという方やある程度のアイテムを作れるなどという方はこちら!\n(scoreboard,execute,etc.)",
+            value="🇨:まぁまぁコマンドができるという人やある程度のデータパックを作れるという人はこちら!\n(scoreboard,execute,json理解,etc.)",
             inline=False,
         )
         com_embed.add_field(
             name="--【@上級コマンダー】--",
-            value="🇩:オリジナルエンティティ・配布MAP・ほぼすべてのコマンドを理解してる人はこちら!\n(execute(複雑),function,etc.)",
+            value="🇩:ほぼ全てのコマンドを理解している人や大規模データパックを作れる人はこちら!\n(execute(複雑),function,etc.)",
             inline=False,
         )
 
@@ -231,7 +231,7 @@ class CRole(commands.Cog):
         )
 
         sen_embed = discord.Embed(
-            title="【任意】宣伝・質問受付設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【任意】宣伝・質問受付設定", description="ーーーーーーーーーー", color=0x1b9700
         )
         sen_embed.add_field(
             name="--【@宣伝し隊】--", value="📝:宣伝したい人はこのロールを付けて宣伝してください!", inline=False
@@ -251,7 +251,7 @@ class CRole(commands.Cog):
         )
 
         hoka_embed = discord.Embed(
-            title="【任意】その他設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【任意】その他設定", description="ーーーーーーーーーー", color=0x1b9700
         )
         hoka_embed.add_field(
             name="--【@通知ON】--", value="🔔:運営からのお知らせ通知が行っても大丈夫な方はこちら!", inline=False
