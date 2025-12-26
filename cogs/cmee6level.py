@@ -14,7 +14,7 @@ class CMee6level(commands.Cog):
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
         if message.content.startswith("mee6level"):
-            if message.channel.id in [config.channels.level_data]:  # 非公開mee6-level通知チャンネル
+            if message.channel.id == config.channels.level_data:  # 非公開mee6-level通知チャンネル
                 userid = int(message.content.split(",")[1])  # userid表示
                 username = str(message.content.split(",")[2])  # user名表示
                 level = int(message.content.split(",")[3])  # レベル
@@ -55,7 +55,7 @@ class CMee6level(commands.Cog):
                 session.commit()
 
         elif message.content.startswith("mcmdlevel"):
-            if message.channel.id in [config.channels.level_data]:  # 非公開mee6-level通知チャンネル
+            if message.channel.id == config.channels.level_data:  # 非公開mee6-level通知チャンネル
                 userid = int(message.content.split(",")[1])  # userid表示
                 username = str(message.content.split(",")[2])  # user名表示
                 level = int(message.content.split(",")[3])  # レベル

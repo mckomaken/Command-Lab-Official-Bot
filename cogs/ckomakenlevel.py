@@ -90,11 +90,11 @@ class Cmdbotlevel(commands.Cog):
         elif re.match(r'^(.+)\1+$', message.content):
             return
 
-        if message.channel.id == config.channels.listen:
-            return
-        elif message.channel.id == config.channels.voice:
-            return
-        elif message.channel.id == config.channels.voice256:
+        if message.channel.id in [
+            config.channels.listen,
+            config.channels.voice,
+            config.channels.voice256
+        ]:
             return
         elif message.channel.category_id == config.categories.administrater:
             start = 50 - math.floor(userdb.level / 10)
