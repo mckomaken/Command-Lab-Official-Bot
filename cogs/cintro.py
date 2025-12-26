@@ -64,10 +64,10 @@ class CIntro(commands.Cog):
     async def message(self, message: discord.Message):
         if message.author == self.bot.user:
             return
-        elif message.channel.id in config.question_channels:
+        elif message.channel.id in config.channels.question_channels:
             org_msg = message
             counter = 0
-            for i in config.question_channels:
+            for i in config.channels.question_channels:
                 q_ch = message.guild.get_channel(i)
                 if q_ch.type == discord.ChannelType.forum:
                     for j in q_ch.threads:

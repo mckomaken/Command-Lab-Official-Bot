@@ -28,9 +28,9 @@ class Cwarn(commands.Cog):
     async def cwarn(self, interaction: discord.Interaction, choice: app_commands.Choice[str], target: discord.Member, reason: str = "", reason2: str = "", number: int = 0, senddm: bool = True, days: int = 0, weeks: int = 0, months: int = 0):
         warnuserdb = session.query(User).filter_by(userid=target.id).first()
         dm = await interaction.guild.fetch_member(target.id)
-        url = f"https://discord.com/channels/{config.guild_id}/{config.toiawasech}"  # config設定すること
+        url = f"https://discord.com/channels/{config.guild_id}/{config.channels.discord_inquiry}"  # config設定すること
 
-        if interaction.guild.get_role(config.administrater_role_id) not in interaction.user.roles:
+        if interaction.guild.get_role(config.roles.administrater) not in interaction.user.roles:
             await interaction.response.send_message("権限ないよ！", ephemeral=True)
             return
         if not warnuserdb:

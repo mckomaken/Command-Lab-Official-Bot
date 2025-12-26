@@ -15,12 +15,12 @@ class CBnoticetime(commands.Cog):
 
     @app_commands.command(name="cbnoticetime", description="【運営】再起動後の通知時間設定用")
     @app_commands.describe(addminutes="入力分後に通知されます")
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def cbnoticetime(self, interaction: discord.Interaction, addminutes: int = 0):
         bnJST_time = datetime.now()
         ScheduledTime = bnJST_time + timedelta(minutes=addminutes)
         fScheduledTime = ScheduledTime.strftime(" %Y/%m/%d %H:%M ")
-        notice_channel = await self.bot.fetch_channel(config.bump.channel_id)
+        notice_channel = await self.bot.fetch_channel(config.channels.disboard_command)
         bump_file = discord.File(os.path.join(os.getenv("BASE_DIR", "."), "assets/bump.png"), filename="bump.png")
 
         bump_embed = discord.Embed(

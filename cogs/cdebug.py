@@ -11,7 +11,7 @@ class CDebugCog(commands.Cog):
 
     @app_commands.command(name="creload", description="reload")
     @app_commands.guild_only()
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def creload(self, interaction: discord.Interaction):
         for e in list(self.bot.extensions.keys()):
             await self.bot.reload_extension(e)

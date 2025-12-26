@@ -90,16 +90,16 @@ class Cmdbotlevel(commands.Cog):
         elif re.match(r'^(.+)\1+$', message.content):
             return
 
-        if message.channel.id == config.listench:
+        if message.channel.id in [
+            config.channels.listen,
+            config.channels.voice,
+            config.channels.voice256
+        ]:
             return
-        elif message.channel.id == config.voicech:
-            return
-        elif message.channel.id == config.voice256ch:
-            return
-        elif message.channel.category_id == config.admin_category_id:
+        elif message.channel.category_id == config.categories.administrater:
             start = 50 - math.floor(userdb.level / 10)
             end = 100 + math.floor(userdb.level / 10)
-        elif message.channel.id == config.question_channels:
+        elif message.channel.id == config.channels.question_channels:
             start = 100 - math.floor(userdb.level / 10)
             end = 150 + math.floor(userdb.level / 10)
         else:
@@ -113,22 +113,22 @@ class Cmdbotlevel(commands.Cog):
         userdb.exp += exp_per_message
         session.commit()
 
-        if message.channel.id == config.selfintroductionch:  # 書き換えること
+        if message.channel.id == config.channels.selfintroduction:  # 書き換えること
             if userdb.selfintro is False:
                 userdb.selfintro = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-        elif message.channel.id == config.freechat:  # 書き換えること
+        elif message.channel.id == config.channels.freechat:  # 書き換えること
             if userdb.freechat is False:
                 userdb.freechat = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-        elif message.channel.id == config.anotherch:  # 書き換えること
+        elif message.channel.id == config.channels.another:  # 書き換えること
             if userdb.anotherch is False:
                 userdb.anotherch = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-        elif message.channel.id == config.question_channels:
+        elif message.channel.id == config.channels.question_channels:
             if userdb.question is False:
                 userdb.question = True
                 userdb.alladdexp += 200
@@ -156,7 +156,7 @@ class Cmdbotlevel(commands.Cog):
             userdb.level += 1
             userdb.exp -= 10000
             session.commit()
-            mee6_channel = await self.bot.fetch_channel(config.mee6.botch)
+            mee6_channel = await self.bot.fetch_channel(config.channels.level_data)
             await mee6_channel.send(f"mcmdlevel,{message.author.id},{message.author.name},{userdb.level}")
 
     @commands.Cog.listener("on_message_delete")
@@ -190,9 +190,9 @@ class Cmdbotlevel(commands.Cog):
         elif re.match(r'^(.+)\1+$', message.content):
             return
 
-        if message.channel.id == config.listench:
+        if message.channel.id == config.channels.listen:
             return
-        elif message.channel.category_id == config.admin_category_id:
+        elif message.channel.category_id == config.categories.administrater:
             return
 
         deluserdb.chatcount -= 1

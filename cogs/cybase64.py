@@ -33,8 +33,8 @@ class CYbase64(commands.Cog):
     @app_commands.command(name="cybase64", description="y談用のBase64変換です")
     @app_commands.describe(url="URLを書いてください(変換されます)", text="送信したい文章を書いてください(任意・変換されません)")
     async def cybase64(self, interaction: discord.Interaction, url: str, text: str = None):
-        send_channel = await self.bot.fetch_channel(config.y_channel)
-        admin_channel = await self.bot.fetch_channel(config.cmdbot_log)
+        send_channel = await self.bot.fetch_channel(config.channels.y_channel)
+        admin_channel = await self.bot.fetch_channel(config.channels.cmdbot_log)
         if text is not None:
             text = text.replace("\\n", "\n")
         else:

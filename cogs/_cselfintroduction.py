@@ -14,7 +14,7 @@ class CSelfintroduction(commands.Cog):
 
     @app_commands.command(name="cselfintroduction", description="自己紹介用コマンド")
     @app_commands.describe(name="自分の名前(呼んで欲しい名前)", mcreki="マイクラ歴")
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def selfin(
         self,
         interaction: discord.Interaction,
