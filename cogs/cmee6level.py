@@ -59,13 +59,13 @@ class CMee6level(commands.Cog):
                 userid = int(message.content.split(",")[1])  # userid表示
                 username = str(message.content.split(",")[2])  # user名表示
                 level = int(message.content.split(",")[3])  # レベル
-                mcmdlv_5 = message.guild.get_role(config.roles.mcmdlv_5)
+                mcmd_5lv = message.guild.get_role(config.roles.mcmd_5lv)
                 lvupuser = await message.guild.fetch_member(userid)
                 icon = "<:com2_i:834433852474392576>"
 
                 if level >= 5:
-                    if mcmdlv_5 not in lvupuser.roles:
-                        await lvupuser.add_roles(mcmdlv_5)
+                    if mcmd_5lv not in lvupuser.roles:
+                        await lvupuser.add_roles(mcmd_5lv)
 
                 if userid == config.users.syunngiku:
                     return
