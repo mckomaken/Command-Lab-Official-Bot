@@ -105,11 +105,11 @@ class Cmdbotlevel(commands.Cog):
         else:
             start = 75
             end = 125
-        if start < 0:
-            start = 0
+
         add = math.floor(userdb.level / 10) if userdb.level / 10 < 10 else 10
+        exp_orb_add = math.floor(userdb.level / 10) if userdb.level / 100 < 30 else 30
         exp_per_message = random.randint(start + add, end + add)
-        if random.randint(1, 1000) == 500:
+        if 500 <= random.randint(1, 1000) <= 500 + exp_orb_add:
             exp_per_message = 500
             await message.add_reaction("<:exp_orb:1454146493798944809>")
         userdb.chatcount += 1
