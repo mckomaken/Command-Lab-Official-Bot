@@ -30,23 +30,12 @@ class CMee6level(commands.Cog):
 
                 mee6_channel = await self.bot.fetch_channel(config.channels.levelup)  # レベルアップ通知チャンネル
                 levelupnoticeoff = message.guild.get_role(config.roles.levelupnoticeoff)
-                senndennkenn = message.guild.get_role(config.roles.advertising_rights)
-                hanabira = message.guild.get_role(config.roles.no_advertising)
                 lvupuser = await message.guild.fetch_member(userid)
-                jointime = int(datetime.now().timestamp() - lvupuser.joined_at.timestamp())
-                admin_channel = await self.bot.fetch_channel(config.channels.cmdbot_log)
-                jointime1day = lvupuser.joined_at + timedelta(days=1)
                 icon = "<:mee6_icon:1394152910182678610>"
 
                 if level == 1 and levelupnoticeoff not in lvupuser.roles:
                     await mee6_channel.send(f"{text}{icon} /xp reached <@{userid}> mee6-level {level}\n-# メンション通知がうるさいと感じたら<#892255648295841842>で`MEE6レベル無効化`ロールを付けてね")
                     return
-                elif level >= 5:
-                    if senndennkenn not in lvupuser.roles and hanabira not in lvupuser.roles:
-                        if jointime >= 86400:
-                            await lvupuser.add_roles(senndennkenn)
-                        else:
-                            await admin_channel.send(f"<@{userid}>：宣伝権(仮)ロールを{jointime1day}に付与してください")
 
                 userdisp = f"`{username}`" if levelupnoticeoff in lvupuser.roles else f"<@{userid}>"
                 await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mee6-level {level}")
@@ -60,12 +49,40 @@ class CMee6level(commands.Cog):
                 username = str(message.content.split(",")[2])  # user名表示
                 level = int(message.content.split(",")[3])  # レベル
                 mcmd_5lv = message.guild.get_role(config.roles.mcmd_5lv)
+                mcmd_15lv = message.guild.get_role(config.roles.mcmd_15lv)
+                mcmd_30lv = message.guild.get_role(config.roles.mcmd_30lv)
+                mcmd_300lv = message.guild.get_role(config.roles.mcmd_300lv)
+                mcmd_600lv = message.guild.get_role(config.roles.mcmd_600lv)
+                mcmd_1000lv = message.guild.get_role(config.roles.mcmd_1000lv)
+                server_booster = message.guild.get_role(config.roles.serverbooster)
                 lvupuser = await message.guild.fetch_member(userid)
                 icon = "<:com2_i:834433852474392576>"
 
-                if level >= 5:
-                    if mcmd_5lv not in lvupuser.roles:
-                        await lvupuser.add_roles(mcmd_5lv)
+                if level >= 1000 and mcmd_1000lv not in lvupuser.roles:
+                    await lvupuser.add_roles(mcmd_1000lv)
+                    role_notice = "`コマ研警昇格候補者`ロール"
+                elif level >= 600 and mcmd_600lv not in lvupuser.roles:
+                    await lvupuser.add_roles(mcmd_600lv)
+                    role_notice = "`メッセージピン止め権限`ロール"
+                elif level >= 300 and mcmd_300lv not in lvupuser.roles:
+                    await lvupuser.add_roles(mcmd_300lv)
+                    role_notice = "`ロール色設定権限`ロール"
+                elif level >= 30 and mcmd_30lv not in lvupuser.roles:
+                    await lvupuser.add_roles(mcmd_30lv)
+                    role_notice = "`宣伝権`ロール"
+                elif level >= 15 and mcmd_15lv not in lvupuser.roles:
+                    await lvupuser.add_roles(mcmd_15lv)
+                    role_notice = "`サウンドボード使用権`ロール"
+                elif level >= 5 and mcmd_5lv not in lvupuser.roles:
+                    await lvupuser.add_roles(mcmd_5lv)
+                    role_notice = "`Nitro特典使用権`ロール"
+                elif server_booster in lvupuser.roles and mcmd_5lv not in lvupuser.roles:
+                    await lvupuser.add_roles(mcmd_5lv)
+                    await lvupuser.add_roles(mcmd_15lv)
+                    role_notice = "`Nitro特典使用権`・`サウンドボード使用権`ロール(Server_Booster早期付与特典)"
+                else:
+                    role_notice = ""
+
 
                 if userid == config.users.syunngiku:
                     return
@@ -85,7 +102,10 @@ class CMee6level(commands.Cog):
                 mee6_channel = await self.bot.fetch_channel(config.channels.levelup)  # 新たに作るmee6通知チャンネル
                 levelupnoticeoff = message.guild.get_role(config.roles.levelupnoticeoff)
                 userdisp = f"`{username}`" if levelupnoticeoff in lvupuser.roles else f"<@{userid}>"
-                await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mcmd-level {level}")
+                if role_notice != "":
+                    await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mcmd-level {level}\n-# 新たに{role_notice}が付与されました!")
+                else:
+                    await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mcmd-level {level}")
 
 
 async def setup(bot: commands.Bot):

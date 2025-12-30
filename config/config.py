@@ -25,8 +25,7 @@ class Roles(BaseModel):
     advertising_rights: int  # 宣伝権(仮)
     no_advertising: int  # 宣伝禁止
     mcmd_5lv: int  # yellow MCMDレベル5以上 コンフィグ名変更
-    mcmd_10lv: int  # yellow MCMDレベル10以上 新規
-    mcmd_20lv: int  # yellow MCMDレベル20以上 新規
+    mcmd_15lv: int  # yellow MCMDレベル15以上 新規
     mcmd_30lv: int  # yellow MCMDレベル30以上 新規
     mcmd_300lv: int  # yellow MCMDレベル300以上 新規
     mcmd_600lv: int  # yellow MCMDレベル600以上 新規
