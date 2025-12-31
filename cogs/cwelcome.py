@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 from config.config import config
-# from database import User, session のちに使用予定
+from database import User, session
 
 
 class CWelcome(commands.Cog):
@@ -22,6 +22,14 @@ class CWelcome(commands.Cog):
                 color=discord.Color.green()
             )
             await channel.send(f"{after.mention}さんが入所しました！", embed=welcome_embed, silent=True)
+        
+        remove_roles_id = [role.id for role in set(before.roles) - set(after.roles)]
+        userdb = session.query(User).filter_by(userid=after.id).first()
+        if config.roles.serverbooster in remove_roles_id:
+            if userdb.level < 15:
+                await after.remove_roles(after.guild.get_role(config.roles.mcmd_5lv))
+            if userdb.level < 5:
+                await after.remove_roles(after.guild.get_role(config.roles.mcmd_15lv))
 
 
 async def setup(bot: commands.Bot):

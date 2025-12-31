@@ -97,17 +97,21 @@ class Cmdbotlevel(commands.Cog):
         ]:
             return
         elif message.channel.category_id == config.categories.administrater:
-            start = 50 - math.floor(userdb.level / 10)
-            end = 100 + math.floor(userdb.level / 10)
+            start = 50
+            end = 100
         elif message.channel.id == config.channels.question_channels:
-            start = 100 - math.floor(userdb.level / 10)
-            end = 150 + math.floor(userdb.level / 10)
+            start = 100
+            end = 150
         else:
-            start = 75 - math.floor(userdb.level / 10)
-            end = 125 + math.floor(userdb.level / 10)
-        if start < 0:
-            start = 0
-        exp_per_message = random.randint(start, end)
+            start = 75
+            end = 125
+
+        add = math.floor(userdb.level / 10) if userdb.level / 10 < 10 else 10
+        exp_orb_add = math.floor(userdb.level / 10) if userdb.level / 100 < 30 else 30
+        exp_per_message = random.randint(start + add, end + add)
+        if 500 <= random.randint(1, 1000) <= 500 + exp_orb_add:
+            exp_per_message = 500
+            await message.add_reaction("<:exp_orb:1454146493798944809>")
         userdb.chatcount += 1
         userdb.alladdexp += exp_per_message
         userdb.exp += exp_per_message
