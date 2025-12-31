@@ -27,6 +27,9 @@ class Cmdbotlevelcom(commands.Cog):
                 )
                 level_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
                 if more_info is True:
+                    if interaction.channel.id != config.channels.bot_command:
+                        await interaction.response.send_message(f"このチャンネルで詳細表示を出すことはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
+                        return
                     gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
                     if not gachadb:
                         level_embed.add_field(name="総獲得経験値量", value=f"```go\n{userdb.alladdexp} exp\n```", inline=True)
@@ -50,6 +53,9 @@ class Cmdbotlevelcom(commands.Cog):
                 userdb.allexp = (userdb.level * 10000) + userdb.exp
                 session.commit()
         else:
+            if interaction.channel.id != config.channels.bot_command:
+                await interaction.response.send_message(f"このチャンネルで他人の経験値を表示することはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
+                return
             targetdb = session.query(User).filter_by(userid=target.id).first()
             if not targetdb:
                 await interaction.response.send_message(f"`{target.display_name}`はまだ経験値を獲得していません\n### 喋らせよう!!!!!(笑)", silent=True)
@@ -71,6 +77,8 @@ class Cmdbotlevelcom(commands.Cog):
     @app_commands.command(name="cgivexp", description="他人に経験値付与")
     @app_commands.describe(target="ユーザー名", givexp="相手に与える経験値量")
     async def cgivexp(self, interaction: discord.Interaction, target: discord.Member, givexp: int):
+        await interaction.response.send_message("只今修正中なので使用できません", ephemeral=True)
+        return
         givedb = session.query(User).filter_by(userid=interaction.user.id).first()
         targetdb = session.query(User).filter_by(userid=target.id).first()
         if givedb.dailygivexp is True:
