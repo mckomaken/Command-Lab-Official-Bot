@@ -134,13 +134,13 @@ class Cmdbotlevelcom(commands.Cog):
             session.commit()
             await interaction.response.send_message(f"{target.mention}のデータベースがまだなかったため只今生成しました\nもう一度コマンドを実行してください", silent=True)
             return
-        if level == 0 and experience == 0:
-            if choice.value != "stop" or choice.value != "list":
-                await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
-                return
 
         match choice.value:
+
             case "add":
+                if level == 0 and experience == 0:
+                    await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
+                    return
                 setuserdb.exp += experience
                 setuserdb.level += level
                 setuserdb.alladdexp += (level * 10000) + experience
@@ -149,7 +149,11 @@ class Cmdbotlevelcom(commands.Cog):
                     setuserdb.exp -= 10000
                 session.commit()
                 await interaction.response.send_message(f"{target.mention}に{level}Lv{experience}exp分を付与しました", silent=True, allowed_mentions=discord.AllowedMentions.none())
+
             case "remove":
+                if level == 0 and experience == 0:
+                    await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
+                    return
                 if ((setuserdb.level * 10000) + setuserdb.exp) <= ((level * 10000) + experience):
                     setuserdb.exp = 0
                     setuserdb.level = 0
@@ -163,7 +167,11 @@ class Cmdbotlevelcom(commands.Cog):
                         setuserdb.exp += 10000
                     session.commit()
                 await interaction.response.send_message(f"{target.mention}の{level}Lv{experience}exp分をはく奪しました", silent=True)
+
             case "set":
+                if level == 0 and experience == 0:
+                    await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
+                    return
                 if experience >= 10000:
                     await interaction.response.send_message("`experience`が10000以上のため、設定できません", silent=True)
                     return
@@ -171,6 +179,7 @@ class Cmdbotlevelcom(commands.Cog):
                 setuserdb.level = level
                 session.commit()
                 await interaction.response.send_message(f"{target.mention}を{level}Lv{experience}expに設定しました", silent=True)
+
             case "stop":
                 if setuserdb.noxp is False:
                     setuserdb.noxp = True
@@ -180,6 +189,7 @@ class Cmdbotlevelcom(commands.Cog):
                     setuserdb.noxp = False
                     session.commit()
                     await interaction.response.send_message(f"{target.mention}のレベルシステムを有効化しました", silent=True)
+
             case "list":
                 level_embed = discord.Embed(
                     title=f"{target.display_name}のレベル",

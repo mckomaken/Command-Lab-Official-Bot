@@ -76,7 +76,7 @@ class CMee6level(commands.Cog):
                 elif level >= 5 and mcmd_5lv not in lvupuser.roles:
                     await lvupuser.add_roles(mcmd_5lv)
                     role_notice = "`Nitro特典使用権`ロール"
-                elif server_booster in lvupuser.roles and mcmd_5lv not in lvupuser.roles:
+                elif server_booster in lvupuser.roles and (mcmd_5lv not in lvupuser.roles or mcmd_15lv not in lvupuser.roles):
                     await lvupuser.add_roles(mcmd_5lv)
                     await lvupuser.add_roles(mcmd_15lv)
                     role_notice = "`Nitro特典使用権`・`サウンドボード使用権`ロール(Server_Booster早期付与特典)"
