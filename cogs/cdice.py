@@ -17,12 +17,12 @@ class CDice(app_commands.Group):
 
     @app_commands.command(name="roll", description="ダイスを振ります")
     @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
-    async def roll(self, interaction: discord.Interaction, dices: int, upto: int):
+    async def roll(self, interaction: discord.Interaction, dice: int, upto: int):
         try:
             total = 0
-            if dices > 100 or upto > 10000 or dices < 1 or upto < 1:
+            if dice > 100 or upto > 10000 or dice < 1 or upto < 1:
                 raise ValueError
-            rolls = [random.randint(1, upto) for _ in range(dices)]
+            rolls = [random.randint(1, upto) for _ in range(dice)]
         except ValueError:
             await interaction.response.send_message(
                 embed=create_embed("エラー", "値が無効です（ダイスの数：1～100、出目：1～10000）"), ephemeral=True
@@ -34,7 +34,7 @@ class CDice(app_commands.Group):
         embed = discord.Embed()
 
         embed.color = 0x808080
-        if dices == 1:
+        if dice == 1:
             embed.description = f"結果: {total}"
         else:
             embed.description = f"結果: [{rolls_concatenated}] -> {total}"
@@ -43,12 +43,12 @@ class CDice(app_commands.Group):
 
     @app_commands.command(name="try", description="ダイスを振り、合計が値以下で成功と判定します")
     @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
-    async def trying(self, interaction: discord.Interaction, dices: int, upto: int, value: int):
+    async def trying(self, interaction: discord.Interaction, dice: int, upto: int, value: int):
         try:
             total = 0
-            if dices > 100 or upto > 10000 or dices < 1 or upto < 1:
+            if dice > 100 or upto > 10000 or dice < 1 or upto < 1:
                 raise ValueError
-            rolls = [random.randint(1, upto) for _ in range(dices)]
+            rolls = [random.randint(1, upto) for _ in range(dice)]
         except ValueError:
             await interaction.response.send_message(
                 embed=create_embed("エラー", "値が無効です（ダイスの数：1～100、出目：1～10000）"), ephemeral=True
@@ -59,7 +59,7 @@ class CDice(app_commands.Group):
 
         embed = discord.Embed()
 
-        if dices == 1:
+        if dice == 1:
             if total <= value:
                 embed.color = 0x456cba
                 embed.description = f"結果: {total} <= {value} 成功！"
