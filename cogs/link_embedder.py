@@ -50,8 +50,12 @@ class CTemplate(commands.Cog):
                 # 現在のサーバー以外のリンクには反応しない
                 return
 
-            # 宣伝チャンネルを除外
-            if channel_id == config.channels.advertisement:
+            # 宣伝/依頼・募集チャンネルを除外
+            if channel_id in [
+                config.channels.advertisement,
+                config.channels.je_calling_for_requests,
+                config.channels.be_calling_for_requests
+            ]:
                 return
 
             try:
