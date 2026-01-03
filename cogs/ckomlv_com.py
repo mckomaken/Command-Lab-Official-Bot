@@ -107,7 +107,7 @@ class Cmdbotlevelcom(commands.Cog):
         
         calvalue = givexp
         if targetdb.int1 + givexp > 5000:
-            calvalue = 5000 - givexp
+            calvalue = 5000 - targetdb.int1
             text = f"全量譲渡すると{target.mention}の1日当たりの譲渡経験値量が5000xpを超えてしまうため、{target.mention}に差分の{calvalue}xpを与えました"
         
         givedb.exp -= calvalue
