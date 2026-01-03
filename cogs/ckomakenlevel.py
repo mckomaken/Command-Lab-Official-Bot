@@ -19,7 +19,7 @@ async def loop():
         print("\033[41m" + "リセット開始" + "\033[0m")
         for i in results:
             i.dailylogin = False
-            i.dailygivexp = False
+            i.int1 = 0
             if i.str1 != "":
                 unwarn_date = datetime.strptime(i.str1, '%Y/%m/%d')
                 if now >= unwarn_date:
