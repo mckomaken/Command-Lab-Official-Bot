@@ -242,6 +242,10 @@ class Cwarn(commands.Cog):
         )
         await interaction.response.send_message(embed=warnlistembed, ephemeral=True)
 
+    @commands.Cog.listener("on_raw_reaction_add")
+    async def warn_reaction_add(self, message: discord.Message):
+        return
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Cwarn(bot))
