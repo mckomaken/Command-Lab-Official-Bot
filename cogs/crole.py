@@ -24,7 +24,7 @@ async def add_or_remove_role(roleId: int, interaction: Interaction):
     else:
         await interaction.user.add_roles(role)
         await interaction.response.send_message(embed=rolegive_embed, ephemeral=True)
-        await admin_channel.send(f".+ {interaction.user.mention}の{role.mention}を付与しました", silent=True)
+        await admin_channel.send(f".+ {interaction.user.mention}に{role.mention}を付与しました", silent=True)
 
 
 class CRoleRankButtons(View):  # コマンダーランク
