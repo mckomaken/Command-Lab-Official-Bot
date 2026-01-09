@@ -22,14 +22,17 @@ class CWelcome(commands.Cog):
                 color=discord.Color.green()
             )
             await channel.send(f"{after.mention}さんが入所しました！", embed=welcome_embed, silent=True)
-        
+
         remove_roles_id = [role.id for role in set(before.roles) - set(after.roles)]
         userdb = session.query(User).filter_by(userid=after.id).first()
+        cmd_log = await self.bot.fetch_channel(config.channels.cmdbot_log)
         if config.roles.serverbooster in remove_roles_id:
             if userdb.level < 15:
                 await after.remove_roles(after.guild.get_role(config.roles.mcmd_5lv))
+                await cmd_log.send(f".- {after.mention}の{after.guild.get_role(config.roles.mcmd_5lv)}を解除しました", silent=True)
             if userdb.level < 5:
                 await after.remove_roles(after.guild.get_role(config.roles.mcmd_15lv))
+                await cmd_log.send(f".- {after.mention}の{after.guild.get_role(config.roles.mcmd_15lv)}を解除しました", silent=True)
 
 
 async def setup(bot: commands.Bot):
