@@ -1,6 +1,6 @@
 import random
 import string
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import discord
 from discord import app_commands
@@ -41,7 +41,7 @@ class Select(discord.ui.Select):
         }
 
         reason = reason_map.get(self.values[0], "不明な理由")
-        important_logch = await self.bot.fetch_channel(config.channels.admin_meeting)
+        important_logch = await self.bot.fetch_channel(config.channels.attention_report)
         REPORTMESSAGE = f"""
 `通報内容:`{reason}
 `送信者　:`{self.message.author.mention}
@@ -60,7 +60,7 @@ class Select(discord.ui.Select):
 
         REPORTLOGMESSAGE = f"""
 `通報内容:`{reason}
-`送信日時:`{self.message.created_at.strftime('%Y/%m/%d %H:%M:%S')}
+`送信日時:`{(self.message.created_at + timedelta(hours=9)).strftime('%Y/%m/%d %H:%M:%S')}
 `通報日時:`{datetime.now().strftime('%Y/%m/%d %H:%M:%S')}
 `通報者　:`{interaction.user.mention}/{interaction.user.id}
 `送信者　:`{self.message.author.mention}/{self.message.author.id}
