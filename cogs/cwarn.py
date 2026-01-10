@@ -1,3 +1,5 @@
+import random
+import string
 from datetime import datetime, timedelta
 
 import discord
@@ -243,7 +245,53 @@ class Cwarn(commands.Cog):
         await interaction.response.send_message(embed=warnlistembed, ephemeral=True)
 
     @commands.Cog.listener("on_raw_reaction_add")
-    async def warn_reaction_add(self, message: discord.Message):
+    async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+        reaction_user = self.bot.get_user(payload.user_id)
+        message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+        emoji = payload.emoji
+        admin_channel = await self.bot.fetch_channel(config.channels.attention_report)
+        admin_role = self.bot.get_guild(payload.guild_id).get_role(config.roles.administrater)
+        message_url = f"https://discord.com/channels/{message.guild.id}/{message.channel.id}/{message.id}"
+        attentionuserdb = session.query(User).filter_by(userid=message.author.id).first()
+        random_id = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(4))
+
+        if reaction_user.bot or message.author.bot:  # リアクションを押した人またはメッセージの投稿者がbotの場合
+            return
+        elif message.guild.id != config.guild_id:  # サーバーIDがマイクラコマンド研究所でない場合
+            return
+        elif admin_role not in payload.member.roles:  # リアクションを押した人が運営でない場合
+            return
+        elif not attentionuserdb:  # 注意者がデータベースが存在しない場合
+            return
+        elif admin_role in message.author.roles:  # メッセージの投稿者が運営の場合
+            return
+        elif str(emoji) != "⚠️":  # リアクションが⚠️でない場合
+            return
+        removexp = random.randint(4000, 6000)
+        attentionuserdb.exp -= removexp
+        attentionuserdb.allremoveexp += removexp
+        if attentionuserdb.exp < 0:
+            attentionuserdb.level -= 1
+            attentionuserdb.exp += 10000
+        session.commit()
+        DESC = f"""
+`送信日時　　　　:`{(message.created_at + timedelta(hours=9)).strftime('%Y/%m/%d %H:%M:%S')}
+`通報日時　　　　:`{datetime.now().strftime('%Y/%m/%d %H:%M:%S')}
+`注意した運営　　:`{reaction_user.mention} / {reaction_user.id}
+`メッセージ送信者:`{message.author.mention} / {message.author.id}
+`メッセージリンク:`{message_url} / {message.id}
+`メッセージ内容　:` ```{message.content}```
+`減算経験値量　　:`{removexp}xp
+`現在のLv.exp　 :`{attentionuserdb.level}.{attentionuserdb.exp}
+`ミスった場合の補填(+200xp)コマンド:` ```/csetleveling choice:加算 target:{message.author.mention} experience:{removexp + 200}```
+"""
+        attention_embed = discord.Embed(
+            title="注意リアクションが押されました",
+            description=DESC,
+            color=0xFFA500,
+        )
+        attention_embed.set_footer(text=f"attention_id: {random_id}-{message.id}")
+        await admin_channel.send(embed=attention_embed)
         return
 
 
