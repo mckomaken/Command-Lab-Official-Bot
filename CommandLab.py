@@ -31,11 +31,18 @@ STATUSES = [
     ("私はボットです", "playing", 30),
     ("Netflixで映画を視聴中", "watching", 30),
     ("ポテトをツンツン中", "playing", 30),
-    ("YouTubeを視聴中", "watching", 100),
-    ("春菊を調理中", "playing", 120),
+    ("YouTubeを視聴中", "watching", 60),
+    ("新規機能随時募集中！", "watching", 60),
+    ("お買い物中", "playing", 40),
+    ("春菊を調理中", "playing", 40),
+    ("すき焼きを食事中", "playing", 40),
     ("春菊の配信を視聴中", "watching", 10),
-    ("ニコニコ動画を視聴中", "watching", 100),
-    ("Spotifyを再生中", "listening", 100),
+    ("ニコニコ動画を視聴中", "watching", 60),
+    ("Spotifyを再生中", "listening", 60),
+    ("サーバー人数2400人ありがとう!", "watching", 120),
+    ("5周年ありがとう!", "watching", 120),
+    ("MINCERAFT", "playing", 10),
+    ("新規機能随時募集中！", "watching", 60),
 ]
 
 
