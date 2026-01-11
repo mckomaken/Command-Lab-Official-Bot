@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 import discord
 from discord.ext import commands
 
@@ -83,7 +81,6 @@ class CMee6level(commands.Cog):
                 else:
                     role_notice = ""
 
-
                 if userid == config.users.syunngiku:
                     return
                 elif level <= 0:
@@ -96,14 +93,16 @@ class CMee6level(commands.Cog):
                     text = "### "
                 elif (level % 10 == 0):
                     text = ""
-                else:
-                    return
 
                 mee6_channel = await self.bot.fetch_channel(config.channels.levelup)  # 新たに作るmee6通知チャンネル
                 levelupnoticeoff = message.guild.get_role(config.roles.levelupnoticeoff)
                 userdisp = f"`{username}`" if levelupnoticeoff in lvupuser.roles else f"<@{userid}>"
+                cmdbot_log = await self.bot.fetch_channel(config.channels.cmdbot_log)
                 if role_notice != "":
                     await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mcmd-level {level}\n-# 新たに{role_notice}が付与されました!")
+                    await cmdbot_log.send(f".+ <@{userid}>に{role_notice}を付与しました。 (mcmd-level {level})", silent=True)
+                elif (level % 10 != 0):
+                    return
                 else:
                     await mee6_channel.send(f"{text}{icon} /xp reached {userdisp} mcmd-level {level}")
 

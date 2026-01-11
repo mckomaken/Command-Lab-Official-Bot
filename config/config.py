@@ -48,8 +48,8 @@ class Channels(BaseModel):
 
     komaken_bot_development_room: int  # コマ研Bot開発室
 
-    je_calling_for_requests : int  # jeの依頼・募集
-    be_calling_for_requests : int  # beの依頼・募集
+    je_calling_for_requests: int  # jeの依頼・募集
+    be_calling_for_requests: int  # beの依頼・募集
 
     advertisement: int  # 宣伝チャンネル
 
@@ -60,6 +60,7 @@ class Channels(BaseModel):
     discord_inquiry: int  # Discord問い合わせチャンネル
 
     admin_meeting: int  # 運営会議チャンネル
+    attention_report: int  # 通報チャンネル
     cmdbot_log: int  # コマ研Botログチャンネル
     level_data: int  # レベルデータ送信チャンネル
 
