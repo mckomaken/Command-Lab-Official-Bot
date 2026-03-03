@@ -29,7 +29,7 @@ class LOttery(discord.ui.View):  # 抽選コマンド
         elif oubouser.noxp is True:
             await interaction.response.send_message("あなたには参加資格がありません", ephemeral=True)
             return
-        elif oubouser.chatcount < 50 and oubouser.level < 5:
+        elif oubouser.chatcount < 50 or oubouser.level < 5:
             await interaction.response.send_message(f"【応募条件】\n> 50チャット以上 かつ mcmd-level 5レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: {oubouser.chatcount}・レベル: {oubouser.level}\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
             return
         elif oubouser.bool1 is True:
