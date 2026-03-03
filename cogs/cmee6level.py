@@ -55,6 +55,8 @@ class CMee6level(commands.Cog):
                 server_booster = message.guild.get_role(config.roles.serverbooster)
                 lvupuser = await message.guild.fetch_member(userid)
                 icon = "<:com2_i:834433852474392576>"
+                role_notice = ""
+                text = ""
 
                 if level >= 1000 and mcmd_1000lv not in lvupuser.roles:
                     await lvupuser.add_roles(mcmd_1000lv)

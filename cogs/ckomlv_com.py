@@ -104,12 +104,12 @@ class Cmdbotlevelcom(commands.Cog):
         elif givedb_allexp < givexp:
             await interaction.response.send_message(f"コマ研レベルに借金機能はありません(笑)\n所持経験値量：{givedb_allexp} < 付与予定経験値量：{givexp}", ephemeral=True)
             return
-        
+
         calvalue = givexp
         if targetdb.int1 + givexp > 5000:
             calvalue = 5000 - targetdb.int1
             text = f"全量譲渡すると{target.mention}の1日当たりの譲渡経験値量が5000xpを超えてしまうため、{target.mention}に差分の{calvalue}xpを与えました"
-        
+
         givedb.exp -= calvalue
         givedb.allremoveexp += calvalue
         while givedb.exp < 0:
@@ -117,6 +117,7 @@ class Cmdbotlevelcom(commands.Cog):
             givedb.exp += 10000
         targetdb.exp += calvalue
         targetdb.alladdexp += calvalue
+        targetdb.int1 += calvalue
         while targetdb.exp >= 10000:
             targetdb.level += 1
             targetdb.exp -= 10000
