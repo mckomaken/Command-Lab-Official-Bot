@@ -24,13 +24,13 @@ class LOttery(discord.ui.View):  # 抽選コマンド
             userdb = User(userid=interaction.user.id, username=interaction.user.name)
             session.add(userdb)
             session.commit()
-            await interaction.response.send_message("【応募条件】\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: 0・レベル: 0\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            await interaction.response.send_message("【応募条件】\n> 50チャット以上 かつ mcmd-level 5レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: 0・レベル: 0\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
             return
         elif oubouser.noxp is True:
             await interaction.response.send_message("あなたには参加資格がありません", ephemeral=True)
             return
-        elif oubouser.chatcount < 50 and oubouser.level < 3:
-            await interaction.response.send_message(f"【応募条件】\n> 50チャット以上 または mcmd-level 3レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: {oubouser.chatcount}・レベル: {oubouser.level}\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+        elif oubouser.chatcount < 50 and oubouser.level < 5:
+            await interaction.response.send_message(f"【応募条件】\n> 50チャット以上 かつ mcmd-level 5レベル以上\nのいずれかを満たしていません\n現時点でのチャット数: {oubouser.chatcount}・レベル: {oubouser.level}\nサーバーでコマンドの質問や雑談をすればレベルが上がって行きます\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
             return
         elif oubouser.bool1 is True:
             await interaction.response.send_message("すでに応募済みです。抽選開始までお待ちください。", ephemeral=True)
@@ -68,13 +68,13 @@ class PUtilottery(discord.ui.View):  # プチ抽選コマンド
         send_channel = await self.bot.fetch_channel(config.channels.lottery)
         oubouser = session.query(User).filter_by(userid=interaction.user.id).first()
         if oubouser is None:
-            await interaction.response.send_message("応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが10以上\nを満たしていません\n現時点でのチャット数: 0\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            await interaction.response.send_message("応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが条件を満たしていません\n現時点でのチャット数: 0\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
             return
         elif oubouser.noxp is True:
             await interaction.response.send_message("あなたには参加資格がありません", ephemeral=True)
             return
         elif oubouser.chatcount < 10:
-            await interaction.response.send_message(f"応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが10以上\nを満たしていません\n現時点でのチャット数: {oubouser.chatcount}\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+            await interaction.response.send_message(f"応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが条件を満たしていません\n現時点でのチャット数: {oubouser.chatcount}\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
             return
         elif oubouser.bool1 is True:
             await interaction.response.send_message("すでに応募済みです。抽選開始までお待ちください。", ephemeral=True)
@@ -160,9 +160,9 @@ class CPresent(commands.Cog):
         PRESENT_DESCRIPTION = f"""
 【応募条件】
 1: このサーバーに抽選時に参加していること
-2: 以下のいずれかを満たしていること
+2: 以下の両方を満たしていること
 > ・コマ研レベル(mcmd-level)実装後 50チャット以上
-> ・mcmd-level 3Lv以上
+> ・mcmd-level 5Lv以上
 3: 下のボタンを押すこと
 -# 4: 春菊のチャンネルとうろk((((殴殴
 -# 冗談です(笑)してくれたらうれしいけどw
