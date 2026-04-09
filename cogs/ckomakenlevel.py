@@ -107,7 +107,7 @@ class Cmdbotlevel(commands.Cog):
             end = 125
 
         add = math.floor(userdb.level / 10) if userdb.level / 10 < 10 else 10
-        exp_orb_add = math.floor(userdb.level / 10) if userdb.level / 100 < 30 else 30
+        exp_orb_add = math.floor(userdb.level / 100) if userdb.level / 100 < 30 else 30
         exp_per_message = random.randint(start + add, end + add)
         if 500 <= random.randint(1, 1000) <= 500 + exp_orb_add:
             exp_per_message = 500
