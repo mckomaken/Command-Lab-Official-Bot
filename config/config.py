@@ -95,8 +95,8 @@ class Config(BaseModel):
 
 
 class PackVersionEntry(BaseModel):
-    rp: float
-    dp: float
+    rp: int | float
+    dp: int | float
 
 
 class PackVersions(BaseModel):
