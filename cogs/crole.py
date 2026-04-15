@@ -107,7 +107,7 @@ class CRoleAdButtons(View):  # 宣伝関連 & 質問メンション
             description=f"{senndennkenn.mention}を持っていないため付与出来ませんでした",
             color=0xff0000
         )
-        sen1_embed.add_field(name="`＠宣伝権(仮)ロール付与条件`", value="サーバー加入後1日以上経過 & MEE6レベル5以上")
+        sen1_embed.add_field(name="`＠宣伝権(仮)ロール付与条件`", value="サーバー加入後1日以上経過 & コマ研レベル30以上")
         if senndennkenn in interaction.user.roles:
             await add_or_remove_role(808617738180231178, interaction)
         else:
