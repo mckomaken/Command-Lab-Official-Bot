@@ -213,17 +213,23 @@ class CPoll(commands.Cog):
 
     @app_commands.command(name="cpoll", description="投票を行います")
     @app_commands.describe(title="タイトル", choice="選択肢／選択肢は , ← カンマで区切ってね！／15個まで")
+#    @app_commands.Cooldown(1, 60 * 60)
     async def cpoll(self, interaction: Interaction, title: str, choice: str):
         poler_embed = discord.Embed(
             title=f"投票：{title}", color=0x3AFF11
         )
         poler_embed.set_footer(text="投票者: 表示されません\n開票: 任意のタイミング")
+      
+        if 16 <= len(choice.split(",")):
+            await interaction.response.send_message("**引数が正しくないです！**\n選択肢は15個までです。", ephemeral=True)
+            return
 
         await interaction.response.send_message("投票を開始しました", ephemeral=True)
         await interaction.channel.send(embed=poler_embed, view=ChoiceButtons(choice, title))
 
     @app_commands.command(name="cpollbet", description="XPを賭けて投票を行います（行うのにもXPは必要です）。ルールなども設定できます")
     @app_commands.describe(title="タイトル", choice="選択肢／選択肢は , ← カンマで区切ってね！／2個から15個まで", amount="賭ける量（ 0 ～ 1500 ）", rule="1: 一票のみの選択肢を選んだら勝利, 2: 特定の選択肢が勝利, 3: ランダムな選択肢が勝利, 4: 二票のみの選択肢を選んだら勝利, 5: 割合の小さい選択肢を選んだら勝利, 6: 1つ目は絶対に勝ち／2つ目は過半数なら勝ち", n="2, 5 を設定した場合は設定してください（2は番目／5は割合）。それ以外は0にしてください", odds="選択肢ごとのオッズです（通常2倍、最大2.5倍）。 , ← カンマで区切ってね！")
+#    @app_commands.Cooldown(1, 60 * 60)
     async def cpollbet(self, interaction: Interaction, title: str, choice: str, amount: int, rule: int, n: int, odds: str = None):
         poler_embed = discord.Embed(
             title=f"投票：{title}", color=0x3AFF11
