@@ -1,5 +1,5 @@
 from discord.ext import commands
-from sqlalchemy import Column, Integer, String, Boolean, create_engine
+from sqlalchemy import Column, Integer, String, Boolean, create_engine, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -140,6 +140,25 @@ class Oregacha(Base2):
 Base2.metadata.create_all(engine2)
 Session2 = sessionmaker(bind=engine2)
 session2 = Session2()
+
+
+DATABASE_URL3 = 'sqlite:///polls.db'  # データベースの種類と名前をここで指定できます
+engine3 = create_engine(DATABASE_URL3)  # データベースエンジンを作成
+Base3 = declarative_base()            # データベースの親クラスを作成
+
+
+class Polls(Base3):
+    __tablename__ = 'polls'
+    no = Column(Integer, primary_key=True)
+    pollid = Column(Integer)
+    userid = Column(Integer)
+    username = Column(String)
+    chosen = Column(Integer)
+
+
+Base3.metadata.create_all(engine3)
+Session3 = sessionmaker(bind=engine3)
+session3 = Session3()
 
 
 class Sqltest1(commands.Cog):
