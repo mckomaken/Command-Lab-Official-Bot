@@ -225,7 +225,7 @@ class CPoll(commands.Cog):
             return
 
         await interaction.response.send_message("投票を開始しました", ephemeral=True)
-        await interaction.channel.send(embed=poler_embed, view=ChoiceButtons(choice, title))
+        await interaction.channel.send(embed=poler_embed, view=ChoiceButtons(choice, title, interaction.user.id))
 
     @app_commands.command(name="cpollbet", description="XPを賭けて投票を行います（行うのにもXPは必要です）。ルールなども設定できます")
     @app_commands.describe(title="タイトル", choice="選択肢／選択肢は , ← カンマで区切ってね！／2個から15個まで", amount="賭ける量（ 0 ～ 1500 ）", rule="1: 一票のみの選択肢を選んだら勝利, 2: 特定の選択肢が勝利, 3: ランダムな選択肢が勝利, 4: 二票のみの選択肢を選んだら勝利, 5: 割合の小さい選択肢を選んだら勝利, 6: 1つ目は絶対に勝ち／2つ目は過半数なら勝ち", n="2, 5 を設定した場合は設定してください（2は番目／5は割合）。それ以外は0にしてください", odds="選択肢ごとのオッズです（通常2倍、最大2.5倍）。 , ← カンマで区切ってね！")
@@ -236,7 +236,7 @@ class CPoll(commands.Cog):
         )
         if odds == None:
             odds = ["2.0"] * len(choice.split(","))
-        if odds is not list: odds = odds.split(",")
+        if type(odds) == str: odds = odds.split(",")
         poler_embed.set_footer(text=f"投票者: 表示されません\n開票: 任意のタイミング\n投票時に {amount} XP 徴収されます。\n{['','一票のみの選択肢を選んだら勝ち！','特定の選択肢を選んだら勝ち！', 'ランダムな選択肢が勝ち！', '二票のみの選択肢を選んだら勝ち！', f'割合が {n} % 以下の選択肢を選んだら勝ち！', '一つ目は絶対に勝ち。でも二つ目が過半数を占めたら全員勝ち！'][rule]}\n選択肢ごとのオッズ: {'倍, '.join(odds)}倍")
        
         odds = [float(_) for _ in odds]
