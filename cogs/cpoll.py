@@ -153,7 +153,7 @@ class ChoiceButton(Button):
         if not polled:
             session3.add(Polls(pollid=self.cid, userid=interaction.user.id, username=interaction.user.name, chosen=self.num))
             session3.commit()
-            print(f"{interaction.user.name} -> {self.num}")
+#            print(f"{interaction.user.name} -> {self.num}")
             await interaction.response.send_message(f"**{self.label}** に投票しました！", ephemeral=True)
         elif polled:
             await interaction.response.send_message(f"あなたはすでに **{self.choices[polled.chosen]}** に投票しています！", ephemeral=True)
@@ -179,7 +179,7 @@ class ChoiceBetButton(Button):
             session.commit()
             session3.add(Polls(pollid=self.cid, userid=interaction.user.id, username=interaction.user.name, chosen=self.num))
             session3.commit()
-            print(f"{interaction.user.name} -> {self.num}")
+#            print(f"{interaction.user.name} -> {self.num}")
             if self.amount > 0:
                 await interaction.response.send_message(f"**{self.label}** に投票しました！\n確かに **{self.amount} XP** いただきました。", ephemeral=True)
             else:
