@@ -32,6 +32,11 @@ class CKill(commands.Cog):
         else:
             victim, player = player, victim
 
+        chosen = random.choice(death_logs)
+
+        if chosen == "ゲームの仕様":
+            return "%1$s は[ゲームの仕様]に殺された".replace("%1$s", escape(player))
+
         # キルログ生成
         return random.choice(death_logs) \
             .replace("%1$s", escape(player)) \
