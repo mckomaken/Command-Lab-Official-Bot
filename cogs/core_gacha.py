@@ -188,7 +188,13 @@ async def cOreGacha10(interaction: Interaction):
             description=desc,
             color=0xf36d4b
         )
-    elif sumxp >= -531:
+    elif sumxp >= -400:
+        embed = discord.Embed(
+            title="10連ガチャ結果 : 中はずれ",
+            description=desc,
+            color=0xf35d7b
+        )
+    elif sumxp >= -720:
         embed = discord.Embed(
             title="10連ガチャ結果 : 大はずれ",
             description=desc,
@@ -200,7 +206,7 @@ async def cOreGacha10(interaction: Interaction):
             description=desc,
             color=0xff0000
         )
-        # https://discord.com/channels/735130420630388807/965095619838488576/1382557452893163632
+        # https://discord.com/channels/735130420630388807/965095619838488576/1469081086469476373
     embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
     embed.set_footer(text=f"本日残り: 0回 / 今日の収支: {sumxp}XP")
 
@@ -248,12 +254,6 @@ class COregacha(commands.Cog):
             gachadb.dailygacha += 1
             session2.commit()
             await cOreGacha(interaction)
-
-    # @app_commands.command(name="core", description="鉱石ガチャ登録")
-    # async def coregachatouroku(self, interaction: discord.Interaction):
-    #     session2.add(Oregacha(userid=101, username="合計"))
-    #     session2.commit()
-    #     await interaction.response.send_message("合計データを登録しました", ephemeral=True)
 
     @app_commands.command(name="core-gacha-10", description="鉱石ガチャコマンド【10連】")
     async def cOreGacha10Command(self, interaction: discord.Interaction):
