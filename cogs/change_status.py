@@ -1,5 +1,6 @@
 import asyncio
 import discord
+from discord import app_commands
 from discord.ext import commands
 
 from datetime import datetime, timezone
@@ -82,8 +83,8 @@ class ChangeStatus(commands.Cog):
                     activity = discord.Activity(type=discord.ActivityType.playing, name=name.replace("%MEMBER_COUNT%", str(len(self.bot.get_guild(guild_id).members))))
                 elif activity_type == "created_at":  # サーバー作成日時からの経過時間
                     created_at = self.bot.get_guild(guild_id).created_at  # 対象のサーバーの作成日時を取得
-                    elapsed_time_tick = str((datetime.now(timezone.utc) - created_at).seconds * 20).split(".")[0]
-                    elapsed_time_days = str((datetime.now(timezone.utc) - created_at).days).split(".")[0]
+                    elapsed_time_tick = str(int((datetime.now(timezone.utc) - created_at).total_seconds() * 20))
+                    elapsed_time_days = str(int((datetime.now(timezone.utc) - created_at).days))
                     activity = discord.Activity(type=discord.ActivityType.playing, name=name.replace("%CREATED_AT%", f"{elapsed_time_tick}tick(≒{elapsed_time_days}日)"))
                 elif activity_type == "server_anniversary":  # サーバー周年記念
                     created_at = self.bot.get_guild(guild_id).created_at  # 対象のサーバーの作成日時を取得
