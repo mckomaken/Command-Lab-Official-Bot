@@ -56,7 +56,7 @@ class BumpNofiticationCog(commands.Cog):
             bump_embed.add_field(name="It's BUMP time (^O^)/", value=EN_BUMP_MESSAGE)
             bump_embed.set_image(url="attachment://bump.png")
 
-            channel = await self.bot.fetch_channel(config.bump.channel_id)
+            channel = await self.bot.fetch_channel(config.channels.disboard_command)
             await channel.send(embed=bump_embed, file=bump_file)
 
             self.bump_data.notified = True
@@ -77,7 +77,7 @@ class BumpNofiticationCog(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
-        if message.author.id == config.bump.disboard_id:
+        if message.author.id == config.users.disboard_bot:
             embeds = message.embeds
 
             if embeds is not None and len(embeds) != 0:
@@ -86,7 +86,7 @@ class BumpNofiticationCog(commands.Cog):
                     master = JST_time + timedelta(hours=2)
                     fmaster = master.strftime(" %Y/%m/%d %H:%M:%S ")
                     notice_channel = await self.bot.fetch_channel(
-                        config.bump.channel_id
+                        config.channels.disboard_command
                     )
 
                     bump_notice_embed = discord.Embed(
@@ -122,7 +122,7 @@ class BumpNofiticationCog(commands.Cog):
                         value=f"Next time, BUMP at {notice_channel.mention}!",
                     )
 
-                    if message.channel.id != config.bump.channel_id:
+                    if message.channel.id != config.channels.disboard_command:
                         await notice_channel.send(
                             "＼(^o^)／", embed=another_channel_bump_notice_embed, silent=True
                         )

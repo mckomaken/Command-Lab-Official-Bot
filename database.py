@@ -39,7 +39,7 @@ class User(Base):
     str3 = Column(String, default="")
     str4 = Column(String, default="")
     str5 = Column(String, default="")
-    int1 = Column(Integer, default=0)
+    int1 = Column(Integer, default=0)  # int1 : cog.ckomlv_com.py使用中(cgiveの受け取り量カウント)
     int2 = Column(Integer, default=0)
     int3 = Column(Integer, default=0)
     int4 = Column(Integer, default=0)

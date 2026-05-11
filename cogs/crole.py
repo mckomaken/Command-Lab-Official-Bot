@@ -8,7 +8,7 @@ from config.config import config
 
 async def add_or_remove_role(roleId: int, interaction: Interaction):
     role = interaction.guild.get_role(roleId)
-    admin_channel = await interaction.guild.fetch_channel(config.cmdbot_log)
+    admin_channel = await interaction.guild.fetch_channel(config.channels.cmdbot_log)
     roleremove_embed = discord.Embed(
         description=f"{role.mention}を解除しました",
         color=0x7cfc00
@@ -20,11 +20,11 @@ async def add_or_remove_role(roleId: int, interaction: Interaction):
     if role in interaction.user.roles:
         await interaction.user.remove_roles(role)
         await interaction.response.send_message(embed=roleremove_embed, ephemeral=True)
-        await admin_channel.send(f"- {interaction.user.mention}の{role.mention}を解除しました", silent=True)
+        await admin_channel.send(f".- {interaction.user.mention}の{role.mention}を解除しました", silent=True)
     else:
         await interaction.user.add_roles(role)
         await interaction.response.send_message(embed=rolegive_embed, ephemeral=True)
-        await admin_channel.send(f"+ {interaction.user.mention}の{role.mention}を付与しました", silent=True)
+        await admin_channel.send(f".+ {interaction.user.mention}に{role.mention}を付与しました", silent=True)
 
 
 class CRoleRankButtons(View):  # コマンダーランク
@@ -102,12 +102,12 @@ class CRoleAdButtons(View):  # 宣伝関連 & 質問メンション
         label="宣伝し隊", style=ButtonStyle.green, emoji="📝", row=0, custom_id="ads-sender"
     )
     async def pressedSen1(self, interaction: Interaction, button: Button):
-        senndennkenn = interaction.guild.get_role(config.mee6.senndennkenn)
+        senndennkenn = interaction.guild.get_role(config.roles.advertising_rights)
         sen1_embed = discord.Embed(
             description=f"{senndennkenn.mention}を持っていないため付与出来ませんでした",
             color=0xff0000
         )
-        sen1_embed.add_field(name="`＠宣伝権(仮)ロール付与条件`", value="サーバー加入後1日以上経過 & MEE6レベル5以上")
+        sen1_embed.add_field(name="`＠宣伝権(仮)ロール付与条件`", value="サーバー加入後1日以上経過 & コマ研レベル30以上")
         if senndennkenn in interaction.user.roles:
             await add_or_remove_role(808617738180231178, interaction)
         else:
@@ -172,12 +172,12 @@ class CRole(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="crole", description="【運営】ロール付与するボタンを表示させるコマンドです)")
-    @app_commands.checks.has_role(config.administrater_role_id)
+    @app_commands.checks.has_role(config.roles.administrater)
     async def croll(self, interaction: Interaction):
         role_embed = discord.Embed(
             title="ロール設定",
             description="該当するロールのボタンを押すと付与されます\nもう一度押すと、解除されます",
-            color=0x3AFF11,
+            color=0xffff00,
         )
         com_embed = discord.Embed(
             title="【必須】コマンダーランク設定", description="ーーーーーーーーーー", color=0x3AFF11
@@ -192,12 +192,12 @@ class CRole(commands.Cog):
         )
         com_embed.add_field(
             name="--【@中級コマンダー】--",
-            value="🇨:まぁまぁできるかなという方やある程度のアイテムを作れるなどという方はこちら!\n(scoreboard,execute,etc.)",
+            value="🇨:まぁまぁコマンドができるという人やある程度のデータパックを作れるという人はこちら!\n(scoreboard,execute,json理解,etc.)",
             inline=False,
         )
         com_embed.add_field(
             name="--【@上級コマンダー】--",
-            value="🇩:オリジナルエンティティ・配布MAP・ほぼすべてのコマンドを理解してる人はこちら!\n(execute(複雑),function,etc.)",
+            value="🇩:ほぼ全てのコマンドを理解している人や大規模データパックを作れる人はこちら!\n(execute(複雑),function,etc.)",
             inline=False,
         )
 
@@ -231,7 +231,7 @@ class CRole(commands.Cog):
         )
 
         sen_embed = discord.Embed(
-            title="【任意】宣伝・質問受付設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【任意】宣伝・質問受付設定", description="ーーーーーーーーーー", color=0x1b9700
         )
         sen_embed.add_field(
             name="--【@宣伝し隊】--", value="📝:宣伝したい人はこのロールを付けて宣伝してください!", inline=False
@@ -251,7 +251,7 @@ class CRole(commands.Cog):
         )
 
         hoka_embed = discord.Embed(
-            title="【任意】その他設定", description="ーーーーーーーーーー", color=0x3AFF11
+            title="【任意】その他設定", description="ーーーーーーーーーー", color=0x1b9700
         )
         hoka_embed.add_field(
             name="--【@通知ON】--", value="🔔:運営からのお知らせ通知が行っても大丈夫な方はこちら!", inline=False

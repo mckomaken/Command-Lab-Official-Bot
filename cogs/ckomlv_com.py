@@ -7,6 +7,8 @@ from discord.ext import commands
 from config.config import config
 from database import User, session, Oregacha, session2
 
+# int1 : cog.ckomlv_com.py使用中(cgiveの受け取り量カウント)
+
 
 class Cmdbotlevelcom(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -27,6 +29,9 @@ class Cmdbotlevelcom(commands.Cog):
                 )
                 level_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
                 if more_info is True:
+                    if interaction.channel.id != config.channels.bot_command:
+                        await interaction.response.send_message(f"このチャンネルで詳細表示を出すことはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
+                        return
                     gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
                     if not gachadb:
                         level_embed.add_field(name="総獲得経験値量", value=f"```go\n{userdb.alladdexp} exp\n```", inline=True)
@@ -50,11 +55,14 @@ class Cmdbotlevelcom(commands.Cog):
                 userdb.allexp = (userdb.level * 10000) + userdb.exp
                 session.commit()
         else:
+            if interaction.channel.id != config.channels.bot_command:
+                await interaction.response.send_message(f"このチャンネルで他人の経験値を表示することはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
+                return
             targetdb = session.query(User).filter_by(userid=target.id).first()
             if not targetdb:
                 await interaction.response.send_message(f"`{target.display_name}`はまだ経験値を獲得していません\n### 喋らせよう!!!!!(笑)", silent=True)
                 return
-            elif targetdb.noxp is True or target.id == config.syunngikuid:
+            elif targetdb.noxp is True or target.id == config.users.syunngiku:
                 await interaction.response.send_message(f"`{target.display_name}`の経験値量は確認できません", ephemeral=True)
                 return
             else:
@@ -73,42 +81,49 @@ class Cmdbotlevelcom(commands.Cog):
     async def cgivexp(self, interaction: discord.Interaction, target: discord.Member, givexp: int):
         givedb = session.query(User).filter_by(userid=interaction.user.id).first()
         targetdb = session.query(User).filter_by(userid=target.id).first()
-        if givedb.dailygivexp is True:
-            await interaction.response.send_message("今日はもうあげられないよ", ephemeral=True)
-            return
-        if 0 >= givexp or givexp >= 5000:
-            await interaction.response.send_message("引数:givexpは1以上4999以下を指定してください", ephemeral=True)
-            return
-        if targetdb.noxp is True or givedb.noxp is True:
-            await interaction.response.send_message(f"`{target.display_name}`に経験値を与えることはできません", ephemeral=True)
-            return
+        givedb_allexp = (givedb.level * 10000) + givedb.exp
+
         if not givedb:
-            await interaction.response.send_message(f"{interaction.user.mention}のデータがないため、そもそも与える経験値がありません\n喋ろう!!!!", silent=True)
+            await interaction.response.send_message(f"{interaction.user.mention}のデータがないため、そもそも与える経験値がありません\n喋ろう!!!!", ephemeral=True)
             return
         elif not targetdb:
             newdb = User(userid=target.id, username=target.name)
             session.add(newdb)
             session.commit()
-            await interaction.response.send_message(f"{target.mention}のデータがなかったため、只今作成しました\nもう一度コマンドを実行して付与してください", silent=True)
+            await interaction.response.send_message(f"{target.mention}のデータがなかったため、只今作成しました\nもう一度コマンドを実行して付与してください", ephemeral=True)
             return
-        givedb_allexp = (givedb.level * 10000) + givedb.exp
-        if givedb_allexp < givexp:
-            await interaction.response.send_message(f"コマ研レベルに借金機能はありません(笑)\n所持経験値量：{givedb_allexp} < 付与予定経験値量：{givexp}", silent=True)
+        elif targetdb.int1 > 5000:
+            await interaction.response.send_message(f"今日はもう{target.mention}にあげられないよ", ephemeral=True)
+            return
+        elif 0 >= givexp or givexp > 5000:
+            await interaction.response.send_message("引数:givexpは1以上5000以下を指定してください", ephemeral=True)
+            return
+        elif targetdb.noxp is True or givedb.noxp is True:
+            await interaction.response.send_message(f"`{target.mention}`に経験値を与えることはできません", ephemeral=True)
+            return
+        elif givedb_allexp < givexp:
+            await interaction.response.send_message(f"コマ研レベルに借金機能はありません(笑)\n所持経験値量：{givedb_allexp} < 付与予定経験値量：{givexp}", ephemeral=True)
             return
 
-        givedb.exp -= givexp
-        givedb.allremoveexp += givexp
+        calvalue = givexp
+        if targetdb.int1 + givexp > 5000:
+            calvalue = 5000 - targetdb.int1
+            text = f"全量譲渡すると{target.mention}の1日当たりの譲渡経験値量が5000xpを超えてしまうため、{target.mention}に差分の{calvalue}xpを与えました"
+
+        givedb.exp -= calvalue
+        givedb.allremoveexp += calvalue
         while givedb.exp < 0:
             givedb.level -= 1
             givedb.exp += 10000
-        targetdb.exp += givexp
-        targetdb.alladdexp += givexp
+        targetdb.exp += calvalue
+        targetdb.alladdexp += calvalue
+        targetdb.int1 += calvalue
         while targetdb.exp >= 10000:
             targetdb.level += 1
             targetdb.exp -= 10000
-        givedb.dailygivexp = True
         session.commit()
-        await interaction.response.send_message(f"{target.mention}に{givexp}xp与えました", silent=True, allowed_mentions=discord.AllowedMentions.none())
+        text = f"{target.mention}に{calvalue}xp与えました"
+        await interaction.response.send_message(text, silent=True, allowed_mentions=discord.AllowedMentions.none())
 
     @app_commands.command(name="csetleveling", description="【運営用】参加者のLv/exp変更)")
     @app_commands.describe(choice="選択肢", target="変更する人", level="レベル", experience="経験値")
@@ -125,7 +140,7 @@ class Cmdbotlevelcom(commands.Cog):
         setuserdb = session.query(User).filter_by(userid=target.id).first()
         gachadb = session2.query(Oregacha).filter_by(userid=target.id).first()
 
-        if interaction.guild.get_role(config.administrater_role_id) not in interaction.user.roles:
+        if interaction.guild.get_role(config.roles.administrater) not in interaction.user.roles:
             await interaction.response.send_message("権限ないよ！", ephemeral=True)
             return
         if not setuserdb:
@@ -134,13 +149,13 @@ class Cmdbotlevelcom(commands.Cog):
             session.commit()
             await interaction.response.send_message(f"{target.mention}のデータベースがまだなかったため只今生成しました\nもう一度コマンドを実行してください", silent=True)
             return
-        if level == 0 and experience == 0:
-            if choice.value != "stop" or choice.value != "list":
-                await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
-                return
 
         match choice.value:
+
             case "add":
+                if level == 0 and experience == 0:
+                    await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
+                    return
                 setuserdb.exp += experience
                 setuserdb.level += level
                 setuserdb.alladdexp += (level * 10000) + experience
@@ -149,7 +164,11 @@ class Cmdbotlevelcom(commands.Cog):
                     setuserdb.exp -= 10000
                 session.commit()
                 await interaction.response.send_message(f"{target.mention}に{level}Lv{experience}exp分を付与しました", silent=True, allowed_mentions=discord.AllowedMentions.none())
+
             case "remove":
+                if level == 0 and experience == 0:
+                    await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
+                    return
                 if ((setuserdb.level * 10000) + setuserdb.exp) <= ((level * 10000) + experience):
                     setuserdb.exp = 0
                     setuserdb.level = 0
@@ -163,7 +182,11 @@ class Cmdbotlevelcom(commands.Cog):
                         setuserdb.exp += 10000
                     session.commit()
                 await interaction.response.send_message(f"{target.mention}の{level}Lv{experience}exp分をはく奪しました", silent=True)
+
             case "set":
+                if level == 0 and experience == 0:
+                    await interaction.response.send_message("`level`または`experience`またはその両方に引数がありません\nどちらか一つは引数を指定してください", silent=True)
+                    return
                 if experience >= 10000:
                     await interaction.response.send_message("`experience`が10000以上のため、設定できません", silent=True)
                     return
@@ -171,6 +194,7 @@ class Cmdbotlevelcom(commands.Cog):
                 setuserdb.level = level
                 session.commit()
                 await interaction.response.send_message(f"{target.mention}を{level}Lv{experience}expに設定しました", silent=True)
+
             case "stop":
                 if setuserdb.noxp is False:
                     setuserdb.noxp = True
@@ -180,6 +204,7 @@ class Cmdbotlevelcom(commands.Cog):
                     setuserdb.noxp = False
                     session.commit()
                     await interaction.response.send_message(f"{target.mention}のレベルシステムを有効化しました", silent=True)
+
             case "list":
                 level_embed = discord.Embed(
                     title=f"{target.display_name}のレベル",

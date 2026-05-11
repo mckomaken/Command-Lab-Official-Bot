@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 from config.config import config
-# from database import User, session のちに使用予定
+from database import User, session
 
 
 class CWelcome(commands.Cog):
@@ -16,12 +16,23 @@ class CWelcome(commands.Cog):
         added_roles_id = [role.id for role in set(after.roles) - set(before.roles)]  # 増えたロールのid一覧
         if config.roles.regularmember in added_roles_id:
 
-            channel = await self.bot.fetch_channel(config.invite_ch)  # 入所者チャンネルを取得
+            channel = await self.bot.fetch_channel(config.channels.invite)  # 入所者チャンネルを取得
             welcome_embed = discord.Embed(
-                description=f"コマ研へようこそ！あなたは無事認証されました！\n<#{config.role_set_ch}>で自分にあったロールを設定しましょう(^O^)/",
+                description=f"コマ研へようこそ！あなたは無事認証されました！\n<#{config.channels.role_set}>で自分にあったロールを設定しましょう(^O^)/",
                 color=discord.Color.green()
             )
             await channel.send(f"{after.mention}さんが入所しました！", embed=welcome_embed, silent=True)
+
+        remove_roles_id = [role.id for role in set(before.roles) - set(after.roles)]
+        userdb = session.query(User).filter_by(userid=after.id).first()
+        cmd_log = await self.bot.fetch_channel(config.channels.cmdbot_log)
+        if config.roles.serverbooster in remove_roles_id:
+            if userdb.level < 15:
+                await after.remove_roles(after.guild.get_role(config.roles.mcmd_5lv))
+                await cmd_log.send(f".- {after.mention}の{after.guild.get_role(config.roles.mcmd_5lv)}を解除しました", silent=True)
+            if userdb.level < 5:
+                await after.remove_roles(after.guild.get_role(config.roles.mcmd_15lv))
+                await cmd_log.send(f".- {after.mention}の{after.guild.get_role(config.roles.mcmd_15lv)}を解除しました", silent=True)
 
 
 async def setup(bot: commands.Bot):

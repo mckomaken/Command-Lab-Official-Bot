@@ -19,7 +19,7 @@ async def loop():
         print("\033[41m" + "リセット開始" + "\033[0m")
         for i in results:
             i.dailylogin = False
-            i.dailygivexp = False
+            i.int1 = 0
             if i.str1 != "":
                 unwarn_date = datetime.strptime(i.str1, '%Y/%m/%d')
                 if now >= unwarn_date:
@@ -90,45 +90,49 @@ class Cmdbotlevel(commands.Cog):
         elif re.match(r'^(.+)\1+$', message.content):
             return
 
-        if message.channel.id == config.listench:
+        if message.channel.id in [
+            config.channels.listen,
+            config.channels.voice,
+            config.channels.voice256
+        ]:
             return
-        elif message.channel.id == config.voicech:
-            return
-        elif message.channel.id == config.voice256ch:
-            return
-        elif message.channel.category_id == config.admin_category_id:
-            start = 50 - math.floor(userdb.level / 10)
-            end = 100 + math.floor(userdb.level / 10)
-        elif message.channel.id == config.question_channels:
-            start = 100 - math.floor(userdb.level / 10)
-            end = 150 + math.floor(userdb.level / 10)
+        elif message.channel.category_id == config.categories.administrater:
+            start = 50
+            end = 100
+        elif message.channel.id == config.channels.question_channels:
+            start = 100
+            end = 150
         else:
-            start = 75 - math.floor(userdb.level / 10)
-            end = 125 + math.floor(userdb.level / 10)
-        if start < 0:
-            start = 0
-        exp_per_message = random.randint(start, end)
+            start = 75
+            end = 125
+
+        add = math.floor(userdb.level / 10) if userdb.level / 10 < 10 else 10
+        exp_orb_add = math.floor(userdb.level / 100) if userdb.level / 100 < 30 else 30
+        exp_per_message = random.randint(start + add, end + add)
+        if 500 <= random.randint(1, 1000) <= 500 + exp_orb_add:
+            exp_per_message = 500
+            await message.add_reaction("<:exp_orb:1454146493798944809>")
         userdb.chatcount += 1
         userdb.alladdexp += exp_per_message
         userdb.exp += exp_per_message
         session.commit()
 
-        if message.channel.id == config.selfintroductionch:  # 書き換えること
+        if message.channel.id == config.channels.selfintroduction:  # 書き換えること
             if userdb.selfintro is False:
                 userdb.selfintro = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-        elif message.channel.id == config.freechat:  # 書き換えること
+        elif message.channel.id == config.channels.freechat:  # 書き換えること
             if userdb.freechat is False:
                 userdb.freechat = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-        elif message.channel.id == config.anotherch:  # 書き換えること
+        elif message.channel.id == config.channels.another:  # 書き換えること
             if userdb.anotherch is False:
                 userdb.anotherch = True
                 userdb.alladdexp += 200
                 userdb.exp += 200
-        elif message.channel.id == config.question_channels:
+        elif message.channel.id == config.channels.question_channels:
             if userdb.question is False:
                 userdb.question = True
                 userdb.alladdexp += 200
@@ -156,7 +160,7 @@ class Cmdbotlevel(commands.Cog):
             userdb.level += 1
             userdb.exp -= 10000
             session.commit()
-            mee6_channel = await self.bot.fetch_channel(config.mee6.botch)
+            mee6_channel = await self.bot.fetch_channel(config.channels.level_data)
             await mee6_channel.send(f"mcmdlevel,{message.author.id},{message.author.name},{userdb.level}")
 
     @commands.Cog.listener("on_message_delete")
@@ -190,9 +194,9 @@ class Cmdbotlevel(commands.Cog):
         elif re.match(r'^(.+)\1+$', message.content):
             return
 
-        if message.channel.id == config.listench:
+        if message.channel.id == config.channels.listen:
             return
-        elif message.channel.category_id == config.admin_category_id:
+        elif message.channel.category_id == config.categories.administrater:
             return
 
         deluserdb.chatcount -= 1

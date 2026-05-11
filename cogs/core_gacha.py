@@ -6,6 +6,7 @@ import discord
 from discord import Interaction, app_commands
 from discord.ext import commands
 
+from config.config import config
 from database import User, session, Oregacha, session2
 
 # ogint1 : cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)
@@ -187,7 +188,13 @@ async def cOreGacha10(interaction: Interaction):
             description=desc,
             color=0xf36d4b
         )
-    elif sumxp >= -531:
+    elif sumxp >= -400:
+        embed = discord.Embed(
+            title="10連ガチャ結果 : 中はずれ",
+            description=desc,
+            color=0xf35d7b
+        )
+    elif sumxp >= -720:
         embed = discord.Embed(
             title="10連ガチャ結果 : 大はずれ",
             description=desc,
@@ -199,7 +206,7 @@ async def cOreGacha10(interaction: Interaction):
             description=desc,
             color=0xff0000
         )
-        # https://discord.com/channels/735130420630388807/965095619838488576/1382557452893163632
+        # https://discord.com/channels/735130420630388807/965095619838488576/1469081086469476373
     embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
     embed.set_footer(text=f"本日残り: 0回 / 今日の収支: {sumxp}XP")
 
@@ -230,6 +237,10 @@ class COregacha(commands.Cog):
         if gachadb.dailygacha >= 10:
             await interaction.response.send_message(f"本日のガチャ回数が上限に達しました\nまた明日回してね(^^♪\n-# 00:00:00～00:01:00に更新されます\n本日の収支は{gachadb.ogint1}XPでした", ephemeral=True)
             return
+        if interaction.channel.id != config.channels.bot_command:
+            await interaction.response.send_message(f"このチャンネルでガチャを回すことはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
+            return
+        
         now = datetime.now()
         if now.day == 9:
             gachadb.dailygacha += 1
@@ -243,12 +254,6 @@ class COregacha(commands.Cog):
             gachadb.dailygacha += 1
             session2.commit()
             await cOreGacha(interaction)
-
-    # @app_commands.command(name="core", description="鉱石ガチャ登録")
-    # async def coregachatouroku(self, interaction: discord.Interaction):
-    #     session2.add(Oregacha(userid=101, username="合計"))
-    #     session2.commit()
-    #     await interaction.response.send_message("合計データを登録しました", ephemeral=True)
 
     @app_commands.command(name="core-gacha-10", description="鉱石ガチャコマンド【10連】")
     async def cOreGacha10Command(self, interaction: discord.Interaction):
@@ -266,6 +271,8 @@ class COregacha(commands.Cog):
             await interaction.response.send_message("あなたは経験値システムが無効化されてるからガチャを回せません", ephemeral=True)
         elif gachadb.dailygacha > 0:
             await interaction.response.send_message(f"本日既に{gachadb.dailygacha}回ガチャを回しているため、10連は回せません\n本日の収支は{gachadb.ogint1}XPでした", ephemeral=True)
+        elif interaction.channel.id != config.channels.bot_command:
+            await interaction.response.send_message(f"このチャンネルでガチャを回すことはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
         else:
             now = datetime.now()
             if now.day == 22 and now.month == 7:
@@ -281,6 +288,9 @@ class COregacha(commands.Cog):
     @app_commands.command(name="core-gacha-list", description="鉱石ガチャ結果一覧")
     @app_commands.describe(server="サーバー全体の確率表示(未指定:FALSE(自分の結果表示))")
     async def cOreGachaListCommand(self, interaction: discord.Interaction, server: bool = False):
+        if interaction.channel.id != config.channels.bot_command:
+            await interaction.response.send_message(f"このチャンネルでガチャの確認をすることはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
+            return
         if server is False:
             gachadb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
             if not gachadb:

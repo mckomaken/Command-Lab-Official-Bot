@@ -5,96 +5,98 @@ from typing import Optional
 from pydantic import BaseModel
 
 latest_minecraft_data_version = "1.21.4"
-latest_version = "1.21.8"
-
-
-class BumpNofitication(BaseModel):
-    channel_id: int
-    disboard_id: int
-
-
-class YChannel(BaseModel):
-    channel_id: int
-    admin_channel_id: int
-
-
-class Mee6(BaseModel):
-    botch: int
-    levelup: int
-    levelupnoticeoff: int
-    senndennkenn: int
-    hanabira: int
-    mcmdlv_5: int
-    five_5: Optional[int] = 0
-    ten_10: Optional[int] = 0
-    fifteen_15: Optional[int] = 0
-    twenty_20: Optional[int] = 0
-    twentyfive_25: Optional[int] = 0
-    thirty_30: Optional[int] = 0
-    thirtyfive_35: Optional[int] = 0
-    forty_40: Optional[int] = 0
-    fortyfive_45: Optional[int] = 0
-    fifty_50: Optional[int] = 0
-    sixty_60: Optional[int] = 0
-    seventy_70: Optional[int] = 0
-    eighty_80: Optional[int] = 0
-    ninety_90: Optional[int] = 0
-    onehundred_100: Optional[int] = 0
+latest_version = "1.21.11"
 
 
 class Roles(BaseModel):
-    kakedasi: int
-    syokyuu: int
-    tyuukyuu: int
-    zyoukyuu: int
-    jezei: int
-    bezei: int
-    personalcomputer: int
-    smartphone: int
-    gamemachine: int
-    serverbooster: int
-    regularmember: int
+    newbie: int  # 駆け出し
+    beginner: int  # 初級
+    intermediate: int  # 中級
+    advanced: int  # 上級
+    java_edition: int  # JE勢
+    bedrock_edition: int  # BE勢
+    computer: int  # PC勢
+    smartphone: int  # スマホ勢
+    console: int  # コンソール勢
+    administrater: int  # 管理者
+    regularmember: int  # 正規メンバー
+    serverbooster: int  # サーバーBooster
+    levelupnoticeoff: int  # MEE6レベル通知オフ
+    advertising_rights: int  # 宣伝権(仮)
+    no_advertising: int  # 宣伝禁止
+    mcmd_5lv: int  # yellow MCMDレベル5以上 コンフィグ名変更
+    mcmd_15lv: int  # yellow MCMDレベル15以上 新規
+    mcmd_30lv: int  # yellow MCMDレベル30以上 新規
+    mcmd_300lv: int  # yellow MCMDレベル300以上 新規
+    mcmd_600lv: int  # yellow MCMDレベル600以上 新規
+    mcmd_1000lv: int  # yellow MCMDレベル1000以上 新規
+
+
+class Channels(BaseModel):
+    invite: int  # 入所者チャンネル
+    selfintroduction: int  # 自己紹介チャンネル
+    role_set: int  # ロール設定チャンネル
+    lottery: int  # 抽選チャンネル
+
+    question_channels: list[int] = []  # 質問チャンネルリスト
+
+    freechat: int  # 総合雑談チャンネル
+    y_channel: int  # y談チャンネル
+    listen: int  # 聞き専チャンネル
+    voice: int  # ボイスチャンネル
+    voice256: int  # 256kbpsボイスチャンネル
+
+    komaken_bot_development_room: int  # コマ研Bot開発室
+
+    je_calling_for_requests: int  # jeの依頼・募集
+    be_calling_for_requests: int  # beの依頼・募集
+
+    advertisement: int  # 宣伝チャンネル
+
+    bot_command: int  # Botコマンドチャンネル
+    disboard_command: int  # Disboardコマンドチャンネル
+    levelup: int  # レベルアップ通知チャンネル
+
+    discord_inquiry: int  # Discord問い合わせチャンネル
+
+    admin_meeting: int  # 運営会議チャンネル
+    attention_report: int  # 通報チャンネル
+    cmdbot_log: int  # コマ研Botログチャンネル
+    level_data: int  # レベルデータ送信チャンネル
+
+    authentication: int  # 認証問い合わせチャンネル
+
+    another: int  # その他チャンネル(未指定チャンネル)
+
+
+class Categories(BaseModel):
+    administrater: int  # 管理者カテゴリー
+
+
+class Users(BaseModel):
+    owner_ids: list[int] = []  # 鯖主ID
+    syunngiku: int  # 春菊ID
+    disboard_bot: int  # Disboard Bot ID
 
 
 class Config(BaseModel):
     token: str
     guild_id: int
-    administrater_role_id: int
-    bump: BumpNofitication
     status: str
     start_notice_channel: Optional[int] = None
     enabled_features: list[str] = []
-    owner_ids: list[int] = []
     prefix: Optional[str] = "cm!"
-    question_channels: list[int] = []
-    y_channel: int
-    cmdbot_log: int
-    lottery_channel: int
-    mee6: Mee6
     roles: Roles
-    advertisement_channnel_id: int
-    admin_category_id: int
-    botcommand_channel_id: int
-    role_set_ch: int
-    ninnsyouch: int
-    selfintroductionch: int
-    anotherch: int
-    freechat: int
-    listench: int
-    syunngikuid: int
-    listenchs: list[int] = []
-    voicech: int
-    voice256ch: int
-    toiawasech: int
-    invite_ch: int
-    admin_meeting_ch: int
+    channels: Channels
+    categories: Categories
+    users: Users
 
 # -----------------------------------------------------------
 
 
 class PackVersionEntry(BaseModel):
-    rp: int
-    dp: int
+    rp: int | float
+    dp: int | float
 
 
 class PackVersions(BaseModel):

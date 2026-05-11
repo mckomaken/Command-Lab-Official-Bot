@@ -17,27 +17,6 @@ from utils.setup import setup, setup_mcdata
 
 logger = logging.getLogger("root")
 
-# ステータス定義 ({key}を{value}中)
-STATUSES = [
-    ("JavaEdition", "playing", 120),
-    ("BedrockEdition", "playing", 120),
-    ("BugEdition", "playing", 10),
-    ("マイクラのコマンドを勉強中", "playing", 100),
-    ("discord.pyとpythonを勉強中", "playing", 100),
-    ("Javaを勉強中", "playing", 100),
-    ("JavaScriptを勉強中", "playing", 100),
-    ("コマ研Botはいつでもあなたのメッセージを見ている", "watching", 20),
-    ("大体何でもできるのだ♪", "watching", 30),
-    ("私はボットです", "playing", 30),
-    ("Netflixで映画", "watching", 30),
-    ("ポテトをツンツン中", "playing", 30),
-    ("YouTube", "watching", 100),
-    ("春菊を調理中", "playing", 120),
-    ("春菊の配信", "watching", 10),
-    ("YouTube", "watching", 100),
-    ("Spotify", "listening", 100),
-]
-
 
 class CommandLabBot(commands.Bot):
     status_index: int
@@ -46,35 +25,12 @@ class CommandLabBot(commands.Bot):
         super().__init__(
             command_prefix=config.prefix,
             intents=discord.Intents.all(),
-            owner_ids=config.owner_ids,
+            owner_ids=config.users.owner_ids,
         )
         self.status_index = 0
 
     async def is_owner(self, user: User) -> bool:
-        return user.id in config.owner_ids
-
-    async def change_status(self):
-        await self.wait_until_ready()
-        name, activity_type, interval = STATUSES[self.status_index]
-        if activity_type == "playing":  # ~をプレイ中
-            activity = discord.Activity(type=discord.ActivityType.playing, name=name)
-        elif activity_type == "streaming":  # ~を配信中
-            activity = discord.Streaming(name=name, url="your_stream_url")
-        elif activity_type == "listening":  # ~を再生中
-            activity = discord.Activity(type=discord.ActivityType.listening, name=name)
-        elif activity_type == "watching":  # ~を視聴中
-            activity = discord.Activity(type=discord.ActivityType.watching, name=name)
-        elif activity_type == "competing":  # ~に参戦中
-            activity = discord.Activity(type=discord.ActivityType.competing, name=name)
-        else:  # その他
-            activity = discord.Activity(type=discord.ActivityType.custom, name=name)
-
-        await self.change_presence(activity=activity)
-        self.status_index += 1
-        if self.status_index >= len(STATUSES):
-            self.status_index = 0
-        await asyncio.sleep(interval)
-        asyncio.create_task(self.change_status())
+        return user.id in config.users.owner_ids
 
     async def setup_hook(self) -> None:
         if "*" in config.enabled_features:
@@ -89,8 +45,6 @@ class CommandLabBot(commands.Bot):
                 await self.load_extension(f)
                 logger.info(f"機能 [{f}] が正常にロードされました。")
         await self.tree.sync()
-
-        self.loop.create_task(self.change_status())
 
     @classmethod
     async def start(cls, token: str) -> None:
@@ -118,9 +72,9 @@ class CommandLabBot(commands.Bot):
                 )
 
                 logger.info("BOTが起動しました")
-                if config.start_notice_channel is not None:
+                if config.channels.komaken_bot_development_room is not None:
                     start_notice_channel = await client.fetch_channel(
-                        config.start_notice_channel
+                        config.channels.komaken_bot_development_room
                     )
                     await start_notice_channel.send(embed=start_embed)
 
