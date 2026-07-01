@@ -372,7 +372,7 @@ class CDraw(commands.Cog):
     @app_commands.command(name="cdraw", description="二次曲線 a+bx+cy+dx²+ey²+fxy=0 を描きます")
     @app_commands.describe(a="a", b="b", c="c", d="d", e="e", f="f")
     @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
-    async def ckill(
+    async def cdraw(
         self, interaction: discord.Interaction,
         a:float, b:float, c:float, d:float, e:float, f:float
     ):
