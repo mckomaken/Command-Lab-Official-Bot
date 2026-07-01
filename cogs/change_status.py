@@ -1,6 +1,5 @@
 import asyncio
 import discord
-from discord import app_commands
 from discord.ext import commands
 
 from datetime import datetime, timezone
@@ -95,7 +94,6 @@ class ChangeStatus(commands.Cog):
 
                 await self.bot.change_presence(activity=activity)
                 await asyncio.sleep(delay)
-
 
 
 async def setup(bot: commands.Bot):
