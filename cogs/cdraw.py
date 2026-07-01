@@ -369,7 +369,14 @@ class CDraw(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="cdraw", description="二次曲線 a+bx+cy+dx²+ey²+fxy=0 を描きます")
-    @app_commands.describe(a="a", b="b", c="c", d="d", e="e", f="f")
+    @app_commands.describe(
+        a="'a'+bx+cy+dx²+ey²+fxy=0",
+        b="a+'b'x+cy+dx²+ey²+fxy=0",
+        c="a+bx+'c'y+dx²+ey²+fxy=0",
+        d="a+bx+cy+'d'x²+ey²+fxy=0",
+        e="a+bx+cy+dx²+'e'y²+fxy=0",
+        f="a+bx+cy+dx²+ey²+'f'xy=0"
+    )
     @app_commands.checks.cooldown(1, 3, key=lambda i: (i.guild_id))
     async def cdraw(
         self, interaction: discord.Interaction,
@@ -382,7 +389,7 @@ class CDraw(commands.Cog):
             await interaction.response.send_message(str(error))
 
         with open("graph.png", mode="rb") as file:
-            await interaction.response.send_message(fp=file)
+            await interaction.response.send_message(file=file)
 
 
 async def setup(bot: commands.Bot):
