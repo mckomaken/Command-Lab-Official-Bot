@@ -96,9 +96,6 @@ class Cmdbotlevel(commands.Cog):
             config.channels.voice256
         ]:
             return
-        elif message.channel.category_id == config.categories.administrater:
-            start = 50
-            end = 100
         elif message.channel.id == config.channels.question_channels:
             start = 100
             end = 150
