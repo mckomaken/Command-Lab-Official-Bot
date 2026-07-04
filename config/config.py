@@ -46,6 +46,7 @@ class Channels(BaseModel):
     listen2: int  # 聞き専チャンネル
     voice: int  # ボイスチャンネル
     voice256: int  # 256kbpsボイスチャンネル
+    voice8: int  # 8kbpsボイスチャンネル
 
     komaken_bot_development_room: int  # コマ研Bot開発室
 

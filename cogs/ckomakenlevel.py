@@ -94,7 +94,8 @@ class Cmdbotlevel(commands.Cog):
             config.channels.listen1,
             config.channels.listen2,
             config.channels.voice,
-            config.channels.voice256
+            config.channels.voice256,
+            config.channels.voice8
         ]:
             return
         elif message.channel.id == config.channels.question_channels:
@@ -196,7 +197,8 @@ class Cmdbotlevel(commands.Cog):
             config.channels.listen1,
             config.channels.listen2,
             config.channels.voice,
-            config.channels.voice256
+            config.channels.voice256,
+            config.channels.voice8
         ]:
             return
         elif message.channel.category_id == config.categories.administrater:
