@@ -91,7 +91,8 @@ class Cmdbotlevel(commands.Cog):
             return
 
         if message.channel.id in [
-            config.channels.listen,
+            config.channels.listen1,
+            config.channels.listen2,
             config.channels.voice,
             config.channels.voice256
         ]:
@@ -194,7 +195,12 @@ class Cmdbotlevel(commands.Cog):
         elif re.match(r'^(.+)\1+$', message.content):
             return
 
-        if message.channel.id == config.channels.listen:
+        if message.channel.id in [
+            config.channels.listen1,
+            config.channels.listen2,
+            config.channels.voice,
+            config.channels.voice256
+        ]:
             return
         elif message.channel.category_id == config.categories.administrater:
             return

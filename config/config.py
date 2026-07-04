@@ -42,7 +42,8 @@ class Channels(BaseModel):
 
     freechat: int  # 総合雑談チャンネル
     y_channel: int  # y談チャンネル
-    listen: int  # 聞き専チャンネル
+    listen1: int  # 聞き専チャンネル
+    listen2: int  # 聞き専チャンネル
     voice: int  # ボイスチャンネル
     voice256: int  # 256kbpsボイスチャンネル
 
