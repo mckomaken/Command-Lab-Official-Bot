@@ -1,14 +1,16 @@
 import discord
 from discord import ButtonStyle, Interaction, app_commands
 from discord.ext import commands
-from discord.ui import Button, View, button, Modal
+from discord.ui import Button, View
 
 from config.config import config
-from database import User, session, Oregacha, session2, Polls, session3, func
+from database import User, session, Polls, session3, func
 
 from datetime import datetime
 
-import random, string
+import random
+import string
+
 
 async def win(user_ids, amount, interaction: Interaction, odd, sid):
     for i in user_ids:
@@ -32,6 +34,7 @@ async def win(user_ids, amount, interaction: Interaction, odd, sid):
         else:
             session.commit()
 
+
 class ShowButton(Button):
     def __init__(self, pollid, choices: str, title: str, sid: int):
         super().__init__(label="開票・削除", style=ButtonStyle.danger)
@@ -42,15 +45,15 @@ class ShowButton(Button):
 
     async def callback(self, interaction: discord.Interaction):
         if interaction.user.id != self.sid:
-            await interaction.response.send_message(f"**自分の投票のみ開票・削除ができます！**", ephemeral=True)
+            await interaction.response.send_message("**自分の投票のみ開票・削除ができます！**", ephemeral=True)
             return
         polls = dict(session3.query(Polls.chosen, func.count()).filter_by(pollid=self.cid).group_by(Polls.chosen).all())
-        total = (session3.query(func.count()).filter(Polls.pollid==self.cid).scalar())
+        total = (session3.query(func.count()).filter(Polls.pollid == self.cid).scalar())
         if not polls:
             await interaction.message.delete()
         else:
             result_embed = discord.Embed(
-                title=f"投票終了！　結果は……", color=0x113AFF
+                title="投票終了！　結果は……", color=0x113AFF
             )
             result_embed.add_field(
                 name=f"{self.title}", value="", inline=False
@@ -60,17 +63,18 @@ class ShowButton(Button):
                 if n in polls:
                     bar = int(40 * polls[n] / total)
                     result_embed.add_field(
-                        name=f"{i}: {polls[n]}票", value="="*bar, inline=False
+                        name=f"{i}: {polls[n]}票", value="=" * bar, inline=False
                     )
                 else:
                     result_embed.add_field(
                         name=f"{i}: 0票", value="x", inline=False
                     )
-                
+
                 result_embed.set_footer(text=f"計{total}票")
 
             await interaction.channel.send(embed=result_embed)
             await interaction.message.delete()
+
 
 class ShowBetButton(Button):
     def __init__(self, pollid, choices: str, title: str, rule, nn, amount, odds, sid: int):
@@ -86,21 +90,22 @@ class ShowBetButton(Button):
 
     async def callback(self, interaction: discord.Interaction):
         if interaction.user.id != self.sid:
-            await interaction.response.send_message(f"**自分の投票のみ開票・削除ができます！**", ephemeral=True)
+            await interaction.response.send_message("**自分の投票のみ開票・削除ができます！**", ephemeral=True)
             return
         polls = dict(session3.query(Polls.chosen, func.count()).filter_by(pollid=self.cid).group_by(Polls.chosen).all())
-        total = (session3.query(func.count()).filter(Polls.pollid==self.cid).scalar())
+        total = (session3.query(func.count()).filter(Polls.pollid == self.cid).scalar())
         if not polls:
             await interaction.message.delete()
         else:
             result_embed = discord.Embed(
-                title=f"投票終了！　結果は……", color=0x113AFF
+                title="投票終了！　結果は……", color=0x113AFF
             )
             result_embed.add_field(
                 name=f"{self.title}", value="", inline=False
             )
 
-            if self.rule == 3: self.nn = random.randint(1, len(self.choices))
+            if self.rule == 3:
+                self.nn = random.randint(1, len(self.choices))
             if self.rule == 7:
                 self.nn = session3.query(Polls).filter(Polls.pollid == self.cid, Polls.userid == self.sid).first().chosen
 
@@ -108,24 +113,24 @@ class ShowBetButton(Button):
                 if n in polls:
                     bar = int(40 * polls[n] / total)
                     result_embed.add_field(
-                        name=f"{i}（{self.odds[n]}倍）: {polls[n]}票", value="="*bar, inline=False
+                        name=f"{i}（{self.odds[n]}倍）: {polls[n]}票", value="=" * bar, inline=False
                     )
                     if self.rule == 1 and polls[n] == 1:
                         user_ids = (session3.query(Polls.userid).filter(Polls.pollid == self.cid, Polls.chosen == n).all())
                         await win(user_ids, self.amount, interaction, self.odds[n], self.sid)
-                    elif self.rule == 2 and n == (self.nn-1):
+                    elif self.rule == 2 and n == (self.nn - 1):
                         user_ids = (session3.query(Polls.userid).filter(Polls.pollid == self.cid, Polls.chosen == n).all())
                         await win(user_ids, self.amount, interaction, self.odds[n], self.sid)
-                    elif self.rule == 3 and n == (self.nn-1):
+                    elif self.rule == 3 and n == (self.nn - 1):
                         user_ids = (session3.query(Polls.userid).filter(Polls.pollid == self.cid, Polls.chosen == n).all())
                         await win(user_ids, self.amount, interaction, self.odds[n], self.sid)
                     elif self.rule == 4 and polls[n] == 2:
                         user_ids = (session3.query(Polls.userid).filter(Polls.pollid == self.cid, Polls.chosen == n).all())
                         await win(user_ids, self.amount, interaction, self.odds[n], self.sid)
-                    elif self.rule == 5 and (polls[n]/total*100 <= self.nn):
+                    elif self.rule == 5 and (polls[n] / total * 100 <= self.nn):
                         user_ids = (session3.query(Polls.userid).filter(Polls.pollid == self.cid, Polls.chosen == n).all())
                         await win(user_ids, self.amount, interaction, self.odds[n], self.sid)
-                    elif self.rule == 6 and (n == 0 or polls[n]/total*100 > 50):
+                    elif self.rule == 6 and (n == 0 or polls[n] / total * 100 > 50):
                         user_ids = (session3.query(Polls.userid).filter(Polls.pollid == self.cid, Polls.chosen == n).all())
                         await win(user_ids, self.amount, interaction, self.odds[n], self.sid)
                     elif self.rule == 7 and n == self.nn:
@@ -136,21 +141,22 @@ class ShowBetButton(Button):
                     result_embed.add_field(
                         name=f"{i}（{self.odds[n]}倍）: 0票", value="x", inline=False
                     )
-                
+
                 if self.rule == 1:
-                    result_embed.set_author(name=f"一票だけの選択肢を選んだ人の勝ち！")
+                    result_embed.set_author(name="一票だけの選択肢を選んだ人の勝ち！")
                 elif self.rule == 2 or self.rule == 3:
-                    result_embed.set_author(name=f"{self.choices[self.nn-1]} を選んだ人の勝ち！")
+                    result_embed.set_author(name=f"{self.choices[self.nn - 1]} を選んだ人の勝ち！")
                 elif self.rule == 4:
-                    result_embed.set_author(name=f"二票だけの選択肢を選んだ人の勝ち！")
+                    result_embed.set_author(name="二票だけの選択肢を選んだ人の勝ち！")
                 elif self.rule == 5:
                     result_embed.set_author(name=f"割合が {self.nn} % 以下の選択肢を選んだ人の勝ち！")
                 elif self.rule == 7:
                     result_embed.set_author(name=f"{self.choices[self.nn]} を選んだ人の勝ち！")
-                result_embed.set_footer(text=f"計{total}票・勝者には DM が届きます（{['','一票のみの選択肢が勝ち','特定の選択肢が勝ち','ランダムな選択肢が勝ち','二票のみの選択肢が勝ち',f'割合が {self.nn} % 以下の選択肢が勝ち','一つ目は絶対に勝ち／二つ目が過半数を占めたら全員勝ち','作成者が後から選んだ選択肢が勝ち'][self.rule]}）")
+                result_embed.set_footer(text=f"計{total}票・勝者には DM が届きます（{['', '一票のみの選択肢が勝ち', '特定の選択肢が勝ち', 'ランダムな選択肢が勝ち', '二票のみの選択肢が勝ち', f'割合が {self.nn} % 以下の選択肢が勝ち', '一つ目は絶対に勝ち／二つ目が過半数を占めたら全員勝ち', '作成者が後から選んだ選択肢が勝ち'][self.rule]}）")
 
             await interaction.channel.send(embed=result_embed)
             await interaction.message.delete()
+
 
 class CloseBetButton(Button):
     def __init__(self, pollid, choices: str, title: str, rule, nn, amount, odds, sid):
@@ -166,14 +172,14 @@ class CloseBetButton(Button):
 
     async def callback(self, interaction: discord.Interaction):
         if interaction.user.id != self.sid:
-            await interaction.response.send_message(f"**自分の投票のみ閉じられます！**", ephemeral=True)
+            await interaction.response.send_message("**自分の投票のみ閉じられます！**", ephemeral=True)
             return
         else:
             for item in self.view.children:
                 if isinstance(item, ChoiceBetButton):
                     await item.close()
-            await interaction.response.send_message(f"**投票を閉じました！**")
-        
+            await interaction.response.send_message("**投票を閉じました！**")
+
 
 class ChoiceButton(Button):
     def __init__(self, text, pollid, num, choices: str):
@@ -192,6 +198,7 @@ class ChoiceButton(Button):
         elif polled:
             await interaction.response.send_message(f"あなたはすでに **{self.choices[polled.chosen]}** に投票しています！", ephemeral=True)
 
+
 class ChoiceBetButton(Button):
     def __init__(self, text, pollid, num, choices: str, amount, odd, sid):
         super().__init__(label=f"{text} （{odd}倍）", style=ButtonStyle.secondary)
@@ -209,12 +216,12 @@ class ChoiceBetButton(Button):
     async def callback(self, interaction: discord.Interaction):
         polled = session3.query(Polls).filter_by(pollid=self.cid, userid=interaction.user.id).first()
         if self.closed and interaction.user.id != self.sid:
-            await interaction.response.send_message(f"この投票はすでに**締め切られています！**", ephemeral=True)
+            await interaction.response.send_message("この投票はすでに**締め切られています！**", ephemeral=True)
         else:
             if not polled:
                 userdb = session.query(User).filter_by(userid=interaction.user.id).first()
                 if userdb is None:
-                    await interaction.response.send_message(f"**投票するにはサーバー内で一回発言する必要があります！**", ephemeral=True)
+                    await interaction.response.send_message("**投票するにはサーバー内で一回発言する必要があります！**", ephemeral=True)
                     return
                 userdb.exp -= self.amount
                 userdb.allremoveexp += self.amount
@@ -232,8 +239,9 @@ class ChoiceBetButton(Button):
             elif polled:
                 await interaction.response.send_message(f"あなたはすでに **{self.choices[polled.chosen]}** に投票しています！", ephemeral=True)
 
+
 class ChoiceButtons(View):
-    def __init__(self, choices = "x", title = "x", sid = -1):
+    def __init__(self, choices="x", title="x", sid=-1):
         super().__init__(timeout=None)
         if len(choices.split(",")) <= 15:
             date = datetime.today().strftime("%Y%m%d")
@@ -242,8 +250,9 @@ class ChoiceButtons(View):
                 self.add_item(ChoiceButton(i, f"{date}_{rand}", n, choices))
         self.add_item(ShowButton(f"{date}_{rand}", choices, title, sid))
 
+
 class ChoiceBetButtons(View):
-    def __init__(self, choices = "x", title = "x", amount = 100, rule = 1, nn = None, odds = None, sid = -1):
+    def __init__(self, choices="x", title="x", amount=100, rule=1, nn=None, odds=None, sid=-1):
         super().__init__(timeout=None)
         if len(choices.split(",")) <= 15:
             date = datetime.today().strftime("%Y%m%d")
@@ -252,6 +261,7 @@ class ChoiceBetButtons(View):
                 self.add_item(ChoiceBetButton(i, f"{date}_{rand}", n, choices, amount, odds[n], sid))
         self.add_item(CloseBetButton(f"{date}_{rand}", choices, title, rule, nn, amount, odds, sid))
         self.add_item(ShowBetButton(f"{date}_{rand}", choices, title, rule, nn, amount, odds, sid))
+
 
 class CPoll(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -265,7 +275,7 @@ class CPoll(commands.Cog):
             title=f"投票：{title}", color=0x3AFF11
         )
         poler_embed.set_footer(text="投票者: 表示されません\n開票: 任意のタイミング")
-      
+
         if 16 <= len(choice.split(",")):
             await interaction.response.send_message("**引数が正しくないです！**\n選択肢は15個までです。", ephemeral=True)
             return
@@ -280,13 +290,15 @@ class CPoll(commands.Cog):
         poler_embed = discord.Embed(
             title=f"投票：{title}", color=0x3AFF11
         )
-        if odds == None:
+        if odds is None:
             odds = ["2.0"] * len(choice.split(","))
-        if type(odds) == str: odds = odds.split(",")
-        poler_embed.set_footer(text=f"投票者: 表示されません\n開票: 任意のタイミング\n投票時に {amount} XP 徴収されます。\n{['','一票のみの選択肢を選んだら勝ち！','特定の選択肢を選んだら勝ち！', 'ランダムな選択肢が勝ち！', '二票のみの選択肢を選んだら勝ち！', f'割合が {n} % 以下の選択肢を選んだら勝ち！', '一つ目は絶対に勝ち。でも二つ目が過半数を占めたら全員勝ち！', '正解選択肢は作成者によって後から決められます！'][rule]}\n選択肢ごとのオッズ: {'倍, '.join(odds)}倍")
-       
+        if type(odds) is str:
+            odds = odds.split(",")
+        poler_embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+        poler_embed.set_footer(text=f"投票者: 表示されません\n開票: 任意のタイミング\n投票時に {amount} XP 徴収されます。\n{['', '一票のみの選択肢を選んだら勝ち！', '特定の選択肢を選んだら勝ち！', 'ランダムな選択肢が勝ち！', '二票のみの選択肢を選んだら勝ち！', f'割合が {n} % 以下の選択肢を選んだら勝ち！', '一つ目は絶対に勝ち。でも二つ目が過半数を占めたら全員勝ち！', '正解選択肢は作成者によって後から決められます！'][rule]}\n選択肢ごとのオッズ: {'倍, '.join(odds)}倍")
+
         odds = [float(_) for _ in odds]
-      
+
         if len(choice.split(",")) < 2 or 16 <= len(choice.split(",")):
             await interaction.response.send_message("**引数が正しくないです！**\n選択肢は2個から15個までです。", ephemeral=True)
             return
@@ -302,7 +314,7 @@ class CPoll(commands.Cog):
         elif rule == 2 and (n <= 0 or len(choice.split(",")) < n):
             await interaction.response.send_message("**引数が正しくないです！**\nrule に「2」を指定した場合、 n に1以上の数を指定してください！", ephemeral=True)
             return
-        elif rule == 5 and (n <= 0 or int(100/len(choice.split(","))) < n):
+        elif rule == 5 and (n <= 0 or int(100 / len(choice.split(","))) < n):
             await interaction.response.send_message("**引数が正しくないです！**\nrule に「5」を指定した場合、 n は1以上かつ選択肢の数に基づくチャンスレベル以下でなければなりません（2択なら50以下、3択なら33以下、……）。", ephemeral=True)
             return
         elif amount > 1500:
@@ -333,6 +345,7 @@ class CPoll(commands.Cog):
         else:
             await interaction.response.send_message(f"投票を開始しました！\n確かに **{amount * 2} XP** を……。\n……ないものはいただけませんね。フリーでお楽しみください！", ephemeral=True)
         await interaction.channel.send(embed=poler_embed, view=ChoiceBetButtons(choice, title, amount, rule, n, odds, interaction.user.id))
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(CPoll(bot))
