@@ -16,7 +16,7 @@ class CBnoticetime(commands.Cog):
     @app_commands.command(name="cbnoticetime", description="【運営】再起動後の通知時間設定用")
     @app_commands.describe(addminutes="入力分後に通知されます")
     @app_commands.checks.has_role(config.roles.administrater)
-    async def cbnoticetime(self, interaction: discord.Interaction, addminutes: int = 0):
+    async def cbnoticetime(self, interaction: discord.Interaction, addminutes: int):
         bnJST_time = datetime.now()
         ScheduledTime = bnJST_time + timedelta(minutes=addminutes)
         fScheduledTime = ScheduledTime.strftime(" %Y/%m/%d %H:%M ")
