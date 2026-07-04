@@ -1,13 +1,10 @@
-import io
 import random
-import struct
-import zlib
 
 import discord
 from discord import app_commands
 from discord.ext import commands
 
-from utils.util import create_codeblock, create_embed
+from utils.util import create_embed
 
 
 class CDice(app_commands.Group):
@@ -103,10 +100,10 @@ class CDice(app_commands.Group):
             embed.description = f"結果: [{rolls_concatenated}] -> {total}"
 
         await interaction.response.send_message(embed=embed, silent=True)
-        
+
     async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-       if isinstance(error, app_commands.CommandOnCooldown):
-           await interaction.response.send_message("ちょっと待って！", ephemeral=True)
+        if isinstance(error, app_commands.CommandOnCooldown):
+            await interaction.response.send_message("ちょっと待って！", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
