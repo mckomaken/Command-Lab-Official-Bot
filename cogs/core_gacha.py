@@ -43,10 +43,10 @@ async def cOreGacha(interaction: Interaction):
                 xpdb.allremoveexp += abs(xp)
             else:
                 xpdb.alladdexp += xp
-            if xpdb.exp >= 10000:  # レベルアップ
+            while xpdb.exp >= 10000:  # レベルアップ
                 xpdb.level += 1
                 xpdb.exp -= 10000
-            if xpdb.exp < 0:
+            while xpdb.exp < 0:
                 xpdb.level -= 1
                 xpdb.exp += 10000
             session.commit()
@@ -91,10 +91,10 @@ async def cOreGacha9(interaction: Interaction):
                     xpdb.allremoveexp += abs(xp)
                 else:
                     xpdb.alladdexp += xp
-                if xpdb.exp >= 10000:  # レベルアップ
+                while xpdb.exp >= 10000:  # レベルアップ
                     xpdb.level += 1
                     xpdb.exp -= 10000
-                if xpdb.exp < 0:
+                while xpdb.exp < 0:
                     xpdb.level -= 1
                     xpdb.exp += 10000
                 session.commit()
@@ -147,10 +147,10 @@ async def cOreGacha10(interaction: Interaction):
     ogdb.ogint1 += sumxp
     ogdb.ogstr1 += "".join(emojilist)
     xpdb.exp += sumxp
-    if xpdb.exp >= 10000:  # レベルアップ
+    while xpdb.exp >= 10000:  # レベルアップ
         xpdb.level += 1
         xpdb.exp -= 10000
-    if xpdb.exp < 0:
+    while xpdb.exp < 0:
         xpdb.level -= 1
         xpdb.exp += 10000
     session.commit()
@@ -213,6 +213,60 @@ async def cOreGacha10(interaction: Interaction):
     await interaction.response.send_message(embed=embed, silent=True)
 
 
+async def cOreGacha910(interaction: Interaction):
+    xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
+    ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
+    alldb = session2.query(Oregacha).filter_by(userid="101").first()
+    numberlist = []
+    explist = []
+    emojilist = []
+    jpnamelist = []
+    countlist = []
+
+    with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
+        jsonfile = json.load(f)
+        data = jsonfile["gacha2"]
+
+    for count in range(10):
+        num = random.randint(1, 100000)
+        for i, item in enumerate(data):
+            if num >= item["seed_start"]:
+                numberlist.append(num)
+                explist.append(int(item["level"]) * 10000 + int(item["xp"]))
+                emojilist.append(item["emoji"])
+                jpnamelist.append(item["japanese"])
+                countlist.append(count + 1)
+                exec(f"ogdb.{item['database']} += 1")
+                alldb.allcount += 1
+                exec(f"alldb.{item['database']} += 1")
+                ogdb.allcount += 1
+                session2.commit()
+                break
+    sumxp = sum(explist)
+    ogdb.ogint1 += sumxp
+    ogdb.ogstr1 += "".join(emojilist)
+    xpdb.exp += sumxp
+    while xpdb.exp >= 10000:  # レベルアップ
+        xpdb.level += 1
+        xpdb.exp -= 10000
+    while xpdb.exp < 0:
+        xpdb.level -= 1
+        xpdb.exp += 10000
+    session.commit()
+    session2.commit()
+    desc = "\n".join([f"`{count:02}` {emoji} `No.{num:06}` {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
+
+    embed = discord.Embed(
+        title="約9倍デー 10連ガチャ結果",
+        description=desc,
+        color=0x9224ff
+    )
+    embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+    embed.set_footer(text=f"本日残り: 0回 / 今日の収支: {sumxp}XP")
+
+    await interaction.response.send_message(embed=embed, silent=True)
+
+
 class COregacha(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -240,7 +294,7 @@ class COregacha(commands.Cog):
         if interaction.channel.id != config.channels.bot_command:
             await interaction.response.send_message(f"このチャンネルでガチャを回すことはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
             return
-        
+
         now = datetime.now()
         if now.day == 9:
             gachadb.dailygacha += 1
@@ -275,7 +329,7 @@ class COregacha(commands.Cog):
             await interaction.response.send_message(f"このチャンネルでガチャを回すことはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
         else:
             now = datetime.now()
-            if now.day == 22 and now.month == 7:
+            if now.day == 21 and now.month == 7:
                 await interaction.response.send_message("本日は周年期間中の為10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
                 return
             elif now.day != 9:
@@ -283,7 +337,10 @@ class COregacha(commands.Cog):
                 session2.commit()
                 await cOreGacha10(interaction)
             else:
-                await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
+                gachadb.dailygacha += 10
+                session2.commit()
+                await cOreGacha910(interaction)
+                # await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
 
     @app_commands.command(name="core-gacha-list", description="鉱石ガチャ結果一覧")
     @app_commands.describe(server="サーバー全体の確率表示(未指定:FALSE(自分の結果表示))")

@@ -181,7 +181,7 @@ class Cmdbotlevelcom(commands.Cog):
                         setuserdb.level -= 1
                         setuserdb.exp += 10000
                     session.commit()
-                await interaction.response.send_message(f"{target.mention}の{level}Lv{experience}exp分をはく奪しました", silent=True)
+                await interaction.response.send_message(f"{target.mention}の{level}Lv{experience}exp分をはく奪しました", silent=True, allowed_mentions=discord.AllowedMentions.none())
 
             case "set":
                 if level == 0 and experience == 0:
@@ -193,7 +193,7 @@ class Cmdbotlevelcom(commands.Cog):
                 setuserdb.exp = experience
                 setuserdb.level = level
                 session.commit()
-                await interaction.response.send_message(f"{target.mention}を{level}Lv{experience}expに設定しました", silent=True)
+                await interaction.response.send_message(f"{target.mention}を{level}Lv{experience}expに設定しました", silent=True, allowed_mentions=discord.AllowedMentions.none())
 
             case "stop":
                 if setuserdb.noxp is False:
@@ -225,7 +225,7 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
                 level_embed.add_field(name="有効チャット数", value=f"```go\n{setuserdb.chatcount} チャット\n```", inline=True)
                 level_embed.add_field(name="MEE6レベル", value=f"```go\n{setuserdb.mee6level} Level\n```", inline=True)
-                await interaction.response.send_message(embed=level_embed, silent=True)
+                await interaction.response.send_message(embed=level_embed, silent=True, allowed_mentions=discord.AllowedMentions.none())
 
 
 async def setup(bot: commands.Bot):
