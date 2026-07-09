@@ -340,7 +340,7 @@ class COregacha(commands.Cog):
                 gachadb.dailygacha += 10
                 session2.commit()
                 await cOreGacha910(interaction)
-                await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
+                # await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
 
     @app_commands.command(name="core-gacha-list", description="鉱石ガチャ結果一覧")
     @app_commands.describe(server="サーバー全体の確率表示(未指定:FALSE(自分の結果表示))")
