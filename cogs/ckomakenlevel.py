@@ -152,7 +152,13 @@ class Cmdbotlevel(commands.Cog):
         if userdb.dailylogin is False:
             userdb.dailylogin = True
             userdb.dailylogincount += 1
-            if (userdb.dailylogincount % 10 == 0):
+            if (userdb.dailylogincount % 90 == 0):
+                userdb.alladdexp += 1700
+                userdb.exp += 1700
+            elif (userdb.dailylogincount % 30 == 0):
+                userdb.alladdexp += 700
+                userdb.exp += 700
+            elif (userdb.dailylogincount % 10 == 0):
                 userdb.alladdexp += 300
                 userdb.exp += 300
             else:
