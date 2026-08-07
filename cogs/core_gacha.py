@@ -237,9 +237,9 @@ async def cOreGacha910(interaction: Interaction):
                 jpnamelist.append(item["japanese"])
                 countlist.append(count + 1)
                 exec(f"ogdb.{item['database']} += 1")
-                alldb.allcount += 1
+                alldb.ogint2 += 1
                 exec(f"alldb.{item['database']} += 1")
-                ogdb.allcount += 1
+                ogdb.ogint2 += 1
                 session2.commit()
                 break
     sumxp = sum(explist)
@@ -329,18 +329,20 @@ class COregacha(commands.Cog):
             await interaction.response.send_message(f"このチャンネルでガチャを回すことはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
         else:
             now = datetime.now()
-            if now.day == 21 and now.month == 7:
-                await interaction.response.send_message("本日は周年期間中の為10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
-                return
+            if now.day == 21 and now.month == 7 and userdb.level >= 10:
+                gachadb.dailygacha += 10
+                session2.commit()
+                await cOreGacha910(interaction)
             elif now.day != 9:
                 gachadb.dailygacha += 10
                 session2.commit()
                 await cOreGacha10(interaction)
-            else:
+            elif now.day == 9 and userdb.level >= 10:
                 gachadb.dailygacha += 10
                 session2.commit()
                 await cOreGacha910(interaction)
-                # await interaction.response.send_message("毎月9日は10連ガチャを回すことができません\n通常ガチャを回してください", ephemeral=True)
+            else:
+                await interaction.response.send_message("毎月9日に10連ガチャを回すにはコマ研レベル10Lv以上が必要です\n10Lv未満の場合は通常ガチャの方で回してください", ephemeral=True)
 
     @app_commands.command(name="core-gacha-list", description="鉱石ガチャ結果一覧")
     @app_commands.describe(server="サーバー全体の確率表示(未指定:FALSE(自分の結果表示))")
