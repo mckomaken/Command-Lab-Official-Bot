@@ -10,6 +10,7 @@ from config.config import config
 from database import User, session, Oregacha, session2
 
 # ogint1 : cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)
+# ogint2 : cog.core_gacha.py使用中(約９倍デーのガチャ回数)
 # ogstr1 : cog.core_gacha.py使用中(１日のガチャによる結果表示)
 
 
@@ -267,6 +268,66 @@ async def cOreGacha910(interaction: Interaction):
     await interaction.response.send_message(embed=embed, silent=True)
 
 
+async def cOreGacha0722(interaction: Interaction):
+    xpdb = session.query(User).filter_by(userid=interaction.user.id).first()
+    ogdb = session2.query(Oregacha).filter_by(userid=interaction.user.id).first()
+    alldb = session2.query(Oregacha).filter_by(userid="101").first()
+    numberlist = []
+    explist = []
+    emojilist = []
+    jpnamelist = []
+    countlist = []
+
+    with open("data/json_ore_gacha.json", "r", encoding="utf-8") as f:
+        jsonfile = json.load(f)
+        data1 = jsonfile["gacha1"]
+        data2 = jsonfile["gacha2"]
+
+    for count in range(20):
+        num = random.randint(1, 100000)
+        gacha_data = data1 if count < 10 else data2
+        for i, item in enumerate(gacha_data):
+            if num >= item["seed_start"]:
+                numberlist.append(num)
+                explist.append(int(item["level"]) * 10000 + int(item["xp"]))
+                emojilist.append(item["emoji"])
+                jpnamelist.append(item["japanese"])
+                countlist.append(count + 1)
+                exec(f"ogdb.{item['database']} += 1")
+                exec(f"alldb.{item['database']} += 1")
+                if count < 10:
+                    ogdb.allcount += 1
+                    alldb.allcount += 1
+                else:
+                    alldb.ogint2 += 1
+                    ogdb.ogint2 += 1
+                session2.commit()
+                break
+    sumxp = sum(explist)
+    ogdb.ogint1 += sumxp
+    ogdb.ogstr1 += "".join(emojilist)
+    xpdb.exp += sumxp
+    while xpdb.exp >= 10000:  # レベルアップ
+        xpdb.level += 1
+        xpdb.exp -= 10000
+    while xpdb.exp < 0:
+        xpdb.level -= 1
+        xpdb.exp += 10000
+    session.commit()
+    session2.commit()
+    desc = "\n".join([f"`{count:02}` {emoji} `No.{num:06}` {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
+
+    embed = discord.Embed(
+        title="周年記念 20連ガチャ結果",
+        description=desc,
+        color=0x9224ff
+    )
+    embed.set_author(name=interaction.user.display_name, icon_url=f"https://cdn.discordapp.com/embed/avatars/{random.randint(0, 5)}.png" if interaction.user.avatar is None else interaction.user.avatar.url)
+    embed.set_footer(text=f"本日残り: 0回 / 今日の収支: {sumxp}XP")
+
+    await interaction.response.send_message(embed=embed, silent=True)
+
+
 class COregacha(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -300,10 +361,8 @@ class COregacha(commands.Cog):
             gachadb.dailygacha += 1
             session2.commit()
             await cOreGacha9(interaction)
-        elif now.day == 21 and now.month == 7:
-            gachadb.dailygacha += 1
-            session2.commit()
-            await cOreGacha9(interaction)
+        elif now.day == 22 and now.month == 7:
+            await interaction.response.send_message("10連ガチャコマンドのみ回すことができます", ephemeral=True)
         else:
             gachadb.dailygacha += 1
             session2.commit()
@@ -329,10 +388,10 @@ class COregacha(commands.Cog):
             await interaction.response.send_message(f"このチャンネルでガチャを回すことはできません\nhttps://discord.com/channels/{config.guild_id}/{config.channels.bot_command} で実行してください", ephemeral=True)
         else:
             now = datetime.now()
-            if now.day == 21 and now.month == 7 and userdb.level >= 10:
+            if now.day == 22 and now.month == 7:
                 gachadb.dailygacha += 10
                 session2.commit()
-                await cOreGacha910(interaction)
+                await cOreGacha0722(interaction)
             elif now.day != 9:
                 gachadb.dailygacha += 10
                 session2.commit()
