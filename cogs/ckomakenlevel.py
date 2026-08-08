@@ -56,6 +56,7 @@ class Cmdbotlevel(commands.Cog):
     async def on_message(self, message: discord.Message):
 
         userdb = session.query(User).filter_by(userid=message.author.id).first()
+        authenticated_respondent = message.guild.get_role(config.roles.authenticated_respondent)
 
         if not userdb and not message.author.bot:
             userdb = User(userid=message.author.id, username=message.author.name)
@@ -99,8 +100,12 @@ class Cmdbotlevel(commands.Cog):
         ]:
             return
         elif message.channel.id == config.channels.question_channels:
-            start = 100
-            end = 150
+            if authenticated_respondent in message.author.roles:
+                start = 110
+                end = 160
+            else:
+                start = 100
+                end = 150
         else:
             start = 75
             end = 125
@@ -147,7 +152,13 @@ class Cmdbotlevel(commands.Cog):
         if userdb.dailylogin is False:
             userdb.dailylogin = True
             userdb.dailylogincount += 1
-            if (userdb.dailylogincount % 10 == 0):
+            if (userdb.dailylogincount % 90 == 0):
+                userdb.alladdexp += 1700
+                userdb.exp += 1700
+            elif (userdb.dailylogincount % 30 == 0):
+                userdb.alladdexp += 700
+                userdb.exp += 700
+            elif (userdb.dailylogincount % 10 == 0):
                 userdb.alladdexp += 300
                 userdb.exp += 300
             else:
@@ -167,7 +178,6 @@ class Cmdbotlevel(commands.Cog):
 
         deluserdb = session.query(User).filter_by(userid=message.author.id).first()
 
-        exp_per_delmsg = random.randint(75, 100)
         if message.author.bot:
             return
 
@@ -203,7 +213,14 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.channel.category_id == config.categories.administrater:
             return
+        elif message.channel.id == config.channels.question_channels:
+            start = 100
+            end = 125
+        else:
+            start = 75
+            end = 100
 
+        exp_per_delmsg = random.randint(start, end)
         deluserdb.chatcount -= 1
         deluserdb.allremoveexp += exp_per_delmsg
         deluserdb.exp -= exp_per_delmsg

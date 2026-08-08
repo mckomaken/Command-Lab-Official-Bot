@@ -1,5 +1,5 @@
 from discord.ext import commands
-from sqlalchemy import Column, Integer, String, Boolean, create_engine, func
+from sqlalchemy import Column, Integer, String, Boolean, create_engine  # , func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -116,7 +116,7 @@ class Oregacha(Base2):
     ogstr4 = Column(String, default="")
     ogstr5 = Column(String, default="")
     ogint1 = Column(Integer, default=0)  # cog.core_gacha.py使用中(１日のガチャによる経験値量の収支)#//userid:101のみ９倍デーのガチャ合計カウント
-    ogint2 = Column(Integer, default=0)
+    ogint2 = Column(Integer, default=0)  # cog.core_gacha.py使用中(約９倍デーのガチャ回数)#//userid:101のみ９倍デーのガチャ合計カウント
     ogint3 = Column(Integer, default=0)
     ogint4 = Column(Integer, default=0)
     ogint5 = Column(Integer, default=0)
