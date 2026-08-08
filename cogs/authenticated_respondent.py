@@ -24,7 +24,7 @@ class RequestCheckButton(View):
             await member.add_roles(interaction.guild.get_role(config.roles.authenticated_respondent))
             await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# 実行者: {interaction.user.mention}", color=discord.Color.green()))
             await interaction.message.edit(view=None)
-            await member.send(embed=discord.Embed(title="認証回答者ロール: 承認", description="あなたの認証回答者ロール付与申請が承認されました。", color=discord.Color.green()))
+            await member.send(embed=discord.Embed(title="認証済み回答者ロール: 承認", description="あなたの認証済み回答者ロール付与申請が承認されました。", color=discord.Color.green()))
         except Exception as e:
             await interaction.response.send_message(f"エラーが発生しました: \n{e}", ephemeral=True)
             return
@@ -38,7 +38,7 @@ class RequestCheckButton(View):
             member = interaction.guild.get_member(self.userid)
             await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# 実行者: {interaction.user.mention}", color=discord.Color.red()))
             await interaction.message.edit(view=None)
-            await member.send(embed=discord.Embed(title="認証回答者ロール: 否認", description="あなたの認証回答者ロール付与申請は否認されました", color=discord.Color.red()))
+            await member.send(embed=discord.Embed(title="認証済み回答者ロール: 否認", description="あなたの認証済み回答者ロール付与申請は否認されました", color=discord.Color.red()))
         except Exception as e:
             await interaction.response.send_message(f"エラーが発生しました: \n{e}", ephemeral=True)
             return
@@ -58,7 +58,7 @@ class RequestButton(View):
         userdb = session.query(User).filter_by(userid=interaction.user.id).first()
         admin_channel = await interaction.guild.fetch_channel(config.channels.admin_meeting)
         admin_embed = discord.Embed(
-            title="認証回答者ロール付与申請",
+            title="認証済み回答者ロール付与申請",
             description=f"ユーザー: {interaction.user.mention}\nユーザー名: {interaction.user.name}\nユーザーID: {interaction.user.id}\nコマ研レベル: {userdb.level}.{userdb.exp}\n有効チャット数: {userdb.chatcount}",
             color=discord.Color.orange()
         )
@@ -71,22 +71,22 @@ class CAuthenticatedRespondent(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="authenticated-respondent-request", description="認証回答者ロール付与申請コマンド")
+    @app_commands.command(name="authenticated-respondent-request", description="認証済み回答者ロール付与申請コマンド")
     async def authenticated_respondent_request(self, interaction: Interaction):
         role = interaction.guild.get_role(config.roles.authenticated_respondent)
         userdb = session.query(User).filter_by(userid=interaction.user.id).first()
         if role in interaction.user.roles:
-            await interaction.response.send_message("あなたは既に認証回答者の為、申請することはできません", ephemeral=True)
+            await interaction.response.send_message("あなたは既に認証済み回答者の為、申請することはできません", ephemeral=True)
             return
         elif userdb.level < 20 or not userdb:
             await interaction.response.send_message("あなたはコマ研レベル20Lv未満の為、申請することはできません", ephemeral=True)
             return
         request_embed = discord.Embed(
-            description="# `認証回答者ロール`付与申請を行いますか？\n\n運営が申請者を確認し、承認されると`認証回答者ロール`が付与されます。\n\n申請を行う場合は以下のボタンを押してください。",
+            description="# `認証済み回答者ロール`付与申請を行いますか？\n\n運営が申請者を確認し、承認されると`認証済み回答者ロール`が付与されます。\n\n申請を行う場合は以下のボタンを押してください。",
             color=discord.Color.green()
         )
         view = RequestButton()
-        await interaction.response.send_message(embed=request_embed, view=view)
+        await interaction.response.send_message(embed=request_embed, view=view, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
