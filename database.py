@@ -1,5 +1,5 @@
 from discord.ext import commands
-from sqlalchemy import Column, Integer, String, Boolean, create_engine  # , func
+from sqlalchemy import Column, Integer, String, Boolean, create_engine, func  # エラー吐いてるけど必要
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
