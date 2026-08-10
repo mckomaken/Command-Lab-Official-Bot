@@ -69,6 +69,7 @@ class RequestCheckButton3(View):
             return
         view = RequestCheckButton4(userid=interaction.user.id, admin_user_name1=self.admin_user_name1, admin_user_name2=f"承認1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        await interaction.response.send_message("承認しました。", ephemeral=True)
         return
 
     @button(label="承認2", style=ButtonStyle.success, custom_id="admin_request_check32", row=0)
@@ -78,6 +79,7 @@ class RequestCheckButton3(View):
             return
         view = RequestCheckButton4(userid=interaction.user.id, admin_user_name1=self.admin_user_name1, admin_user_name2=f"承認1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        await interaction.response.send_message("承認しました。", ephemeral=True)
         return
 
     @button(label="却下1", style=ButtonStyle.grey, custom_id="admin_request_reject31", row=1, disabled=True)
@@ -135,6 +137,7 @@ class RequestCheckButton2(View):
             return
         view = RequestCheckButton4(userid=interaction.user.id, admin_user_name1=self.admin_user_name1, admin_user_name2=f"却下1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        await interaction.response.send_message("却下しました。", ephemeral=True)
         return
 
     @button(label="却下2", style=ButtonStyle.grey, custom_id="admin_request_reject22", row=1)
@@ -144,6 +147,7 @@ class RequestCheckButton2(View):
             return
         view = RequestCheckButton4(userid=interaction.user.id, admin_user_name1=self.admin_user_name1, admin_user_name2=f"却下1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        await interaction.response.send_message("却下しました。", ephemeral=True)
         return
 
     @button(label="削除", style=ButtonStyle.danger, custom_id="admin_delete", row=2)
@@ -163,6 +167,7 @@ class RequestCheckButton1(View):
             return
         view = RequestCheckButton2(userid=self.userid, admin_user_name1=f"承認1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        await interaction.response.send_message("承認しました。", ephemeral=True)
         return
 
     @button(label="承認2", style=ButtonStyle.success, custom_id="admin_request_check12", row=0)
@@ -172,6 +177,7 @@ class RequestCheckButton1(View):
             return
         view = RequestCheckButton2(userid=self.userid, admin_user_name1=f"承認1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        await interaction.response.send_message("承認しました。", ephemeral=True)
         return
 
     @button(label="却下1", style=ButtonStyle.grey, custom_id="admin_request_reject11", row=1)
@@ -181,6 +187,7 @@ class RequestCheckButton1(View):
             return
         view = RequestCheckButton3(userid=self.userid, admin_user_name1=f"却下1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        await interaction.response.send_message("却下しました。", ephemeral=True)
         return
 
     @button(label="却下2", style=ButtonStyle.grey, custom_id="admin_request_reject12", row=1)
@@ -190,6 +197,7 @@ class RequestCheckButton1(View):
             return
         view = RequestCheckButton3(userid=self.userid, admin_user_name1=f"却下1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        await interaction.response.send_message("却下しました。", ephemeral=True)
         return
 
     @button(label="削除", style=ButtonStyle.danger, custom_id="admin_delete", row=2)
