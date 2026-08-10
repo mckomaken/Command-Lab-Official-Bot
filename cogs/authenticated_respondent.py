@@ -26,7 +26,7 @@ class RequestCheckButton4(View):
         try:
             member = interaction.guild.get_member(self.userid)
             await member.add_roles(interaction.guild.get_role(config.roles.authenticated_respondent))
-            await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# {self.admin_user_name1}\n\n-# {self.admin_user_name2}\n\n-# 承認2: {interaction.user.mention}", color=discord.Color.green()))
+            await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# {self.admin_user_name1}\n-# {self.admin_user_name2}\n-# 承認2: {interaction.user.display_name}", color=discord.Color.green()))
             await interaction.message.edit(view=None)
             await member.send(embed=discord.Embed(title="認証済み回答者ロール: 承認", description="あなたの認証済み回答者ロール付与申請が承認されました。", color=discord.Color.green()))
         except Exception as e:
@@ -44,7 +44,7 @@ class RequestCheckButton4(View):
             return
         try:
             member = interaction.guild.get_member(self.userid)
-            await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# {self.admin_user_name1}\n\n-# {self.admin_user_name2}\n\n-# 却下2: {interaction.user.mention}", color=discord.Color.red()))
+            await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# {self.admin_user_name1}\n-# {self.admin_user_name2}\n-# 却下2: {interaction.user.display_name}", color=discord.Color.red()))
             await interaction.message.edit(view=None)
             await member.send(embed=discord.Embed(title="認証済み回答者ロール: 否認", description="あなたの認証済み回答者ロール付与申請は否認されました", color=discord.Color.red()))
         except Exception as e:
@@ -91,7 +91,7 @@ class RequestCheckButton3(View):
             return
         try:
             member = interaction.guild.get_member(self.userid)
-            await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# {self.admin_user_name1}\n\n-# 却下2: {interaction.user.mention}", color=discord.Color.red()))
+            await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# {self.admin_user_name1}\n-# 却下2: {interaction.user.display_name}", color=discord.Color.red()))
             await interaction.message.edit(view=None)
             await member.send(embed=discord.Embed(title="認証済み回答者ロール: 否認", description="あなたの認証済み回答者ロール付与申請は否認されました", color=discord.Color.red()))
         except Exception as e:
@@ -121,7 +121,7 @@ class RequestCheckButton2(View):
         try:
             member = interaction.guild.get_member(self.userid)
             await member.add_roles(interaction.guild.get_role(config.roles.authenticated_respondent))
-            await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# {self.admin_user_name1}\n\n-# 承認2: {interaction.user.mention}", color=discord.Color.green()))
+            await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# {self.admin_user_name1}\n-# 承認2: {interaction.user.display_name}", color=discord.Color.green()))
             await interaction.message.edit(view=None)
             await member.send(embed=discord.Embed(title="認証済み回答者ロール: 承認", description="あなたの認証済み回答者ロール付与申請が承認されました。", color=discord.Color.green()))
         except Exception as e:
