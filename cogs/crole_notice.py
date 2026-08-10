@@ -10,6 +10,8 @@ class Rolenotice(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
+        if isinstance(message.channel, discord.channel.DMChannel):
+            return
 
         if message.author.bot:
             return
