@@ -167,7 +167,7 @@ class Cmdbotlevel(commands.Cog):
                 userdb.alladdexp += 100
                 userdb.exp += 100
         session.commit()
-        print(message.author.name, start, end, add, exp_per_message, exp_orb_add, userdb.level, userdb.exp, userdb.chatcount)
+        # print(message.author.name, start, end, add, exp_per_message, exp_orb_add, userdb.level, userdb.exp, userdb.chatcount)
 
         if userdb.exp >= 10000:
             userdb.level += 1
