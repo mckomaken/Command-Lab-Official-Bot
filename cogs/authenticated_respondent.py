@@ -203,8 +203,15 @@ class RequestButton(View):
 
     @button(label="申請する", style=ButtonStyle.success, custom_id="request")
     async def requestbutton(self, interaction: Interaction, button: Button):
-        view = RequestCheckButton1(userid=interaction.user.id)
         userdb = session.query(User).filter_by(userid=interaction.user.id).first()
+        role = interaction.guild.get_role(config.roles.authenticated_respondent)
+        if role in interaction.user.roles:
+            await interaction.response.send_message("あなたは既に認証済み回答者の為、申請することはできません", ephemeral=True)
+            return
+        elif userdb.level < 20 or not userdb:
+            await interaction.response.send_message("あなたはコマ研レベル20Lv未満の為、申請することはできません", ephemeral=True)
+            return
+        view = RequestCheckButton1(userid=interaction.user.id)
         admin_channel = await interaction.guild.fetch_channel(config.channels.admin_meeting)
         admin_embed = discord.Embed(
             title="認証済み回答者ロール付与申請",
