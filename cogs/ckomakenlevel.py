@@ -54,6 +54,8 @@ class Cmdbotlevel(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
+        if isinstance(message.channel, discord.channel.DMChannel):
+            return
 
         userdb = session.query(User).filter_by(userid=message.author.id).first()
         authenticated_respondent = message.guild.get_role(config.roles.authenticated_respondent)
@@ -165,7 +167,7 @@ class Cmdbotlevel(commands.Cog):
                 userdb.alladdexp += 100
                 userdb.exp += 100
         session.commit()
-        print(message.author.name, start, end, add, exp_per_message, exp_orb_add, userdb.level, userdb.exp, userdb.chatcount)
+        # print(message.author.name, start, end, add, exp_per_message, exp_orb_add, userdb.level, userdb.exp, userdb.chatcount)
 
         if userdb.exp >= 10000:
             userdb.level += 1
@@ -176,6 +178,8 @@ class Cmdbotlevel(commands.Cog):
 
     @commands.Cog.listener("on_message_delete")
     async def on_message_delete(self, message: discord.Message):
+        if isinstance(message.channel, discord.channel.DMChannel):
+            return
 
         deluserdb = session.query(User).filter_by(userid=message.author.id).first()
 

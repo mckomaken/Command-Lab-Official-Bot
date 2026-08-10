@@ -62,6 +62,8 @@ class CIntro(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def message(self, message: discord.Message):
+        if isinstance(message.channel, discord.channel.DMChannel):
+            return
         if message.author == self.bot.user:
             return
         elif message.channel.id in config.channels.question_channels:

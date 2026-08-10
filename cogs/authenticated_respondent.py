@@ -26,7 +26,7 @@ class RequestCheckButton4(View):
         try:
             member = interaction.guild.get_member(self.userid)
             await member.add_roles(interaction.guild.get_role(config.roles.authenticated_respondent))
-            await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# {self.admin_user_name1}\n\n-# {self.admin_user_name2}\n\n-# 承認2: {interaction.user.mention}", color=discord.Color.green()))
+            await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# {self.admin_user_name1}\n-# {self.admin_user_name2}\n-# 承認2: {interaction.user.display_name}", color=discord.Color.green()))
             await interaction.message.edit(view=None)
             await member.send(embed=discord.Embed(title="認証済み回答者ロール: 承認", description="あなたの認証済み回答者ロール付与申請が承認されました。", color=discord.Color.green()))
         except Exception as e:
@@ -44,7 +44,7 @@ class RequestCheckButton4(View):
             return
         try:
             member = interaction.guild.get_member(self.userid)
-            await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# {self.admin_user_name1}\n\n-# {self.admin_user_name2}\n\n-# 却下2: {interaction.user.mention}", color=discord.Color.red()))
+            await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# {self.admin_user_name1}\n-# {self.admin_user_name2}\n-# 却下2: {interaction.user.display_name}", color=discord.Color.red()))
             await interaction.message.edit(view=None)
             await member.send(embed=discord.Embed(title="認証済み回答者ロール: 否認", description="あなたの認証済み回答者ロール付与申請は否認されました", color=discord.Color.red()))
         except Exception as e:
@@ -69,6 +69,7 @@ class RequestCheckButton3(View):
             return
         view = RequestCheckButton4(userid=interaction.user.id, admin_user_name1=self.admin_user_name1, admin_user_name2=f"承認1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        return
 
     @button(label="承認2", style=ButtonStyle.success, custom_id="admin_request_check32", row=0)
     async def admin_authenticated_respondent_request_check_agree_button32(self, interaction: Interaction, button: Button):
@@ -77,6 +78,7 @@ class RequestCheckButton3(View):
             return
         view = RequestCheckButton4(userid=interaction.user.id, admin_user_name1=self.admin_user_name1, admin_user_name2=f"承認1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        return
 
     @button(label="却下1", style=ButtonStyle.grey, custom_id="admin_request_reject31", row=1, disabled=True)
     async def admin_authenticated_respondent_request_reject_button31(self, interaction: Interaction, button: Button):
@@ -89,7 +91,7 @@ class RequestCheckButton3(View):
             return
         try:
             member = interaction.guild.get_member(self.userid)
-            await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# {self.admin_user_name1}\n\n-# 却下2: {interaction.user.mention}", color=discord.Color.red()))
+            await interaction.response.send_message(embed=discord.Embed(title="否認", description=f"{member.mention}の申請が否認されました。\n\n-# {self.admin_user_name1}\n-# 却下2: {interaction.user.display_name}", color=discord.Color.red()))
             await interaction.message.edit(view=None)
             await member.send(embed=discord.Embed(title="認証済み回答者ロール: 否認", description="あなたの認証済み回答者ロール付与申請は否認されました", color=discord.Color.red()))
         except Exception as e:
@@ -119,7 +121,7 @@ class RequestCheckButton2(View):
         try:
             member = interaction.guild.get_member(self.userid)
             await member.add_roles(interaction.guild.get_role(config.roles.authenticated_respondent))
-            await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# {self.admin_user_name1}\n\n-# 承認2: {interaction.user.mention}", color=discord.Color.green()))
+            await interaction.response.send_message(embed=discord.Embed(title="承認", description=f"{member.mention}にロールを付与しました。\n\n-# {self.admin_user_name1}\n-# 承認2: {interaction.user.display_name}", color=discord.Color.green()))
             await interaction.message.edit(view=None)
             await member.send(embed=discord.Embed(title="認証済み回答者ロール: 承認", description="あなたの認証済み回答者ロール付与申請が承認されました。", color=discord.Color.green()))
         except Exception as e:
@@ -133,6 +135,7 @@ class RequestCheckButton2(View):
             return
         view = RequestCheckButton4(userid=interaction.user.id, admin_user_name1=self.admin_user_name1, admin_user_name2=f"却下1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        return
 
     @button(label="却下2", style=ButtonStyle.grey, custom_id="admin_request_reject22", row=1)
     async def admin_authenticated_respondent_request_reject_button22(self, interaction: Interaction, button: Button):
@@ -141,6 +144,7 @@ class RequestCheckButton2(View):
             return
         view = RequestCheckButton4(userid=interaction.user.id, admin_user_name1=self.admin_user_name1, admin_user_name2=f"却下1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        return
 
     @button(label="削除", style=ButtonStyle.danger, custom_id="admin_delete", row=2)
     async def admin_authenticated_respondent_request_delete_button(self, interaction: Interaction, button: Button):
@@ -159,6 +163,7 @@ class RequestCheckButton1(View):
             return
         view = RequestCheckButton2(userid=self.userid, admin_user_name1=f"承認1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        return
 
     @button(label="承認2", style=ButtonStyle.success, custom_id="admin_request_check12", row=0)
     async def admin_authenticated_respondent_request_check_agree_button12(self, interaction: Interaction, button: Button):
@@ -167,6 +172,7 @@ class RequestCheckButton1(View):
             return
         view = RequestCheckButton2(userid=self.userid, admin_user_name1=f"承認1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        return
 
     @button(label="却下1", style=ButtonStyle.grey, custom_id="admin_request_reject11", row=1)
     async def admin_authenticated_respondent_request_reject_button11(self, interaction: Interaction, button: Button):
@@ -175,6 +181,7 @@ class RequestCheckButton1(View):
             return
         view = RequestCheckButton3(userid=self.userid, admin_user_name1=f"却下1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        return
 
     @button(label="却下2", style=ButtonStyle.grey, custom_id="admin_request_reject12", row=1)
     async def admin_authenticated_respondent_request_reject_button12(self, interaction: Interaction, button: Button):
@@ -183,6 +190,7 @@ class RequestCheckButton1(View):
             return
         view = RequestCheckButton3(userid=self.userid, admin_user_name1=f"却下1: {interaction.user.display_name}")
         await interaction.message.edit(view=view)
+        return
 
     @button(label="削除", style=ButtonStyle.danger, custom_id="admin_delete", row=2)
     async def admin_authenticated_respondent_request_delete_button(self, interaction: Interaction, button: Button):

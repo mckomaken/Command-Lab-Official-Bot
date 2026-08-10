@@ -19,6 +19,8 @@ class CTemplate(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
+        if isinstance(message.channel, discord.channel.DMChannel):
+            return
         # メッセージリンクが含まれている場合
         if any(domain in message.content for domain in ["https://discord.com/channels/", "https://canary.discord.com/channels/", "https://discordapp.com/channels/"]):
             try:
