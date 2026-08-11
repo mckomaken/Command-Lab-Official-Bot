@@ -179,8 +179,12 @@ class Cmdbotlevelcom(commands.Cog):
                     setuserdb.level -= level
                     setuserdb.allremoveexp += (level * 10000) + experience
                     while setuserdb.exp < 0:
-                        setuserdb.level -= 1
-                        setuserdb.exp += 10000
+                        if setuserdb.level <= 0 and setuserdb.exp < 0:
+                            setuserdb.level = 0
+                            setuserdb.exp = 0
+                        else:
+                            setuserdb.level -= 1
+                            setuserdb.exp += 10000
                     session.commit()
                 await interaction.response.send_message(f"{target.mention}の{level}Lv{experience}exp分をはく奪しました", silent=True, allowed_mentions=discord.AllowedMentions.none())
 

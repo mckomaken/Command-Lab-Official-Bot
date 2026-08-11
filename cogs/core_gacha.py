@@ -48,8 +48,12 @@ async def cOreGacha(interaction: Interaction):
                 xpdb.level += 1
                 xpdb.exp -= 10000
             while xpdb.exp < 0:
-                xpdb.level -= 1
-                xpdb.exp += 10000
+                if xpdb.level <= 0 and xpdb.exp < 0:
+                    xpdb.level = 0
+                    xpdb.exp = 0
+                else:
+                    xpdb.level -= 1
+                    xpdb.exp += 10000
             session.commit()
             ogdb.allcount += 1
             exec(f"ogdb.{item["database"]} += 1")
@@ -96,8 +100,12 @@ async def cOreGacha9(interaction: Interaction):
                     xpdb.level += 1
                     xpdb.exp -= 10000
                 while xpdb.exp < 0:
-                    xpdb.level -= 1
-                    xpdb.exp += 10000
+                    if xpdb.level <= 0 and xpdb.exp < 0:
+                        xpdb.level = 0
+                        xpdb.exp = 0
+                    else:
+                        xpdb.level -= 1
+                        xpdb.exp += 10000
                 session.commit()
             elif int(item["level"]) != 0 and int(item["xp"]) == 0:
                 xpdb.level += int(item["level"])
@@ -152,6 +160,12 @@ async def cOreGacha10(interaction: Interaction):
         xpdb.level += 1
         xpdb.exp -= 10000
     while xpdb.exp < 0:
+        if xpdb.level <= 0 and xpdb.exp < 0:
+            xpdb.level = 0
+            xpdb.exp = 0
+        else:
+            xpdb.level -= 1
+            xpdb.exp += 10000
         xpdb.level -= 1
         xpdb.exp += 10000
     session.commit()
@@ -251,8 +265,12 @@ async def cOreGacha910(interaction: Interaction):
         xpdb.level += 1
         xpdb.exp -= 10000
     while xpdb.exp < 0:
-        xpdb.level -= 1
-        xpdb.exp += 10000
+        if xpdb.level <= 0 and xpdb.exp < 0:
+            xpdb.level = 0
+            xpdb.exp = 0
+        else:
+            xpdb.level -= 1
+            xpdb.exp += 10000
     session.commit()
     session2.commit()
     desc = "\n".join([f"`{count:02}` {emoji} `No.{num:06}` {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
@@ -311,8 +329,12 @@ async def cOreGacha0722(interaction: Interaction):
         xpdb.level += 1
         xpdb.exp -= 10000
     while xpdb.exp < 0:
-        xpdb.level -= 1
-        xpdb.exp += 10000
+        if xpdb.level <= 0 and xpdb.exp < 0:
+            xpdb.level = 0
+            xpdb.exp = 0
+        else:
+            xpdb.level -= 1
+            xpdb.exp += 10000
     session.commit()
     session2.commit()
     desc = "\n".join([f"`{count:02}` {emoji} `No.{num:06}` {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])

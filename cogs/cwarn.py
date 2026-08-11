@@ -271,8 +271,12 @@ class Cwarn(commands.Cog):
         attentionuserdb.exp -= removexp
         attentionuserdb.allremoveexp += removexp
         if attentionuserdb.exp < 0:
-            attentionuserdb.level -= 1
-            attentionuserdb.exp += 10000
+            if attentionuserdb.level <= 0 and attentionuserdb.exp < 0:
+                attentionuserdb.level = 0
+                attentionuserdb.exp = 0
+            else:
+                attentionuserdb.level -= 1
+                attentionuserdb.exp += 10000
         session.commit()
         DESC = f"""
 `送信日時　　　　:`{(message.created_at + timedelta(hours=9)).strftime('%Y/%m/%d %H:%M:%S')}
