@@ -103,8 +103,8 @@ class Cmdbotlevel(commands.Cog):
             return
         elif message.channel.id == config.channels.question_channels:
             if authenticated_respondent in message.author.roles:
-                start = 110
-                end = 160
+                start = 125
+                end = 175
             else:
                 start = 100
                 end = 150
@@ -154,19 +154,20 @@ class Cmdbotlevel(commands.Cog):
         if userdb.dailylogin is False:
             userdb.dailylogin = True
             userdb.dailylogincount += 1
-            if (userdb.dailylogincount % 90 == 0):
-                userdb.alladdexp += 1700
-                userdb.exp += 1700
-            elif (userdb.dailylogincount % 30 == 0):
-                userdb.alladdexp += 700
-                userdb.exp += 700
-            elif (userdb.dailylogincount % 10 == 0):
-                userdb.alladdexp += 300
-                userdb.exp += 300
+            daily_level_bonus = min((1 + (userdb.level / 400) ** 0.33), 3)  # min関数:どっちかの小さい方の値を変数に入れる
+            if (userdb.dailylogincount % 180 == 0):
+                userdb.alladdexp += math.floor(1700 * daily_level_bonus)
+                userdb.exp += math.floor(1700 * daily_level_bonus)
+            elif (userdb.dailylogincount % 60 == 0):
+                userdb.alladdexp += math.floor(700 * daily_level_bonus)
+                userdb.exp += math.floor(700 * daily_level_bonus)
+            elif (userdb.dailylogincount % 15 == 0):
+                userdb.alladdexp += math.floor(300 * daily_level_bonus)
+                userdb.exp += math.floor(300 * daily_level_bonus)
             else:
-                userdb.alladdexp += 100
-                userdb.exp += 100
-        session.commit()
+                userdb.alladdexp += math.floor(100 * daily_level_bonus)
+                userdb.exp += math.floor(100 * daily_level_bonus)
+            session.commit()
         # print(message.author.name, start, end, add, exp_per_message, exp_orb_add, userdb.level, userdb.exp, userdb.chatcount)
 
         if userdb.exp >= 10000:
@@ -226,7 +227,7 @@ class Cmdbotlevel(commands.Cog):
             end = 100
 
         exp_per_delmsg = random.randint(start, end)
-        deluserdb.chatcount -= 1
+        deluserdb.chatcount -= int(deluserdb.chatcount > 0)
         deluserdb.allremoveexp += exp_per_delmsg
         deluserdb.exp -= exp_per_delmsg
 
@@ -237,8 +238,12 @@ class Cmdbotlevel(commands.Cog):
         session.commit()
 
         if deluserdb.exp < 0:
-            deluserdb.level -= 1
-            deluserdb.exp += 10000
+            if deluserdb.level <= 0 and deluserdb.exp < 0:
+                deluserdb.level = 0
+                deluserdb.exp = 0
+            else:
+                deluserdb.level -= 1
+                deluserdb.exp += 10000
         session.commit()
 
 
