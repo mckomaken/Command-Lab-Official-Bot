@@ -102,13 +102,14 @@ class Cmdbotlevelcom(commands.Cog):
             await interaction.response.send_message(f"`{target.mention}`に経験値を与えることはできません", ephemeral=True)
             return
         elif givedb_allexp < givexp:
-            await interaction.response.send_message(f"コマ研レベルに借金機能はありません(笑)\n所持経験値量：{givedb_allexp} < 付与予定経験値量：{givexp}", ephemeral=True)
+            await interaction.response.send_message(f"コマ研レベルに借金機能はありません(笑)\n所持経験値量：{givedb_allexp} < 相手に付与予定経験値量：{givexp}", ephemeral=True)
             return
 
+        notes_text = ""
         calvalue = givexp
         if targetdb.int1 + givexp > 5000:
             calvalue = 5000 - targetdb.int1
-            text = f"全量譲渡すると{target.mention}の1日当たりの譲渡経験値量が5000xpを超えてしまうため、{target.mention}に差分の{calvalue}xpを与えました"
+            notes_text = f"\n-# 与える量を全量譲渡すると{target.mention}の1日当たりの受け取り可能経験値量が5000xpを超えてしまうため、{target.mention}に差分の`{calvalue}xp`を与えました"
 
         givedb.exp -= calvalue
         givedb.allremoveexp += calvalue
@@ -122,8 +123,8 @@ class Cmdbotlevelcom(commands.Cog):
             targetdb.level += 1
             targetdb.exp -= 10000
         session.commit()
-        text = f"{target.mention}に{calvalue}xp与えました"
-        await interaction.response.send_message(text, silent=True, allowed_mentions=discord.AllowedMentions.none())
+        text = f"{target.mention}に`{calvalue}xp`与えました"
+        await interaction.response.send_message(f"{text}{notes_text}", silent=True, allowed_mentions=discord.AllowedMentions.none())
 
     @app_commands.command(name="csetleveling", description="【運営用】参加者のLv/exp変更)")
     @app_commands.describe(choice="選択肢", target="変更する人", level="レベル", experience="経験値")
