@@ -226,8 +226,12 @@ class ChoiceBetButton(Button):
                 userdb.exp -= self.amount
                 userdb.allremoveexp += self.amount
                 if userdb.exp < 0:
-                    userdb.level -= 1
-                    userdb.exp += 10000
+                    if userdb.level <= 0 and userdb.exp < 0:
+                        userdb.level = 0
+                        userdb.exp = 0
+                    else:
+                        userdb.level -= 1
+                        userdb.exp += 10000
                 session.commit()
                 session3.add(Polls(pollid=self.cid, userid=interaction.user.id, username=interaction.user.name, chosen=self.num))
                 session3.commit()
@@ -336,8 +340,12 @@ class CPoll(commands.Cog):
         userdb.exp -= amount * 2
         userdb.allremoveexp += amount * 2
         if userdb.exp < 0:
-            userdb.level -= 1
-            userdb.exp += 10000
+            if userdb.level <= 0 and userdb.exp < 0:
+                userdb.level = 0
+                userdb.exp = 0
+            else:
+                userdb.level -= 1
+                userdb.exp += 10000
         session.commit()
 
         if amount > 0:
