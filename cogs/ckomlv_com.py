@@ -64,7 +64,7 @@ class Cmdbotlevelcom(commands.Cog):
                     level_embed.add_field(name="有効チャット数", value=f"```go\n{userdb.chatcount} チャット\n```", inline=True)
                     level_embed.add_field(name="MEE6レベル", value=f"```go\n{userdb.mee6level} Level\n```", inline=True)
                     level_embed.add_field(name="デイリーログイン日数", value=f"```go\n{userdb.dailylogincount} 日\n```", inline=True)
-                    level_embed.add_field(name="明日のデイリー獲得予定経験値量", value=f"```go\n1 + ({userdb.level} / 400) ** 0.33\n≒ {tomorrow_daily_exp} exp\n```", inline=True)
+                    level_embed.add_field(name="明日のデイリー獲得予定経験値量", value=f"```go\n{tomorrow_daily_exp} exp\n```", inline=True)
                 await interaction.response.send_message(embed=level_embed, silent=True)
                 userdb.allexp = (userdb.level * 10000) + userdb.exp
                 session.commit()
@@ -242,8 +242,6 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed.add_field(name="通常ガチャ総損失経験値量", value=f"```go\n{gachaminus} exp\n```", inline=True)
                 level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
                 level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
-                level_embed.add_field(name="有効チャット数", value=f"```go\n{setuserdb.chatcount} チャット\n```", inline=True)
-                level_embed.add_field(name="MEE6レベル", value=f"```go\n{setuserdb.mee6level} Level\n```", inline=True)
                 level_embed.add_field(name="今日のガチャ結果", value=f"```go\n{gachadb.ogint1} exp\n```", inline=True)
                 tomorrow_daily_count = setuserdb.dailylogincount + 1
                 daily_level_bonus = min((1 + (setuserdb.level / 400) ** 0.33), 3)  # min関数:どっちかの小さい方の値を変数に入れる
@@ -258,7 +256,7 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed.add_field(name="有効チャット数", value=f"```go\n{setuserdb.chatcount} チャット\n```", inline=True)
                 level_embed.add_field(name="MEE6レベル", value=f"```go\n{setuserdb.mee6level} Level\n```", inline=True)
                 level_embed.add_field(name="デイリーログイン日数", value=f"```go\n{setuserdb.dailylogincount} 日\n```", inline=True)
-                level_embed.add_field(name="明日のデイリー獲得予定経験値量", value=f"```go\n1 + ({setuserdb.level} / 400) ** 0.33\n≒ {tomorrow_daily_exp} exp\n```", inline=True)
+                level_embed.add_field(name="明日のデイリー獲得予定経験値量", value=f"```go\n{tomorrow_daily_exp} exp\n```", inline=True)
                 await interaction.response.send_message(embed=level_embed, silent=True, allowed_mentions=discord.AllowedMentions.none())
 
 
