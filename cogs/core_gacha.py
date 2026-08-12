@@ -166,8 +166,6 @@ async def cOreGacha10(interaction: Interaction):
         else:
             xpdb.level -= 1
             xpdb.exp += 10000
-        xpdb.level -= 1
-        xpdb.exp += 10000
     session.commit()
     session2.commit()
     desc = "\n".join([f"`{count:02}` {emoji} `No.{num:06}` {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
