@@ -59,9 +59,10 @@ class LOttery(discord.ui.View):  # 抽選コマンド
 
 
 class PUtilottery(discord.ui.View):  # プチ抽選コマンド
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot, serveruser: int):
         super().__init__(timeout=None)
         self.bot = bot
+        self.serveruser = serveruser
 
     @discord.ui.button(label="応募", style=ButtonStyle.green, emoji="✅", custom_id="present")
     async def pressedputiLotteryButton(self, interaction: discord.Interaction, button: discord.ui.button):
@@ -73,8 +74,8 @@ class PUtilottery(discord.ui.View):  # プチ抽選コマンド
         elif oubouser.noxp is True:
             await interaction.response.send_message("あなたには参加資格がありません", ephemeral=True)
             return
-        elif oubouser.chatcount < 10:
-            await interaction.response.send_message(f"応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが条件を満たしていません\n現時点でのチャット数: {oubouser.chatcount}\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
+        elif oubouser.chatcount < self.serveruser / 100:
+            await interaction.response.send_message(f"応募条件2 : コマ研レベル(mcmd-level)実装後に有効チャットが条件({self.serveruser / 100}チャット)を満たしていません\n現時点でのチャット数: {oubouser.chatcount}\nまた応募条件を満たした時にボタンを押しに来てください!!", ephemeral=True)
             return
         elif oubouser.bool1 is True:
             await interaction.response.send_message("すでに応募済みです。抽選開始までお待ちください。", ephemeral=True)
@@ -228,7 +229,7 @@ class CPresent(commands.Cog):
         )
         await interaction.response.send_message("送信しました", ephemeral=True)
         await interaction.channel.send(embed=present_embed)
-        await interaction.channel.send(view=LOttery(self.bot))
+        await interaction.channel.send(view=PUtilottery(self.bot, serveruser=serveruser))
 
     @app_commands.command(name="present-reset", description="【運営】present企画-リセットコマンド")
     @app_commands.checks.has_role(config.roles.administrater)
@@ -246,7 +247,7 @@ class CPresent(commands.Cog):
         user1="ユーザー1", user2="ユーザー2", user3="ユーザー3", user4="ユーザー4", user5="ユーザー5"
     )
     @app_commands.checks.has_role(config.roles.administrater)
-    async def cpresentaddall(self, interaction: discord.Interaction, addexp: int, user1: discord.Member = None, user2: discord.Member = None, user3: discord.Member = None, user4: discord.Member = None, user5: discord.Member = None):
+    async def cpresentaddall(self, interaction: discord.Interaction, addexp: int, user1: discord.Member, user2: discord.Member = None, user3: discord.Member = None, user4: discord.Member = None, user5: discord.Member = None):
         users = [user1, user2, user3, user4, user5]
         for user in users:
             if user is not None:
@@ -266,3 +267,4 @@ class CPresent(commands.Cog):
 async def setup(bot: commands.Bot):
     await bot.add_cog(CPresent(bot))
     bot.add_view(LOttery(bot))
+    bot.add_view(PUtilottery(bot))
