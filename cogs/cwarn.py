@@ -65,6 +65,10 @@ class Cwarn(commands.Cog):
                     num = 5
                 session.commit()
                 await interaction.response.send_message(f"{target.mention}に違反点数を追加しました\nNo.{num}\n理由:{reason}\n詳細理由:{reason2}", silent=True)
+                warnuserdb.level -= 8
+                warnuserdb.allremoveexp += 80000
+                if warnuserdb.level < 0:
+                    warnuserdb.level = 0
                 if senddm is True:
                     WARNDESC = f"""
 ## No.{num}
@@ -125,6 +129,10 @@ class Cwarn(commands.Cog):
                     num = 5
                 session.commit()
                 await interaction.response.send_message(f"{target.mention}に一時違反点数を追加しました\nNo.{num}\n理由:{reason}\n詳細理由:{reason2}\n解除日時:{str_unwarn_date} 00:00:00", silent=True)
+                warnuserdb.level -= 5
+                warnuserdb.allremoveexp += 50000
+                if warnuserdb.level < 0:
+                    warnuserdb.level = 0
 
                 if senddm is True:
                     WARNDESC = f"""
@@ -267,12 +275,15 @@ class Cwarn(commands.Cog):
             return
         elif str(emoji) != "⚠️":  # リアクションが⚠️でない場合
             return
-        removexp = random.randint(4000, 6000)
+        removexp = attentionuserdb.exp
+        attentionuserdb.level -= 2
         attentionuserdb.exp -= removexp
-        attentionuserdb.allremoveexp += removexp
-        if attentionuserdb.exp < 0:
+        attentionuserdb.allremoveexp += 20000 + removexp
+        while attentionuserdb.exp < 0:
             if attentionuserdb.level <= 0 and attentionuserdb.exp < 0:
                 attentionuserdb.level = 0
+                attentionuserdb.exp = 0
+            elif attentionuserdb.level <= 0:
                 attentionuserdb.exp = 0
             else:
                 attentionuserdb.level -= 1
@@ -285,9 +296,9 @@ class Cwarn(commands.Cog):
 `メッセージ送信者:`{message.author.mention} / {message.author.id}
 `メッセージリンク:`{message_url} / {message.id}
 `メッセージ内容　:` ```{message.content}```
-`減算経験値量　　:`{removexp}xp
+`減算経験値量　　:`{removexp + 20000}xp
 `現在のLv.exp　 :`{attentionuserdb.level}.{attentionuserdb.exp}
-`ミスった場合の補填(+200xp)コマンド:` ```/csetleveling choice:加算 target:{message.author.mention} experience:{removexp + 200}```
+`ミスった場合の補填(+200xp)コマンド:` ```/csetleveling choice:加算 target:{message.author.mention} experience:{removexp + 20200}```
 """
         attention_embed = discord.Embed(
             title="注意リアクションが押されました",
