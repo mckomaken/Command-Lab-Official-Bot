@@ -198,7 +198,7 @@ class Cwarn(commands.Cog):
                     )
                     warn_dm_rem_embed.set_footer(text="マイクラコマンド研究所 運営一同")
                     try:
-                        await dm.send(embed=warn_dm_embed)
+                        await dm.send(embed=warn_dm_rem_embed)
                     except discord.Forbidden:
                         await interaction.channel.send(f"{target.mention}はDM受信を拒否しているため送信できませんでした。\nチケットを発券して、点数が削除されたことを通知してください。\nなお、**点数追加の処理は既に行われています。**")
                 else:
