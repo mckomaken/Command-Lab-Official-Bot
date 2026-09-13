@@ -106,7 +106,7 @@ class CPresent(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="cpresent", description="【運営】present企画")
+    @app_commands.command(name="present", description="【運営】present企画")
     @app_commands.describe(
         ptitle="〇周年プレゼント企画!/〇人プレゼント企画!/〇年-新年お年玉企画",
         kikann="応募期間(日数入力)",
@@ -189,7 +189,7 @@ class CPresent(commands.Cog):
 
 # !--------------------------------------------------------------------
 
-    @app_commands.command(name="cpresent-user", description="【運営】present企画")
+    @app_commands.command(name="present-user", description="【運営】present企画")
     @app_commands.describe(
         serveruser="サーバー人数(100の倍数で入力)",
         kikann="応募期間(日数入力)"
@@ -230,7 +230,7 @@ class CPresent(commands.Cog):
         await interaction.channel.send(embed=present_embed)
         await interaction.channel.send(view=LOttery(self.bot))
 
-    @app_commands.command(name="cpresent-reset", description="【運営】present企画-リセットコマンド")
+    @app_commands.command(name="present-reset", description="【運営】present企画-リセットコマンド")
     @app_commands.checks.has_role(config.roles.administrater)
     async def cpresentreset(self, interaction: discord.Interaction):
         results = session.query(User).all()
@@ -239,6 +239,28 @@ class CPresent(commands.Cog):
         session.commit()
         print("リセット完了")
         await interaction.response.send_message("リセットしました", ephemeral=True)
+
+    @app_commands.command(name="present-addall", description="【運営】present企画-経験値一括追加コマンド")
+    @app_commands.describe(
+        addexp="追加する経験値量",
+        user1="ユーザー1", user2="ユーザー2", user3="ユーザー3", user4="ユーザー4", user5="ユーザー5"
+    )
+    @app_commands.checks.has_role(config.roles.administrater)
+    async def cpresentaddall(self, interaction: discord.Interaction, addexp: int, user1: discord.Member = None, user2: discord.Member = None, user3: discord.Member = None, user4: discord.Member = None, user5: discord.Member = None):
+        users = [user1, user2, user3, user4, user5]
+        for user in users:
+            if user is not None:
+                presentuserdb = session.query(User).filter_by(userid=user.id).first()
+                if presentuserdb is None:
+                    presentuserdb = User(userid=user.id, username=user.name)
+                    session.add(presentuserdb)
+                presentuserdb.exp += addexp
+                presentuserdb.alladdexp += addexp
+                while presentuserdb.exp >= 10000:
+                    presentuserdb.level += 1
+                    presentuserdb.exp -= 10000
+        session.commit()
+        await interaction.response.send_message(f"{addexp}xpを{user1.mention if user1 else ''} {user2.mention if user2 else ''} {user3.mention if user3 else ''} {user4.mention if user4 else ''} {user5.mention if user5 else ''}に一括で追加しました。")
 
 
 async def setup(bot: commands.Bot):
