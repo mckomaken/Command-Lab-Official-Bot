@@ -216,8 +216,8 @@ class RequestButton(View):
         if role in interaction.user.roles:
             await interaction.response.send_message("あなたは既に認証済み回答者の為、申請することはできません", ephemeral=True)
             return
-        elif userdb.level < 20 or not userdb:
-            await interaction.response.send_message("あなたはコマ研レベル20Lv未満の為、申請することはできません", ephemeral=True)
+        elif userdb.level < 20 or not userdb or userdb.chatcount < 200:
+            await interaction.response.send_message("あなたはコマ研レベル20Lv未満または有効チャット数が200チャット未満の為、申請することはできません", ephemeral=True)
             return
         view = RequestCheckButton1(userid=interaction.user.id)
         admin_channel = await interaction.guild.fetch_channel(config.channels.admin_meeting)
@@ -242,8 +242,8 @@ class CAuthenticatedRespondent(commands.Cog):
         if role in interaction.user.roles:
             await interaction.response.send_message("あなたは既に認証済み回答者の為、申請することはできません", ephemeral=True)
             return
-        elif userdb.level < 20 or not userdb:
-            await interaction.response.send_message("あなたはコマ研レベル20Lv未満の為、申請することはできません", ephemeral=True)
+        elif userdb.level < 20 or not userdb or userdb.chatcount < 200:
+            await interaction.response.send_message("あなたはコマ研レベル20Lv未満または有効チャット数が200チャット未満の為、申請することはできません", ephemeral=True)
             return
         request_embed = discord.Embed(
             description="# `認証済み回答者ロール`付与申請を行いますか？\n\n運営が申請者を確認し、承認されると`認証済み回答者ロール`が付与されます。\n\n申請を行う場合は以下のボタンを押してください。",
