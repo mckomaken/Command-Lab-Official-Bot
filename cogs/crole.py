@@ -4,6 +4,7 @@ from discord.ext import commands
 from discord.ui import Button, View, button
 
 from config.config import config
+# yellow サブ垢ロール割り当てること
 
 
 async def add_or_remove_role(roleId: int, interaction: Interaction):
@@ -163,8 +164,12 @@ class CRoleOtherButtons(View):  # その他
         await add_or_remove_role(892062948531523665, interaction)
 
     @button(label="bump非表示", style=ButtonStyle.gray, emoji="⤴️", custom_id="no-bump")
-    async def pressedHoka5(self, interaction: Interaction, button: Button):
+    async def pressedHoka4(self, interaction: Interaction, button: Button):
         await add_or_remove_role(873890138063794236, interaction)
+
+    @button(label="サブ垢ロール", style=ButtonStyle.gray, emoji="➖", custom_id="sub-account")
+    async def pressedHoka5(self, interaction: Interaction, button: Button):
+        await add_or_remove_role(11111111111, interaction)
 
 
 class CRole(commands.Cog):
@@ -269,6 +274,11 @@ class CRole(commands.Cog):
         hoka_embed.add_field(
             name="--【@bump非表示】--",
             value="⤴️:DisboardによるBUMP通知が邪魔だと思った方はこちら!\n(このロールがつくと、<#965098244193542154>が見れなくなります)",
+            inline=False,
+        )
+        hoka_embed.add_field(
+            name="--【@サブ垢】--",
+            value="➖:サブ垢の場合はこのロールを付けることによって、ロール通知等を無効化できます。",
             inline=False,
         )
         file_komakenimg1 = discord.File("assets/komakenimage1.png", filename="komakenimage1.png")

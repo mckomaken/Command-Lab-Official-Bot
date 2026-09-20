@@ -230,19 +230,20 @@ class Cmdbotlevelcom(commands.Cog):
                     description=f"```go\nレベル: {setuserdb.level} lv\n経験値: {setuserdb.exp} exp\n{setuserdb.level + 1}lvまであと {10000 - setuserdb.exp} exp\n```",
                     color=0x6fb7ff
                 )
-                gachaplus1 = gachadb.netheritei * 2200 + gachadb.netherites * 400 + gachadb.lapis * 180 + gachadb.diamond * 250 + gachadb.gold * 150 + gachadb.redstone * 130
-                gachaplus2 = gachadb.emerald * 100 + gachadb.iron * 85 + gachadb.copper * 40 + gachadb.quartz * 55 + gachadb.coal * 80
-                gachaminus = gachadb.breaking_pickaxe * 100 + gachadb.broken_pickaxe * 400 + gachadb.death * 1111
-                gachaplus91 = gachadb.beacon * 30000 + gachadb.netheriteb * 20000 + gachadb.lapisb * 1620 + gachadb.diamondb * 2250 + gachadb.goldb * 1350 + gachadb.redstoneb * 1170
-                gachaplus92 = gachadb.emeraldb * 900 + gachadb.ironb * 765 + gachadb.copperb * 360 + gachadb.quartzb * 220 + gachadb.coalb * 720
-                gachaminus9 = gachadb.broken_pickaxe9 * 1000 + gachadb.death9 * 4000 + gachadb.unkownworld * 10000
                 level_embed.add_field(name="総獲得経験値量", value=f"```go\n{setuserdb.alladdexp} exp\n```", inline=True)
                 level_embed.add_field(name="総損失経験値量", value=f"```go\n{setuserdb.allremoveexp} exp\n```", inline=True)
-                level_embed.add_field(name="通常ガチャ総獲得経験値量", value=f"```go\n{gachaplus1 + gachaplus2} exp\n```", inline=True)
-                level_embed.add_field(name="通常ガチャ総損失経験値量", value=f"```go\n{gachaminus} exp\n```", inline=True)
-                level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
-                level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
-                level_embed.add_field(name="今日のガチャ結果", value=f"```go\n{gachadb.ogint1} exp\n```", inline=True)
+                if gachadb:
+                    gachaplus1 = gachadb.netheritei * 2200 + gachadb.netherites * 400 + gachadb.lapis * 180 + gachadb.diamond * 250 + gachadb.gold * 150 + gachadb.redstone * 130
+                    gachaplus2 = gachadb.emerald * 100 + gachadb.iron * 85 + gachadb.copper * 40 + gachadb.quartz * 55 + gachadb.coal * 80
+                    gachaminus = gachadb.breaking_pickaxe * 100 + gachadb.broken_pickaxe * 400 + gachadb.death * 1111
+                    gachaplus91 = gachadb.beacon * 30000 + gachadb.netheriteb * 20000 + gachadb.lapisb * 1620 + gachadb.diamondb * 2250 + gachadb.goldb * 1350 + gachadb.redstoneb * 1170
+                    gachaplus92 = gachadb.emeraldb * 900 + gachadb.ironb * 765 + gachadb.copperb * 360 + gachadb.quartzb * 220 + gachadb.coalb * 720
+                    gachaminus9 = gachadb.broken_pickaxe9 * 1000 + gachadb.death9 * 4000 + gachadb.unkownworld * 10000
+                    level_embed.add_field(name="通常ガチャ総獲得経験値量", value=f"```go\n{gachaplus1 + gachaplus2} exp\n```", inline=True)
+                    level_embed.add_field(name="通常ガチャ総損失経験値量", value=f"```go\n{gachaminus} exp\n```", inline=True)
+                    level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
+                    level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
+                    level_embed.add_field(name="今日のガチャ結果", value=f"```go\n{gachadb.ogint1} exp\n```", inline=True)
                 tomorrow_daily_count = setuserdb.dailylogincount + 1
                 daily_level_bonus = min((1 + (setuserdb.level / 400) ** 0.33), 3)  # min関数:どっちかの小さい方の値を変数に入れる
                 if (tomorrow_daily_count % 180 == 0):
