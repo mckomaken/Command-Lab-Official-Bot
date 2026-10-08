@@ -4,7 +4,6 @@ from discord.ext import commands
 from discord.ui import Button, View, button
 
 from config.config import config
-# yellow サブ垢ロール割り当てること
 
 
 async def add_or_remove_role(roleId: int, interaction: Interaction):
@@ -169,7 +168,7 @@ class CRoleOtherButtons(View):  # その他
 
     @button(label="サブ垢ロール", style=ButtonStyle.gray, emoji="➖", custom_id="sub-account")
     async def pressedHoka5(self, interaction: Interaction, button: Button):
-        await add_or_remove_role(11111111111, interaction)
+        await add_or_remove_role(1557819790121246730, interaction)
 
 
 class CRole(commands.Cog):
