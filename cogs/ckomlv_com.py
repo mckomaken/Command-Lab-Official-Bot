@@ -1,14 +1,74 @@
 import math
 import random
+from datetime import datetime
 
 import discord
-from discord import app_commands
+from discord import app_commands, ButtonStyle
 from discord.ext import commands
 
 from config.config import config
 from database import User, session, Oregacha, session2
 
 # int1 : cog.ckomlv_com.py使用中(cgiveの受け取り量カウント)
+
+
+class ResetButton(discord.ui.View):  # 抽resetボタン
+    def __init__(self, bot: commands.Bot):
+        super().__init__(timeout=None)
+        self.bot = bot
+
+    @discord.ui.button(label="リセット開始", style=ButtonStyle.green, custom_id="start_reset")
+    async def pressedResetButton(self, interaction: discord.Interaction, button: discord.ui.button):
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message("権限ないで", ephemeral=True)
+            return
+        now = datetime.now()
+        results = session.query(User).all()
+        results2 = session2.query(Oregacha).all()
+        print("\033[41m" + f"{datetime.now()} リセット開始(リセットコマンド実行)" + "\033[0m")
+        for i in results:
+            i.dailylogin = False
+            i.int1 = 0
+            if i.str1 != "":
+                unwarn_date = datetime.strptime(i.str1, '%Y/%m/%d')
+                if now >= unwarn_date:
+                    i.str1 = ""
+                    if i.warnpt > 0:
+                        i.warnpt -= 1
+                    if i.warnreason5 != "":
+                        i.warnreason5 = ""
+                    elif i.warnreason4 != "":
+                        i.warnreason4 = ""
+                    elif i.warnreason3 != "":
+                        i.warnreason3 = ""
+                    elif i.warnreason2 != "":
+                        i.warnreason2 = ""
+                    elif i.warnreason1 != "":
+                        i.warnreason1 = ""
+                    print("\033[45m" + f"{datetime.now()} : {i.username}の一時警告が解除され、警告ポイントが1減少しました。" + "\033[0m")
+        session.commit()
+        print("\033[42m" + f"{datetime.now()} レベルDB-リセット完了(リセットコマンド実行)" + "\033[0m")
+        for i2 in results2:
+            i2.dailygacha = 0
+            i2.ogint1 = 0
+            i2.ogstr1 = ""
+        session2.commit()
+        print("\033[44m" + f"{datetime.now()} ガチャDB-リセット完了(リセットコマンド実行)" + "\033[0m")
+        reseted_embed = discord.Embed(
+            title="",
+            description="# リセット完了",
+            color=0x00ff00,
+            timestamp=datetime.now()
+        )
+        reseted_embed.set_footer(text=f"実行者: {interaction.user.display_name}")
+        await interaction.message.edit(embed=reseted_embed, view=None)
+
+    @discord.ui.button(label="やめる", style=ButtonStyle.red, custom_id="not_reset")
+    async def pressedNotResetButton(self, interaction: discord.Interaction, button: discord.ui.button):
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message("権限ないで", ephemeral=True)
+            return
+        await interaction.message.delete()
 
 
 class Cmdbotlevelcom(commands.Cog):
@@ -76,7 +136,7 @@ class Cmdbotlevelcom(commands.Cog):
             if not targetdb:
                 await interaction.response.send_message(f"`{target.display_name}`はまだ経験値を獲得していません\n### 喋らせよう!!!!!(笑)", silent=True)
                 return
-            elif targetdb.noxp is True or target.id == config.users.syunngiku:
+            elif targetdb.noxp is True:
                 await interaction.response.send_message(f"`{target.display_name}`の経験値量は確認できません", ephemeral=True)
                 return
             else:
@@ -230,19 +290,20 @@ class Cmdbotlevelcom(commands.Cog):
                     description=f"```go\nレベル: {setuserdb.level} lv\n経験値: {setuserdb.exp} exp\n{setuserdb.level + 1}lvまであと {10000 - setuserdb.exp} exp\n```",
                     color=0x6fb7ff
                 )
-                gachaplus1 = gachadb.netheritei * 2200 + gachadb.netherites * 400 + gachadb.lapis * 180 + gachadb.diamond * 250 + gachadb.gold * 150 + gachadb.redstone * 130
-                gachaplus2 = gachadb.emerald * 100 + gachadb.iron * 85 + gachadb.copper * 40 + gachadb.quartz * 55 + gachadb.coal * 80
-                gachaminus = gachadb.breaking_pickaxe * 100 + gachadb.broken_pickaxe * 400 + gachadb.death * 1111
-                gachaplus91 = gachadb.beacon * 30000 + gachadb.netheriteb * 20000 + gachadb.lapisb * 1620 + gachadb.diamondb * 2250 + gachadb.goldb * 1350 + gachadb.redstoneb * 1170
-                gachaplus92 = gachadb.emeraldb * 900 + gachadb.ironb * 765 + gachadb.copperb * 360 + gachadb.quartzb * 220 + gachadb.coalb * 720
-                gachaminus9 = gachadb.broken_pickaxe9 * 1000 + gachadb.death9 * 4000 + gachadb.unkownworld * 10000
                 level_embed.add_field(name="総獲得経験値量", value=f"```go\n{setuserdb.alladdexp} exp\n```", inline=True)
                 level_embed.add_field(name="総損失経験値量", value=f"```go\n{setuserdb.allremoveexp} exp\n```", inline=True)
-                level_embed.add_field(name="通常ガチャ総獲得経験値量", value=f"```go\n{gachaplus1 + gachaplus2} exp\n```", inline=True)
-                level_embed.add_field(name="通常ガチャ総損失経験値量", value=f"```go\n{gachaminus} exp\n```", inline=True)
-                level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
-                level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
-                level_embed.add_field(name="今日のガチャ結果", value=f"```go\n{gachadb.ogint1} exp\n```", inline=True)
+                if gachadb:
+                    gachaplus1 = gachadb.netheritei * 2200 + gachadb.netherites * 400 + gachadb.lapis * 180 + gachadb.diamond * 250 + gachadb.gold * 150 + gachadb.redstone * 130
+                    gachaplus2 = gachadb.emerald * 100 + gachadb.iron * 85 + gachadb.copper * 40 + gachadb.quartz * 55 + gachadb.coal * 80
+                    gachaminus = gachadb.breaking_pickaxe * 100 + gachadb.broken_pickaxe * 400 + gachadb.death * 1111
+                    gachaplus91 = gachadb.beacon * 30000 + gachadb.netheriteb * 20000 + gachadb.lapisb * 1620 + gachadb.diamondb * 2250 + gachadb.goldb * 1350 + gachadb.redstoneb * 1170
+                    gachaplus92 = gachadb.emeraldb * 900 + gachadb.ironb * 765 + gachadb.copperb * 360 + gachadb.quartzb * 220 + gachadb.coalb * 720
+                    gachaminus9 = gachadb.broken_pickaxe9 * 1000 + gachadb.death9 * 4000 + gachadb.unkownworld * 10000
+                    level_embed.add_field(name="通常ガチャ総獲得経験値量", value=f"```go\n{gachaplus1 + gachaplus2} exp\n```", inline=True)
+                    level_embed.add_field(name="通常ガチャ総損失経験値量", value=f"```go\n{gachaminus} exp\n```", inline=True)
+                    level_embed.add_field(name="９倍ガチャ総獲得経験値量", value=f"```go\n{gachaplus91 + gachaplus92} exp\n```", inline=True)
+                    level_embed.add_field(name="９倍ガチャ総損失経験値量", value=f"```go\n{gachaminus9} exp\n```", inline=True)
+                    level_embed.add_field(name="今日のガチャ結果", value=f"```go\n{gachadb.ogint1} exp\n```", inline=True)
                 tomorrow_daily_count = setuserdb.dailylogincount + 1
                 daily_level_bonus = min((1 + (setuserdb.level / 400) ** 0.33), 3)  # min関数:どっちかの小さい方の値を変数に入れる
                 if (tomorrow_daily_count % 180 == 0):
@@ -258,6 +319,19 @@ class Cmdbotlevelcom(commands.Cog):
                 level_embed.add_field(name="デイリーログイン日数", value=f"```go\n{setuserdb.dailylogincount} 日\n```", inline=True)
                 level_embed.add_field(name="明日のデイリー獲得予定経験値量", value=f"```go\n{tomorrow_daily_exp} exp\n```", inline=True)
                 await interaction.response.send_message(embed=level_embed, silent=True, allowed_mentions=discord.AllowedMentions.none())
+
+    @app_commands.command(name="cdaily-reset", description="【運営】デイリー系一括リセット")
+    @app_commands.checks.has_role(config.roles.administrater)
+    async def cdaily_reset(self, interaction: discord.Interaction):
+        reset_embed = discord.Embed(
+            title="デイリー系一括リセット",
+            description="本当にリセットしますか？\n※この操作は取り消せません",
+            color=0xff0000,
+            timestamp=datetime.now()
+        )
+        reset_embed.set_footer(text=f"実行者: {interaction.user.display_name}")
+        view = ResetButton(self.bot)
+        await interaction.response.send_message(embed=reset_embed, view=view, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):

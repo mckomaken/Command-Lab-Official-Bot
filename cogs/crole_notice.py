@@ -20,6 +20,8 @@ class Rolenotice(commands.Cog):
             config.channels.invite
         ]:
             return
+        if message.guild.get_role(config.roles.sub_account) in message.author.roles:
+            return
         kake = message.guild.get_role(config.roles.newbie)
         syo = message.guild.get_role(config.roles.beginner)
         tyuu = message.guild.get_role(config.roles.intermediate)
