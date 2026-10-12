@@ -54,6 +54,7 @@ class CMee6level(commands.Cog):
                 mcmd_1000lv = message.guild.get_role(config.roles.mcmd_1000lv)
                 server_booster = message.guild.get_role(config.roles.serverbooster)
                 lvupuser = await message.guild.fetch_member(userid)
+                userdb = session.query(User).filter_by(userid=userid).first()
                 icon = "<:com2_i:834433852474392576>"
                 role_notice = ""
                 text = ""
@@ -67,7 +68,7 @@ class CMee6level(commands.Cog):
                 elif level >= 300 and mcmd_300lv not in lvupuser.roles:
                     await lvupuser.add_roles(mcmd_300lv)
                     role_notice = "`ロール色設定権限`ロール"
-                elif level >= 30 and mcmd_30lv not in lvupuser.roles:
+                elif level >= 30 and mcmd_30lv not in lvupuser.roles and userdb.chatcount >= 1000:
                     await lvupuser.add_roles(mcmd_30lv)
                     role_notice = "`宣伝権`ロール"
                 elif level >= 15 and mcmd_15lv not in lvupuser.roles:
@@ -83,9 +84,7 @@ class CMee6level(commands.Cog):
                 else:
                     role_notice = ""
 
-                if userid == config.users.syunngiku:
-                    return
-                elif level <= 0:
+                if level <= 0:
                     return
                 elif (level % 500 == 0):
                     text = "# "

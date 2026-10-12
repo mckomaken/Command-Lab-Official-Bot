@@ -170,18 +170,18 @@ async def cOreGacha10(interaction: Interaction):
     session2.commit()
     desc = "\n".join([f"`{count:02}` {emoji} `No.{num:06}` {jpname} {exp} XP" for count, emoji, jpname, num, exp in zip(countlist, emojilist, jpnamelist, numberlist, explist)])
 
-    if sumxp >= 3456:
+    if sumxp >= 3461:
         embed = discord.Embed(
             title="10連ガチャ結果 : 最高記録更新！",
             description=desc,
-            color=0x9224ff
+            color=0x00ff00
         )
-        # https://discord.com/channels/735130420630388807/965095619838488576/1416628799638081656
+        # https://discord.com/channels/735130420630388807/965095619838488576/1551254711422947390
     elif sumxp >= 2000:
         embed = discord.Embed(
             title="10連ガチャ結果 : 大当たり",
             description=desc,
-            color=0x80ff80
+            color=0x80f000
         )
     elif sumxp >= 1000:
         embed = discord.Embed(
@@ -442,12 +442,12 @@ class COregacha(commands.Cog):
             for item in data1:
                 count = eval(f"gachadb.{item['database']}")
                 persent = (count / gachadb.allcount * 100) if gachadb.allcount > 0 else 0
-                desc += f"{item['emoji']} : `{count:03}`回 `{persent:09.06f}`%\n"
+                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
             desc += "------------------\n"
             for item in data2:
                 count = eval(f"gachadb.{item['database']}")
                 persent = (count / gachadb.ogint2 * 100) if gachadb.allcount > 0 else 0
-                desc += f"{item['emoji']} : `{count:03}`回 `{persent:09.06f}`%\n"
+                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
             desc += "------------------\n"
             desc += f"通常合計: {gachadb.allcount}回 ・ 約9倍デー合計: {gachadb.ogint2}回"
             embed = discord.Embed(
@@ -467,12 +467,12 @@ class COregacha(commands.Cog):
             for item in data1:
                 count = eval(f"alldb.{item['database']}")
                 persent = (count / alldb.allcount * 100) if alldb.allcount > 0 else 0
-                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
+                desc += f"{item['emoji']} : `{count:05}`回 `{persent:09.06f}`%\n"
             desc += "------------------\n"
             for item in data2:
                 count = eval(f"alldb.{item['database']}")
                 persent = (count / alldb.ogint2 * 100) if alldb.allcount > 0 else 0
-                desc += f"{item['emoji']} : `{count:04}`回 `{persent:09.06f}`%\n"
+                desc += f"{item['emoji']} : `{count:05}`回 `{persent:09.06f}`%\n"
             desc += "------------------\n"
             desc += f"通常合計: {alldb.allcount}回 ・ 約9倍デー合計: {alldb.ogint2}回"
             embed = discord.Embed(

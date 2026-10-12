@@ -16,7 +16,7 @@ async def loop():
     results = session.query(User).all()
     results2 = session2.query(Oregacha).all()
     if now.hour == 0 and now.minute == 0:
-        print("\033[41m" + "リセット開始" + "\033[0m")
+        print("\033[41m" + f"{datetime.now()} リセット開始" + "\033[0m")
         for i in results:
             i.dailylogin = False
             i.int1 = 0
@@ -36,15 +36,15 @@ async def loop():
                         i.warnreason2 = ""
                     elif i.warnreason1 != "":
                         i.warnreason1 = ""
-                    print("\033[45m" + f"{now} : {i.username}の一時警告が解除され、警告ポイントが1減少しました。" + "\033[0m")
+                    print("\033[45m" + f"{datetime.now()} : {i.username}の一時警告が解除され、警告ポイントが1減少しました。" + "\033[0m")
         session.commit()
-        print("\033[42m" + "レベルDB-リセット完了" + "\033[0m")
+        print("\033[42m" + f"{datetime.now()} レベルDB-リセット完了" + "\033[0m")
         for i2 in results2:
             i2.dailygacha = 0
             i2.ogint1 = 0
             i2.ogstr1 = ""
         session2.commit()
-        print("\033[44m" + "ガチャDB-リセット完了" + "\033[0m")
+        print("\033[44m" + f"{datetime.now()} ガチャDB-リセット完了" + "\033[0m")
 loop.start()
 
 

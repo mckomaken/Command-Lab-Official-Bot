@@ -31,6 +31,7 @@ class Roles(BaseModel):
     mcmd_600lv: int  # yellow MCMDレベル600以上 新規
     mcmd_1000lv: int  # yellow MCMDレベル1000以上 新規
     authenticated_respondent: int  # 認証回答者
+    sub_account: int  # サブアカウント
 
 
 class Channels(BaseModel):
